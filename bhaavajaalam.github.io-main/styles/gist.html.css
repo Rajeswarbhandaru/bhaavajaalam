@@ -1,0 +1,95 @@
+/* --- Mind Map Styles --- */
+
+#placeholder {
+    padding-top: 2rem;
+}
+
+.mindmap {
+    position: relative;
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    height: 600px;
+}
+
+.central {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-purple));
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 24px;
+    box-shadow: var(--shadow);
+    z-index: 10;
+}
+
+.branch {
+    position: absolute;
+    padding: 1.25rem 1.5rem;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 250px;
+    min-height: 140px;
+    box-sizing: border-box;
+    box-shadow: var(--shadow);
+}
+
+.branch-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+}
+
+.branch-title i {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.gesture { top: 15%; left: 10%; background: var(--accent-green); }
+.environment { top: 15%; right: 10%; background: var(--accent-environment); }
+.sound { bottom: 15%; left: 10%; background: var(--accent-sound); }
+.symbol { bottom: 15%; right: 10%; background: var(--accent-red); }
+
+.subpoint {
+    font-size: 14px;
+    color: #fff;
+    margin-top: 5px;
+    white-space: nowrap;
+}
+
+.mindmap svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.mindmap line {
+    stroke-linecap: round;
+    stroke-opacity: 0.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .mindmap { height: 80vw; max-height: 500px; }
+    .branch { width: 30%; min-height: auto; padding: 1rem; }
+    .gesture { left: 5%; }
+    .environment { right: 5%; }
+    .sound { left: 5%; }
+    .symbol { right: 5%; }
+}
+
+@media (max-width: 768px) {
+    .mindmap { display: none; }
+}

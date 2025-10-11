@@ -1,0 +1,644 @@
+/* --- Base Styles --- */
+:root {
+    /* Using the purple/yellow scheme from the image */
+    --primary-color: #7c3aed; /* Deep Violet/Purple */
+    --secondary-purple: #4c1d95; /* Darker Purple for contrast */
+    --accent-yellow: #fbbf24; /* Bright Yellow for primary accent */
+    --accent-orange: #f97316; /* Vibrant Orange for CTA */
+    
+    
+    /* Category Colors from the document's mind map */
+    --accent-green: #10b981; /* Gesture */
+    --accent-environment: #f97316; /* Environment (using a deep orange) */
+    --accent-sound: #9333ea; /* Sound (using a brighter purple) */
+    --accent-red: #ef4444; /* Symbol */
+
+    --text-color: #1e293b;
+    --text-light: #64748b;
+    --light-bg: #f8fafc;
+    --white: #ffffff;
+    --border-color: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --transition-speed: 0.3s;
+}
+
+.dropdown-content-vertical {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background: #fff;
+  min-width: 180px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+  z-index: 1002;
+  padding: 0;
+}
+
+.dropdown-content-vertical li {
+  list-style: none;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.dropdown-content-vertical a {
+  color: #333;
+  padding: 12px 24px;
+  display: block;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.dropdown-content-vertical a:hover {
+  background: #ede7f6;
+  color: #7c3aed;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--light-bg);
+    scroll-behavior: smooth;
+    animation: fadeInBody 1s ease-out;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* --- Header & Navigation --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background-color: var(--white);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    animation: slideDown 0.5s ease-out;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem; /* Adds space above the buttons */
+}
+
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: -0.025em;
+    animation: pulse 2s infinite;
+    text-decoration: none;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color var(--transition-speed);
+    position: relative;
+}
+
+nav ul li a:hover {
+    color: var(--primary-color);
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -1px;
+    left: 0;
+    background-color: var(--accent-orange);
+    transition: width var(--transition-speed);
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+/* --- Hero Section --- */
+.hero-section {
+    /* Gradient matching the purple background from the image */
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-purple) 50%, #a855f7 100%);
+    color: var(--white);
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 5%;
+    position: relative;
+    overflow: hidden;
+    animation: heroFadeIn 1.5s ease-out;
+}
+
+/* Subtle dot pattern background animation */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* SVG for subtle yellow dots/grain */
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(251,191,36,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(251,191,36,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.1;
+    animation: float 6s ease-in-out infinite;
+}
+.hero-section {
+  /* your background styles, etc. */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;    /* pushes content to the bottom */
+  align-items: center;
+  height: 80vh;                 /* or adjust as needed */
+  padding-bottom: 60px;         /* controls the distance from bottom */
+  padding-top: 0;               /* remove top gap */
+}
+
+.hero-section h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.025em;
+    font-weight: 800;
+    position: relative;
+    z-index: 1;
+    color: var(--accent-yellow); /* Bright yellow text */
+    animation: textGlow 3s ease-in-out infinite alternate;
+}
+
+.hero-section p {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+    color: var(--white);
+}
+
+.hero-subtext {
+    font-size: 1.1rem;
+    font-style: italic;
+    opacity: 0.7;
+    margin-bottom: 2rem !important;
+}
+
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 2rem;
+    background-color: var(--accent-orange);
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: all var(--transition-speed);
+    box-shadow: var(--shadow), 0 0 20px rgba(245, 158, 11, 0.5);
+    position: relative;
+    z-index: 1;
+    border: 2px solid var(--accent-yellow);
+    animation: buttonPulse 2s infinite;
+}
+
+.cta-button:hover {
+    background-color: var(--accent-yellow);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--shadow-hover), 0 0 30px rgba(245, 158, 11, 0.8);
+    color: var(--secondary-purple);
+}
+
+/* --- General Content Sections --- */
+.content-section, .expression-section {
+    padding: 6rem 5%;
+    text-align: center;
+    opacity: 0; /* Initial state for scroll animation */
+    transform: translateY(30px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+.content-section.in-view, .expression-section.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.content-section {
+    background-color: var(--white);
+}
+
+.content-section h2, .expression-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    /* Removed redundant slideInLeft animation here to let the main section animation handle it */
+}
+
+.about-content, .contact-content, .courses-section .about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+.about-content p, .contact-content p {
+    margin-bottom: 1.5rem;
+    color: var(--text-light);
+}
+
+.about-content1 {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-light);
+}
+
+.about-content p:nth-child(even) {
+    animation: fadeInUp 1s ease-out 0.2s both;
+}
+.about-content p:nth-child(odd) {
+    animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+
+/* Form Styling */
+.suggestion-form {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+    font-size: 0.95rem;
+}
+.suggestion-form label {
+    display: block;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+.suggestion-form input,
+.suggestion-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color var(--transition-speed);
+}
+.suggestion-form button {
+    margin-top: 2rem;
+    padding: 0.75rem 2rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+.suggestion-form button:hover {
+    background-color: var(--secondary-purple);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* --- Expression Grid --- */
+.expression-section {
+    background-color: var(--light-bg);
+    padding-bottom: 8rem; /* Extra space below cards */
+}
+
+.expression-section > p {
+    margin-bottom: 4rem;
+    font-size: 1.25rem;
+    color: var(--text-light);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.category-card {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow);
+    text-align: left;
+    border-left: 5px solid var(--card-color); /* Uses the JS/inline style variable */
+    transition: all var(--transition-speed);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    opacity: 0; /* Initial state for staggered animation */
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out, box-shadow 0.3s, border-color 0.3s;
+}
+
+/* Staggered animation classes (JS will apply .in-view to parent) */
+.expression-section.in-view .category-card {
+    opacity: 1;
+    transform: translateY(0);
+}
+.expression-section.in-view .category-card:nth-child(1) { transition-delay: 0.1s; }
+.expression-section.in-view .category-card:nth-child(2) { transition-delay: 0.2s; }
+.expression-section.in-view .category-card:nth-child(3) { transition-delay: 0.3s; }
+.expression-section.in-view .category-card:nth-child(4) { transition-delay: 0.4s; }
+
+.category-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-hover);
+}
+
+.category-title {
+    font-size: 1.5rem;
+    color: var(--card-color);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.category-card p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.read-more {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 1rem;
+    color: var(--card-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all var(--transition-speed);
+}
+
+.read-more::after {
+    content: '→';
+    margin-left: 0.5rem;
+    transition: transform var(--transition-speed);
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+.read-more:hover::after {
+    transform: translateX(4px);
+}
+body {
+  /* Soft gradient foundation */
+  background: linear-gradient(135deg, #f7f5ff 65%, #f8fafc 100%);
+  min-height: 100vh;
+  position: relative;
+  font-family: 'Inter', serif;
+}
+
+/* Mandala SVG or Sanskrit motif in the corner - you can swap the URL */
+.bg-motif {
+  position: fixed;
+  right: -100px;
+  bottom: -100px;
+  width: 340px;
+  height: 340px;
+  z-index: 0;
+  opacity: 0.08;
+  background: url('https://cdn.pixabay.com/photo/2013/07/12/17/00/mandala-150167_1280.png') no-repeat center center;
+  background-size: cover;
+  pointer-events: none;
+}
+
+/* Optional: top left motif too */
+.bg-motif-top {
+  position: fixed;
+  left: -100px;
+  top: -80px;
+  width: 290px;
+  height: 290px;
+  z-index: 0;
+  opacity: 0.11;
+  background: url('https://cdn.pixabay.com/photo/2016/04/01/10/28/om-1308745_960_720.png') no-repeat center center;
+  background-size: cover;
+  pointer-events: none;
+}
+
+/* Card/section overlay for best text readability */
+.main-content {
+  background: rgba(255,255,255,0.92);
+  border-radius: 1.3em;
+  max-width: 900px;
+  margin: 3em auto;
+  padding: 2.5em 2em;
+  box-shadow: 0 8px 40px #e0e0e055;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Modal/Overlay (For Details) --- */
+.details-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.details-content {
+    background-color: var(--white);
+    padding: 3rem;
+    border-radius: 1rem;
+    max-width: 700px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: modalSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.close-button {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 300;
+    cursor: pointer;
+    color: var(--text-color);
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color var(--transition-speed);
+}
+
+.close-button:hover {
+    background-color: var(--light-bg);
+}
+
+#detail-title {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+#detail-text p {
+    margin-bottom: 1rem;
+    text-align: left;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+#detail-text ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+    list-style-type: disc;
+}
+
+#detail-text li {
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 3rem 5%;
+    background-color: var(--text-color);
+    color: var(--light-bg);
+    font-size: 0.9rem;
+    animation: fadeInUp 1s ease-out;
+}
+
+.footer-links {
+    margin-bottom: 1rem;
+}
+
+.footer-links a {
+    color: var(--accent-yellow);
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: 500;
+    transition: color var(--transition-speed);
+}
+
+.footer-links a:hover {
+    color: var(--accent-orange);
+}
+
+footer p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+/* --- Keyframe Animations (For "Nice and Neat Animations") --- */
+
+/* General Fade-in for page load */
+@keyframes fadeInBody {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Header Slide Down */
+@keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+/* Hero Section Animation */
+@keyframes heroFadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Text Glow for Title */
+@keyframes textGlow {
+    from { text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
+    to { text-shadow: 0 0 20px rgba(251, 191, 36, 1), 0 0 30px rgba(251, 191, 36, 0.5); }
+}
+
+/* Button Pulse */
+@keyframes buttonPulse {
+    0%, 100% { box-shadow: var(--shadow), 0 0 20px rgba(245, 158, 11, 0.5); }
+    50% { box-shadow: var(--shadow), 0 0 30px rgba(245, 158, 11, 0.8); }
+}
+
+/* General Scroll-in from bottom */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Modal Pop-up (Bounce-in effect) */
+@keyframes modalSlideUp {
+    from { transform: translateY(50px) scale(0.95); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Subtle Floating background effect */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Logo Pulse */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+/* --- Media Queries --- */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+    header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    nav ul {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .content-section, .expression-section {
+        padding: 4rem 5%;
+    }
+    .category-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}

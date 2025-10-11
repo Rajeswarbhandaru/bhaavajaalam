@@ -1,0 +1,145 @@
+/* --- Tree Diagram Styles --- */
+.tree {
+  overflow-x: auto; /* Adds horizontal scroll on small modals if needed */
+  padding: 1em 0;
+}
+
+.tree ul {
+  position: relative;
+  padding: 1em 0;
+  white-space: nowrap;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.tree ul::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.tree li {
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  list-style-type: none;
+  position: relative;
+  padding: 1em .5em 0 .5em;
+}
+
+/* Connecting lines */
+.tree li::before,
+.tree li::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 50%;
+  border-top: 2px solid #666;
+  width: 50%;
+  height: 1em;
+}
+
+.tree li::after {
+  right: auto;
+  left: 50%;
+  border-left: 2px solid #666;
+}
+
+.tree li:only-child::after,
+.tree li:only-child::before {
+  display: none;
+}
+
+.tree li:only-child {
+  padding-top: 0;
+}
+
+.tree li:first-child::before,
+.tree li:last-child::after {
+  border: 0 none;
+}
+
+.tree li:last-child::before {
+  border-right: 2px solid #666;
+  border-radius: 0 5px 0 0;
+}
+
+.tree li:first-child::after {
+  border-radius: 5px 0 0 0;
+}
+
+.tree ul ul::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  border-left: 2px solid #666;
+  width: 0;
+  height: 1em;
+}
+
+.tree li span {
+  border: 2px solid #666;
+  padding: .5em 1em;
+  display: inline-block;
+  border-radius: 5px;
+  color: #333;
+  position: relative;
+  top: 1px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* --- Node Colors from ALL Files --- */
+.head { background: #add8e6; font-size: 16px; }
+
+/* Colors from new.html */
+.systematic { background: #87cefa; }
+.nonsystematic { background: #90ee90; }
+.sight { background: #f4a460; }
+.highlight { background: #dda0dd; }
+
+/* Colors from eviron.html */
+.situation { background: #90ee90; }
+.subtle { background: #ed97c9; }
+.silence { background: #dda0dd; }
+.element { background: #e9b581; }
+
+/* Colors from sound.html */
+.linguistic { background: #90ee90; }
+.nonling { background: #f4a460; }
+.literature { background: #dda0dd; }
+.sangiitam { background: #ffb347; }
+
+/* --- Universal Hover Effect --- */
+.tree li span:hover,
+.tree li span:hover + ul li span {
+  background: #e9453f !important;
+  color: #fff;
+  border-color: #e9453f;
+}
+
+.tree li span:hover + ul li::after,
+.tree li span:hover + ul li::before,
+.tree li span:hover + ul::before,
+.tree li span:hover + ul ul::before {
+  border-color: #e9453f;
+}
+
+.mindmap-content {
+    max-width: 90vw; /* Use 90% of the viewport width */
+    width: auto;
+    transition: all 0.3s ease; /* Smooth transition for resizing */
+}
+
+/* 2. Make the tree diagram inside the modal more compact */
+.mindmap-content .tree li {
+    /* Reduce the horizontal space between nodes */
+    padding: 1em 0.3em 0 0.3em;
+}
+
+.mindmap-content .tree li span {
+    /* Make the text and boxes slightly smaller */
+    padding: 0.4em 0.8em;
+    font-size: 13px;
+}
