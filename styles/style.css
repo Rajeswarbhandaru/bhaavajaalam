@@ -37,6 +37,8 @@
   justify-content: center;
   align-items: center;
   height: 60vh; /* adjust as needed for vertical centering */
+
+
 }
 
 .hero-center img {
@@ -98,6 +100,17 @@ body {
     animation: fadeInBody 1s ease-out;
     display: flex;
     flex-direction: column;
+}
+header {
+  background: #7c3aed !important;
+}
+
+.Header-nav-bar, nav ul {
+  background: #7c3aed !important;
+}
+
+nav ul li a {
+  color: #fff !important;
 }
 
 
