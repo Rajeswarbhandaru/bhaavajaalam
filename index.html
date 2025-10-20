@@ -226,17 +226,56 @@ function googleTranslateElementInit() {
 		<h2 class="sub-heading">Webinars:<h2>
 			  <p style="font-size: 0.55em;">What is the significance of by hearting śabdās?</p>
 			  <p style="font-size: 0.55em;">Tips for learning the Anvya of a Shloka</p>
+<head>
+  <style>
+    .faculty-details {
+      font-size: 14px; /* You can adjust this value as needed */
+    }
 
-<div class="faculty-info" id="faculty-info" style="display:none;">
-  <span <a>Dr. Rajeshwara Bhandaru studied in National Sanskrit University, Tirupati. Completed M.Phil (under Bra Shrii Prof. RLN Shastri Sir) and PhD (under Bra Shrii Prof. J Ramakrishna) in Vyakarana. He started learning Vyakarana under Bra Shrii Keshiraju Chandrasekhar and under Bra Shrii Kompella Satyanaraya. He studied the Vyakarana shaastra in traditional way under Bra Shrii Dendukuri Shriramachandra Sharma Somayaaji. </a>
-<a>He worked for three years at the Samskrit Promotion Foundation at IIIT Hyderabad with Prof. Vineet Chaitanya and then for three years at Amrita Vishwa Vidyapeetham in Chennai.</span>
-</div>
+    /* Optional: make the Faculty link look clickable */
+    .toggle-button {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+    }
+  </style>
+<head>
+  <style>
+    .faculty-details {
+      display: none;      /* ✅ Hidden by default */
+      font-size: 14px;    /* Adjust font size as you wish */
+    }
 
-<script>
-function toggleFacultyInfo() {
-  var el = document.getElementById("faculty-info");
-  el.style.display = (el.style.display === "none" || el.style.display === "") ? "block" : "none";
-}
+    .toggle-button {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <span class="toggle-button" onclick="toggleDetails()">Faculty</span>
+    <div id="faculty-details" class="faculty-details">
+      <p>Dr. Rajeshwara Bhandaru studied in National Sanskrit University, Tirupati. He completed M.Phil (under Bra Shrii Prof. RLN Shastri Sir) and PhD (under Bra Shrii Prof. J Ramakrishna) in Vyakarana.</p> 
+	  <p>He started learning Vyakarana under Bra Shrii Keshiraju Chandrasekhar and under Bra Shrii Kompella Satyanaraya. He studied the Vyakarana shaastra in traditional way under Bra Shrii Dendukuri Shriramachandra Sharma Somayaaji.</p>
+	  <p>He worked for three years at the Samskrit Promotion Foundation at IIIT Hyderabad with Prof. Vineet Chaitanya and then for three years at Amrita Vishwa Vidyapeetham in Chennai.</p>
+  </div>
+  </div>
+
+  <script>
+    function toggleDetails() {
+      const details = document.getElementById('faculty-details');
+      if (details.style.display === "none" || details.style.display === "") {
+        details.style.display = "block"; // ✅ Show when clicked
+      } else {
+        details.style.display = "none"; // ✅ Hide when clicked again
+      }
+    }
+  </script>
+</body>
+
 </script>
     <section id="suggestions" class="content-section">
         <h2>Suggestions</h2>

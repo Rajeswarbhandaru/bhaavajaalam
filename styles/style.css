@@ -832,29 +832,10 @@ footer p {
   letter-spacing: 0.015em;
 }
 
-.faculty-icon {
-  font-size: 2.2rem;
-  color: #7c3aed;
-  cursor: pointer;
-  transition: color 0.25s, transform 0.22s;
-  margin-left: 2vw;
+.faculty-details {
+  font-size: 0.65em;
 }
 
-.faculty-icon:hover {
-  color: #fbbf24;
-  transform: scale(1.12);
-}
-
-.faculty-info {
-  margin-top: 1em;
-  font-size: 1.18rem;
-  color: #4c1d95;
-  background: #f8fafd;
-  border-radius: 0.45em;
-  padding: 0.6em 1em;
-  box-shadow: 0 2px 12px #e0e0e022;
-  max-width: 500px;
-}
 .bhaava-note {
   margin: 1em auto 1em auto;
   max-width: 660px;
