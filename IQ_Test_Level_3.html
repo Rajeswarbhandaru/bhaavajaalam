@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhāva Tech | Advanced IQ Assessment</title>
+    <style>
+        :root { --accent: #00d2ff; --dark: #1a1a1a; --glass: rgba(255, 255, 255, 0.1); --success: #2ecc71; --danger: #e74c3c; }
+        body { font-family: 'Poppins', sans-serif; background: #0f172a; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        #iq-app { background: var(--glass); backdrop-filter: blur(10px); padding: 2rem; border-radius: 20px; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37); width: 100%; max-width: 700px; text-align: center; border: 1px solid rgba(255,255,255,0.1); max-height: 90vh; display: flex; flex-direction: column; }
+        
+        .grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px auto; width: 100%; max-width: 320px; aspect-ratio: 1; background: #fff; padding: 10px; border-radius: 8px; }
+        .cell { background: #eee; display: flex; justify-content: center; align-items: center; color: #333; font-size: 1.8rem; font-weight: bold; border: 1px solid #ccc; position: relative; border-radius: 4px; }
+        .missing { background: #ffeaa7; border: 2px dashed #fdcb6e; }
+        
+        .options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 20px; max-width: 320px; margin-inline: auto; }
+        .opt-btn { padding: 15px; border: none; border-radius: 8px; cursor: pointer; background: white; color: #333; font-size: 1.2rem; font-weight: bold; transition: all 0.2s; }
+        .opt-btn:hover { transform: translateY(-2px); background: var(--accent); color: white; }
+        
+        .progress-bar { height: 10px; background: #334155; border-radius: 5px; margin-bottom: 15px; overflow: hidden; }
+        #progress-inner { height: 100%; width: 0%; background: var(--accent); transition: width 0.3s; }
+        
+        .hidden { display: none !important; }
+        .gradient-text { background: linear-gradient(to right, #00d2ff, #3a7bd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold; }
+        
+        /* Results Table Styling */
+        .results-container { overflow-y: auto; max-height: 40vh; margin-top: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        th { background: rgba(0, 210, 255, 0.1); position: sticky; top: 0; }
+        .correct-text { color: var(--success); font-weight: bold; }
+        .wrong-text { color: var(--danger); font-weight: bold; }
+        
+        button.primary-btn { padding: 12px 30px; border-radius: 25px; border: none; background: #00d2ff; color: white; cursor: pointer; font-weight: 600; font-size: 1.1rem; transition: background 0.2s; margin-top: 15px; }
+        button.primary-btn:hover { background: #3a7bd5; }
+    </style>
+</head>
+<body>
+
+<div id="iq-app">
+    <div id="start-screen">
+        <h2 class="gradient-text">Bhāva Tech Cognitive Assessment</h2>
+        <p><strong>17+ Advanced Logic Tier</strong></p>
+        <p>This test consists of 20 high-level logic matrices. You have <strong>5 minutes</strong> to complete the assessment. Missing questions will be marked incorrect.</p>
+        <button class="primary-btn" onclick="startTest()">Begin Assessment</button>
+    </div>
+
+    <div id="test-screen" class="hidden" style="flex: 1; display: flex; flex-direction: column;">
+        <div class="progress-bar"><div id="progress-inner"></div></div>
+        <div style="display: flex; justify-content: space-between; font-weight: bold;">
+            <span id="question-tracker">Q: 1/20</span>
+            <span id="timer" style="color: var(--accent);">Time: 5:00</span>
+        </div>
+        <div id="question-area">
+            <h3 id="question-title">Identify the logical successor:</h3>
+            <div class="grid-container" id="matrix">
+                </div>
+        </div>
+        <div class="options" id="option-container">
+            </div>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <h2 class="gradient-text">Assessment Complete</h2>
+        <div style="display: flex; justify-content: space-around; align-items: center; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin: 10px 0;">
+            <div>
+                <p style="margin: 0; font-size: 0.9rem;">Raw Score</p>
+                <h3 id="raw-score" style="margin: 5px 0; font-size: 2rem;">--/20</h3>
+            </div>
+            <div>
+                <p style="margin: 0; font-size: 0.9rem;">Estimated IQ</p>
+                <h3 id="iq-score" style="margin: 5px 0; font-size: 2.5rem; color: var(--accent);">--</h3>
+            </div>
+        </div>
+        <p id="iq-rank" style="font-weight: bold; font-size: 1.2rem;"></p>
+        
+        <div class="results-container">
+            <table id="review-table">
+                <thead>
+                    <tr>
+                        <th>Q#</th>
+                        <th>Your Answer</th>
+                        <th>Correct Answer</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="review-body">
+                    </tbody>
+            </table>
+        </div>
+        <button class="primary-btn" onclick="location.reload()">Retake Assessment</button>
+    </div>
+</div>
+
+<script>
+    let currentQuestion = 0;
+    let score = 0;
+    let totalTime = 300; // 5 minutes in seconds
+    let timer;
+    let userAnswers = [];
+
+    // 20 Rigorous Logic Puzzles
+    const questions = [
+        { matrix: ['2', '4', '6', '8', '10', '12', '14', '16', '?'], options: ['18', '20', '22', '24'], answer: 0 }, // +2 Progression
+        { matrix: ['1', '4', '9', '16', '25', '36', '49', '64', '?'], options: ['81', '100', '72', '90'], answer: 0 }, // Perfect Squares
+        { matrix: ['1', '1', '2', '3', '5', '8', '13', '21', '?'], options: ['34', '28', '31', '42'], answer: 0 }, // Fibonacci
+        { matrix: ['2', '7', '6', '9', '5', '1', '4', '3', '?'], options: ['5', '8', '9', '7'], answer: 1 }, // Magic Square (Rows/Cols sum to 15)
+        { matrix: ['A1', 'B2', 'C3', 'D4', 'E5', 'F6', 'G7', 'H8', '?'], options: ['H9', 'I8', 'J9', 'I9'], answer: 3 }, // Alphanumeric correlation
+        { matrix: ['3', '6', '12', '24', '48', '96', '192', '384', '?'], options: ['576', '768', '864', '480'], answer: 1 }, // Multiplication by 2
+        { matrix: ['1', '10', '2', '9', '3', '8', '4', '7', '?'], options: ['5', '6', '8', '11'], answer: 0 }, // Alternating tracks (1,2,3,4... and 10,9,8,7...)
+        { matrix: ['●', '●●', '●●●', '■', '■■', '■■■', '▲', '▲▲', '?'], options: ['▲', '▲▲▲', '■■', '●●'], answer: 1 }, // Set completion
+        { matrix: ['▲', '►', '▼', '◄', '▲', '►', '▼', '◄', '?'], options: ['▲', '►', '▼', '◄'], answer: 0 }, // 90-degree spatial rotation cycle
+        { matrix: ['A', 'C', 'E', 'G', 'I', 'K', 'M', 'O', '?'], options: ['P', 'Q', 'R', 'S'], answer: 1 }, // Skip one letter
+        { matrix: ['64', '32', '16', '8', '4', '2', '1', '1/2', '?'], options: ['1/3', '0', '1/4', '1'], answer: 2 }, // Division by 2
+        { matrix: ['1', '2', '4', '7', '11', '16', '22', '29', '?'], options: ['35', '36', '37', '38'], answer: 2 }, // Increasing additions (+1, +2, +3...)
+        { matrix: ['Z', 'X', 'V', 'T', 'R', 'P', 'N', 'L', '?'], options: ['J', 'K', 'M', 'H'], answer: 0 }, // Reverse alphabet skipping one
+        { matrix: ['2', '3', '5', '7', '11', '13', '17', '19', '?'], options: ['21', '23', '25', '27'], answer: 1 }, // Prime Numbers
+        { matrix: ['1/2', '2/3', '3/4', '4/5', '5/6', '6/7', '7/8', '8/9', '?'], options: ['9/11', '10/11', '9/10', '1'], answer: 2 }, // Fractional sequence
+        { matrix: ['3', '9', '15', '21', '27', '33', '39', '45', '?'], options: ['48', '51', '54', '57'], answer: 1 }, // Odd multiples of 3 (+6)
+        { matrix: ['M', 'W', 'M', 'W', 'M', 'W', 'M', 'W', '?'], options: ['M', 'W', 'N', 'V'], answer: 0 }, // Alternating Mirror inversion
+        { matrix: ['◐', '◓', '◑', '◒', '◐', '◓', '◑', '◒', '?'], options: ['◐', '◓', '◑', '◒'], answer: 0 }, // Rotational phasing
+        { matrix: ['X', 'O', 'O', 'O', 'X', 'O', 'O', 'O', '?'], options: ['X', 'O', 'Y', 'Z'], answer: 0 }, // Diagonal symmetry pattern
+        { matrix: ['1', '8', '27', '64', '125', '216', '343', '512', '?'], options: ['625', '729', '810', '1000'], answer: 1 } // Cubes (1^3, 2^3, 3^3...)
+    ];
+
+    function startTest() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('test-screen').classList.remove('hidden');
+        loadQuestion();
+        timer = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+        totalTime--;
+        const minutes = Math.floor(totalTime / 60);
+        const seconds = totalTime % 60;
+        document.getElementById('timer').innerText = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        
+        if (totalTime <= 0) {
+            clearInterval(timer);
+            // Auto-fill remaining questions as wrong (timeout)
+            while (userAnswers.length < questions.length) {
+                userAnswers.push({ selected: null, correct: questions[userAnswers.length].answer, isCorrect: false, timedOut: true });
+            }
+            endTest();
+        }
+    }
+
+    function loadQuestion() {
+        const q = questions[currentQuestion];
+        const matrixDiv = document.getElementById('matrix');
+        const optionsDiv = document.getElementById('option-container');
+        const progress = document.getElementById('progress-inner');
+        
+        progress.style.width = `${((currentQuestion) / questions.length) * 100}%`;
+        document.getElementById('question-tracker').innerText = `Q: ${currentQuestion + 1}/${questions.length}`;
+        matrixDiv.innerHTML = '';
+        optionsDiv.innerHTML = '';
+
+        q.matrix.forEach((item) => {
+            const cell = document.createElement('div');
+            cell.className = 'cell' + (item === '?' ? ' missing' : '');
+            cell.innerText = item;
+            matrixDiv.appendChild(cell);
+        });
+
+        q.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.innerText = opt;
+            btn.onclick = () => handleAnswer(index);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function handleAnswer(selectedIndex) {
+        const q = questions[currentQuestion];
+        const isCorrect = selectedIndex === q.answer;
+        
+        if (isCorrect) score++;
+        
+        // Record the answer for the review screen
+        userAnswers.push({
+            selected: q.options[selectedIndex],
+            correct: q.options[q.answer],
+            isCorrect: isCorrect,
+            timedOut: false
+        });
+
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+            loadQuestion();
+        } else {
+            endTest();
+        }
+    }
+
+    function endTest() {
+        clearInterval(timer);
+        document.getElementById('test-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        
+        // IQ Calculation: Base 70 + (Score * 3.75) -> Max 145
+        const baseIQ = 70;
+        const calculatedIQ = Math.round(baseIQ + (score * 3.75));
+        
+        document.getElementById('raw-score').innerText = `${score}/20`;
+        document.getElementById('iq-score').innerText = calculatedIQ;
+        
+        let rank = "Average";
+        if (calculatedIQ >= 130) rank = "Very Superior (Gifted)";
+        else if (calculatedIQ >= 120) rank = "Superior Cognitive Ability";
+        else if (calculatedIQ >= 110) rank = "High Average";
+        else if (calculatedIQ < 90) rank = "Below Average";
+        document.getElementById('iq-rank').innerText = rank;
+
+        // Build Review Table
+        const tbody = document.getElementById('review-body');
+        tbody.innerHTML = '';
+        
+        userAnswers.forEach((ans, idx) => {
+            const tr = document.createElement('tr');
+            
+            const tdNum = document.createElement('td');
+            tdNum.innerText = idx + 1;
+            
+            const tdUser = document.createElement('td');
+            tdUser.innerText = ans.timedOut ? "Timeout" : ans.selected;
+            if (!ans.isCorrect) tdUser.className = 'wrong-text';
+            
+            const tdCorrect = document.createElement('td');
+            tdCorrect.innerText = ans.correct;
+            tdCorrect.className = 'correct-text';
+            
+            const tdStatus = document.createElement('td');
+            tdStatus.innerText = ans.isCorrect ? "✅" : "❌";
+            
+            tr.appendChild(tdNum);
+            tr.appendChild(tdUser);
+            tr.appendChild(tdCorrect);
+            tr.appendChild(tdStatus);
+            tbody.appendChild(tr);
+        });
+    }
+</script>
+
+<script src="session-tracker.js"></script>
+
+
+</body>
+</html>

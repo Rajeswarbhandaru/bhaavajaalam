@@ -1,0 +1,1081 @@
+
+
+html_content = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhāva Tech — Student Enrollment</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050d1a;
+  --surface: #0d1f35;
+  --surface2: #112240;
+  --border: #1e3a5f;
+  --primary: #00d4ff;
+  --primary-glow: rgba(0,212,255,0.15);
+  --accent: #7c3aed;
+  --accent2: #e67e22;
+  --success: #00e676;
+  --text: #e2f0ff;
+  --muted: #7a9cc8;
+  --faint: #3a5a7a;
+  --radius: 14px;
+  --transition: 200ms cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  min-height:100dvh;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:16px;
+  color:var(--text);
+  background:var(--bg);
+  overflow-x:hidden;
+}
+
+/* ── STARFIELD ── */
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) var(--delay,0s) infinite ease-in-out;}
+@keyframes twinkle{0%,100%{opacity:.1;transform:scale(1);}50%{opacity:.9;transform:scale(1.4);}}
+
+/* ── HEADER ── */
+.header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(5,13,26,.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:14px 24px;
+  display:flex;align-items:center;gap:12px;
+}
+.logo-icon{width:36px;height:36px;}
+.logo-name{font-family:'Orbitron',sans-serif;font-size:1.1rem;color:var(--primary);font-weight:700;}
+.logo-sub{font-size:.7rem;color:var(--muted);letter-spacing:.05em;}
+.header-right{margin-left:auto;font-size:.8rem;color:var(--muted);}
+
+/* ── WRAPPER ── */
+.wrapper{
+  position:relative;z-index:1;
+  max-width:680px;margin:0 auto;
+  padding:32px 16px 80px;
+}
+
+/* ── PROGRESS ── */
+.progress-area{margin-bottom:32px;}
+.level-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.level-badge{
+  font-family:'Orbitron',sans-serif;
+  font-size:.75rem;font-weight:700;
+  color:var(--primary);
+  background:rgba(0,212,255,.1);
+  border:1px solid rgba(0,212,255,.3);
+  padding:4px 12px;border-radius:20px;
+  letter-spacing:.06em;
+}
+.xp-text{font-size:.75rem;color:var(--muted);}
+.progress-track{
+  height:8px;background:var(--surface2);
+  border-radius:20px;overflow:hidden;
+  border:1px solid var(--border);
+}
+.progress-fill{
+  height:100%;border-radius:20px;
+  background:linear-gradient(90deg,var(--primary),#7c3aed);
+  transition:width .6s cubic-bezier(.16,1,.3,1);
+  box-shadow:0 0 12px rgba(0,212,255,.5);
+}
+.level-dots{display:flex;gap:8px;margin-top:10px;justify-content:center;}
+.ldot{
+  width:32px;height:6px;border-radius:3px;
+  background:var(--faint);transition:all .3s;cursor:default;
+}
+.ldot.done{background:var(--success);}
+.ldot.active{background:var(--primary);box-shadow:0 0 8px var(--primary);}
+
+/* ── SCREEN ── */
+.screen{display:none;animation:fadeUp .4s ease both;}
+.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── LEVEL HEADER ── */
+.level-header{text-align:center;margin-bottom:28px;}
+.level-icon{font-size:3rem;margin-bottom:8px;display:block;filter:drop-shadow(0 0 16px var(--primary));}
+.level-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:1.5rem;font-weight:900;
+  background:linear-gradient(135deg,var(--primary),#7c3aed);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:6px;line-height:1.2;
+}
+.level-desc{font-size:.9rem;color:var(--muted);}
+
+/* ── CARD ── */
+.card{
+  background:linear-gradient(135deg,var(--surface),var(--surface2));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px;margin-bottom:16px;
+  box-shadow:0 4px 24px rgba(0,0,0,.3);
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--primary),var(--accent));
+}
+.card-title{
+  font-size:.75rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;
+  color:var(--primary);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.card-title::before{content:'';width:16px;height:2px;background:var(--primary);border-radius:2px;}
+
+/* ── FORM ELEMENTS ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-size:.82rem;font-weight:600;color:var(--text);}
+.form-label .req{color:var(--accent2);margin-left:2px;}
+.form-input,.form-select,.form-textarea{
+  padding:11px 14px;
+  background:rgba(255,255,255,.04);
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  font-family:inherit;font-size:.88rem;
+  color:var(--text);width:100%;
+  transition:border-color var(--transition),box-shadow var(--transition);
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(0,212,255,.15);
+  outline:none;
+  background:rgba(0,212,255,.05);
+}
+.form-select{
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a9cc8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+}
+.form-textarea{resize:vertical;min-height:90px;}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--faint);}
+.form-select option{background:var(--surface);color:var(--text);}
+
+/* ── CHIP OPTIONS ── */
+.chip-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+.chip-opt input[type=checkbox],.chip-opt input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
+.chip-opt label{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:20px;
+  border:1.5px solid var(--border);
+  background:rgba(255,255,255,.03);
+  font-size:.82rem;font-weight:600;
+  cursor:pointer;color:var(--muted);
+  transition:all .2s;
+}
+.chip-opt input:checked + label{
+  border-color:var(--primary);
+  background:rgba(0,212,255,.1);
+  color:var(--primary);
+  box-shadow:0 0 8px rgba(0,212,255,.2);
+}
+.chip-opt label:hover{border-color:var(--primary);color:var(--text);}
+
+/* ── RANGE SLIDER ── */
+.range-wrap{position:relative;}
+.range-val{
+  position:absolute;right:0;top:-24px;
+  font-family:'Orbitron',sans-serif;
+  font-size:.9rem;font-weight:700;color:var(--primary);
+}
+input[type=range]{
+  width:100%;-webkit-appearance:none;
+  height:6px;border-radius:3px;
+  background:var(--surface2);outline:none;
+  border:1px solid var(--border);
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:20px;height:20px;
+  border-radius:50%;background:var(--primary);
+  box-shadow:0 0 8px rgba(0,212,255,.6);
+  cursor:pointer;border:2px solid var(--bg);
+}
+
+/* ── STAR RATING ── */
+.star-rating{display:flex;gap:6px;flex-direction:row-reverse;justify-content:flex-end;}
+.star-rating input{display:none;}
+.star-rating label{font-size:1.8rem;cursor:pointer;color:var(--faint);transition:color .15s;}
+.star-rating input:checked ~ label,.star-rating label:hover,.star-rating label:hover ~ label{color:#f59e0b;}
+
+/* ── BTN ROW ── */
+.btn-row{
+  display:flex;gap:12px;justify-content:space-between;
+  margin-top:28px;padding-top:20px;
+  border-top:1px solid var(--border);
+}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 28px;border-radius:10px;
+  font-family:inherit;font-size:.9rem;font-weight:700;
+  cursor:pointer;border:none;transition:all .2s;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),#0099cc);
+  color:#050d1a;
+  box-shadow:0 4px 20px rgba(0,212,255,.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,212,255,.5);}
+.btn-ghost{
+  background:transparent;color:var(--muted);
+  border:1.5px solid var(--border);
+}
+.btn-ghost:hover{border-color:var(--muted);color:var(--text);}
+
+/* ── WELCOME SCREEN ── */
+#screen-0{text-align:center;padding:20px 0;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,212,255,.08);
+  border:1px solid rgba(0,212,255,.25);
+  padding:6px 18px;border-radius:20px;
+  font-size:.8rem;font-weight:700;letter-spacing:.06em;
+  color:var(--primary);text-transform:uppercase;
+  margin-bottom:20px;
+}
+.hero-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(1.8rem,4vw,2.8rem);
+  font-weight:900;line-height:1.15;
+  margin-bottom:16px;
+}
+.hero-title span{
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-sub{font-size:.95rem;color:var(--muted);max-width:50ch;margin:0 auto 32px;}
+.level-preview{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:12px;margin:28px 0;
+}
+.lp-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:16px 10px;text-align:center;
+}
+.lp-icon{font-size:1.8rem;margin-bottom:6px;}
+.lp-label{font-size:.72rem;color:var(--muted);font-weight:600;line-height:1.3;}
+
+/* ── SUCCESS SCREEN ── */
+#screen-success{text-align:center;padding:40px 0;}
+.success-burst{
+  font-size:5rem;margin-bottom:20px;display:block;
+  animation:burst 1s ease both;
+}
+@keyframes burst{from{transform:scale(0) rotate(-20deg);opacity:0;}60%{transform:scale(1.2) rotate(5deg);}to{transform:scale(1) rotate(0);opacity:1;}}
+.success-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:2rem;font-weight:900;
+  background:linear-gradient(135deg,var(--success),var(--primary));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:12px;
+}
+.success-sub{color:var(--muted);font-size:.95rem;max-width:48ch;margin:0 auto 28px;}
+.success-card{
+  background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(0,212,255,.08));
+  border:1px solid rgba(0,230,118,.3);
+  border-radius:var(--radius);padding:20px;margin-bottom:20px;
+}
+.success-card p{color:var(--text);font-size:.9rem;line-height:1.7;}
+
+/* ── CONFETTI ── */
+.confetti-piece{
+  position:fixed;width:10px;height:10px;
+  animation:confettiFall 3s ease-in forwards;
+  z-index:9999;border-radius:2px;
+  pointer-events:none;
+}
+@keyframes confettiFall{
+  0%{transform:translateY(-10px) rotate(0deg);opacity:1;}
+  100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
+}
+
+/* ── FLOATING GLOW ── */
+.glow-orb{
+  position:fixed;border-radius:50%;
+  filter:blur(80px);opacity:.12;
+  pointer-events:none;z-index:0;
+  animation:orb-float 8s ease-in-out infinite;
+}
+@keyframes orb-float{0%,100%{transform:translate(0,0);}50%{transform:translate(20px,-30px);}}
+
+/* ── ALERT ── */
+.alert{
+  padding:10px 14px;border-radius:8px;
+  font-size:.82rem;display:flex;gap:10px;
+  align-items:flex-start;margin-bottom:14px;
+}
+.alert-info{background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);color:var(--primary);}
+.alert-warn{background:rgba(230,126,34,.08);border:1px solid rgba(230,126,34,.2);color:var(--accent2);}
+
+/* ── FOOTER ── */
+footer{
+  text-align:center;padding:20px;
+  font-size:.75rem;color:var(--faint);
+  border-top:1px solid var(--border);
+  position:relative;z-index:1;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .form-grid{grid-template-columns:1fr;}
+  .btn-row{flex-direction:column-reverse;}
+  .btn{justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- STARS -->
+<div id="stars"></div>
+
+<!-- GLOW ORBS -->
+<div class="glow-orb" style="width:400px;height:400px;background:#00d4ff;top:-100px;left:-100px;"></div>
+<div class="glow-orb" style="width:300px;height:300px;background:#7c3aed;bottom:100px;right:-80px;animation-delay:-4s;"></div>
+
+<!-- HEADER -->
+<header class="header">
+  <svg class="logo-icon" viewBox="0 0 36 36" fill="none">
+    <circle cx="18" cy="18" r="17" fill="rgba(0,212,255,.1)" stroke="#00d4ff" stroke-width="1.5"/>
+    <path d="M10 18 Q10 10 18 10 Q26 10 26 16 Q26 20 21 21 Q26 22 26 26" stroke="#00d4ff" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="21" cy="21" r="1.5" fill="#00d4ff"/>
+    <path d="M12 24 Q14 20 18 20 Q22 20 24 24" stroke="#e67e22" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </svg>
+  <div>
+    <div class="logo-name">Bhāva Tech</div>
+    <div class="logo-sub">Brain Gym & IQ Enhancing Center</div>
+  </div>
+  <div class="header-right">🔒 Secure Enrollment Form</div>
+</header>
+
+<div class="wrapper">
+
+  <!-- PROGRESS (hidden on welcome) -->
+  <div class="progress-area" id="progressArea" style="display:none;">
+    <div class="level-row">
+      <span class="level-badge" id="levelBadge">LEVEL 1</span>
+      <span class="xp-text" id="xpText">+20 XP per level</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="level-dots" id="levelDots"></div>
+  </div>
+
+  <!-- ===== SCREEN 0: WELCOME ===== -->
+  <div class="screen active" id="screen-0">
+    <div class="hero-badge">🎮 Student Enrollment Portal</div>
+    <h1 class="hero-title">Begin Your<br><span>Brain Upgrade</span><br>Journey</h1>
+    <p class="hero-sub">Complete 5 quick levels to unlock your personalised Brain Gym program. Takes about 5 minutes!</p>
+    <div class="level-preview">
+      <div class="lp-card"><div class="lp-icon">🧑‍💻</div><div class="lp-label">Level 1<br>Player Profile</div></div>
+      <div class="lp-card"><div class="lp-icon">🏫</div><div class="lp-label">Level 2<br>School Quest</div></div>
+      <div class="lp-card"><div class="lp-icon">⚡</div><div class="lp-label">Level 3<br>Daily Stats</div></div>
+      <div class="lp-card"><div class="lp-icon">🕹️</div><div class="lp-label">Level 4<br>Gaming Zone</div></div>
+      <div class="lp-card"><div class="lp-icon">🛡️</div><div class="lp-label">Level 5<br>Guardian Base</div></div>
+    </div>
+    <div style="text-align:center;">
+      <button class="btn btn-primary" style="font-size:1rem;padding:14px 36px;" onclick="startForm()">
+        🚀 Start Enrollment
+      </button>
+    </div>
+    <p style="margin-top:16px;font-size:.78rem;color:var(--faint);text-align:center;">Your information is confidential and used only for your Brain Gym program assessment.</p>
+  </div>
+
+  <!-- ===== SCREEN 1: PLAYER PROFILE ===== -->
+  <div class="screen" id="screen-1">
+    <div class="level-header">
+      <span class="level-icon">🧑‍💻</span>
+      <div class="level-title">Player Profile</div>
+      <div class="level-desc">Tell us about yourself — the brain we're going to train!</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Basic Information</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Child\'s Full Name <span class="req">*</span></label>
+          <input class="form-input" id="childName" type="text" placeholder="e.g. Arjun Kumar" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Age <span class="req">*</span></label>
+          <input class="form-input" id="childAge" type="number" placeholder="e.g. 12" min="5" max="25" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date of Birth</label>
+          <input class="form-input" id="childDob" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Gender <span class="req">*</span></label>
+          <select class="form-select" id="childGender" required>
+            <option value="" disabled selected>Select</option>
+            <option>Boy</option>
+            <option>Girl</option>
+            <option>Prefer not to say</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">City / Town <span class="req">*</span></label>
+          <input class="form-input" id="childCity" type="text" placeholder="e.g. Hyderabad" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Country <span class="req">*</span></label>
+          <select class="form-select" id="childCountry" required>
+            <option value="" disabled selected>Select</option>
+            <option>India</option>
+            <option>United Arab Emirates</option>
+            <option>United States</option>
+            <option>United Kingdom</option>
+            <option>Singapore</option>
+            <option>Australia</option>
+            <option>Canada</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Child\'s WhatsApp Number (if any)</label>
+          <input class="form-input" id="childPhone" type="tel" placeholder="With country code, e.g. +91 9876543210">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">How does your child feel overall?</div>
+      <div class="form-group">
+        <label class="form-label">Rate your child\'s current mood / happiness level</label>
+        <div class="star-rating" id="moodRating">
+          <input type="radio" name="mood" id="m5" value="5"><label for="m5">😄</label>
+          <input type="radio" name="mood" id="m4" value="4"><label for="m4">🙂</label>
+          <input type="radio" name="mood" id="m3" value="3"><label for="m3">😐</label>
+          <input type="radio" name="mood" id="m2" value="2"><label for="m2">😟</label>
+          <input type="radio" name="mood" id="m1" value="1"><label for="m1">😞</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goScreen(0)">← Back</button>
+      <button class="btn btn-primary" onclick="goScreen(2)">Level 2 →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN 2: SCHOOL QUEST ===== -->
+  <div class="screen" id="screen-2">
+    <div class="level-header">
+      <span class="level-icon">🏫</span>
+      <div class="level-title">School Quest</div>
+      <div class="level-desc">Every hero has a learning journey — tell us about yours!</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Academic Profile</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">School Name <span class="req">*</span></label>
+          <input class="form-input" id="schoolName" type="text" placeholder="Name of school" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Class / Grade <span class="req">*</span></label>
+          <input class="form-input" id="childClass" type="text" placeholder="e.g. 8th Grade" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">School Board</label>
+          <select class="form-select" id="schoolBoard">
+            <option value="" disabled selected>Select</option>
+            <option>CBSE</option>
+            <option>ICSE</option>
+            <option>State Board</option>
+            <option>IB (International)</option>
+            <option>IGCSE</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Academic Performance <span class="req">*</span></label>
+          <select class="form-select" id="academicPerf" required>
+            <option value="" disabled selected>Select level</option>
+            <option value="Excellent">Excellent (90%+)</option>
+            <option value="Good">Good (75–90%)</option>
+            <option value="Average">Average (50–75%)</option>
+            <option value="Below Average">Below Average (&lt;50%)</option>
+            <option value="Struggling">Struggling significantly</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Subjects & Learning</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Favourite Subject</label>
+          <input class="form-input" id="favSubject" type="text" placeholder="e.g. Maths, Science">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Most Difficult Subject</label>
+          <input class="form-input" id="hardSubject" type="text" placeholder="e.g. English, History">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Any diagnosed learning difficulties?</label>
+          <div class="chip-group">
+            <div class="chip-opt"><input type="checkbox" id="ld-none" name="ld" value="None"><label for="ld-none">None</label></div>
+            <div class="chip-opt"><input type="checkbox" id="ld-dys" name="ld" value="Dyslexia"><label for="ld-dys">Dyslexia</label></div>
+            <div class="chip-opt"><input type="checkbox" id="ld-adhd" name="ld" value="ADHD"><label for="ld-adhd">ADHD</label></div>
+            <div class="chip-opt"><input type="checkbox" id="ld-dys2" name="ld" value="Dyscalculia"><label for="ld-dys2">Dyscalculia</label></div>
+            <div class="chip-opt"><input type="checkbox" id="ld-other" name="ld" value="Other"><label for="ld-other">Other</label></div>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">What does your child struggle with most at school?</label>
+          <textarea class="form-textarea" id="schoolStruggle" placeholder="e.g. Concentration, remembering lessons, making friends..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goScreen(1)">← Level 1</button>
+      <button class="btn btn-primary" onclick="goScreen(3)">Level 3 →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN 3: DAILY STATS ===== -->
+  <div class="screen" id="screen-3">
+    <div class="level-header">
+      <span class="level-icon">⚡</span>
+      <div class="level-title">Daily Stats</div>
+      <div class="level-desc">How does your child spend their day? This shapes the brain!</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Screen & Sleep</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Daily Screen Time (hours) <span class="req">*</span></label>
+          <div class="range-wrap" style="padding-top:28px;">
+            <span class="range-val" id="screenVal">4h</span>
+            <input type="range" id="screenTime" min="0" max="16" value="4" step="0.5"
+              oninput="document.getElementById(\'screenVal\').textContent=this.value+\'h\'">
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--faint);margin-top:6px;">
+            <span>0h</span><span>8h</span><span>16h+</span>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">What is the screen time mostly used for?</label>
+          <div class="chip-group">
+            <div class="chip-opt"><input type="checkbox" id="sc-game" name="screen_use" value="Gaming"><label for="sc-game">🎮 Gaming</label></div>
+            <div class="chip-opt"><input type="checkbox" id="sc-yt" name="screen_use" value="YouTube"><label for="sc-yt">📺 YouTube</label></div>
+            <div class="chip-opt"><input type="checkbox" id="sc-sm" name="screen_use" value="Social Media"><label for="sc-sm">📱 Social Media</label></div>
+            <div class="chip-opt"><input type="checkbox" id="sc-study" name="screen_use" value="Study"><label for="sc-study">📚 Study</label></div>
+            <div class="chip-opt"><input type="checkbox" id="sc-chat" name="screen_use" value="Chatting"><label for="sc-chat">💬 Chatting</label></div>
+            <div class="chip-opt"><input type="checkbox" id="sc-reel" name="screen_use" value="Reels/Shorts"><label for="sc-reel">🎵 Reels/Shorts</label></div>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Sleep per night (hours) <span class="req">*</span></label>
+          <div class="range-wrap" style="padding-top:28px;">
+            <span class="range-val" id="sleepVal">7h</span>
+            <input type="range" id="sleepHours" min="2" max="12" value="7" step="0.5"
+              oninput="document.getElementById(\'sleepVal\').textContent=this.value+\'h\'">
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--faint);margin-top:6px;">
+            <span>2h</span><span>7h</span><span>12h</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bedtime (approx)</label>
+          <select class="form-select" id="bedtime">
+            <option value="" disabled selected>Select</option>
+            <option>Before 9 PM</option>
+            <option>9–10 PM</option>
+            <option>10–11 PM</option>
+            <option>11 PM – Midnight</option>
+            <option>After Midnight</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Devices used at bedtime?</label>
+          <select class="form-select" id="deviceBed">
+            <option value="" disabled selected>Select</option>
+            <option>Yes — phone/tablet in bed</option>
+            <option>Sometimes</option>
+            <option>No — devices kept away</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Physical Health</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Physical activity / outdoor play per week</label>
+          <div class="chip-group">
+            <div class="chip-opt"><input type="radio" id="pa0" name="physical_activity" value="None"><label for="pa0">None</label></div>
+            <div class="chip-opt"><input type="radio" id="pa1" name="physical_activity" value="1 day"><label for="pa1">1 day</label></div>
+            <div class="chip-opt"><input type="radio" id="pa2" name="physical_activity" value="2–3 days"><label for="pa2">2–3 days</label></div>
+            <div class="chip-opt"><input type="radio" id="pa3" name="physical_activity" value="4–5 days"><label for="pa3">4–5 days</label></div>
+            <div class="chip-opt"><input type="radio" id="pa4" name="physical_activity" value="Daily"><label for="pa4">Daily</label></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Diet quality</label>
+          <select class="form-select" id="dietQuality">
+            <option value="" disabled selected>Select</option>
+            <option>Mostly healthy / home cooked</option>
+            <option>Mixed — sometimes junk food</option>
+            <option>Mostly junk / fast food</option>
+            <option>Skips meals often</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Any health conditions?</label>
+          <input class="form-input" id="healthConditions" type="text" placeholder="e.g. Asthma, Diabetes (optional)">
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goScreen(2)">← Level 2</button>
+      <button class="btn btn-primary" onclick="goScreen(4)">Level 4 →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN 4: GAMING ZONE ===== -->
+  <div class="screen" id="screen-4">
+    <div class="level-header">
+      <span class="level-icon">🕹️</span>
+      <div class="level-title">Gaming Zone</div>
+      <div class="level-desc">No judgement — we just want to understand your gaming world!</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Gaming Habits</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Does your child play video games? <span class="req">*</span></label>
+          <div class="chip-group">
+            <div class="chip-opt"><input type="radio" id="gp-yes" name="plays_games" value="Yes"><label for="gp-yes">✅ Yes</label></div>
+            <div class="chip-opt"><input type="radio" id="gp-some" name="plays_games" value="Sometimes"><label for="gp-some">Sometimes</label></div>
+            <div class="chip-opt"><input type="radio" id="gp-no" name="plays_games" value="No"><label for="gp-no">No</label></div>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Daily gaming time (hours)</label>
+          <div class="range-wrap" style="padding-top:28px;">
+            <span class="range-val" id="gameVal">2h</span>
+            <input type="range" id="gamingHours" min="0" max="12" value="2" step="0.5"
+              oninput="document.getElementById(\'gameVal\').textContent=this.value+\'h\'">
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--faint);margin-top:6px;">
+            <span>0h</span><span>6h</span><span>12h+</span>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Platform(s) used</label>
+          <div class="chip-group">
+            <div class="chip-opt"><input type="checkbox" id="plt-mob" name="platform" value="Mobile"><label for="plt-mob">📱 Mobile</label></div>
+            <div class="chip-opt"><input type="checkbox" id="plt-pc" name="platform" value="PC"><label for="plt-pc">💻 PC</label></div>
+            <div class="chip-opt"><input type="checkbox" id="plt-ps" name="platform" value="PlayStation"><label for="plt-ps">🎮 PlayStation</label></div>
+            <div class="chip-opt"><input type="checkbox" id="plt-xbox" name="platform" value="Xbox"><label for="plt-xbox">🟩 Xbox</label></div>
+            <div class="chip-opt"><input type="checkbox" id="plt-sw" name="platform" value="Nintendo Switch"><label for="plt-sw">🕹️ Switch</label></div>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Type of games usually played</label>
+          <div class="chip-group">
+            <div class="chip-opt"><input type="checkbox" id="gt-battle" name="game_type" value="Battle Royale"><label for="gt-battle">🔫 Battle Royale</label></div>
+            <div class="chip-opt"><input type="checkbox" id="gt-sport" name="game_type" value="Sports"><label for="gt-sport">⚽ Sports</label></div>
+            <div class="chip-opt"><input type="checkbox" id="gt-puzzle" name="game_type" value="Puzzle"><label for="gt-puzzle">🧩 Puzzle</label></div>
+            <div class="chip-opt"><input type="checkbox" id="gt-rpg" name="game_type" value="RPG/Adventure"><label for="gt-rpg">🗡️ RPG</label></div>
+            <div class="chip-opt"><input type="checkbox" id="gt-edu" name="game_type" value="Educational"><label for="gt-edu">📚 Educational</label></div>
+            <div class="chip-opt"><input type="checkbox" id="gt-other" name="game_type" value="Other"><label for="gt-other">Other</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Impact on Daily Life</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Has gaming / screen use affected studies?</label>
+          <div class="chip-group">
+            <div class="chip-opt"><input type="radio" id="eff-yes" name="gaming_effect_study" value="Yes — significantly"><label for="eff-yes">Yes — significantly</label></div>
+            <div class="chip-opt"><input type="radio" id="eff-some" name="gaming_effect_study" value="Somewhat"><label for="eff-some">Somewhat</label></div>
+            <div class="chip-opt"><input type="radio" id="eff-no" name="gaming_effect_study" value="No"><label for="eff-no">No</label></div>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Has gaming / screen use affected sleep?</label>
+          <div class="chip-group">
+            <div class="chip-opt"><input type="radio" id="sl-yes" name="gaming_effect_sleep" value="Yes — stays up late gaming"><label for="sl-yes">Yes — stays up late</label></div>
+            <div class="chip-opt"><input type="radio" id="sl-some" name="gaming_effect_sleep" value="Sometimes"><label for="sl-some">Sometimes</label></div>
+            <div class="chip-opt"><input type="radio" id="sl-no" name="gaming_effect_sleep" value="No"><label for="sl-no">No</label></div>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Does the child get angry or upset when gaming is stopped?</label>
+          <div class="chip-group">
+            <div class="chip-opt"><input type="radio" id="ang-yes" name="anger_on_stop" value="Yes — frequently"><label for="ang-yes">Yes — frequently</label></div>
+            <div class="chip-opt"><input type="radio" id="ang-some" name="anger_on_stop" value="Sometimes"><label for="ang-some">Sometimes</label></div>
+            <div class="chip-opt"><input type="radio" id="ang-no" name="anger_on_stop" value="Rarely / No"><label for="ang-no">Rarely / No</label></div>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Other hobbies / interests (apart from screens)</label>
+          <input class="form-input" id="hobbies" type="text" placeholder="e.g. cricket, drawing, music, reading...">
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goScreen(3)">← Level 3</button>
+      <button class="btn btn-primary" onclick="goScreen(5)">Level 5 →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN 5: GUARDIAN BASE ===== -->
+  <div class="screen" id="screen-5">
+    <div class="level-header">
+      <span class="level-icon">🛡️</span>
+      <div class="level-title">Guardian Base</div>
+      <div class="level-desc">Parent / Guardian details — we'll contact you here!</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Parent / Guardian Information</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Parent / Guardian Full Name <span class="req">*</span></label>
+          <input class="form-input" id="parentName" type="text" placeholder="Full name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Relationship <span class="req">*</span></label>
+          <select class="form-select" id="parentRelation" required>
+            <option value="" disabled selected>Select</option>
+            <option>Mother</option>
+            <option>Father</option>
+            <option>Guardian</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Occupation</label>
+          <input class="form-input" id="parentOcc" type="text" placeholder="e.g. Teacher, Engineer">
+        </div>
+        <div class="form-group">
+          <label class="form-label">WhatsApp Number <span class="req">*</span></label>
+          <input class="form-input" id="parentPhone" type="tel" placeholder="+91 9876543210" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address <span class="req">*</span></label>
+          <input class="form-input" id="parentEmail" type="email" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Time Zone <span class="req">*</span></label>
+          <select class="form-select" id="timezone" required>
+            <option value="" disabled selected>Select</option>
+            <option>IST — India (UTC+5:30)</option>
+            <option>GST — UAE (UTC+4)</option>
+            <option>EST — US East (UTC-5)</option>
+            <option>PST — US West (UTC-8)</option>
+            <option>GMT — UK (UTC+0)</option>
+            <option>AEST — Australia (UTC+10)</option>
+            <option>SGT — Singapore (UTC+8)</option>
+            <option>Other — mention below</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Preferred Contact Time</label>
+          <select class="form-select" id="contactTime">
+            <option value="" disabled selected>Select</option>
+            <option>Morning (9 AM – 12 PM)</option>
+            <option>Afternoon (12 – 4 PM)</option>
+            <option>Evening (4 – 8 PM)</option>
+            <option>Any time</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">How did you hear about us?</label>
+          <select class="form-select" id="referral">
+            <option value="" disabled selected>Select</option>
+            <option>Google Search</option>
+            <option>WhatsApp / Friend Referral</option>
+            <option>Instagram / Facebook</option>
+            <option>YouTube</option>
+            <option>School / Teacher</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Your Concerns & Goals</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Main concern — why are you seeking help? <span class="req">*</span></label>
+          <textarea class="form-textarea" id="mainConcern" placeholder="Tell us what made you reach out today..." required></textarea>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">What do you hope your child achieves from this program?</label>
+          <textarea class="form-textarea" id="goalExpected" placeholder="e.g. Better focus, improved grades, less gaming..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Has your child had any cognitive / psychological assessment before?</label>
+          <div class="chip-group">
+            <div class="chip-opt"><input type="radio" id="prev-yes" name="prev_assessment" value="Yes"><label for="prev-yes">Yes</label></div>
+            <div class="chip-opt"><input type="radio" id="prev-no" name="prev_assessment" value="No"><label for="prev-no">No</label></div>
+            <div class="chip-opt"><input type="radio" id="prev-unsure" name="prev_assessment" value="Unsure"><label for="prev-unsure">Not sure</label></div>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Anything else you\'d like us to know?</label>
+          <textarea class="form-textarea" id="extraNotes" placeholder="Any medical conditions, special needs, or additional notes..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-info">
+      🔒 Your information is 100% confidential. Assessment results will be shared only with you — not publicly.
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goScreen(4)">← Level 4</button>
+      <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">
+        🚀 Submit Enrollment
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== SUCCESS SCREEN ===== -->
+  <div class="screen" id="screen-success">
+    <span class="success-burst">🏆</span>
+    <div class="success-title">Mission Complete!</div>
+    <p class="success-sub">Your enrollment has been received. You\'ve unlocked your Brain Gym journey!</p>
+    <div class="success-card">
+      <p>✅ <strong>Your data has been saved successfully.</strong><br><br>
+      📲 Our team will contact you on <strong>WhatsApp within 2 hours</strong> to schedule your session.<br><br>
+      📧 A confirmation will also be sent to your <strong>email address</strong>.<br><br>
+      🧠 Get ready to <strong>unlock your brain\'s true potential!</strong></p>
+    </div>
+    <p style="font-size:.82rem;color:var(--muted);margin-bottom:24px;">
+      In the meantime, explore our Brain Games to warm up your brain!
+    </p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="index.html" class="btn btn-ghost">← Back to Website</a>
+      <a href="Bhaava-Brain-Quest.html" class="btn btn-primary" target="_blank">🎮 Play Brain Quest</a>
+    </div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<footer>Bhāva Tech — Brain Gym & IQ Enhancing Center &nbsp;|&nbsp; 📍 Visakhapatnam, India &nbsp;|&nbsp; 🌍 Online Worldwide &nbsp;|&nbsp; © 2026</footer>
+
+<script>
+// ── STARS ──
+const starsEl = document.getElementById('stars');
+for(let i=0;i<120;i++){
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random()*2.5+0.5;
+  s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;opacity:${Math.random()*.6+.1}`;
+  starsEl.appendChild(s);
+}
+
+// ── LEVELS CONFIG ──
+const LEVELS = [
+  {badge:'WELCOME',xp:''},
+  {badge:'LEVEL 1',xp:'Player Profile'},
+  {badge:'LEVEL 2',xp:'School Quest'},
+  {badge:'LEVEL 3',xp:'Daily Stats'},
+  {badge:'LEVEL 4',xp:'Gaming Zone'},
+  {badge:'LEVEL 5',xp:'Guardian Base'},
+  {badge:'COMPLETE',xp:'Mission Done!'}
+];
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwP1IlDOy_cnziKJlZqJjGrF9GoL6ygtsWtk3K4KCoSNPSAvroYkIZ_ACV3MTqYjbT9ZQ/exec";
+let currentScreen = 0;
+
+function startForm(){
+  document.getElementById('progressArea').style.display = 'block';
+  goScreen(1);
+}
+
+function goScreen(n){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const target = n === 'success' ? document.getElementById('screen-success') : document.getElementById('screen-'+n);
+  if(target) target.classList.add('active');
+  currentScreen = n;
+
+  if(n !== 0 && n !== 'success'){
+    const pct = ((n-1)/5)*100;
+    document.getElementById('progressFill').style.width = pct+'%';
+    document.getElementById('levelBadge').textContent = LEVELS[n]?.badge || '';
+    document.getElementById('xpText').textContent = LEVELS[n]?.xp || '';
+    // dots
+    const dots = document.getElementById('levelDots');
+    dots.innerHTML = [1,2,3,4,5].map(i =>
+      `<div class="ldot ${i<n?'done':i===n?'active':''}"></div>`
+    ).join('');
+  }
+  if(n === 'success'){
+    document.getElementById('progressArea').style.display = 'none';
+    launchConfetti();
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── COLLECT DATA ──
+function getChecked(name){
+  return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(e=>e.value).join(', ');
+}
+function getRadio(name){
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : '';
+}
+
+function collectData(){
+  return {
+    // Level 1
+    childName:       document.getElementById('childName').value,
+    childAge:        document.getElementById('childAge').value,
+    childDob:        document.getElementById('childDob').value,
+    childGender:     document.getElementById('childGender').value,
+    childCity:       document.getElementById('childCity').value,
+    childCountry:    document.getElementById('childCountry').value,
+    childPhone:      document.getElementById('childPhone').value,
+    moodRating:      getRadio('mood'),
+    // Level 2
+    schoolName:      document.getElementById('schoolName').value,
+    childClass:      document.getElementById('childClass').value,
+    schoolBoard:     document.getElementById('schoolBoard').value,
+    academicPerf:    document.getElementById('academicPerf').value,
+    favSubject:      document.getElementById('favSubject').value,
+    hardSubject:     document.getElementById('hardSubject').value,
+    learningDiff:    getChecked('ld'),
+    schoolStruggle:  document.getElementById('schoolStruggle').value,
+    // Level 3
+    screenTime:      document.getElementById('screenTime').value,
+    screenUse:       getChecked('screen_use'),
+    sleepHours:      document.getElementById('sleepHours').value,
+    bedtime:         document.getElementById('bedtime').value,
+    deviceBed:       document.getElementById('deviceBed').value,
+    physicalActivity:getRadio('physical_activity'),
+    dietQuality:     document.getElementById('dietQuality').value,
+    healthConditions:document.getElementById('healthConditions').value,
+    // Level 4
+    playsGames:      getRadio('plays_games'),
+    gamingHours:     document.getElementById('gamingHours').value,
+    platform:        getChecked('platform'),
+    gameType:        getChecked('game_type'),
+    gamingEffectStudy: getRadio('gaming_effect_study'),
+    gamingEffectSleep: getRadio('gaming_effect_sleep'),
+    angerOnStop:     getRadio('anger_on_stop'),
+    hobbies:         document.getElementById('hobbies').value,
+    // Level 5
+    parentName:      document.getElementById('parentName').value,
+    parentRelation:  document.getElementById('parentRelation').value,
+    parentOcc:       document.getElementById('parentOcc').value,
+    parentPhone:     document.getElementById('parentPhone').value,
+    parentEmail:     document.getElementById('parentEmail').value,
+    timezone:        document.getElementById('timezone').value,
+    contactTime:     document.getElementById('contactTime').value,
+    referral:        document.getElementById('referral').value,
+    mainConcern:     document.getElementById('mainConcern').value,
+    goalExpected:    document.getElementById('goalExpected').value,
+    prevAssessment:  getRadio('prev_assessment'),
+    extraNotes:      document.getElementById('extraNotes').value,
+    // Meta
+    submittedAt:     new Date().toISOString(),
+    sheetTarget:     'Public Intake'
+  };
+}
+
+// ── VALIDATION ──
+function validateScreen(n){
+  const required = {
+    1: ['childName','childAge','childGender','childCity','childCountry'],
+    2: ['schoolName','childClass','academicPerf'],
+    3: [],
+    4: [],
+    5: ['parentName','parentRelation','parentPhone','parentEmail','timezone','mainConcern']
+  };
+  if(!required[n]) return true;
+  for(const id of required[n]){
+    const el = document.getElementById(id);
+    if(el && !el.value.trim()){
+      el.focus();
+      el.style.borderColor = '#ff4d6d';
+      setTimeout(()=>el.style.borderColor='',2000);
+      return false;
+    }
+  }
+  return true;
+}
+
+// Override goScreen for validation
+const _go = goScreen;
+window.goScreen = function(n){
+  if(typeof n === 'number' && n > currentScreen){
+    if(!validateScreen(currentScreen)) return;
+  }
+  _go(n);
+};
+
+// ── SUBMIT ──
+async function submitForm(){
+  if(!validateScreen(5)) return;
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = '⏳ Saving...';
+  btn.disabled = true;
+  const data = collectData();
+  try {
+    await fetch(SCRIPT_URL, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+  } catch(e){ console.warn('Sheet sync error:',e); }
+  goScreen('success');
+}
+
+// ── CONFETTI ──
+function launchConfetti(){
+  const colors = ['#00d4ff','#7c3aed','#e67e22','#00e676','#f59e0b','#ff6b9d'];
+  for(let i=0;i<80;i++){
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.cssText = `
+      left:${Math.random()*100}%;
+      top:-10px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      width:${6+Math.random()*8}px;
+      height:${6+Math.random()*8}px;
+      border-radius:${Math.random()>0.5?'50%':'2px'};
+      animation-delay:${Math.random()*1.5}s;
+      animation-duration:${2+Math.random()*2}s;
+    `;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 4000);
+  }
+}
+</script>
+</body>
+</html>'''
+
+with open('/root/student-form.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+import os
+size = os.path.getsize('/root/student-form.html')
+print(f"File created successfully! Size: {size:,} bytes ({size//1024} KB)")
+print("Filename: student-form.html")

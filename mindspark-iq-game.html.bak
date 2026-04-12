@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhāva Tech – IQ Training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --font-d:'Outfit',sans-serif;
+  --font-m:'JetBrains Mono',monospace;
+  --bg:#080c18;
+  --s1:#0e1220;
+  --s2:#141826;
+  --s3:#1a1f30;
+  --border:rgba(255,255,255,0.07);
+  --txt:#dde2f0;
+  --txt2:#8892b0;
+  --txt3:#4a5275;
+  --teal:#64ffda;
+  --teal-d:rgba(100,255,218,0.12);
+  --purple:#bd93f9;
+  --purple-d:rgba(189,147,249,0.12);
+  --orange:#ffb86c;
+  --pink:#ff79c6;
+  --red:#ff5555;
+  --green:#50fa7b;
+  --r-sm:8px;--r-md:14px;--r-lg:22px;--r-xl:32px;--r-f:9999px;
+}
+html,body{min-height:100dvh;background:var(--bg);color:var(--txt);font-family:var(--font-d);overflow-x:hidden}
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+
+/* PARTICLES */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:1000;overflow:hidden}
+.p{position:absolute;border-radius:50%;pointer-events:none;animation:pfloat 1.2s ease-out forwards}
+@keyframes pfloat{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0}}
+
+/* SCREENS */
+.screen{position:relative;z-index:10;width:min(520px,96vw);animation:fadeUp .4s cubic-bezier(.16,1,.3,1) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* SHAKE */
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.shake{animation:shake .35s ease both}
+
+/* LOGO */
+.logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:32px}
+.logo-icon{width:44px;height:44px;position:relative}
+.logo-icon svg{width:44px;height:44px}
+.logo-text{font-size:28px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(135deg,var(--teal),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-sub{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);text-align:center;margin-top:-28px;margin-bottom:24px}
+
+/* CARD */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-xl);padding:40px 36px;text-align:center}
+@media(max-width:480px){.card{padding:28px 20px;border-radius:var(--r-lg)}}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 32px;border-radius:var(--r-f);font-family:var(--font-d);font-size:15px;font-weight:700;letter-spacing:.3px;cursor:pointer;border:none;transition:all .18s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+.btn-primary{background:linear-gradient(135deg,var(--teal),#00c9ff);color:#080c18}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(100,255,218,.35)}
+.btn-primary:active{transform:translateY(0)}
+.btn-ghost{background:var(--s2);color:var(--txt);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--s3);border-color:rgba(255,255,255,.15)}
+.btn-sm{padding:10px 20px;font-size:13px}
+.btn-choice{width:100%;padding:16px;background:var(--s2);border:2px solid var(--border);border-radius:var(--r-md);color:var(--txt);font-size:14px;font-weight:500;cursor:pointer;transition:all .15s ease;text-align:left}
+.btn-choice:hover{background:var(--s3);border-color:rgba(255,255,255,.18);transform:translateX(3px)}
+.btn-choice.correct{background:rgba(80,250,123,.12);border-color:var(--green)!important;color:var(--green)}
+.btn-choice.wrong{background:rgba(255,85,85,.12);border-color:var(--red)!important;color:var(--red)}
+.btn-choice:disabled{cursor:default;transform:none}
+
+/* COLOR BUTTONS for Stroop */
+.color-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.btn-color{padding:20px;border:2px solid transparent;border-radius:var(--r-md);font-size:15px;font-weight:700;cursor:pointer;transition:all .15s ease}
+.btn-color:hover{transform:scale(1.04)}
+.btn-color:active{transform:scale(.97)}
+
+/* PROGRESS */
+.progress-bar{height:4px;background:var(--s3);border-radius:var(--r-f);overflow:hidden;margin-bottom:28px}
+.progress-fill{height:100%;border-radius:var(--r-f);background:linear-gradient(90deg,var(--teal),var(--purple));transition:width .4s cubic-bezier(.16,1,.3,1)}
+
+/* SCORE HUD */
+.hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;gap:12px}
+.hud-chip{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-f);padding:6px 14px;font-size:12px;font-weight:600;font-family:var(--font-m);display:flex;align-items:center;gap:6px}
+.hud-score{color:var(--teal)}
+.hud-streak{color:var(--orange)}
+.hud-timer{color:var(--purple)}
+.timer-circle{width:48px;height:48px;position:relative}
+.timer-circle svg{transform:rotate(-90deg)}
+.timer-circle .tc-bg{stroke:var(--s3);fill:none;stroke-width:3}
+.timer-circle .tc-fill{fill:none;stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset .1s linear,stroke .3s}
+.timer-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--font-m)}
+
+/* GAME TITLE BADGE */
+.game-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:var(--r-f);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;border:1px solid}
+
+/* MEMORY GAME */
+.memory-display{font-size:clamp(36px,10vw,64px);font-weight:800;letter-spacing:8px;font-family:var(--font-m);color:var(--teal);min-height:80px;display:flex;align-items:center;justify-content:center;transition:all .3s ease;padding:20px 0}
+.memory-input{width:100%;padding:16px;background:var(--s2);border:2px solid var(--border);border-radius:var(--r-md);color:var(--teal);font-family:var(--font-m);font-size:28px;font-weight:700;letter-spacing:8px;text-align:center;outline:none;transition:border-color .2s}
+.memory-input:focus{border-color:var(--teal)}
+.memory-hint{font-size:13px;color:var(--txt3);margin-top:8px}
+
+/* PATTERN GAME */
+.pattern-seq{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;min-height:80px;margin:20px 0}
+.pat-item{width:52px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:var(--r-md);font-size:24px;background:var(--s2);border:2px solid var(--border)}
+.pat-item.blank{border-style:dashed;border-color:var(--teal);background:var(--teal-d);font-size:28px;color:var(--teal)}
+.choices-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+
+/* MATH GAME */
+.math-problem{font-size:clamp(28px,8vw,52px);font-weight:800;font-family:var(--font-m);color:var(--txt);text-align:center;padding:20px 0;min-height:80px;display:flex;align-items:center;justify-content:center}
+.math-input{width:100%;max-width:200px;padding:14px;background:var(--s2);border:2px solid var(--border);border-radius:var(--r-md);color:var(--orange);font-family:var(--font-m);font-size:28px;font-weight:700;text-align:center;outline:none;margin:0 auto;display:block;transition:border-color .2s}
+.math-input:focus{border-color:var(--orange)}
+
+/* STROOP GAME */
+.stroop-word{font-size:clamp(40px,10vw,72px);font-weight:900;text-align:center;padding:24px 0;min-height:100px;display:flex;align-items:center;justify-content:center;letter-spacing:2px;text-transform:uppercase;transition:all .2s}
+.stroop-q{font-size:13px;color:var(--txt2);margin-bottom:4px}
+
+/* FEEDBACK */
+.feedback{font-size:20px;font-weight:700;text-align:center;min-height:32px;transition:all .2s;padding:4px 0}
+.feedback.ok{color:var(--green)}
+.feedback.bad{color:var(--red)}
+
+/* TRANSITION SCREEN */
+.game-transition{text-align:center;padding:20px}
+.game-icon-big{font-size:64px;margin-bottom:12px;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.game-intro-name{font-size:28px;font-weight:800;margin-bottom:8px}
+.game-intro-skill{font-size:14px;color:var(--txt2);margin-bottom:24px}
+.countdown{font-size:56px;font-weight:900;font-family:var(--font-m);color:var(--teal);min-height:80px;display:flex;align-items:center;justify-content:center}
+
+/* RESULTS */
+.result-iq{font-size:clamp(72px,18vw,108px);font-weight:900;background:linear-gradient(135deg,var(--teal),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin:16px 0}
+.result-label{font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--txt3)}
+.result-grade{font-size:18px;font-weight:700;color:var(--teal);margin-bottom:24px}
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:24px 0}
+.skill-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:14px;text-align:left}
+.skill-name{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--txt3);margin-bottom:4px}
+.skill-val{font-size:22px;font-weight:800}
+.skill-bar{height:3px;background:var(--s3);border-radius:var(--r-f);margin-top:8px;overflow:hidden}
+.skill-fill{height:100%;border-radius:var(--r-f);transition:width 1s cubic-bezier(.16,1,.3,1) .5s}
+.stat-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.stat-row:last-child{border-bottom:none}
+.stat-val{font-weight:700;font-family:var(--font-m);color:var(--teal)}
+.btn-row{display:flex;gap:10px;margin-top:24px;justify-content:center}
+
+/* WELCOME */
+.hero-title{font-size:clamp(36px,9vw,52px);font-weight:900;line-height:1.1;margin-bottom:12px;background:linear-gradient(135deg,var(--txt) 30%,var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:15px;color:var(--txt2);margin-bottom:28px;line-height:1.7}
+.feature-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px}
+.chip{padding:6px 14px;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-f);font-size:12px;font-weight:600;color:var(--txt2);display:flex;align-items:center;gap:5px}
+
+/* BG GRID */
+.bg-grid{position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;opacity:.5;z-index:0}
+.bg-glow{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(100,255,218,.04) 0%,transparent 70%);top:-200px;left:50%;transform:translateX(-50%);pointer-events:none;z-index:0}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div id="particles"></div>
+<div id="app"></div>
+
+<script>
+// ── AUDIO ENGINE ──────────────────────────────────────────────────
+let audioCtx = null;
+function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();}
+function tone(freq,dur=0.12,type='sine',vol=0.18){
+  if(!audioCtx)return;
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type=type;o.frequency.value=freq;
+  g.gain.setValueAtTime(vol,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+dur);
+  o.connect(g).connect(audioCtx.destination);
+  o.start();o.stop(audioCtx.currentTime+dur);
+}
+function sfxCorrect(){tone(523,.08);setTimeout(()=>tone(659,.08),80);setTimeout(()=>tone(784,.15),160);}
+function sfxWrong(){tone(200,.2,'sawtooth',.15);}
+function sfxClick(){tone(800,.05,'square',.08);}
+function sfxReady(){tone(392,.1);setTimeout(()=>tone(523,.15),120);}
+function sfxComplete(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>tone(f,.2,'sine',.15),i*100));}
+
+// ── PARTICLES ────────────────────────────────────────────────────
+const pContainer=document.getElementById('particles');
+function burst(x,y,count=12,colors=['#64ffda','#bd93f9','#ffb86c','#ff79c6','#50fa7b']){
+  for(let i=0;i<count;i++){
+    const p=document.createElement('div');
+    p.className='p';
+    const size=Math.random()*8+4;
+    const angle=Math.random()*Math.PI*2;
+    const dist=Math.random()*100+50;
+    p.style.cssText=`width:${size}px;height:${size}px;left:${x}px;top:${y}px;background:${colors[i%colors.length]};--dx:${Math.cos(angle)*dist}px;--dy:${Math.sin(angle)*dist-40}px;animation-duration:${.8+Math.random()*.6}s`;
+    pContainer.appendChild(p);
+    setTimeout(()=>p.remove(),1400);
+  }
+}
+function screenBurst(){
+  for(let i=0;i<6;i++){
+    setTimeout(()=>burst(Math.random()*window.innerWidth,Math.random()*window.innerHeight/2,8),i*80);
+  }
+}
+
+// ── GAME DATA ────────────────────────────────────────────────────
+const GAMES=[
+  {id:'memory',name:'Memory Vault',icon:'🧠',color:'#64ffda',skill:'Working Memory',rounds:3},
+  {id:'pattern',name:'Pattern Quest',icon:'🔮',color:'#bd93f9',skill:'Pattern Recognition',rounds:3},
+  {id:'math',name:'Math Blitz',icon:'⚡',color:'#ffb86c',skill:'Processing Speed',rounds:3},
+  {id:'stroop',name:'Stroop Storm',icon:'🌊',color:'#ff79c6',skill:'Cognitive Flexibility',rounds:3},
+];
+const TOTAL_ROUNDS=12;
+
+const gs={
+  phase:'menu',// menu|transition|playing|result
+  gameIdx:0,
+  round:0,
+  score:0,
+  streak:0,
+  maxStreak:0,
+  correct:0,
+  totalAnswered:0,
+  skillScores:{memory:0,pattern:0,math:0,stroop:0},
+  skillTotal:{memory:0,pattern:0,math:0,stroop:0},
+  startTime:0,
+  timerHandle:null,
+  timeLeft:0,
+  timerMax:0,
+  canAnswer:true,
+  currentQ:null,
+};
+
+function reset(){
+  Object.assign(gs,{phase:'menu',gameIdx:0,round:0,score:0,streak:0,maxStreak:0,correct:0,totalAnswered:0,
+    skillScores:{memory:0,pattern:0,math:0,stroop:0},skillTotal:{memory:0,pattern:0,math:0,stroop:0},
+    startTime:0,timerHandle:null,timeLeft:0,timerMax:0,canAnswer:true,currentQ:null});
+}
+
+// ── QUESTION GENERATORS ──────────────────────────────────────────
+function genMemory(round){
+  const len=4+round;
+  const digits=Array.from({length:len},()=>Math.floor(Math.random()*10)).join('');
+  return{type:'memory',digits,answer:digits,len};
+}
+
+const PATTERNS=[
+  // arithmetic sequences
+  ()=>{const s=Math.floor(Math.random()*5)+1,d=Math.floor(Math.random()*4)+2;const items=[s,s+d,s+d*2,s+d*3];const ans=s+d*3;const opts=shuffle([ans,ans+1,ans-1,ans+d]);return{seq:items.slice(0,3),answer:ans,opts:opts.map(String),seqStr:items.slice(0,3).map(String)};},
+  // geometric sequences
+  ()=>{const s=Math.floor(Math.random()*3)+1,r=[2,3][Math.floor(Math.random()*2)];const items=[s,s*r,s*r*r,s*r*r*r];const ans=s*r*r*r;const opts=shuffle([ans,ans+r,ans-1,ans*r]);return{seq:items.slice(0,3),answer:ans,opts:opts.map(String),seqStr:items.slice(0,3).map(String)};},
+  // alternating add
+  ()=>{const a=Math.floor(Math.random()*5)+2,b=Math.floor(Math.random()*5)+2;const base=Math.floor(Math.random()*10)+3;const items=[base,base+a,base+a+b,base+a+b+a,base+a+b+a+b];const ans=items[4];const opts=shuffle([ans,ans+1,ans+a,ans-b]);return{seq:items.slice(0,4),answer:ans,opts:opts.map(String),seqStr:items.slice(0,4).map(String)};},
+  // shape/symbol pattern
+  ()=>{
+    const shapes=['●','■','▲','◆','★'];
+    const s=Math.floor(Math.random()*(shapes.length-1));
+    const pattern=[shapes[s],shapes[s+1],shapes[s],shapes[s+1],shapes[s]];
+    const ans=shapes[s+1];
+    const opts=shuffle([ans,...shapes.filter(x=>x!==ans).slice(0,3)]);
+    return{seq:pattern.slice(0,4),answer:ans,opts,seqStr:pattern.slice(0,4)};
+  },
+  // Fibonacci-like
+  ()=>{const a=Math.floor(Math.random()*4)+1,b=Math.floor(Math.random()*4)+2;const items=[a,b,a+b,a+2*b,2*a+3*b];const ans=items[4];const opts=shuffle([ans,ans+1,ans-1,ans+b]);return{seq:items.slice(0,4),answer:ans,opts:opts.map(String),seqStr:items.slice(0,4).map(String)};},
+];
+
+function genPattern(round){
+  const idx=Math.floor(Math.random()*PATTERNS.length);
+  return{type:'pattern',...PATTERNS[idx]()};
+}
+
+function genMath(round){
+  const ops=['+','-','×'];
+  const op=ops[Math.floor(Math.random()*Math.min(round+2,3))];
+  let a,b,ans;
+  if(op==='+'){a=Math.floor(Math.random()*(20+round*10))+5;b=Math.floor(Math.random()*(15+round*8))+3;ans=a+b;}
+  else if(op==='-'){a=Math.floor(Math.random()*(30+round*10))+15;b=Math.floor(Math.random()*(a-2))+1;ans=a-b;}
+  else{a=Math.floor(Math.random()*(5+round*3))+2;b=Math.floor(Math.random()*8)+2;ans=a*b;}
+  return{type:'math',problem:`${a} ${op} ${b}`,answer:String(ans),op};
+}
+
+const COLORS=['RED','BLUE','GREEN','YELLOW','PURPLE','ORANGE'];
+const COLOR_MAP={RED:'#ff5555',BLUE:'#8be9fd',GREEN:'#50fa7b',YELLOW:'#f1fa8c',PURPLE:'#bd93f9',ORANGE:'#ffb86c'};
+function genStroop(round){
+  const word=COLORS[Math.floor(Math.random()*COLORS.length)];
+  let inkColor=COLORS[Math.floor(Math.random()*COLORS.length)];
+  while(inkColor===word)inkColor=COLORS[Math.floor(Math.random()*COLORS.length)];
+  const distractors=shuffle(COLORS.filter(c=>c!==inkColor)).slice(0,3);
+  const opts=shuffle([inkColor,...distractors]);
+  return{type:'stroop',word,inkColor,answer:inkColor,opts};
+}
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// ── RENDER ENGINE ────────────────────────────────────────────────
+const app=document.getElementById('app');
+function render(html){app.innerHTML=`<div class="screen">${html}</div>`;}
+
+// ── MENU SCREEN ──────────────────────────────────────────────────
+function showMenu(){
+  gs.phase='menu';
+  render(`
+    <div class="card">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 44 44" fill="none">
+            <circle cx="22" cy="22" r="20" stroke="url(#lg)" stroke-width="2"/>
+            <path d="M14 22 Q18 12 22 18 Q26 24 30 14" stroke="#64ffda" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M16 28 Q20 20 24 26 Q28 32 32 22" stroke="#bd93f9" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="3 2"/>
+            <circle cx="22" cy="22" r="3" fill="#64ffda" opacity=".6"/>
+            <defs><linearGradient id="lg" x1="0" y1="0" x2="44" y2="44"><stop stop-color="#64ffda"/><stop offset="1" stop-color="#bd93f9"/></linearGradient></defs>
+          </svg>
+        </div>
+        <div class="logo-text">Bhāva Tech</div>
+      </div>
+      <div class="logo-sub">IQ Training Academy</div>
+      <p class="hero-title">Train Your Brain,<br>Unlock Your Potential</p>
+      <p class="hero-sub"> Four mini-games that challenge working memory, pattern recognition, processing speed, and cognitive flexibility — all in under 5 minutes.</p>
+      <div class="feature-chips">	
+        <div class="chip">🧠 Working Memory</div>
+        <div class="chip">🔮 Pattern Recognition</div>
+        <div class="chip">⚡ Processing Speed</div>
+        <div class="chip">🌊 Cognitive Flexibility</div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;font-size:17px;padding:18px" onclick="startGame()">
+        Start Training →
+      </button>
+      <p style="font-size:12px;color:var(--txt3);margin-top:16px">12 questions · ~4 minutes · IQ estimate at the end</p>
+    </div>
+  `);
+}
+
+// ── TRANSITION SCREEN ────────────────────────────────────────────
+function showTransition(gameIdx, onDone){
+  const g=GAMES[gameIdx];
+  gs.phase='transition';
+  render(`
+    <div class="card game-transition">
+      <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:16px">Game ${gameIdx+1} of ${GAMES.length}</div>
+      <div class="game-icon-big">${g.icon}</div>
+      <div class="game-intro-name" style="color:${g.color}">${g.name}</div>
+      <div class="game-intro-skill">Skill tested: <strong style="color:${g.color}">${g.skill}</strong></div>
+      <div style="font-size:14px;color:var(--txt2);margin-bottom:24px">${getGameDesc(g.id)}</div>
+      <div class="countdown" id="cd">3</div>
+    </div>
+  `);
+  sfxReady();
+  let c=3;
+  const h=setInterval(()=>{
+    c--;
+    const el=document.getElementById('cd');
+    if(el){
+      if(c>0){el.textContent=c;tone(440+c*80,.1);}
+      else{el.textContent='GO!';el.style.color='var(--green)';tone(880,.2);}
+    }
+    if(c<=0){clearInterval(h);setTimeout(onDone,600);}
+  },900);
+}
+
+function getGameDesc(id){
+  return{
+    memory:'Numbers will flash on screen. Remember them and type them back.',
+    pattern:'Find the next item in the sequence. Look for the pattern!',
+    math:'Solve the arithmetic problem as fast as you can.',
+    stroop:'Click the COLOR the word is written in — not what the word says!',
+  }[id];
+}
+
+// ── QUESTION SCREEN ──────────────────────────────────────────────
+function showQuestion(){
+  const g=GAMES[gs.gameIdx];
+  const roundInGame=gs.round%g.rounds;
+  let q;
+  if(g.id==='memory')q=genMemory(roundInGame);
+  else if(g.id==='pattern')q=genPattern(roundInGame);
+  else if(g.id==='math')q=genMath(roundInGame);
+  else q=genStroop(roundInGame);
+  gs.currentQ=q;
+  gs.canAnswer=true;
+  gs.skillTotal[g.id]++;
+
+  const pct=Math.round((gs.round/TOTAL_ROUNDS)*100);
+  const streak=gs.streak>1?`<div class="hud-chip hud-streak">🔥 ×${gs.streak}</div>`:'';
+
+  if(g.id==='memory'){
+    renderMemoryQuestion(g,q,pct,streak);
+  } else if(g.id==='pattern'){
+    renderPatternQuestion(g,q,pct,streak);
+  } else if(g.id==='math'){
+    renderMathQuestion(g,q,pct,streak);
+  } else {
+    renderStroopQuestion(g,q,pct,streak);
+  }
+}
+
+function hudHTML(g,pct,streak){
+  return`
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="hud">
+      <div style="display:flex;gap:8px">
+        <div class="hud-chip hud-score">Score: <span id="scoreVal">${gs.score}</span></div>
+        ${streak}
+      </div>
+      <div class="hud-chip" style="color:${g.color}">${g.icon} ${g.name}</div>
+      <div id="timerWrap"></div>
+    </div>
+  `;
+}
+
+// MEMORY
+function renderMemoryQuestion(g,q,pct,streak){
+  gs.phase='playing';
+  render(`
+    ${hudHTML(g,pct,streak)}
+    <div class="card">
+      <div class="game-badge" style="color:${g.color};border-color:${g.color}30;background:${g.color}10">${g.icon} MEMORY VAULT</div>
+      <p style="font-size:14px;color:var(--txt2);margin-bottom:12px">Memorize the number sequence</p>
+      <div class="memory-display" id="memDisp">${q.digits}</div>
+      <div id="memInput" style="display:none">
+        <input class="memory-input" id="mi" type="number" placeholder="Type the numbers" autocomplete="off">
+        <p class="memory-hint">Type the digits you saw and press Enter</p>
+      </div>
+      <div class="feedback" id="fb"></div>
+    </div>
+  `);
+  startTimer(q.len*1.5+2,'teal',()=>{
+    submitMemory(null,true);
+  });
+  // Show for 1.5s per digit then hide
+  setTimeout(()=>{
+    const d=document.getElementById('memDisp');
+    const inp=document.getElementById('memInput');
+    if(d){d.textContent='?????';d.style.color='var(--txt3)';}
+    if(inp){
+      inp.style.display='block';
+      const mi=document.getElementById('mi');
+      if(mi){
+        mi.focus();
+        mi.addEventListener('keydown',e=>{if(e.key==='Enter')submitMemory(mi.value);});
+      }
+    }
+  },q.len*800+500);
+}
+
+function submitMemory(val,timeout=false){
+  if(!gs.canAnswer)return;
+  gs.canAnswer=false;
+  stopTimer();
+  const q=gs.currentQ;
+  const correct=!timeout && String(val).replace(/\s/g,'')=== q.answer;
+  handleAnswer(correct,'memory');
+  const fb=document.getElementById('fb');
+  if(fb){fb.textContent=correct?'✓ Correct!':'✗ '+(timeout?'Time up!':'Wrong — was '+q.answer);fb.className='feedback '+(correct?'ok':'bad');}
+  setTimeout(nextQuestion,1200);
+}
+
+// PATTERN
+function renderPatternQuestion(g,q,pct,streak){
+  gs.phase='playing';
+  const seqHTML=q.seqStr.map(s=>`<div class="pat-item">${s}</div>`).join('');
+  const choicesHTML=q.opts.map(o=>`
+    <button class="btn-choice" onclick="submitPattern('${o}')" id="pc-${o}">${o}</button>
+  `).join('');
+  render(`
+    ${hudHTML(g,pct,streak)}
+    <div class="card">
+      <div class="game-badge" style="color:${g.color};border-color:${g.color}30;background:${g.color}10">${g.icon} PATTERN QUEST</div>
+      <p style="font-size:14px;color:var(--txt2);margin-bottom:4px">What comes next?</p>
+      <div class="pattern-seq">
+        ${seqHTML}
+        <div class="pat-item blank">?</div>
+      </div>
+      <div class="choices-grid">${choicesHTML}</div>
+      <div class="feedback" id="fb"></div>
+    </div>
+  `);
+  startTimer(15,'purple',()=>submitPattern(null,true));
+}
+
+function submitPattern(val,timeout=false){
+  if(!gs.canAnswer)return;
+  gs.canAnswer=false;
+  stopTimer();
+  const q=gs.currentQ;
+  const correct=!timeout && String(val)===String(q.answer);
+  document.querySelectorAll('.btn-choice').forEach(b=>b.disabled=true);
+  if(!timeout){
+    const btn=document.getElementById('pc-'+val);
+    if(btn)btn.classList.add(correct?'correct':'wrong');
+    if(!correct){const ab=document.getElementById('pc-'+q.answer);if(ab)ab.classList.add('correct');}
+  }
+  handleAnswer(correct,'pattern');
+  const fb=document.getElementById('fb');
+  if(fb){fb.textContent=correct?'✓ Correct!':'✗ '+(timeout?'Time up! Answer: '+q.answer:'Wrong — answer: '+q.answer);fb.className='feedback '+(correct?'ok':'bad');}
+  setTimeout(nextQuestion,1200);
+}
+
+// MATH
+function renderMathQuestion(g,q,pct,streak){
+  gs.phase='playing';
+  render(`
+    ${hudHTML(g,pct,streak)}
+    <div class="card">
+      <div class="game-badge" style="color:${g.color};border-color:${g.color}30;background:${g.color}10">${g.icon} MATH BLITZ</div>
+      <p style="font-size:14px;color:var(--txt2);margin-bottom:4px">Solve it fast!</p>
+      <div class="math-problem">${q.problem} = ?</div>
+      <input class="math-input" id="mi2" type="number" placeholder="?" autocomplete="off">
+      <p class="memory-hint" style="text-align:center;margin-top:8px">Press Enter to submit</p>
+      <div class="feedback" id="fb"></div>
+    </div>
+  `);
+  const tl=10;
+  startTimer(tl,'orange',()=>submitMath(null,true));
+  setTimeout(()=>{
+    const mi=document.getElementById('mi2');
+    if(mi){
+      mi.focus();
+      mi.addEventListener('keydown',e=>{if(e.key==='Enter')submitMath(mi.value);});
+    }
+  },50);
+}
+
+function submitMath(val,timeout=false){
+  if(!gs.canAnswer)return;
+  gs.canAnswer=false;
+  stopTimer();
+  const q=gs.currentQ;
+  const correct=!timeout && String(val).trim()===q.answer;
+  handleAnswer(correct,'math');
+  const fb=document.getElementById('fb');
+  if(fb){fb.textContent=correct?'✓ Correct!':'✗ '+(timeout?'Time up! Answer: '+q.answer:'Wrong — answer: '+q.answer);fb.className='feedback '+(correct?'ok':'bad');}
+  setTimeout(nextQuestion,1200);
+}
+
+// STROOP
+function renderStroopQuestion(g,q,pct,streak){
+  gs.phase='playing';
+  const btns=q.opts.map(c=>`
+    <button class="btn-color" style="background:${COLOR_MAP[c]}20;border-color:${COLOR_MAP[c]}60;color:${COLOR_MAP[c]}" onclick="submitStroop('${c}')">${c}</button>
+  `).join('');
+  render(`
+    ${hudHTML(g,pct,streak)}
+    <div class="card">
+      <div class="game-badge" style="color:${g.color};border-color:${g.color}30;background:${g.color}10">${g.icon} STROOP STORM</div>
+      <p class="stroop-q">Click the COLOR this word is written in:</p>
+      <div class="stroop-word" style="color:${COLOR_MAP[q.inkColor]}">${q.word}</div>
+      <div class="color-grid">${btns}</div>
+      <div class="feedback" id="fb"></div>
+    </div>
+  `);
+  startTimer(8,'pink',()=>submitStroop(null,true));
+}
+
+function submitStroop(val,timeout=false){
+  if(!gs.canAnswer)return;
+  gs.canAnswer=false;
+  stopTimer();
+  const q=gs.currentQ;
+  const correct=!timeout && val===q.answer;
+  handleAnswer(correct,'stroop');
+  const fb=document.getElementById('fb');
+  if(fb){fb.textContent=correct?'✓ Correct!':'✗ '+(timeout?'Time up!':'Wrong — it was '+q.inkColor);fb.className='feedback '+(correct?'ok':'bad');}
+  setTimeout(nextQuestion,1100);
+}
+
+// ── ANSWER HANDLER ───────────────────────────────────────────────
+function handleAnswer(correct, skill){
+  gs.totalAnswered++;
+  if(correct){
+    gs.correct++;
+    gs.streak++;
+    gs.maxStreak=Math.max(gs.maxStreak,gs.streak);
+    gs.skillScores[skill]++;
+    const mult=Math.min(gs.streak,3);
+    const timeBonus=gs.timerMax>0?Math.round((gs.timeLeft/gs.timerMax)*20):0;
+    const pts=(15+timeBonus)*mult;
+    gs.score+=pts;
+    animateScore(pts);
+    sfxCorrect();
+    burst(window.innerWidth/2,window.innerHeight/3);
+    if(gs.streak>=3)setTimeout(()=>burst(window.innerWidth/2,window.innerHeight/2,20),200);
+  } else {
+    gs.streak=0;
+    sfxWrong();
+    app.querySelector('.screen')?.classList.add('shake');
+    setTimeout(()=>app.querySelector('.screen')?.classList.remove('shake'),400);
+  }
+  updateScoreHUD();
+}
+
+function animateScore(pts){
+  const sv=document.getElementById('scoreVal');
+  if(!sv)return;
+  let start=gs.score-pts,end=gs.score,current=start,interval=setInterval(()=>{
+    current=Math.min(current+Math.ceil((end-current)/4)+1,end);
+    if(sv)sv.textContent=current;
+    if(current>=end)clearInterval(interval);
+  },30);
+}
+
+function updateScoreHUD(){
+  const sv=document.getElementById('scoreVal');
+  if(sv)sv.textContent=gs.score;
+}
+
+// ── TIMER ─────────────────────────────────────────────────────────
+function startTimer(seconds,colorName,onExpire){
+  gs.timeLeft=seconds;gs.timerMax=seconds;
+  const colorVar={teal:'var(--teal)',purple:'var(--purple)',orange:'var(--orange)',pink:'var(--pink)'}[colorName]||'var(--teal)';
+  const wrap=document.getElementById('timerWrap');
+  if(wrap){
+    wrap.innerHTML=`
+      <div class="timer-circle">
+        <svg viewBox="0 0 48 48" width="48" height="48">
+          <circle class="tc-bg" cx="24" cy="24" r="20"/>
+          <circle class="tc-fill" id="tcf" cx="24" cy="24" r="20" stroke="${colorVar}" stroke-dasharray="125.6" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-num" id="tnum" style="color:${colorVar}">${Math.ceil(gs.timeLeft)}</div>
+      </div>`;
+  }
+  if(gs.timerHandle)clearInterval(gs.timerHandle);
+  const tick=50;
+  gs.timerHandle=setInterval(()=>{
+    gs.timeLeft=Math.max(0,gs.timeLeft-tick/1000);
+    const frac=gs.timeLeft/gs.timerMax;
+    const offset=125.6*(1-frac);
+    const tf=document.getElementById('tcf');
+    const tn=document.getElementById('tnum');
+    if(tf)tf.style.strokeDashoffset=offset;
+    if(tn){tn.textContent=Math.ceil(gs.timeLeft);tn.style.color=frac<.3?'var(--red)':colorVar;}
+    if(tf&&frac<.3)tf.style.stroke='var(--red)';
+    if(gs.timeLeft<=0){clearInterval(gs.timerHandle);gs.timerHandle=null;onExpire();}
+  },tick);
+}
+function stopTimer(){if(gs.timerHandle){clearInterval(gs.timerHandle);gs.timerHandle=null;}}
+
+// ── FLOW CONTROL ─────────────────────────────────────────────────
+function startGame(){
+  initAudio();sfxClick();
+  reset();
+  gs.startTime=Date.now();
+  showNextGame();
+}
+
+function showNextGame(){
+  const g=GAMES[gs.gameIdx];
+  showTransition(gs.gameIdx,()=>{showQuestion();});
+}
+
+function nextQuestion(){
+  gs.round++;
+  const g=GAMES[gs.gameIdx];
+  const roundsThisGame=g.rounds;
+  const startRound=gs.gameIdx*roundsThisGame;
+  const endRound=startRound+roundsThisGame;
+  if(gs.round>=endRound){
+    gs.gameIdx++;
+    if(gs.gameIdx>=GAMES.length){showResults();return;}
+    showNextGame();
+  } else {
+    showQuestion();
+  }
+}
+
+// ── RESULTS ──────────────────────────────────────────────────────
+function showResults(){
+  stopTimer();
+  gs.phase='result';
+  sfxComplete();
+  screenBurst();
+  const elapsed=Math.round((Date.now()-gs.startTime)/1000);
+  const mins=Math.floor(elapsed/60),secs=elapsed%60;
+  const timeStr=mins>0?`${mins}m ${secs}s`:`${secs}s`;
+  const accuracy=Math.round((gs.correct/gs.totalAnswered)*100);
+  const iq=estimateIQ(accuracy,gs.score,gs.maxStreak);
+  const grade=getGrade(iq);
+
+  const skillsHTML=GAMES.map(g=>{
+    const sc=gs.skillScores[g.id],tot=gs.skillTotal[g.id];
+    const pct=tot>0?Math.round((sc/tot)*100):0;
+    return`<div class="skill-card">
+      <div class="skill-name">${g.skill}</div>
+      <div class="skill-val" style="color:${g.color}">${pct}%</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:${pct}%;background:${g.color}"></div></div>
+    </div>`;
+  }).join('');
+
+  render(`
+    <div class="card">
+      <div style="font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:8px">Training Complete 🎉</div>
+      <div class="result-label">Estimated IQ</div>
+      <div class="result-iq">${iq}</div>
+      <div class="result-grade">${grade.label}</div>
+      <div style="font-size:14px;color:var(--txt2);margin-bottom:20px">${grade.desc}</div>
+      <div class="skills-grid">${skillsHTML}</div>
+      <div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;margin-bottom:4px">
+        <div class="stat-row"><span>Total Score</span><span class="stat-val">${gs.score}</span></div>
+        <div class="stat-row"><span>Accuracy</span><span class="stat-val">${accuracy}%</span></div>
+        <div class="stat-row"><span>Best Streak</span><span class="stat-val">🔥 ${gs.maxStreak}</span></div>
+        <div class="stat-row"><span>Time Taken</span><span class="stat-val">${timeStr}</span></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="startGame()">Play Again</button>
+        <button class="btn btn-ghost" onclick="showMenu()">Menu</button>
+      </div>
+    </div>
+  `);
+  setTimeout(()=>{
+    document.querySelectorAll('.skill-fill').forEach(el=>{el.style.width=el.style.width;});
+  },100);
+}
+
+function estimateIQ(accuracy,score,maxStreak){
+  const base=85;
+  const accBonus=(accuracy/100)*40;
+  const scoreBonus=Math.min(score/50,20);
+  const streakBonus=Math.min(maxStreak*2,10);
+  return Math.round(Math.min(145,base+accBonus+scoreBonus+streakBonus));
+}
+
+function getGrade(iq){
+  if(iq>=130)return{label:'🌟 Superior Intelligence',desc:'Exceptional cognitive performance — top 2%.'};
+  if(iq>=120)return{label:'🏆 Very High Intelligence',desc:'Strong across all cognitive domains — top 10%.'};
+  if(iq>=110)return{label:'✨ High Average',desc:'Above average performance — top 25%.'};
+  if(iq>=100)return{label:'👍 Average Intelligence',desc:'Solid cognitive skills across all areas.'};
+  if(iq>=90)return{label:'📈 Low Average',desc:'Room to grow — practice daily for improvement.'};
+  return{label:'🔰 Below Average',desc:'Keep training — consistency leads to improvement!'};
+}
+
+// ── EXPOSE TEST HOOKS ─────────────────────────────────────────────
+window.render_game_to_text=()=>JSON.stringify({phase:gs.phase,score:gs.score,round:gs.round,streak:gs.streak,correct:gs.correct,total:gs.totalAnswered,gameIdx:gs.gameIdx});
+window.advanceTime=(ms)=>{};
+
+// ── INIT ──────────────────────────────────────────────────────────
+showMenu();
+document.addEventListener('click',()=>{initAudio();},{once:true});
+</script>
+</body>
+</html>

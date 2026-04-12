@@ -1,0 +1,501 @@
+
+html = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhāva Tech — Brain Power Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050d1a;--s1:#0d1f35;--s2:#112240;--bdr:#1e3a5f;--cyan:#00d4ff;--purple:#7c3aed;--orange:#e67e22;--green:#00e676;--pink:#ff6b9d;--text:#e2f0ff;--muted:#7a9cc8;--faint:#2a4a6a;--r:14px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{min-height:100dvh;font-family:"Plus Jakarta Sans",sans-serif;color:var(--text);background:var(--bg);overflow-x:hidden;}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) var(--dl,0s) infinite ease-in-out;}
+@keyframes twinkle{0%,100%{opacity:.08;}50%{opacity:.7;transform:scale(1.5);}}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.1;pointer-events:none;z-index:0;animation:orbf 9s ease-in-out infinite;}
+@keyframes orbf{0%,100%{transform:translate(0,0);}50%{transform:translate(25px,-35px);}}
+header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--bdr);padding:12px 20px;display:flex;align-items:center;gap:10px;}
+.logo-name{font-family:"Orbitron",sans-serif;font-size:1rem;color:var(--cyan);font-weight:700;}
+.logo-sub{font-size:.65rem;color:var(--muted);}
+.test-badge{margin-left:auto;font-size:.72rem;font-weight:700;color:var(--cyan);background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);padding:4px 12px;border-radius:20px;}
+.wrap{position:relative;z-index:1;max-width:620px;margin:0 auto;padding:24px 16px 60px;}
+.scr{display:none;animation:fadeUp .35s ease both;}
+.scr.on{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+#s0{text-align:center;padding:10px 0 24px;}
+.brain-anim{font-size:5rem;display:block;animation:bp 2s ease-in-out infinite;margin-bottom:16px;filter:drop-shadow(0 0 24px var(--cyan));}
+@keyframes bp{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.hero-title{font-family:"Orbitron",sans-serif;font-size:clamp(1.4rem,4vw,2.1rem);font-weight:900;line-height:1.2;margin-bottom:10px;}
+.hero-title span{background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:.88rem;color:var(--muted);margin-bottom:22px;line-height:1.6;}
+.badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:24px;}
+.badge{font-size:.75rem;font-weight:700;padding:5px 14px;border-radius:20px;border:1.5px solid;}
+.b-iq{color:#00d4ff;border-color:rgba(0,212,255,.4);background:rgba(0,212,255,.08);}
+.b-eq{color:#a78bfa;border-color:rgba(124,58,237,.4);background:rgba(124,58,237,.08);}
+.b-sq{color:#34d399;border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.08);}
+.b-min{color:var(--orange);border-color:rgba(230,126,34,.4);background:rgba(230,126,34,.08);}
+.reg-card{background:linear-gradient(135deg,var(--s1),var(--s2));border:1px solid var(--bdr);border-radius:var(--r);padding:20px;margin-bottom:20px;position:relative;overflow:hidden;}
+.reg-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--purple));}
+.reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.rg{display:flex;flex-direction:column;gap:5px;}
+.rg.full{grid-column:1/-1;}
+.rl{font-size:.78rem;font-weight:700;color:var(--muted);}
+.ri{padding:10px 13px;background:rgba(255,255,255,.04);border:1.5px solid var(--bdr);border-radius:9px;font-family:inherit;font-size:.85rem;color:var(--text);width:100%;transition:border-color .2s;}
+.ri:focus{border-color:var(--cyan);outline:none;background:rgba(0,212,255,.05);}
+.ri::placeholder{color:var(--faint);}
+select.ri option{background:var(--s1);}
+.prog-wrap{margin-bottom:20px;}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.prog-label{font-family:"Orbitron",sans-serif;font-size:.68rem;font-weight:700;color:var(--cyan);}
+.prog-num{font-size:.72rem;color:var(--muted);}
+.prog-track{height:8px;background:var(--s2);border-radius:20px;overflow:hidden;border:1px solid var(--bdr);}
+.prog-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--cyan),var(--purple));transition:width .5s cubic-bezier(.16,1,.3,1);box-shadow:0 0 10px rgba(0,212,255,.4);}
+.section-pills{display:flex;gap:5px;margin-top:8px;}
+.sp{flex:1;height:4px;border-radius:2px;background:var(--faint);transition:background .3s;}
+.sp.done{background:var(--green);}
+.sp.active{background:var(--cyan);box-shadow:0 0 6px var(--cyan);}
+.q-card{background:linear-gradient(135deg,var(--s1),var(--s2));border:1px solid var(--bdr);border-radius:var(--r);padding:20px 18px 18px;margin-bottom:14px;position:relative;overflow:hidden;}
+.q-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;}
+.q-card.iq::before{background:linear-gradient(90deg,var(--cyan),#0099cc);}
+.q-card.eq::before{background:linear-gradient(90deg,var(--purple),#a78bfa);}
+.q-card.sq::before{background:linear-gradient(90deg,var(--green),#34d399);}
+.q-tag{font-size:.65rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:20px;}
+.iq .q-tag{color:var(--cyan);background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);}
+.eq .q-tag{color:#a78bfa;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);}
+.sq .q-tag{color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);}
+.q-text{font-size:.95rem;font-weight:700;line-height:1.5;margin-bottom:14px;color:var(--text);}
+.q-visual{font-size:1.6rem;margin-bottom:12px;letter-spacing:3px;text-align:center;line-height:1.6;}
+.ans-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ans-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:12px 8px;border-radius:12px;border:2px solid var(--bdr);background:rgba(255,255,255,.03);cursor:pointer;transition:all .18s;color:var(--text);font-family:inherit;font-size:.8rem;font-weight:700;text-align:center;min-height:68px;}
+.ans-btn .emo{font-size:1.5rem;line-height:1;}
+.ans-btn:hover{border-color:var(--cyan);background:rgba(0,212,255,.08);transform:translateY(-2px);}
+.ans-btn.selected{border-color:var(--cyan);background:rgba(0,212,255,.15);box-shadow:0 0 16px rgba(0,212,255,.25);}
+.ans-btn.correct{border-color:var(--green);background:rgba(0,230,118,.12);box-shadow:0 0 14px rgba(0,230,118,.2);}
+.ans-btn.wrong{border-color:#ff4d6d;background:rgba(255,77,109,.1);}
+.ans-btn:disabled{cursor:default;}
+.timer-wrap{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.timer-bar{flex:1;height:5px;background:var(--s2);border-radius:3px;overflow:hidden;}
+.timer-fill{height:100%;border-radius:3px;background:var(--cyan);transition:width 1s linear;}
+.timer-val{font-family:"Orbitron",sans-serif;font-size:.78rem;color:var(--cyan);font-weight:700;min-width:28px;text-align:right;}
+.section-break{text-align:center;padding:24px 0 8px;}
+.sb-icon{font-size:3.2rem;display:block;margin-bottom:8px;animation:bp 1.5s ease-in-out infinite;}
+.sb-title{font-family:"Orbitron",sans-serif;font-size:1.3rem;font-weight:900;margin-bottom:6px;}
+.sb-sub{font-size:.84rem;color:var(--muted);line-height:1.6;}
+.xp-pop{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-family:"Orbitron",sans-serif;font-size:2rem;font-weight:900;color:var(--green);text-shadow:0 0 20px var(--green);pointer-events:none;z-index:9999;animation:xpF .8s ease forwards;}
+@keyframes xpF{0%{opacity:1;transform:translate(-50%,-50%) scale(1);}100%{opacity:0;transform:translate(-50%,-120%) scale(1.5);}}
+.live-score{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:14px;}
+.ls-label{font-size:.72rem;color:var(--muted);}
+.ls-val{font-family:"Orbitron",sans-serif;font-size:1.1rem;font-weight:900;color:var(--cyan);}
+.next-btn{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),#0099cc);color:#050d1a;font-family:inherit;font-size:.92rem;font-weight:800;border:none;cursor:pointer;margin-top:6px;transition:all .2s;display:none;box-shadow:0 4px 20px rgba(0,212,255,.35);}
+.next-btn:hover{transform:translateY(-2px);}
+.next-btn.show{display:block;}
+#sResult{text-align:center;}
+.result-burst{font-size:4.5rem;display:block;margin-bottom:12px;animation:bp 1.5s infinite;}
+.result-title{font-family:"Orbitron",sans-serif;font-size:1.7rem;font-weight:900;margin-bottom:6px;}
+.score-ring-wrap{margin:20px auto;width:140px;height:140px;position:relative;}
+.score-ring{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:var(--s2);stroke-width:10;}
+.ring-fill{fill:none;stroke-width:10;stroke-linecap:round;stroke-dasharray:340;stroke-dashoffset:340;transition:stroke-dashoffset 2s cubic-bezier(.16,1,.3,1);}
+.ring-score{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.ring-num{font-family:"Orbitron",sans-serif;font-size:2rem;font-weight:900;line-height:1;}
+.ring-label{font-size:.65rem;color:var(--muted);}
+.sub-scores{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:18px 0;}
+.ss-card{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;padding:12px 8px;text-align:center;}
+.ss-icon{font-size:1.4rem;margin-bottom:4px;}
+.ss-label{font-size:.62rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.ss-bar-wrap{height:5px;background:var(--faint);border-radius:3px;overflow:hidden;}
+.ss-bar{height:100%;border-radius:3px;transition:width 1.5s cubic-bezier(.16,1,.3,1);}
+.ss-num{font-family:"Orbitron",sans-serif;font-size:.88rem;font-weight:900;margin-top:5px;}
+.locked-box{background:linear-gradient(135deg,var(--s1),var(--s2));border:1.5px solid var(--purple);border-radius:var(--r);padding:20px;margin:18px 0;position:relative;overflow:hidden;}
+.lock-blur{filter:blur(5px);opacity:.4;pointer-events:none;font-size:.82rem;color:var(--text);line-height:2;margin-bottom:12px;}
+.lock-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;}
+.lock-icon{font-size:2rem;}
+.lock-text{font-family:"Orbitron",sans-serif;font-size:.78rem;color:#a78bfa;font-weight:700;}
+.cta-card{background:linear-gradient(135deg,rgba(0,212,255,.1),rgba(124,58,237,.1));border:1.5px solid var(--cyan);border-radius:var(--r);padding:20px;margin-bottom:16px;text-align:center;}
+.cta-title{font-family:"Orbitron",sans-serif;font-size:1rem;font-weight:800;margin-bottom:6px;color:var(--cyan);}
+.cta-sub{font-size:.82rem;color:var(--muted);margin-bottom:14px;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:10px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-family:inherit;font-size:.9rem;font-weight:800;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,212,255,.3);text-decoration:none;transition:all .2s;}
+.cta-btn:hover{transform:translateY(-2px);}
+.restart-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:10px;background:transparent;color:var(--muted);border:1.5px solid var(--bdr);font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px;}
+.restart-btn:hover{border-color:var(--muted);color:var(--text);}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:10px;font-family:inherit;font-size:.9rem;font-weight:800;cursor:pointer;border:none;transition:all .2s;}
+.btn-p{background:linear-gradient(135deg,var(--cyan),#0099cc);color:#050d1a;box-shadow:0 4px 20px rgba(0,212,255,.3);}
+.btn-p:hover{transform:translateY(-2px);}
+.btn-full{width:100%;justify-content:center;}
+.cf{position:fixed;width:9px;height:9px;animation:cfF var(--cd,3s) ease-in forwards;z-index:9999;pointer-events:none;border-radius:2px;}
+@keyframes cfF{0%{transform:translateY(-10px) rotate(0);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+footer{text-align:center;padding:16px;font-size:.7rem;color:var(--faint);border-top:1px solid var(--bdr);position:relative;z-index:1;}
+@media(max-width:480px){.reg-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<div class="orb" style="width:350px;height:350px;background:#00d4ff;top:-80px;left:-80px;"></div>
+<div class="orb" style="width:280px;height:280px;background:#7c3aed;bottom:80px;right:-60px;animation-delay:-4s;"></div>
+<header>
+  <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+    <circle cx="18" cy="18" r="17" fill="rgba(0,212,255,.1)" stroke="#00d4ff" stroke-width="1.5"/>
+    <path d="M10 18 Q10 10 18 10 Q26 10 26 16 Q26 20 21 21 Q26 22 26 26" stroke="#00d4ff" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="21" cy="21" r="1.5" fill="#00d4ff"/>
+    <path d="M12 24 Q14 20 18 20 Q22 20 24 24" stroke="#e67e22" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </svg>
+  <div><div class="logo-name">Bhāva Tech</div><div class="logo-sub">Brain Gym & IQ Enhancing Center</div></div>
+  <div class="test-badge">🧠 Brain Power Test</div>
+</header>
+<div class="wrap">
+
+<!-- WELCOME -->
+<div class="scr on" id="s0">
+  <div style="text-align:center;padding:10px 0 24px;">
+    <span class="brain-anim">🧠</span>
+    <h1 class="hero-title">Discover Your<br><span>Brain Power Score</span></h1>
+    <p class="hero-sub">60 fun questions • Takes ~15 minutes<br>Unlock your IQ · EQ · SQ brain profile!</p>
+    <div class="badges">
+      <span class="badge b-iq">🔵 IQ — 20 Questions</span>
+      <span class="badge b-eq">🟣 EQ — 20 Questions</span>
+      <span class="badge b-sq">🟢 SQ — 20 Questions</span>
+      <span class="badge b-min">🏆 ~15 Minutes</span>
+    </div>
+  </div>
+  <div class="reg-card">
+    <div style="font-size:.78rem;font-weight:700;color:var(--cyan);margin-bottom:14px;">👤 QUICK REGISTER — FREE</div>
+    <div class="reg-grid">
+      <div class="rg"><label class="rl">Your Name *</label><input class="ri" id="rName" type="text" placeholder="e.g. Arjun"></div>
+      <div class="rg"><label class="rl">Age *</label><input class="ri" id="rAge" type="number" placeholder="12" min="5" max="25"></div>
+      <div class="rg"><label class="rl"> Student/Profession *</label><input class="ri" id="rClass" type="text" placeholder="8th Grade/Job"></div>
+      <div class="rg"><label class="rl">WhatsApp *</label><input class="ri" id="rPhone" type="tel" placeholder="+91 9876543210"></div>
+      <div class="rg full"><label class="rl">Email</label><input class="ri" id="rEmail" type="email" placeholder="parent@email.com"></div>
+    </div>
+  </div>
+  <button class="btn btn-p btn-full" onclick="startTest()">🚀 Start Brain Test — FREE</button>
+  <p style="text-align:center;font-size:.72rem;color:var(--faint);margin-top:10px;">🔒 100% Private. Results shared only with you.</p>
+</div>
+
+<!-- IQ INTRO -->
+<div class="scr" id="s-iq-intro">
+  <div class="section-break">
+    <span class="sb-icon">🔵</span>
+    <div class="sb-title" style="color:var(--cyan);">IQ Round</div>
+    <div class="sb-sub">Logic · Patterns · Numbers · Analogies<br>20 Questions · 30 seconds each<br><br>⚡ Think fast — trust your brain!</div>
+  </div>
+  <button class="btn btn-p btn-full" style="margin-top:20px;" onclick="showQ(0)">⚡ Begin IQ Round</button>
+</div>
+
+<!-- EQ INTRO -->
+<div class="scr" id="s-eq-intro">
+  <div class="section-break">
+    <span class="sb-icon">🟣</span>
+    <div class="sb-title" style="color:#a78bfa;">EQ Round</div>
+    <div class="sb-sub">Emotions · Feelings · Reactions · Empathy<br>20 Questions · No time limit<br><br>💜 Be honest — there are no wrong answers!</div>
+  </div>
+  <button class="btn btn-full" style="margin-top:20px;background:linear-gradient(135deg,var(--purple),#a78bfa);color:#fff;padding:13px 28px;border-radius:10px;font-family:inherit;font-size:.9rem;font-weight:800;border:none;cursor:pointer;" onclick="showQ(20)">💜 Begin EQ Round</button>
+</div>
+
+<!-- SQ INTRO -->
+<div class="scr" id="s-sq-intro">
+  <div class="section-break">
+    <span class="sb-icon">🟢</span>
+    <div class="sb-title" style="color:#34d399;">SQ Round</div>
+    <div class="sb-sub">Social Skills · Friendships · Teamwork<br>20 Questions · No time limit<br><br>🌟 Answer as you really are!</div>
+  </div>
+  <button class="btn btn-full" style="margin-top:20px;background:linear-gradient(135deg,#00e676,#34d399);color:#050d1a;padding:13px 28px;border-radius:10px;font-family:inherit;font-size:.9rem;font-weight:800;border:none;cursor:pointer;" onclick="showQ(40)">🌟 Begin SQ Round</button>
+</div>
+
+<!-- QUESTION SCREEN -->
+<div class="scr" id="s-q">
+  <div class="prog-wrap">
+    <div class="prog-top">
+      <span class="prog-label" id="progLabel">IQ · Q1 of 20</span>
+      <span class="prog-num" id="progNum">1 / 60</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="section-pills" id="secPills"></div>
+  </div>
+  <div class="live-score">
+    <span class="ls-label">⚡ Score</span>
+    <span class="ls-val" id="liveScore">0</span>
+    <span class="ls-label">/ 60</span>
+  </div>
+  <div class="q-card" id="qCard">
+    <div id="timerWrap" class="timer-wrap">
+      <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+      <div class="timer-val" id="timerVal">30</div>
+    </div>
+    <div class="q-tag" id="qTag">🔵 IQ</div>
+    <div class="q-visual" id="qVisual"></div>
+    <div class="q-text" id="qText"></div>
+    <div class="ans-grid" id="ansGrid"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQ()">Next →</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="scr" id="sResult">
+  <span class="result-burst">🏆</span>
+  <div class="result-title"><span id="rName2"></span>\'s<br>Brain Score!</div>
+  <div class="score-ring-wrap">
+    <svg class="score-ring" width="140" height="140" viewBox="0 0 120 120">
+      <circle class="ring-bg" cx="60" cy="60" r="54"/>
+      <circle class="ring-fill" id="ringFill" cx="60" cy="60" r="54" stroke="url(#rg)"/>
+      <defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#7c3aed"/>
+      </linearGradient></defs>
+    </svg>
+    <div class="ring-score"><div class="ring-num" id="ringNum">0</div><div class="ring-label">/ 100</div></div>
+  </div>
+  <div class="sub-scores">
+    <div class="ss-card"><div class="ss-icon">🔵</div><div class="ss-label">IQ Score</div><div class="ss-bar-wrap"><div class="ss-bar" id="iqBar" style="background:var(--cyan);width:0%"></div></div><div class="ss-num" id="iqNum" style="color:var(--cyan);">--</div></div>
+    <div class="ss-card"><div class="ss-icon">🟣</div><div class="ss-label">EQ Score</div><div class="ss-bar-wrap"><div class="ss-bar" id="eqBar" style="background:#a78bfa;width:0%"></div></div><div class="ss-num" id="eqNum" style="color:#a78bfa;">--</div></div>
+    <div class="ss-card"><div class="ss-icon">🟢</div><div class="ss-label">SQ Score</div><div class="ss-bar-wrap"><div class="ss-bar" id="sqBar" style="background:#34d399;width:0%"></div></div><div class="ss-num" id="sqNum" style="color:#34d399;">--</div></div>
+  </div>
+  <div class="locked-box">
+    <div class="lock-blur">
+      IQ Analysis: Working Memory ████ · Processing Speed ████ · Pattern Recognition ████ · Logical Reasoning ████<br>
+      EQ Profile: Self-Awareness ████ · Empathy ████ · Stress Response ████ · Emotional Regulation ████<br>
+      SQ Report: Leadership ████ · Communication ████ · Team Dynamics ████ · Conflict Resolution ████<br>
+      Brain Gym Plan · Root Cause Analysis · 6-Week Personalised Program · Parent Report
+    </div>
+    <div class="lock-overlay"><span class="lock-icon">🔒</span><span class="lock-text">FULL REPORT — BOOK A FREE SESSION</span></div>
+  </div>
+  <div class="cta-card">
+    <div class="cta-title">🎯 Get Your Complete Brain Report FREE!</div>
+    <div class="cta-sub">Book a FREE 30-min Brain Gym session.<br>We\'ll share your full analysis + personalised 6-week plan!</div>
+    <a href="student-form.html" class="cta-btn">🚀 Book FREE Session Now</a>
+  </div>
+  <div style="text-align:center;"><button class="restart-btn" onclick="restartTest()">🔄 Retake Test</button></div>
+</div>
+
+</div>
+<footer>Bhāva Tech — Brain Gym & IQ Enhancing Center &nbsp;|&nbsp; 🌍 Online Worldwide &nbsp;|&nbsp; © 2026</footer>
+
+<script>
+// STARS
+const st=document.getElementById("stars");
+for(let i=0;i<100;i++){const s=document.createElement("div");s.className="star";const z=Math.random()*2+.5;s.style.cssText=`width:${z}px;height:${z}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${2+Math.random()*4}s;--dl:${Math.random()*5}s`;st.appendChild(s);}
+
+const QS=[
+// ══════════════ IQ (20) ══════════════
+{type:"iq",tag:"🔵 IQ · Numbers",text:"What comes next?",visual:"2 · 4 · 8 · 16 · ?",opts:[{e:"🔢",t:"18"},{e:"⚡",t:"32",c:1},{e:"🎯",t:"24"},{e:"💫",t:"64"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Odd One Out",text:"Which one does NOT belong?",visual:"🍎  🍊  🍋  🥕",opts:[{e:"🍎",t:"Apple"},{e:"🍊",t:"Orange"},{e:"🍋",t:"Lemon"},{e:"🥕",t:"Carrot",c:1}],timer:30},
+{type:"iq",tag:"🔵 IQ · Analogy",text:"Hot → Cold &nbsp;&nbsp; Day → ?",visual:"",opts:[{e:"☀️",t:"Sun"},{e:"⭐",t:"Star"},{e:"🌙",t:"Night",c:1},{e:"🌈",t:"Rainbow"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Count",text:"How many 🔵 are there?",visual:"🔴🔵🔴🔵🔵🔴🔵🔴🔵",opts:[{e:"3️⃣",t:"3"},{e:"4️⃣",t:"4"},{e:"5️⃣",t:"5",c:1},{e:"6️⃣",t:"6"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Sequence",text:"Next number in series?",visual:"1 · 4 · 9 · 16 · ?",opts:[{e:"🔢",t:"20"},{e:"⚡",t:"25",c:1},{e:"🎯",t:"22"},{e:"💫",t:"36"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Pattern",text:"What comes next?",visual:"3 · 6 · 12 · 24 · ?",opts:[{e:"🔢",t:"36"},{e:"⚡",t:"48",c:1},{e:"🎯",t:"30"},{e:"💫",t:"42"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Odd One Out",text:"Which does NOT belong?",visual:"🐶  🐱  🐠  🦁",opts:[{e:"🐶",t:"Dog"},{e:"🐱",t:"Cat"},{e:"🐠",t:"Fish",c:1},{e:"🦁",t:"Lion"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Analogy",text:"Doctor → Hospital &nbsp;&nbsp; Teacher → ?",visual:"",opts:[{e:"🏠",t:"Home"},{e:"🏫",t:"School",c:1},{e:"🏥",t:"Clinic"},{e:"📚",t:"Library"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Series",text:"What letter comes next?",visual:"A · C · E · G · ?",opts:[{e:"🔤",t:"H"},{e:"⚡",t:"I",c:1},{e:"🎯",t:"J"},{e:"💫",t:"K"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Fibonacci",text:"What comes next?",visual:"1 · 1 · 2 · 3 · 5 · ?",opts:[{e:"🔢",t:"7"},{e:"⚡",t:"8",c:1},{e:"🎯",t:"9"},{e:"💫",t:"6"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Division",text:"What comes next?",visual:"81 · 27 · 9 · ?",opts:[{e:"🔢",t:"6"},{e:"⚡",t:"3",c:1},{e:"🎯",t:"4"},{e:"💫",t:"1"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Analogy",text:"Fish → Water &nbsp;&nbsp; Bird → ?",visual:"",opts:[{e:"🌳",t:"Tree"},{e:"☁️",t:"Sky",c:1},{e:"🏠",t:"Nest"},{e:"🌊",t:"Ocean"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Count",text:"Count the A\'s in BANANA",visual:"B·A·N·A·N·A",opts:[{e:"2️⃣",t:"2"},{e:"3️⃣",t:"3",c:1},{e:"4️⃣",t:"4"},{e:"1️⃣",t:"1"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Multiples",text:"What comes next?",visual:"7 · 14 · 21 · 28 · ?",opts:[{e:"🔢",t:"32"},{e:"⚡",t:"35",c:1},{e:"🎯",t:"36"},{e:"💫",t:"30"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Logic",text:"If all cats are animals, and all animals breathe — cats...?",visual:"🐱",opts:[{e:"😴",t:"Sleep"},{e:"💨",t:"Breathe",c:1},{e:"🏃",t:"Run"},{e:"🤔",t:"Maybe breathe"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Odd One Out",text:"Which is different?",visual:"🟥  🔺  🟦  🟨",opts:[{e:"🟥",t:"Red Square"},{e:"🔺",t:"Triangle",c:1},{e:"🟦",t:"Blue Square"},{e:"🟨",t:"Yellow Sq."}],timer:30},
+{type:"iq",tag:"🔵 IQ · Pattern",text:"🔺🔵🔺🔵🔺 — What comes next?",visual:"",opts:[{e:"🔺",t:"Triangle"},{e:"🔵",t:"Circle",c:1},{e:"🟥",t:"Square"},{e:"⭐",t:"Star"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Numbers",text:"What comes next?",visual:"100 · 50 · 25 · ?",opts:[{e:"🔢",t:"10"},{e:"⚡",t:"12.5",c:1},{e:"🎯",t:"15"},{e:"💫",t:"20"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Analogy",text:"Pen → Write &nbsp;&nbsp; Scissors → ?",visual:"",opts:[{e:"✏️",t:"Draw"},{e:"✂️",t:"Cut",c:1},{e:"🖊️",t:"Sketch"},{e:"📏",t:"Measure"}],timer:30},
+{type:"iq",tag:"🔵 IQ · Odd One Out",text:"Which is NOT a planet?",visual:"",opts:[{e:"🪐",t:"Saturn"},{e:"⭐",t:"Sun",c:1},{e:"🌍",t:"Earth"},{e:"♂️",t:"Mars"}],timer:30},
+
+// ══════════════ EQ (20) ══════════════
+{type:"eq",tag:"🟣 EQ · Feelings",text:"Your friend scored better than you. You feel...",visual:"",opts:[{e:"😠",t:"Angry at them"},{e:"😢",t:"Very sad"},{e:"🙂",t:"Happy for them",c:1},{e:"😶",t:"Nothing"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Honesty",text:"You broke something at home by accident. You...",visual:"",opts:[{e:"🏃",t:"Hide it"},{e:"🗣️",t:"Tell honestly",c:1},{e:"😴",t:"Ignore it"},{e:"😢",t:"Just cry"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Empathy",text:"A new student sits alone at lunch. You...",visual:"",opts:[{e:"🙋",t:"Invite them",c:1},{e:"😐",t:"Ignore"},{e:"👀",t:"Just watch"},{e:"📱",t:"Keep scrolling"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Anger",text:"You feel very angry. What helps most?",visual:"",opts:[{e:"🤬",t:"Shout"},{e:"🧘",t:"Breathe & calm",c:1},{e:"🎮",t:"More gaming"},{e:"🚪",t:"Run away"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Teamwork",text:"Your team loses a game. You...",visual:"",opts:[{e:"😡",t:"Blame others"},{e:"🤝",t:"Support team",c:1},{e:"😭",t:"Only cry"},{e:"🚶",t:"Walk away"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Reaction",text:"Someone laughs at your mistake. You...",visual:"",opts:[{e:"🤬",t:"Get very angry"},{e:"😂",t:"Laugh & learn",c:1},{e:"😢",t:"Cry & hide"},{e:"🤐",t:"Never talk again"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Support",text:"Your best friend is very sad. You...",visual:"",opts:[{e:"🎮",t:"Play games alone"},{e:"🤗",t:"Sit & listen",c:1},{e:"😐",t:"Say nothing"},{e:"🏃",t:"Avoid them"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Patience",text:"You want something but parents say no. You...",visual:"",opts:[{e:"😤",t:"Throw a tantrum"},{e:"🗣️",t:"Discuss calmly",c:1},{e:"😭",t:"Cry non-stop"},{e:"🤐",t:"Sulk silently"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Self-Control",text:"Someone is rude to you. You...",visual:"",opts:[{e:"🤬",t:"Be rude back"},{e:"😌",t:"Stay calm & walk",c:1},{e:"😭",t:"Cry immediately"},{e:"🏃",t:"Run away always"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Confidence",text:"You feel nervous before a big test. You...",visual:"",opts:[{e:"😰",t:"Give up & cry"},{e:"🧘",t:"Breathe & try",c:1},{e:"🎮",t:"Play games instead"},{e:"😴",t:"Skip the test"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Courage",text:"You see someone being bullied. You...",visual:"",opts:[{e:"👀",t:"Just watch"},{e:"🗣️",t:"Tell a teacher",c:1},{e:"🏃",t:"Walk away fast"},{e:"😂",t:"Laugh with them"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Accountability",text:"You made a mistake in front of the class. You...",visual:"",opts:[{e:"😭",t:"Cry and hide"},{e:"🙏",t:"Apologise & move on",c:1},{e:"😤",t:"Blame others"},{e:"🚪",t:"Leave the room"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Forgiveness",text:"Your sibling broke your favourite toy. You...",visual:"",opts:[{e:"😡",t:"Stay angry forever"},{e:"🤝",t:"Talk & forgive",c:1},{e:"🤬",t:"Break theirs too"},{e:"😢",t:"Cry for days"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Frustration",text:"A game you love is very frustrating. You...",visual:"",opts:[{e:"💥",t:"Throw the device"},{e:"⏸️",t:"Take a break",c:1},{e:"😤",t:"Play for 6 more hrs"},{e:"😭",t:"Cry non-stop"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Growth",text:"Someone gives you criticism. You...",visual:"",opts:[{e:"😤",t:"Get very upset"},{e:"🤔",t:"Listen & improve",c:1},{e:"🤐",t:"Ignore completely"},{e:"😡",t:"Argue back"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Belonging",text:"You feel left out of a group. You...",visual:"",opts:[{e:"😭",t:"Cry alone"},{e:"🗣️",t:"Express feelings calmly",c:1},{e:"😡",t:"Get angry at all"},{e:"🏃",t:"Never join groups"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Motivation",text:"You are bored and restless. You...",visual:"",opts:[{e:"📱",t:"Scroll for hours"},{e:"🎨",t:"Find creative activity",c:1},{e:"😴",t:"Sleep all day"},{e:"🎮",t:"Game till midnight"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Trust",text:"A close friend shares a secret with you. You...",visual:"",opts:[{e:"📢",t:"Tell everyone"},{e:"🤫",t:"Keep it private",c:1},{e:"😂",t:"Joke about it"},{e:"🤔",t:"Only tell one person"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Sportsmanship",text:"You lose a competition to someone younger. You...",visual:"",opts:[{e:"😤",t:"Make an excuse"},{e:"🤝",t:"Congratulate them",c:1},{e:"😡",t:"Get angry"},{e:"😭",t:"Refuse to play again"}],timer:0},
+{type:"eq",tag:"🟣 EQ · Help-Seeking",text:"You feel overwhelmed with schoolwork. You...",visual:"",opts:[{e:"😴",t:"Give up sleeping"},{e:"🗣️",t:"Ask teacher/parent",c:1},{e:"🎮",t:"Escape into gaming"},{e:"😭",t:"Cry and do nothing"}],timer:0},
+
+// ══════════════ SQ (20) ══════════════
+{type:"sq",tag:"🟢 SQ · Leadership",text:"In a group project, you usually...",visual:"",opts:[{e:"🎤",t:"Lead the group",c:1},{e:"🤝",t:"Help others"},{e:"👂",t:"Just listen"},{e:"😶",t:"Stay silent"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Friendship",text:"Making new friends feels...",visual:"",opts:[{e:"😄",t:"Easy & fun!",c:1},{e:"😅",t:"A bit nervous"},{e:"😰",t:"Really scary"},{e:"🚫",t:"Not interested"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Conflict",text:"Someone strongly disagrees with you. You...",visual:"",opts:[{e:"🗣️",t:"Listen & discuss",c:1},{e:"😤",t:"Get upset"},{e:"😶",t:"Go silent"},{e:"🤬",t:"Argue loudly"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Inclusion",text:"A classmate is always left out. You...",visual:"",opts:[{e:"😐",t:"Ignore it"},{e:"🤝",t:"Include them",c:1},{e:"👀",t:"Just watch"},{e:"😂",t:"Make fun too"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Courage",text:"You need to present in front of the class. You...",visual:"",opts:[{e:"😰",t:"Skip or refuse"},{e:"🗣️",t:"Prepare & present",c:1},{e:"😭",t:"Cry before it"},{e:"🤐",t:"Speak too quietly"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Sharing",text:"A classmate asks to borrow your notes. You...",visual:"",opts:[{e:"🚫",t:"Refuse"},{e:"📚",t:"Share happily",c:1},{e:"🤔",t:"Ask for something back"},{e:"😐",t:"Ignore them"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Social Energy",text:"At a party, you usually...",visual:"",opts:[{e:"🗣️",t:"Talk to new people",c:1},{e:"📱",t:"Stay on phone"},{e:"😶",t:"Stand in corner"},{e:"🏃",t:"Leave early"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Rumours",text:"Someone spreads a rumour about you. You...",visual:"",opts:[{e:"😡",t:"Shout at everyone"},{e:"😌",t:"Stay calm & clarify",c:1},{e:"😭",t:"Cry and hide"},{e:"🤬",t:"Spread rumours back"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Initiative",text:"You join a new class or team. You...",visual:"",opts:[{e:"😶",t:"Wait to be noticed"},{e:"🙋",t:"Introduce yourself",c:1},{e:"🏃",t:"Avoid everyone"},{e:"📱",t:"Stay on phone"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Peacemaking",text:"Two of your friends are fighting. You...",visual:"",opts:[{e:"🍿",t:"Watch and enjoy"},{e:"🤝",t:"Help them make up",c:1},{e:"🏃",t:"Run away"},{e:"😡",t:"Take sides"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Compassion",text:"Someone is crying near you. You...",visual:"",opts:[{e:"😂",t:"Ignore or laugh"},{e:"🤗",t:"Ask if they\'re okay",c:1},{e:"📱",t:"Keep scrolling"},{e:"🏃",t:"Walk away"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Teamwork",text:"A group decision doesn\'t go your way. You...",visual:"",opts:[{e:"😤",t:"Refuse to cooperate"},{e:"🤝",t:"Accept & support team",c:1},{e:"😭",t:"Cry about it"},{e:"🤬",t:"Argue non-stop"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Helpfulness",text:"You notice someone struggling nearby. You...",visual:"",opts:[{e:"👀",t:"Look and ignore"},{e:"🤗",t:"Offer to help",c:1},{e:"📱",t:"Keep scrolling"},{e:"🏃",t:"Walk faster"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Debate",text:"In a debate, you...",visual:"",opts:[{e:"🗣️",t:"Speak & listen fairly",c:1},{e:"😤",t:"Talk only, no listening"},{e:"😶",t:"Say nothing"},{e:"🏃",t:"Avoid debating"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Online Safety",text:"A stranger online wants your home address. You...",visual:"",opts:[{e:"📍",t:"Share it openly"},{e:"🚫",t:"Refuse & block",c:1},{e:"🤔",t:"Share only school"},{e:"📱",t:"Ask your friend first"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Boundaries",text:"A classmate always copies your homework. You...",visual:"",opts:[{e:"😐",t:"Let them always"},{e:"🗣️",t:"Talk to them kindly",c:1},{e:"😡",t:"Shout at them"},{e:"📚",t:"Stop doing homework"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Confidence",text:"You know the answer but nobody raises hand. You...",visual:"",opts:[{e:"😶",t:"Stay quiet"},{e:"🙋",t:"Raise hand confidently",c:1},{e:"🤫",t:"Whisper to neighbour"},{e:"📱",t:"Check phone"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Responsibility",text:"You are asked to lead a school event. You...",visual:"",opts:[{e:"🙅",t:"Refuse nervously"},{e:"🎯",t:"Accept & plan well",c:1},{e:"😴",t:"Accept & do nothing"},{e:"😤",t:"Blame others if fails"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Listening",text:"A friend is talking. You...",visual:"",opts:[{e:"📱",t:"Check phone while listening"},{e:"👂",t:"Listen fully & respond",c:1},{e:"🗣️",t:"Interrupt often"},{e:"😴",t:"Zone out"}],timer:0},
+{type:"sq",tag:"🟢 SQ · Peer Pressure",text:"Friends pressure you to do something wrong. You...",visual:"",opts:[{e:"✅",t:"Do it to fit in"},{e:"🚫",t:"Say no confidently",c:1},{e:"🤔",t:"Maybe just once"},{e:"😶",t:"Go quiet & follow"}],timer:0},
+];
+
+let curQ=0,scores={iq:0,eq:0,sq:0},answered=false,timerInt=null,timerSec=30;
+const ud={};
+
+function startTest(){
+  const n=document.getElementById("rName").value.trim();
+  const a=document.getElementById("rAge").value.trim();
+  const c=document.getElementById("rClass").value.trim();
+  const p=document.getElementById("rPhone").value.trim();
+  if(!n||!a||!c||!p){alert("Please fill all required fields ✨");return;}
+  ud.name=n;ud.age=a;ud.cls=c;ud.phone=p;
+  ud.email=document.getElementById("rEmail").value.trim();
+  show("s-iq-intro");
+}
+
+function show(id){
+  document.querySelectorAll(".scr").forEach(s=>s.classList.remove("on"));
+  document.getElementById(id).classList.add("on");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function showQ(qi){curQ=qi;show("s-q");renderQ();}
+
+function renderQ(){
+  const q=QS[curQ];
+  if(!q)return;
+  answered=false;
+  clearInterval(timerInt);
+  const pct=Math.round((curQ/60)*100);
+  document.getElementById("progFill").style.width=pct+"%";
+  const sec=curQ<20?"IQ":curQ<40?"EQ":"SQ";
+  const qn=(curQ%20)+1;
+  document.getElementById("progLabel").textContent=sec+" · Q"+qn+" of 20";
+  document.getElementById("progNum").textContent=(curQ+1)+" / 60";
+  // pills
+  const pills=document.getElementById("secPills");
+  pills.innerHTML=["IQ","EQ","SQ"].map((s,i)=>{
+    const done=curQ>=(i+1)*20?"done":curQ>=i*20&&curQ<(i+1)*20?"active":"";
+    return`<div class="sp ${done}"></div>`;
+  }).join("");
+  const card=document.getElementById("qCard");
+  card.className="q-card "+q.type;
+  document.getElementById("qTag").textContent=q.tag;
+  const vis=document.getElementById("qVisual");
+  vis.innerHTML=q.visual||"";
+  vis.style.display=q.visual?"block":"none";
+  document.getElementById("qText").innerHTML=q.text;
+  const grid=document.getElementById("ansGrid");
+  grid.innerHTML=q.opts.map((o,i)=>
+    `<button class="ans-btn" onclick="pickAns(this,${i},${!!o.c})" data-correct="${!!o.c}">
+      <span class="emo">${o.e}</span><span>${o.t}</span>
+    </button>`
+  ).join("");
+  document.getElementById("nextBtn").classList.remove("show");
+  const tw=document.getElementById("timerWrap");
+  if(q.timer>0){
+    tw.style.display="flex";
+    timerSec=q.timer;
+    document.getElementById("timerFill").style.transition="none";
+    document.getElementById("timerFill").style.width="100%";
+    document.getElementById("timerVal").textContent=timerSec;
+    setTimeout(()=>{document.getElementById("timerFill").style.transition="width 1s linear";},50);
+    timerInt=setInterval(()=>{
+      timerSec--;
+      const p2=Math.max(0,(timerSec/q.timer)*100);
+      document.getElementById("timerFill").style.width=p2+"%";
+      document.getElementById("timerVal").textContent=timerSec;
+      if(timerSec<=0){clearInterval(timerInt);autoNext();}
+    },1000);
+  }else{tw.style.display="none";}
+}
+
+function pickAns(btn,idx,isCorrect){
+  if(answered)return;
+  answered=true;
+  clearInterval(timerInt);
+  const q=QS[curQ];
+  document.querySelectorAll("#ansGrid .ans-btn").forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.correct==="true")b.classList.add("correct");
+  });
+  if(isCorrect){btn.classList.add("correct");scores[q.type]++;showXP("+1 ⚡");updateLS();}
+  else{btn.classList.add("wrong");}
+  document.getElementById("nextBtn").classList.add("show");
+}
+
+function autoNext(){if(!answered){answered=true;document.getElementById("nextBtn").classList.add("show");}}
+
+function nextQ(){
+  curQ++;
+  if(curQ===20)show("s-eq-intro");
+  else if(curQ===40)show("s-sq-intro");
+  else if(curQ>=60)showResults();
+  else renderQ();
+}
+
+function updateLS(){
+  document.getElementById("liveScore").textContent=scores.iq+scores.eq+scores.sq;
+}
+
+function showXP(txt){
+  const el=document.createElement("div");el.className="xp-pop";el.textContent=txt;
+  document.body.appendChild(el);setTimeout(()=>el.remove(),900);
+}
+
+function showResults(){
+  show("sResult");
+  launchConfetti();
+  const iq=scores.iq,eq=scores.eq,sq=scores.sq;
+  const total=Math.round(((iq+eq+sq)/60)*100);
+  document.getElementById("rName2").textContent=ud.name+"\'s";
+  setTimeout(()=>{
+    const circ=2*Math.PI*54;
+    document.getElementById("ringFill").style.strokeDashoffset=circ-(circ*(total/100));
+    animCount("ringNum",0,total,1500);
+    animCount("iqNum",0,Math.round((iq/20)*100),1200);
+    animCount("eqNum",0,Math.round((eq/20)*100),1200);
+    animCount("sqNum",0,Math.round((sq/20)*100),1200);
+    setTimeout(()=>{
+      document.getElementById("iqBar").style.width=Math.round((iq/20)*100)+"%";
+      document.getElementById("eqBar").style.width=Math.round((eq/20)*100)+"%";
+      document.getElementById("sqBar").style.width=Math.round((sq/20)*100)+"%";
+    },100);
+  },300);
+  sendToSheet({type:"BrainTestResult",name:ud.name,age:ud.age,cls:ud.cls,phone:ud.phone,email:ud.email,iqScore:iq,eqScore:eq,sqScore:sq,totalPct:total,submittedAt:new Date().toISOString()});
+}
+
+function animCount(id,from,to,dur){
+  const el=document.getElementById(id);const start=Date.now();
+  const tick=()=>{const p=Math.min((Date.now()-start)/dur,1);el.textContent=Math.round(from+(to-from)*p);if(p<1)requestAnimationFrame(tick);};
+  requestAnimationFrame(tick);
+}
+
+async function sendToSheet(data){
+  const url = "https://script.google.com/macros/s/AKfycbwP1IlDOy_cnziKJlZqJjGrF9GoL6ygtsWtk3K4KCoSNPSAvroYkIZ_ACV3MTqYjbT9ZQ/exec";
+  if(url.includes("PASTE"))return;
+  try{await fetch(url,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});}
+  catch(e){console.warn("Sheet sync:",e);}
+}
+
+function launchConfetti(){
+  const cols=["#00d4ff","#7c3aed","#e67e22","#00e676","#f59e0b","#ff6b9d"];
+  for(let i=0;i<80;i++){
+    const c=document.createElement("div");c.className="cf";
+    c.style.cssText=`left:${Math.random()*100}%;top:-10px;background:${cols[Math.floor(Math.random()*cols.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?"50%":"2px"};--cd:${2+Math.random()*2}s;animation-delay:${Math.random()*1.5}s`;
+    document.body.appendChild(c);setTimeout(()=>c.remove(),4500);
+  }
+}
+
+function restartTest(){
+  scores={iq:0,eq:0,sq:0};curQ=0;answered=false;clearInterval(timerInt);
+  document.getElementById("liveScore").textContent="0";
+  show("s0");
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Blitz 🔥 — Teen Math Challenge</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+  :root {
+    --primary: #6c63ff;
+    --secondary: #ff6584;
+    --accent: #43e97b;
+    --warn: #f7971e;
+    --dark: #1a1a2e;
+    --card: #16213e;
+    --text: #e0e0e0;
+    --muted: #8892b0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+
+  /* ── Starfield background ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 20% 30%, #1a1a4e 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, #2d0046 0%, transparent 50%),
+                var(--dark);
+    z-index: -1;
+  }
+
+  /* ── Screens ── */
+  .screen { display: none; width: 100%; max-width: 780px; padding: 20px; animation: fadeIn .4s ease; }
+  .screen.active { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ══════════════ MENU ══════════════ */
+  .menu-hero {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .menu-hero .logo {
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #6c63ff, #ff6584, #43e97b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .menu-hero p { color: var(--muted); font-size: 1.05rem; }
+
+  .badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+  .badge {
+    background: rgba(108,99,255,.15);
+    border: 1px solid rgba(108,99,255,.35);
+    color: #a29bfe;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: .82rem;
+    font-weight: 700;
+  }
+
+  .section-label {
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  /* Category Grid */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .cat-card {
+    background: var(--card);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 20px 16px;
+    cursor: pointer;
+    transition: all .25s;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cat-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    opacity: 0;
+    transition: opacity .25s;
+  }
+  .cat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,.4); }
+  .cat-card.selected { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(108,99,255,.3); }
+  .cat-card .cat-icon { font-size: 2.2rem; margin-bottom: 8px; }
+  .cat-card .cat-name { font-weight: 800; font-size: 1rem; }
+  .cat-card .cat-desc { font-size: .78rem; color: var(--muted); margin-top: 4px; }
+
+  /* Difficulty Row */
+  .diff-row { display: flex; gap: 12px; margin-bottom: 28px; }
+  .diff-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,.1);
+    background: var(--card);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: .95rem;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+  }
+  .diff-btn:hover { border-color: var(--warn); }
+  .diff-btn.selected { border-color: var(--warn); background: rgba(247,151,30,.12); color: var(--warn); }
+
+  .start-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, var(--primary), #a855f7);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 1.2rem;
+    cursor: pointer;
+    letter-spacing: .5px;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 20px rgba(108,99,255,.5);
+  }
+  .start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(108,99,255,.6); }
+  .start-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+  /* ══════════════ GAME ══════════════ */
+  .game-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .stat-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--card);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-weight: 700;
+    font-size: .92rem;
+  }
+  .stat-pill .icon { font-size: 1rem; }
+  .stat-pill.score { color: #ffd700; }
+  .stat-pill.timer { color: #43e97b; }
+  .stat-pill.timer.warn { color: #ff6584; animation: pulse .6s infinite alternate; }
+  .stat-pill.lives { color: #ff6584; }
+  .stat-pill.streak { color: #f7971e; }
+  .stat-pill.category { color: #a29bfe; margin-left: auto; }
+
+  @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.08); } }
+
+  /* Timer bar */
+  .timer-bar-wrap {
+    height: 6px;
+    background: rgba(255,255,255,.08);
+    border-radius: 3px;
+    margin-bottom: 22px;
+    overflow: hidden;
+  }
+  .timer-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--warn));
+    border-radius: 3px;
+    transition: width .9s linear;
+  }
+
+  /* Question card */
+  .q-card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 32px 28px 26px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,.06);
+    position: relative;
+  }
+  .q-number {
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .q-text {
+    font-size: 1.55rem;
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    color: #fff;
+  }
+  .q-hint {
+    font-size: .85rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+
+  /* Options */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .opt-btn {
+    padding: 16px 12px;
+    border-radius: 14px;
+    border: 2px solid rgba(255,255,255,.1);
+    background: rgba(255,255,255,.04);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: all .18s;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .opt-btn:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: rgba(108,99,255,.12);
+    transform: scale(1.02);
+  }
+  .opt-btn.correct {
+    border-color: var(--accent);
+    background: rgba(67,233,123,.18);
+    color: var(--accent);
+    animation: correct-anim .3s ease;
+  }
+  .opt-btn.wrong {
+    border-color: var(--secondary);
+    background: rgba(255,101,132,.18);
+    color: var(--secondary);
+    animation: shake .35s ease;
+  }
+  @keyframes correct-anim { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+  /* Fill-in */
+  .fill-row {
+    display: flex; gap: 10px; margin-top: 20px;
+  }
+  .fill-input {
+    flex: 1;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.05);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .fill-input:focus { border-color: var(--primary); }
+  .fill-input.correct { border-color: var(--accent); background: rgba(67,233,123,.1); }
+  .fill-input.wrong { border-color: var(--secondary); background: rgba(255,101,132,.1); }
+  .submit-btn {
+    padding: 14px 24px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, var(--primary), #a855f7);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform .2s;
+  }
+  .submit-btn:hover { transform: scale(1.05); }
+
+  /* Feedback toast */
+  .feedback-toast {
+    position: fixed;
+    top: 24px; left: 50%; transform: translateX(-50%) translateY(-80px);
+    background: var(--card);
+    border-radius: 40px;
+    padding: 12px 28px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    border: 2px solid transparent;
+    z-index: 999;
+    transition: transform .35s cubic-bezier(.175,.885,.32,1.275);
+    pointer-events: none;
+  }
+  .feedback-toast.show { transform: translateX(-50%) translateY(0); }
+  .feedback-toast.correct-fb { border-color: var(--accent); color: var(--accent); }
+  .feedback-toast.wrong-fb { border-color: var(--secondary); color: var(--secondary); }
+
+  /* Progress */
+  .progress-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
+  }
+  .prog-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.15);
+    transition: background .3s;
+  }
+  .prog-dot.answered-correct { background: var(--accent); }
+  .prog-dot.answered-wrong { background: var(--secondary); }
+  .prog-dot.current { background: var(--primary); box-shadow: 0 0 6px var(--primary); }
+
+  /* ══════════════ RESULTS ══════════════ */
+  .result-screen { text-align: center; padding: 30px 20px; }
+  .result-emoji { font-size: 5rem; margin-bottom: 10px; }
+  .result-title {
+    font-size: 2.2rem; font-weight: 900;
+    background: linear-gradient(135deg, #ffd700, #ff6584);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 6px;
+  }
+  .result-subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 28px; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .stat-box {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px 14px;
+    border: 1px solid rgba(255,255,255,.07);
+  }
+  .stat-box .sb-val {
+    font-size: 2rem; font-weight: 900;
+    margin-bottom: 4px;
+  }
+  .stat-box .sb-lbl { font-size: .8rem; color: var(--muted); font-weight: 700; }
+
+  .result-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .result-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform .2s;
+  }
+  .result-btn:hover { transform: translateY(-2px); }
+  .result-btn.primary { background: linear-gradient(135deg, var(--primary), #a855f7); color: #fff; }
+  .result-btn.outline {
+    background: transparent;
+    border: 2px solid rgba(255,255,255,.15);
+    color: var(--text);
+  }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    .q-text { font-size: 1.2rem; }
+    .options-grid { grid-template-columns: 1fr; }
+    .game-header { gap: 6px; }
+    .stat-pill { font-size: .78rem; padding: 5px 10px; }
+  }
+
+  /* Countdown overlay */
+  .countdown-overlay {
+    position: fixed; inset: 0;
+    background: rgba(26,26,46,.92);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 200;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .countdown-number {
+    font-size: 9rem; font-weight: 900;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    animation: cdpulse .9s ease-in-out infinite alternate;
+  }
+  @keyframes cdpulse { from { transform: scale(.9); } to { transform: scale(1.05); } }
+  .countdown-label { color: var(--muted); font-size: 1.2rem; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- Feedback Toast -->
+<div class="feedback-toast" id="toast"></div>
+
+<!-- Countdown Overlay -->
+<div class="countdown-overlay" id="countdownOverlay" style="display:none">
+  <div class="countdown-number" id="cdNumber">3</div>
+  <div class="countdown-label">Get Ready!</div>
+</div>
+
+<!-- ════════════ MENU SCREEN ════════════ -->
+<div class="screen active" id="menuScreen">
+  <div class="menu-hero">
+    <div class="logo">Math Blitz 🔥</div>
+    <p>The ultimate math challenge for sharp minds</p>
+  </div>
+
+  <div class="badges">
+    <span class="badge">🎓 Ages 12–15</span>
+    <span class="badge">⚡ 10 Questions</span>
+    <span class="badge">🏆 Streak Bonuses</span>
+    <span class="badge">🧠 5 Categories</span>
+  </div>
+
+  <div class="section-label">Choose a Topic</div>
+  <div class="cat-grid" id="catGrid">
+    <div class="cat-card" data-cat="algebra" onclick="selectCat(this)">
+      <div class="cat-icon">🔢</div>
+      <div class="cat-name">Algebra</div>
+      <div class="cat-desc">Equations, variables &amp; expressions</div>
+    </div>
+    <div class="cat-card" data-cat="fractions" onclick="selectCat(this)">
+      <div class="cat-icon">½</div>
+      <div class="cat-name">Fractions &amp; Decimals</div>
+      <div class="cat-desc">Operations with fractions &amp; decimals</div>
+    </div>
+    <div class="cat-card" data-cat="geometry" onclick="selectCat(this)">
+      <div class="cat-icon">📐</div>
+      <div class="cat-name">Geometry</div>
+      <div class="cat-desc">Area, perimeter &amp; volume</div>
+    </div>
+    <div class="cat-card" data-cat="percentages" onclick="selectCat(this)">
+      <div class="cat-icon">%</div>
+      <div class="cat-name">Percentages</div>
+      <div class="cat-desc">Discounts, interest &amp; ratios</div>
+    </div>
+    <div class="cat-card" data-cat="mixed" onclick="selectCat(this)">
+      <div class="cat-icon">🎲</div>
+      <div class="cat-name">Mixed Blitz</div>
+      <div class="cat-desc">All topics — the real challenge!</div>
+    </div>
+  </div>
+
+  <div class="section-label">Difficulty</div>
+  <div class="diff-row">
+    <button class="diff-btn selected" data-diff="medium" onclick="selectDiff(this)">🟡 Medium</button>
+    <button class="diff-btn" data-diff="hard" onclick="selectDiff(this)">🔴 Hard</button>
+  </div>
+
+  <button class="start-btn" id="startBtn" onclick="startGame()" disabled>Select a Topic to Start 🚀</button>
+</div>
+
+<!-- ════════════ GAME SCREEN ════════════ -->
+<div class="screen" id="gameScreen">
+  <div class="game-header">
+    <div class="stat-pill score"><span class="icon">⭐</span><span id="scoreDisp">0</span></div>
+    <div class="stat-pill timer" id="timerPill"><span class="icon">⏱</span><span id="timerDisp">60</span>s</div>
+    <div class="stat-pill lives"><span id="livesDisp">❤️❤️❤️</span></div>
+    <div class="stat-pill streak" id="streakPill" style="display:none"><span class="icon">🔥</span><span id="streakDisp">0</span>x</div>
+    <div class="stat-pill category"><span id="catDisp">—</span></div>
+  </div>
+
+  <div class="timer-bar-wrap"><div class="timer-bar" id="timerBar"></div></div>
+
+  <div class="progress-row" id="progressRow"></div>
+
+  <div class="q-card">
+    <div class="q-number" id="qNumber">Question 1 of 10</div>
+    <div class="q-text" id="qText">Loading…</div>
+    <div class="q-hint" id="qHint"></div>
+    <div class="options-grid" id="optionsGrid"></div>
+    <div class="fill-row" id="fillRow" style="display:none">
+      <input class="fill-input" id="fillInput" type="text" placeholder="Type your answer…" autocomplete="off" />
+      <button class="submit-btn" onclick="submitFill()">→</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ RESULT SCREEN ════════════ -->
+<div class="screen" id="resultScreen">
+  <div class="result-screen">
+    <div class="result-emoji" id="resultEmoji">🏆</div>
+    <div class="result-title" id="resultTitle">Awesome!</div>
+    <div class="result-subtitle" id="resultSub">Here's how you did:</div>
+
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="sb-val" style="color:#ffd700" id="rScore">0</div>
+        <div class="sb-lbl">Total Score</div>
+      </div>
+      <div class="stat-box">
+        <div class="sb-val" style="color:#43e97b" id="rCorrect">0</div>
+        <div class="sb-lbl">Correct</div>
+      </div>
+      <div class="stat-box">
+        <div class="sb-val" style="color:#ff6584" id="rWrong">0</div>
+        <div class="sb-lbl">Wrong</div>
+      </div>
+      <div class="stat-box">
+        <div class="sb-val" style="color:#f7971e" id="rStreak">0</div>
+        <div class="sb-lbl">Best Streak</div>
+      </div>
+      <div class="stat-box">
+        <div class="sb-val" style="color:#a29bfe" id="rAccuracy">0%</div>
+        <div class="sb-lbl">Accuracy</div>
+      </div>
+      <div class="stat-box">
+        <div class="sb-val" style="color:#74b9ff" id="rTime">0s</div>
+        <div class="sb-lbl">Time Left</div>
+      </div>
+    </div>
+
+    <div class="result-btns">
+      <button class="result-btn primary" onclick="restartSame()">🔄 Play Again</button>
+      <button class="result-btn outline" onclick="goMenu()">🏠 Change Topic</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  QUESTION BANK
+// ══════════════════════════════════════════
+const QUESTIONS = {
+  algebra: {
+    medium: [
+      { q: "Solve: 3x + 7 = 22", hint: "Subtract 7, then divide by 3", ans: "5", opts: ["3","5","7","4"] },
+      { q: "Simplify: 4(2x − 3) = ?", hint: "Distribute the 4", ans: "8x − 12", opts: ["8x − 12","8x + 12","6x − 7","8x − 3"] },
+      { q: "If y = 2x − 1, find y when x = 4", hint: "Substitute x = 4", ans: "7", opts: ["7","9","6","8"] },
+      { q: "What is the value of 2³ + 3²?", hint: "Calculate each power first", ans: "17", opts: ["17","13","16","18"] },
+      { q: "Solve: 5x − 3 = 2x + 9", hint: "Group x-terms on one side", ans: "4", opts: ["4","3","6","2"] },
+      { q: "Expand: (x + 3)(x + 2)", hint: "Use FOIL method", ans: "x² + 5x + 6", opts: ["x² + 5x + 6","x² + 6x + 5","x² + 5x + 5","x² + 3x + 6"] },
+      { q: "Find x: x/4 + 3 = 7", hint: "Subtract 3, multiply by 4", ans: "16", opts: ["16","12","20","8"] },
+      { q: "If a = 3, b = −2, find 2a − 3b", hint: "Substitute and simplify", ans: "12", opts: ["12","0","6","−12"] },
+      { q: "Which expression equals 3(x + 4) − 2x?", hint: "Distribute first, then combine", ans: "x + 12", opts: ["x + 12","5x + 4","x + 4","3x + 12"] },
+      { q: "Solve: 2(x + 5) = 18", hint: "Divide by 2 first, or distribute", ans: "4", opts: ["4","9","6","8"] },
+    ],
+    hard: [
+      { q: "Solve: (x − 2)(x + 5) = 0", hint: "Use zero-product property", ans: "x = 2 or x = −5", opts: ["x = 2 or x = −5","x = −2 or x = 5","x = 2 or x = 5","x = −2 or x = −5"] },
+      { q: "If 3x² = 75, find x (positive value)", hint: "Divide by 3, then square root", ans: "5", opts: ["5","15","25","√75"] },
+      { q: "Simplify: (3x²y)(4xy³)", hint: "Multiply coefficients and add exponents", ans: "12x³y⁴", opts: ["12x³y⁴","7x³y⁴","12x²y³","12x³y³"] },
+      { q: "Solve for x: 2x² − 8 = 0", hint: "Add 8, divide by 2, square root", ans: "x = ±2", opts: ["x = ±2","x = 2","x = ±4","x = 4"] },
+      { q: "Find the gradient of y = 3x − 7", hint: "In y = mx + c, m is the gradient", ans: "3", opts: ["3","−7","7","−3"] },
+      { q: "Factorise: x² + 7x + 12", hint: "Find two numbers that multiply to 12 and add to 7", ans: "(x + 3)(x + 4)", opts: ["(x + 3)(x + 4)","(x + 2)(x + 6)","(x + 1)(x + 12)","(x − 3)(x − 4)"] },
+      { q: "If f(x) = x² − 2x, find f(3)", hint: "Substitute x = 3", ans: "3", opts: ["3","9","15","−3"] },
+      { q: "Solve: |2x − 4| = 10", hint: "Two cases: 2x−4=10 and 2x−4=−10", ans: "x = 7 or x = −3", opts: ["x = 7 or x = −3","x = 3 or x = 7","x = 7 or x = 3","x = −7 or x = 3"] },
+      { q: "Simplify: (x² − 9) ÷ (x − 3)", hint: "Factorise numerator using difference of squares", ans: "x + 3", opts: ["x + 3","x − 3","x + 9","x²−3"] },
+      { q: "The nth term of a sequence is 4n − 1. What is the 10th term?", hint: "Substitute n = 10", ans: "39", opts: ["39","41","40","49"] },
+    ]
+  },
+  fractions: {
+    medium: [
+      { q: "Calculate: ³⁄₄ + ²⁄₃", hint: "Find common denominator (12)", ans: "17/12", opts: ["17/12","5/7","7/12","5/12"] },
+      { q: "What is ⁵⁄₆ − ¹⁄₄?", hint: "Common denominator is 12", ans: "7/12", opts: ["7/12","4/2","1/2","2/3"] },
+      { q: "Calculate: ²⁄₃ × ³⁄₅", hint: "Multiply numerators and denominators", ans: "2/5", opts: ["2/5","6/8","5/8","2/3"] },
+      { q: "What is 0.375 as a fraction?", hint: "375/1000 — simplify by dividing by 125", ans: "3/8", opts: ["3/8","1/3","3/4","3/5"] },
+      { q: "Which is larger: 5/8 or 3/5?", hint: "Convert to common denominator (40)", ans: "5/8", opts: ["5/8","3/5","They're equal","Cannot tell"] },
+      { q: "Calculate: 1²⁄₃ + 2³⁄₄", hint: "Convert to improper fractions first", ans: "4 5/12", opts: ["4 5/12","3 1/2","4 1/6","5 2/3"] },
+      { q: "What is ³⁄₄ ÷ ³⁄₈?", hint: "Flip second fraction and multiply", ans: "2", opts: ["2","9/32","1/2","6/4"] },
+      { q: "Express 2.75 as a mixed number", hint: "2 whole + 75/100", ans: "2¾", opts: ["2¾","2.75","2 3/5","2½"] },
+      { q: "Calculate: ⁷⁄₈ × 24", hint: "Multiply numerator by 24, divide by 8", ans: "21", opts: ["21","16","18","24"] },
+      { q: "Simplify: 36/48", hint: "Find GCF (12) and divide", ans: "3/4", opts: ["3/4","6/8","4/5","2/3"] },
+    ],
+    hard: [
+      { q: "Calculate: (²⁄₃)² + (¹⁄₂)²", hint: "Square each fraction, then add", ans: "25/36", opts: ["25/36","4/9","5/12","1"] },
+      { q: "Solve: x/5 + x/3 = 16", hint: "LCM of 5 and 3 is 15", ans: "30", opts: ["30","24","45","15"] },
+      { q: "What is 5 ÷ 2⁄₃?", hint: "Flip: 5 × 3/2", ans: "7½", opts: ["7½","3⅓","10/3","15"] },
+      { q: "Arrange ascending: 2/3, 3/4, 5/7, 7/10", hint: "Convert to decimals: 0.667, 0.75, 0.714, 0.7", ans: "2/3 < 7/10 < 5/7 < 3/4", opts: ["2/3 < 7/10 < 5/7 < 3/4","2/3 < 5/7 < 7/10 < 3/4","7/10 < 2/3 < 5/7 < 3/4","3/4 > 5/7 > 2/3 > 7/10"] },
+      { q: "A recipe needs 2⅓ cups. For 3 batches, how many cups?", hint: "Multiply 7/3 × 3", ans: "7 cups", opts: ["7 cups","6 cups","6⅔ cups","9 cups"] },
+      { q: "What fraction is halfway between ¼ and ¾?", hint: "Add them and divide by 2", ans: "1/2", opts: ["1/2","1/4","2/4","3/8"] },
+      { q: "If 2/5 of a number is 34, what is the number?", hint: "Divide 34 by 2/5", ans: "85", opts: ["85","68","17","70"] },
+      { q: "Calculate: 3.6 × 0.25 ÷ 0.9", hint: "Work left to right: 0.9 ÷ 0.9 = 1", ans: "1", opts: ["1","0.81","1.2","0.9"] },
+      { q: "Express as a decimal: 5/11", hint: "Long division: 5 ÷ 11", ans: "0.4545…", opts: ["0.4545…","0.55","0.45","0.5"] },
+      { q: "Which fraction is closest to 1? 7/8, 11/12, 14/15, 9/10", hint: "Calculate distance from 1: 1/8, 1/12, 1/15, 1/10", ans: "14/15", opts: ["14/15","11/12","9/10","7/8"] },
+    ]
+  },
+  geometry: {
+    medium: [
+      { q: "Area of a rectangle: length 9 cm, width 6 cm", hint: "Area = length × width", ans: "54 cm²", opts: ["54 cm²","30 cm²","48 cm²","45 cm²"] },
+      { q: "Perimeter of a square with side 7 cm", hint: "Perimeter = 4 × side", ans: "28 cm", opts: ["28 cm","49 cm","21 cm","14 cm"] },
+      { q: "Area of a triangle: base 10 cm, height 6 cm", hint: "Area = ½ × base × height", ans: "30 cm²", opts: ["30 cm²","60 cm²","15 cm²","45 cm²"] },
+      { q: "What is the sum of angles in a triangle?", hint: "A fundamental geometry fact", ans: "180°", opts: ["180°","360°","90°","270°"] },
+      { q: "Circumference of a circle with radius 7 cm (π ≈ 3.14)", hint: "C = 2πr", ans: "43.96 cm", opts: ["43.96 cm","153.86 cm","21.98 cm","87.92 cm"] },
+      { q: "Volume of a cube with side 4 cm", hint: "V = side³", ans: "64 cm³", opts: ["64 cm³","48 cm³","16 cm³","32 cm³"] },
+      { q: "A right triangle has legs 3 and 4. Find the hypotenuse.", hint: "Use Pythagoras: a² + b² = c²", ans: "5", opts: ["5","7","√25 = 5","6"] },
+      { q: "Area of a circle with radius 5 cm (π ≈ 3.14)", hint: "A = πr²", ans: "78.5 cm²", opts: ["78.5 cm²","31.4 cm²","157 cm²","25π cm²"] },
+      { q: "How many sides does a hexagon have?", hint: "Hex = 6 in Latin", ans: "6", opts: ["6","5","7","8"] },
+      { q: "What is the area of a parallelogram with base 8 cm and height 5 cm?", hint: "A = base × height", ans: "40 cm²", opts: ["40 cm²","26 cm²","20 cm²","80 cm²"] },
+    ],
+    hard: [
+      { q: "A cylinder has r = 3 cm, h = 10 cm. Find its volume (π ≈ 3.14).", hint: "V = πr²h", ans: "282.6 cm³", opts: ["282.6 cm³","94.2 cm³","188.4 cm³","942 cm³"] },
+      { q: "A right triangle has hypotenuse 13 and one leg 5. Find the other leg.", hint: "b² = 13² − 5² = 169 − 25 = 144", ans: "12", opts: ["12","8","10","√144"] },
+      { q: "What is the sum of interior angles of a hexagon?", hint: "Formula: (n−2) × 180°, n=6", ans: "720°", opts: ["720°","540°","900°","1080°"] },
+      { q: "A cone has r = 4 cm, h = 9 cm. Find its volume (π ≈ 3.14).", hint: "V = ⅓πr²h", ans: "150.72 cm³", opts: ["150.72 cm³","452.16 cm³","50.24 cm³","301.44 cm³"] },
+      { q: "The diagonal of a square is 8√2 cm. Find the side length.", hint: "d = s√2, so s = d/√2", ans: "8 cm", opts: ["8 cm","4 cm","16 cm","8√2 cm"] },
+      { q: "Find the exterior angle of a regular pentagon.", hint: "Exterior angle = 360° ÷ n", ans: "72°", opts: ["72°","108°","60°","45°"] },
+      { q: "A sphere has radius 3 cm. Find its surface area (π ≈ 3.14).", hint: "SA = 4πr²", ans: "113.04 cm²", opts: ["113.04 cm²","56.52 cm²","28.26 cm²","226.08 cm²"] },
+      { q: "Two supplementary angles are in ratio 2:3. Find the smaller angle.", hint: "2x + 3x = 180°", ans: "72°", opts: ["72°","108°","60°","36°"] },
+      { q: "A rectangle has area 48 cm² and length 8 cm. Find its perimeter.", hint: "Width = 48/8 = 6; P = 2(l+w)", ans: "28 cm", opts: ["28 cm","48 cm","14 cm","56 cm"] },
+      { q: "Find the length of an arc with radius 6 cm and central angle 90° (π ≈ 3.14).", hint: "Arc = (θ/360) × 2πr", ans: "9.42 cm", opts: ["9.42 cm","18.84 cm","4.71 cm","28.26 cm"] },
+    ]
+  },
+  percentages: {
+    medium: [
+      { q: "What is 25% of 160?", hint: "25% = ¼", ans: "40", opts: ["40","45","35","50"] },
+      { q: "A shirt costs ₹800. 15% discount. Final price?", hint: "Discount = 15% × 800 = 120", ans: "₹680", opts: ["₹680","₹720","₹700","₹640"] },
+      { q: "What percentage is 45 out of 180?", hint: "45/180 × 100", ans: "25%", opts: ["25%","30%","20%","35%"] },
+      { q: "Increase 250 by 20%.", hint: "250 + (20% × 250)", ans: "300", opts: ["300","270","280","350"] },
+      { q: "A score of 36 out of 45. What percentage?", hint: "36/45 × 100", ans: "80%", opts: ["80%","75%","85%","90%"] },
+      { q: "Simple interest: ₹5000 at 8% p.a. for 2 years.", hint: "SI = P × R × T / 100", ans: "₹800", opts: ["₹800","₹400","₹1600","₹1000"] },
+      { q: "A population of 2000 increases by 5%. New population?", hint: "2000 + 5% of 2000", ans: "2100", opts: ["2100","2050","2200","2500"] },
+      { q: "12 is what percent of 60?", hint: "12/60 × 100", ans: "20%", opts: ["20%","25%","15%","30%"] },
+      { q: "A jacket was ₹1200, now ₹900. Percentage decrease?", hint: "(300/1200) × 100", ans: "25%", opts: ["25%","30%","20%","33%"] },
+      { q: "VAT of 18% on ₹2000 item. Total price?", hint: "2000 + 18% × 2000", ans: "₹2360", opts: ["₹2360","₹2180","₹2400","₹2200"] },
+    ],
+    hard: [
+      { q: "Compound interest: ₹10,000 at 10% p.a. for 2 years.", hint: "A = P(1 + r/100)^t", ans: "₹12,100", opts: ["₹12,100","₹12,000","₹11,000","₹12,200"] },
+      { q: "A price increased by 25% then decreased by 20%. Net change?", hint: "1.25 × 0.80 = 1.0", ans: "0% (no change)", opts: ["0% (no change)","+5%","−5%","+45%"] },
+      { q: "If 40% of students passed and 120 failed, how many students total?", hint: "60% failed = 120, so 1% = 2", ans: "200", opts: ["200","300","180","240"] },
+      { q: "An item was bought for ₹500 and sold for ₹625. Profit %?", hint: "Profit% = (125/500) × 100", ans: "25%", opts: ["25%","20%","30%","12.5%"] },
+      { q: "₹15,000 at 12% p.a. simple interest. When does it become ₹18,600?", hint: "SI = 3600; T = SI×100/(P×R)", ans: "2 years", opts: ["2 years","3 years","2.5 years","1.5 years"] },
+      { q: "A shop gives 10% then 10% discount. Net discount %?", hint: "100 → 90 → 81, discount = 19%", ans: "19%", opts: ["19%","20%","21%","10%"] },
+      { q: "In a class of 50, 60% are girls. 40% of girls play sports. How many girls play sports?", hint: "Girls = 30; 40% of 30", ans: "12", opts: ["12","18","20","10"] },
+      { q: "Cost price ₹720, markup 25%, then 20% sale discount. Sale price?", hint: "CP × 1.25 × 0.80", ans: "₹720", opts: ["₹720","₹900","₹648","₹800"] },
+      { q: "Population grows from 80,000 to 92,000 in one year. Growth %?", hint: "(12000/80000) × 100", ans: "15%", opts: ["15%","12%","20%","14%"] },
+      { q: "A student scored 72% in one test and 85% in another (equal weight). Average?", hint: "(72 + 85) / 2", ans: "78.5%", opts: ["78.5%","77%","79%","76%"] },
+    ]
+  }
+};
+
+// Build mixed bank
+QUESTIONS.mixed = { medium: [], hard: [] };
+['algebra','fractions','geometry','percentages'].forEach(cat => {
+  QUESTIONS.mixed.medium.push(...QUESTIONS[cat].medium);
+  QUESTIONS.mixed.hard.push(...QUESTIONS[cat].hard);
+});
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let selectedCat = null, selectedDiff = 'medium';
+let questions = [], currentQ = 0, score = 0, lives = 3;
+let streak = 0, bestStreak = 0;
+let correct = 0, wrong = 0;
+let timeLeft = 60, timerInterval = null;
+let answered = false;
+let qResults = [];
+let answering = false;
+
+// ══════════════════════════════════════════
+//  MENU
+// ══════════════════════════════════════════
+function selectCat(el) {
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCat = el.dataset.cat;
+  document.getElementById('startBtn').disabled = false;
+  document.getElementById('startBtn').textContent = '🚀 Start Game!';
+}
+
+function selectDiff(el) {
+  document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDiff = el.dataset.diff;
+}
+
+// ══════════════════════════════════════════
+//  START / COUNTDOWN
+// ══════════════════════════════════════════
+function startGame() {
+  if (!selectedCat) return;
+  showCountdown(() => initGame());
+}
+
+function showCountdown(cb) {
+  const overlay = document.getElementById('countdownOverlay');
+  const num = document.getElementById('cdNumber');
+  overlay.style.display = 'flex';
+  let c = 3;
+  num.textContent = c;
+  const iv = setInterval(() => {
+    c--;
+    if (c === 0) { num.textContent = 'GO!'; }
+    else if (c < 0) {
+      clearInterval(iv);
+      overlay.style.display = 'none';
+      cb();
+    } else {
+      num.textContent = c;
+    }
+  }, 900);
+}
+
+function initGame() {
+  let pool = [...QUESTIONS[selectedCat][selectedDiff]];
+  // shuffle
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  // shuffle options within each question
+  pool = pool.slice(0, 10).map(q => {
+    const opts = [...q.opts];
+    for (let i = opts.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [opts[i], opts[j]] = [opts[j], opts[i]];
+    }
+    return { ...q, opts };
+  });
+
+  questions = pool;
+  currentQ = 0; score = 0; lives = 3;
+  streak = 0; bestStreak = 0;
+  correct = 0; wrong = 0;
+  qResults = [];
+  answering = false;
+
+  const catNames = {
+    algebra: '🔢 Algebra', fractions: '½ Fractions',
+    geometry: '📐 Geometry', percentages: '% Percentages', mixed: '🎲 Mixed'
+  };
+  document.getElementById('catDisp').textContent = catNames[selectedCat];
+
+  showScreen('gameScreen');
+  startTimer();
+  buildProgress();
+  renderQuestion();
+}
+
+// ══════════════════════════════════════════
+//  TIMER
+// ══════════════════════════════════════════
+function startTimer() {
+  timeLeft = 60;
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerUI();
+    if (timeLeft <= 0) { clearInterval(timerInterval); endGame('timeout'); }
+  }, 1000);
+}
+
+function updateTimerUI() {
+  document.getElementById('timerDisp').textContent = timeLeft;
+  document.getElementById('timerBar').style.width = (timeLeft / 60 * 100) + '%';
+  const pill = document.getElementById('timerPill');
+  pill.classList.toggle('warn', timeLeft <= 10);
+}
+
+// ══════════════════════════════════════════
+//  RENDER QUESTION
+// ══════════════════════════════════════════
+function renderQuestion() {
+  answering = false;
+  const q = questions[currentQ];
+  document.getElementById('qNumber').textContent = `Question ${currentQ + 1} of ${questions.length}`;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('qHint').textContent = `💡 Hint: ${q.hint}`;
+  document.getElementById('scoreDisp').textContent = score;
+  updateLivesUI();
+  updateStreakUI();
+  updateProgress();
+
+  const grid = document.getElementById('optionsGrid');
+  const fillRow = document.getElementById('fillRow');
+
+  if (q.opts && q.opts.length) {
+    grid.style.display = 'grid';
+    fillRow.style.display = 'none';
+    grid.innerHTML = '';
+    q.opts.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.textContent = opt;
+      btn.onclick = () => handleAnswer(opt, btn);
+      grid.appendChild(btn);
+    });
+  } else {
+    grid.style.display = 'none';
+    fillRow.style.display = 'flex';
+    const inp = document.getElementById('fillInput');
+    inp.value = '';
+    inp.className = 'fill-input';
+    inp.disabled = false;
+    inp.focus();
+    inp.onkeydown = e => { if (e.key === 'Enter') submitFill(); };
+  }
+}
+
+// ══════════════════════════════════════════
+//  ANSWER HANDLING
+// ══════════════════════════════════════════
+function handleAnswer(chosen, btn) {
+  if (answering) return;
+  answering = true;
+  const q = questions[currentQ];
+  const isCorrect = chosen === q.ans;
+  processResult(isCorrect, btn, null);
+}
+
+function submitFill() {
+  if (answering) return;
+  const inp = document.getElementById('fillInput');
+  const val = inp.value.trim();
+  if (!val) return;
+  answering = true;
+  const q = questions[currentQ];
+  const isCorrect = val.toLowerCase() === q.ans.toLowerCase();
+  processResult(isCorrect, null, inp);
+}
+
+function processResult(isCorrect, btn, inp) {
+  const q = questions[currentQ];
+  const pts = isCorrect ? (10 + streak * 2) : 0;
+
+  if (isCorrect) {
+    correct++;
+    streak++;
+    if (streak > bestStreak) bestStreak = streak;
+    score += pts;
+    qResults.push('correct');
+    showToast(`✅ +${pts} pts${streak > 1 ? ' 🔥 Streak x' + streak + '!' : ''}`, true);
+    if (btn) btn.classList.add('correct');
+    if (inp) inp.classList.add('correct');
+  } else {
+    wrong++;
+    lives--;
+    streak = 0;
+    qResults.push('wrong');
+    showToast(`❌ Correct answer: ${q.ans}`, false);
+    if (btn) btn.classList.add('wrong');
+    if (inp) inp.classList.add('wrong');
+    // highlight correct
+    if (btn) {
+      document.querySelectorAll('.opt-btn').forEach(b => {
+        if (b.textContent === q.ans) b.classList.add('correct');
+      });
+    }
+    document.getElementById('scoreDisp').textContent = score;
+    updateLivesUI();
+    if (lives <= 0) {
+      setTimeout(() => { clearInterval(timerInterval); endGame('lives'); }, 900);
+      return;
+    }
+  }
+
+  // disable all options
+  document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+  document.getElementById('scoreDisp').textContent = score;
+  updateStreakUI();
+
+  setTimeout(() => {
+    currentQ++;
+    if (currentQ >= questions.length) { clearInterval(timerInterval); endGame('complete'); }
+    else { renderQuestion(); }
+  }, 900);
+}
+
+// ══════════════════════════════════════════
+//  UI HELPERS
+// ══════════════════════════════════════════
+function updateLivesUI() {
+  const l = Math.max(0, lives);
+  document.getElementById('livesDisp').textContent = '❤️'.repeat(l) + '🖤'.repeat(3 - l);
+}
+
+function updateStreakUI() {
+  const pill = document.getElementById('streakPill');
+  if (streak >= 2) {
+    pill.style.display = 'flex';
+    document.getElementById('streakDisp').textContent = streak;
+  } else {
+    pill.style.display = 'none';
+  }
+}
+
+function buildProgress() {
+  const row = document.getElementById('progressRow');
+  row.innerHTML = '';
+  for (let i = 0; i < questions.length; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'prog-dot' + (i === 0 ? ' current' : '');
+    dot.id = `pdot-${i}`;
+    row.appendChild(dot);
+  }
+}
+
+function updateProgress() {
+  for (let i = 0; i < questions.length; i++) {
+    const dot = document.getElementById(`pdot-${i}`);
+    if (!dot) continue;
+    dot.className = 'prog-dot';
+    if (i < qResults.length) {
+      dot.classList.add(qResults[i] === 'correct' ? 'answered-correct' : 'answered-wrong');
+    } else if (i === currentQ) {
+      dot.classList.add('current');
+    }
+  }
+}
+
+let toastTimeout;
+function showToast(msg, isCorrect) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'feedback-toast ' + (isCorrect ? 'correct-fb' : 'wrong-fb') + ' show';
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => t.classList.remove('show'), 1600);
+}
+
+// ══════════════════════════════════════════
+//  END GAME
+// ══════════════════════════════════════════
+function endGame(reason) {
+  clearInterval(timerInterval);
+  const total = qResults.length;
+  const acc = total ? Math.round((correct / total) * 100) : 0;
+
+  let emoji, title, sub;
+  if (acc >= 90) { emoji = '🏆'; title = 'Legendary!'; sub = 'You aced it! Incredible work!'; }
+  else if (acc >= 75) { emoji = '🌟'; title = 'Excellent!'; sub = 'Outstanding performance!'; }
+  else if (acc >= 60) { emoji = '😎'; title = 'Great Job!'; sub = 'Keep practising to reach the top!'; }
+  else if (acc >= 40) { emoji = '💪'; title = 'Good Try!'; sub = 'Review the hints and try again!'; }
+  else { emoji = '📚'; title = 'Keep Studying!'; sub = 'Maths gets easier with practice!'; }
+
+  if (reason === 'timeout') sub = '⏰ Time ran out! ' + sub;
+  if (reason === 'lives') sub = '💔 Ran out of lives! ' + sub;
+
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultSub').textContent = sub;
+  document.getElementById('rScore').textContent = score;
+  document.getElementById('rCorrect').textContent = correct;
+  document.getElementById('rWrong').textContent = wrong;
+  document.getElementById('rStreak').textContent = bestStreak;
+  document.getElementById('rAccuracy').textContent = acc + '%';
+  document.getElementById('rTime').textContent = timeLeft + 's';
+
+  setTimeout(() => showScreen('resultScreen'), 400);
+}
+
+// ══════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function restartSame() {
+  clearInterval(timerInterval);
+  showScreen('menuScreen');
+  setTimeout(() => {
+    if (selectedCat) startGame();
+  }, 100);
+}
+
+function goMenu() {
+  clearInterval(timerInterval);
+  showScreen('menuScreen');
+}
+</script>
+
+<script src="session-tracker.js"></script>
+
+</body>
+</html>
