@@ -1070,12 +1070,4 @@ function launchConfetti(){
 }
 </script>
 </body>
-</html>'''
-
-with open('/root/student-form.html', 'w', encoding='utf-8') as f:
-    f.write(html_content)
-
-import os
-size = os.path.getsize('/root/student-form.html')
-print(f"File created successfully! Size: {size:,} bytes ({size//1024} KB)")
-print("Filename: student-form.html")
+</html>

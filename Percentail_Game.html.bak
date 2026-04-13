@@ -603,5 +603,7 @@ function endGame(){
   else sfx('ok');
 }
 </script>
+
+<script src="session-tracker.js"></script>
 </body>
 </html>

@@ -164,9 +164,9 @@ footer{text-align:center;padding:16px;font-size:.7rem;color:var(--faint);border-
     <div class="reg-grid">
       <div class="rg"><label class="rl">Your Name *</label><input class="ri" id="rName" type="text" placeholder="e.g. Arjun"></div>
       <div class="rg"><label class="rl">Age *</label><input class="ri" id="rAge" type="number" placeholder="12" min="5" max="25"></div>
-      <div class="rg"><label class="rl">Class / Grade *</label><input class="ri" id="rClass" type="text" placeholder="8th Grade"></div>
-      <div class="rg"><label class="rl">Parent WhatsApp *</label><input class="ri" id="rPhone" type="tel" placeholder="+91 9876543210"></div>
-      <div class="rg full"><label class="rl">Parent Email</label><input class="ri" id="rEmail" type="email" placeholder="parent@email.com"></div>
+      <div class="rg"><label class="rl"> Student/Profession *</label><input class="ri" id="rClass" type="text" placeholder="8th Grade/Job"></div>
+      <div class="rg"><label class="rl">WhatsApp *</label><input class="ri" id="rPhone" type="tel" placeholder="+91 9876543210"></div>
+      <div class="rg full"><label class="rl">Email</label><input class="ri" id="rEmail" type="email" placeholder="parent@email.com"></div>
     </div>
   </div>
   <button class="btn btn-p btn-full" onclick="startTest()">🚀 Start Brain Test — FREE</button>

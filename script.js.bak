@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     {
       q: 'How many Quotients are there and what are they?',
-      a: 'There are three primary quotients assessed at Bhava Tech. IQ (Intelligence Quotient) measures logical reasoning, memory, problem-solving, and processing speed. EQ (Emotional Quotient) measures self-awareness, empathy, emotional regulation, and social skills. SQ (Spiritual/Social Quotient) measures inner clarity, sense of purpose, and values alignment. Together they give a complete picture of cognitive and personal development.'
+      a: 'There are three primary quotients assessed at Bhava Tech. IQ (Intelligence Quotient) measures logical reasoning, memory, problem-solving, and processing speed. EQ (Emotional Quotient) measures self-awareness, empathy, emotional regulation, and social skills. SQ (Spiritual Quotient) measures inner clarity, sense of purpose, and values alignment. Together they give a complete picture of cognitive and personal development.'
     },
     {
       q: 'Is IQ the only measure of intelligence?',
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
       a: 'EQ assessment reveals how a child or adult manages emotions, handles stress, relates to others, and responds to failure. High EQ is linked to better academic performance, stronger friendships, mental health resilience, and leadership ability. Knowing your EQ score helps you work on specific emotional skills such as calming anger, expressing feelings clearly, and developing empathy.'
     },
     {
-      q: 'What are the benefits of SQ (Spiritual/Social Quotient) assessment?',
+      q: 'What are the benefits of SQ (Spiritual Quotient) assessment?',
       a: 'SQ measures a person\'s sense of inner purpose, values clarity, and ability to think beyond immediate desires. High SQ is associated with better life decisions, inner peace, meaningful relationships, and ethical behaviour. For children, SQ development builds character and integrity - qualities no textbook can teach but every parent wants their child to have.'
     },
     {

@@ -3,6 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- NEW version — paste in <head> -->
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'en,hi,te,ta,es,ar,zh-CN,fr,ja,pt,ko',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      autoDisplay: false
+    }, 'google_translate_element');
+  }
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <meta name="description" content="Bhāva Tech — Brain Gym, IQ EQ SQ Assessments, Cognitive Research and Linguistic Tools. Visakhapatnam, Andhra Pradesh." />
   <meta name="keywords" content="Brain Gym Vizag, IQ test children, EQ SQ assessment, cognitive enhancement, Sanskrit NLP, Bhava Tech" />
@@ -100,6 +112,27 @@
       display:flex; align-items:center; justify-content:center;
     }
 </style>
+<style>
+/* Google Translate — DROPDOWN layout */
+#google_translate_element { display: inline-block; }
+
+.goog-te-gadget {
+  font-size: 0 !important;
+}
+.goog-te-gadget select {
+  background: rgba(255,255,255,0.12) !important;
+  border: 1px solid rgba(255,255,255,0.35) !important;
+  border-radius: 20px !important;
+  color: #fff !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.82rem !important;
+  padding: 4px 10px !important;
+  cursor: pointer !important;
+  outline: none !important;
+}
+.goog-te-banner-frame.skiptranslate { display: none !important; }
+.translated-ltr, .translated-rtl { margin-top: 0 !important; }
+</style>
 </head>
 <body>
 
@@ -127,8 +160,39 @@
   <li><a href="#games">Games</a></li>
   <li><a href="#pricing">Pricing</a></li>
   <li><a href="#faq">FAQ</a></li>
+  <li style="display:flex; align-items:center; position:relative;">
+  <select onchange="translatePage(this.value)" style="
+    background: rgba(30,27,75,0.85);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 20px;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    cursor: pointer;
+    outline: none;
+    max-width: 130px;
+  ">
+    <option value=""    style="background:#1e1b4b; color:#fff;">🌐 Language</option>
+    <option value="en"  style="background:#1e1b4b; color:#fff;">English</option>
+    <option value="hi"  style="background:#1e1b4b; color:#fff;">हिन्दी (Hindi)</option>
+    <option value="te"  style="background:#1e1b4b; color:#fff;">తెలుగు (Telugu)</option>
+    <option value="ta"  style="background:#1e1b4b; color:#fff;">தமிழ் (Tamil)</option>
+    <option value="es"  style="background:#1e1b4b; color:#fff;">Español</option>
+    <option value="ar"  style="background:#1e1b4b; color:#fff;">العربية (Arabic)</option>
+    <option value="zh-CN" style="background:#1e1b4b; color:#fff;">中文 (Chinese)</option>
+    <option value="fr"  style="background:#1e1b4b; color:#fff;">Français</option>
+    <option value="ja"  style="background:#1e1b4b; color:#fff;">日本語 (Japanese)</option>
+    <option value="pt"  style="background:#1e1b4b; color:#fff;">Português</option>
+    <option value="ko"  style="background:#1e1b4b; color:#fff;">한국어 (Korean)</option>
+  </select>
+<div id="google_translate_element" style="position:absolute; top:-9999px; left:-9999px; width:1px; height:1px; overflow:hidden;"></div> 
+</li>
   <li><a href="#contact" class="nav-cta">CONTACT</a></li>
 </ul>
+      <button class="hamburger" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
@@ -170,94 +234,56 @@
         </div>
         <div class="stat-card">
           <span class="stat-number">🌍</span>
-          <span class="stat-label"> Online</span>
+          <span class="stat-label">Worldwide Online</span>
         </div>
       </div>
     </div>
   </section>
 
-<!-- ============ ABOUT ============ -->
-<section id="about">
-  <div class="container">
-    <div class="section-header section-animate">
-      <h2>About <span class="accent">Bhāva Tech</span></h2>
-      <p>IQ and cognitive enhancement centre — online &amp; in-person</p>
+  <!-- ============ ABOUT ============ -->
+  <section id="about">
+    <div class="container">
+      <div class="section-header section-animate">
+        <h2>About <span class="accent">Bhāva Tech</span></h2>
+        <p>IQ and cognitive enhancement centre — online &amp; in-person</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-text section-animate">
+          <p>
+            The human brain is the most powerful organ in the known universe — yet most people never truly
+            understand how it works or how to use it to its full potential. At <strong>Bhāva Tech</strong>,
+            we help children, students, and adults do exactly that.
+          </p>
+          <p style="margin-top:14px;">
+            Through scientifically designed IQ, EQ, and SQ assessments, we give you a clear picture of where
+            your cognitive strengths lie and where improvement is possible. Our Brain Gym programs train the
+            mind the same way physical exercise trains the body — with consistency, structure, and measurable
+            results. <strong>All services are available 100% online for global participants.</strong>
+          </p>
+          <ul class="highlight-list">
+            <li>🧠 Understand your IQ, EQ &amp; SQ with certified assessments</li>
+            <li>🏋️ Train your brain with structured Brain Gym programs</li>
+            <li>🧘 Restore focus and calm in our Meditational Lab</li>
+            <li>📊 Receive detailed personal reports with actionable guidance</li>
+            <li>🌍 Online sessions available for students worldwide</li>
+            <li>🏢 Physical office at Ramatalkies, Visakhapatnam</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Get in Touch</a>
+          &nbsp;
+          <a href="https://wa.me/919573057516" target="_blank" class="btn btn-outline">💬 WhatsApp Us</a>
+        </div>
+        <div class="about-card section-animate">
+          <div class="founder-contact">
+            <a href="tel:+919573057516">📞 +91 95730 57516</a>
+            <a href="tel:+919618365156">📞 +91 96183 65156</a>
+            <a href="mailto:bhaavatech@gmail.com">✉️ bhaavatech@gmail.com</a>
+            <a href="https://wa.me/919573057516" target="_blank">💬 WhatsApp (Click to Chat)</a>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="about-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;">
-
-      <!-- LEFT: Text Content -->
-      <div class="about-text section-animate">
-        <p>
-          The human brain is the most powerful organ in the known universe — yet most people never truly
-          understand how it works or how to use it to its full potential. At <strong>Bhāva Tech</strong>,
-          we help children, students, and adults do exactly that.
-        </p>
-        <p style="margin-top:14px;">
-          Through scientifically designed IQ, EQ, and SQ assessments, we give you a clear picture of where
-          your cognitive strengths lie and where improvement is possible. Our Brain Gym programs train the
-          mind the same way physical exercise trains the body — with consistency, structure, and measurable
-          results. <strong>All services are available 100% online for global participants.</strong>
-        </p>
-        <ul class="highlight-list">
-          <li>🧠 Understand your IQ, EQ &amp; SQ with certified assessments</li>
-          <li>🏋️ Train your brain with structured Brain Gym programs</li>
-          <li>🧘 Restore focus and calm in our Meditational Lab</li>
-          <li>📊 Receive detailed personal reports with actionable guidance</li>
-          <li>🌍 Online sessions available for students worldwide</li>
-          <li>🏢 Physical office at Ramatalkies, Visakhapatnam</li>
-        </ul>
-      </div>
-
-      <!-- RIGHT: Visual Stats Cards -->
-      <div class="about-visual section-animate" style="display:flex; flex-direction:column; gap:20px;">
-
-        <div style="background:linear-gradient(135deg,#1a1a5e,#2d2d8f); border-radius:16px; padding:28px 24px; text-align:center; box-shadow:0 8px 24px rgba(0,0,0,0.3);">
-          <div style="font-size:2.6rem; font-weight:800; color:#00d4ff;">IQ · EQ · SQ</div>
-          <div style="color:#ccd6f6; margin-top:8px; font-size:0.95rem;">Tri-dimensional cognitive assessment</div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-          <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:22px 16px; text-align:center;">
-            <div style="font-size:2rem; font-weight:700; color:#00d4ff;">100%</div>
-            <div style="font-size:0.82rem; color:#aab4d4; margin-top:6px;">Online Available</div>
-          </div>
-          <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:22px 16px; text-align:center;">
-            <div style="font-size:2rem; font-weight:700; color:#a78bfa;">3+</div>
-            <div style="font-size:0.82rem; color:#aab4d4; margin-top:6px;">Age Groups Served</div>
-          </div>
-          <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:22px 16px; text-align:center;">
-            <div style="font-size:2rem; font-weight:700; color:#34d399;">🧘</div>
-            <div style="font-size:0.82rem; color:#aab4d4; margin-top:6px;">Meditation Lab</div>
-          </div>
-          <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:22px 16px; text-align:center;">
-            <div style="font-size:2rem; font-weight:700; color:#f59e0b;">📊</div>
-            <div style="font-size:0.82rem; color:#aab4d4; margin-top:6px;">Personal Reports</div>
-          </div>
-        </div>
-
-        <div style="background:linear-gradient(135deg,#0f3460,#16213e); border-radius:14px; padding:20px 22px; display:flex; align-items:center; gap:14px; border:1px solid rgba(0,212,255,0.2);">
-          <span style="font-size:1.8rem;">🏢</span>
-          <div>
-            <div style="font-weight:600; color:#e2e8f0; font-size:0.95rem;">Visit Us In-Person</div>
-            <div style="color:#94a3b8; font-size:0.82rem; margin-top:3px;">Ramatalkies, Visakhapatnam</div>
-          </div>
-        </div>
-
-      </div>
-    </div><!-- end about-grid -->
-
-    <!-- Responsive override -->
-    <style>
-      @media (max-width: 768px) {
-        #about .about-grid {
-          grid-template-columns: 1fr !important;
-        }
-      }
-    </style>
-
-  </div>
-</section>
 <!-- ═══════════════════════════════════════════
      BRAIN GYM FOR CHILDREN — UPDATED SECTION
 ═══════════════════════════════════════════ -->
@@ -537,7 +563,7 @@
         <span style="font-size:0.8rem;color:#6b7280;">Mathematics</span>
       </a>
 
-      <a href="Empathy-quest.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
+      <a href="EmpathyQuest_v2.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
         <div style="font-size:2.5rem;">❤️</div>
         <h4 style="margin:10px 0 6px;">Empathy Quest</h4>
         <span style="font-size:0.8rem;color:#6b7280;">Emotional Intelligence</span>
@@ -549,48 +575,20 @@
         <span style="font-size:0.8rem;color:#6b7280;">IQ Assessment</span>
       </a>
 
-  <a href="DayHero_15_Auto.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
-        <div style="font-size:2.5rem;">🦸</div>
-        <h4 style="margin:10px 0 6px;">Day Supe Hero</h4>
-        <span style="font-size:0.8rem;color:#6b7280;">Responsibility & Emotions</span>
-      </a>
-
-      <a href="brain-garden.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
-        <div style="font-size:2.5rem;">🃏</div>
-        <h4 style="margin:10px 0 6px;">Brain Garden</h4>
-        <span style="font-size:0.8rem;color:#6b7280;">Memory Training</span>
-      </a>
-
-
-      <a href="logic.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
-        <div style="font-size:2.5rem;">🃏</div>
-        <h4 style="margin:10px 0 6px;">Logical King</h4>
-        <span style="font-size:0.8rem;color:#6b7280;">Logical Training</span>
-      </a>
-      <a href="memory-match-puzzle.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
+      <a href="memory-match-puzzle2.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
         <div style="font-size:2.5rem;">🃏</div>
         <h4 style="margin:10px 0 6px;">Memory Match</h4>
         <span style="font-size:0.8rem;color:#6b7280;">Memory Training</span>
       </a>
-      <a href="GrammarGalaxy.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
-        <div style="font-size:2.5rem;">🃏</div>
-        <h4 style="margin:10px 0 6px;">English Grammr</h4>
-        <span style="font-size:0.8rem;color:#6b7280;">Grammar with space</span>
-      </a>
-      <a href="grammar_pro.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
-        <div style="font-size:2.5rem;">🃏</div>
-        <h4 style="margin:10px 0 6px;">Daily English </h4>
-        <span style="font-size:0.8rem;color:#6b7280;"> English Grammar</span>
-      </a>
 
       <a href="telugu_script_game_v2.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
-        <div style="font-size:2.5rem;">అ</div>
+        <div style="font-size:2.5rem;">తె</div>
         <h4 style="margin:10px 0 6px;">Telugu Script Game</h4>
         <span style="font-size:0.8rem;color:#6b7280;">Language Learning</span>
       </a>
 
       <a href="devanagari-game/" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
-        <div style="font-size:2.5rem;">अ</div>
+        <div style="font-size:2.5rem;">𑀤</div>
         <h4 style="margin:10px 0 6px;">Devanagari Game</h4>
         <span style="font-size:0.8rem;color:#6b7280;">Sanskrit Script</span>
       </a>
@@ -966,7 +964,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© <span id="footer-year"></span> Bhāva Tech. All rights reserved.</p>
+        <p>© <span id="footer-year"></span> Bhāva Tech. All rights reserved. | Designed with 🧠 by Dr. Rajeswara Rao</p>
       </div>
     </div>
   </footer>
@@ -993,6 +991,45 @@
   <script src="script.js" defer></script>
   <script src="script-2.js" defer></script>
   <script src="session-tracker.js"></script>
+<script>
+function translatePage(lang) {
+  if (!lang) return;
+
+  if (lang === 'en') {
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname;
+    window.location.reload();
+    return;
+  }
+
+  // Wait for Google widget to load, then trigger it
+  var attempts = 0;
+  var tryTranslate = setInterval(function () {
+    var combo = document.querySelector('.goog-te-combo');
+    attempts++;
+    if (combo) {
+      clearInterval(tryTranslate);
+      combo.value = lang;
+      combo.dispatchEvent(new Event('change'));
+    } else if (attempts > 30) {
+      // Fallback to cookie method after 3 seconds
+      clearInterval(tryTranslate);
+      document.cookie = 'googtrans=/en/' + lang + '; path=/';
+      document.cookie = 'googtrans=/en/' + lang + '; path=/; domain=' + location.hostname;
+      window.location.reload();
+    }
+  }, 100);
+}
+
+// Restore dropdown selection after page reload
+(function () {
+  var match = document.cookie.match(/googtrans=\/en\/([^;]+)/);
+  if (match) {
+    var sel = document.getElementById('lang-select');
+    if (sel) sel.value = match[1];
+  }
+})();
 </script>
+
 </body>
 </html>
