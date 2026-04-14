@@ -152,29 +152,80 @@
 <img src="assets/brain-right.png" class="hero-img-right" alt="Right Brain" loading="lazy">	
   </section>
 
-  <!-- ============ STATS ============ -->
-  <section id="stats">
-    <div class="container">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <span id="stat-students" class="stat-number">589+</span>
-          <span class="stat-label">Students Assessed</span>
-        </div>
-        <div class="stat-card">
-          <span id="stat-sessions" class="stat-number">490+</span>
-          <span class="stat-label">Brain Gym Sessions</span>
-        </div>
-        <div class="stat-card">
-          <span id="stat-courses" class="stat-number">50+</span>
-          <span class="stat-label">Courses Offered</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-number">🌍</span>
-          <span class="stat-label"> Online</span>
-        </div>
-      </div>
+ <!-- ============ STATS ============ -->
+<section id="stats" style="padding: 80px 0; background: linear-gradient(135deg, #0a0a2e 0%, #1a1a5e 50%, #0d0d3d 100%); position: relative; overflow: hidden;">
+
+  <!-- Background decorative circles -->
+  <div style="position:absolute; width:300px; height:300px; border-radius:50%; background:rgba(0,212,255,0.05); top:-100px; left:-100px; pointer-events:none;"></div>
+  <div style="position:absolute; width:200px; height:200px; border-radius:50%; background:rgba(167,139,250,0.05); bottom:-50px; right:-50px; pointer-events:none;"></div>
+
+  <div class="container">
+
+    <!-- Section Title -->
+    <div style="text-align:center; margin-bottom:48px;">
+      <h2 style="color:#ffffff; font-size:2rem; font-weight:700; margin:0;">Our <span style="color:#00d4ff;">Impact</span></h2>
     </div>
-  </section>
+
+    <div class="stats-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
+
+      <!-- Card 1 -->
+      <div class="stat-card" style="background:rgba(255,255,255,0.04); border:1px solid rgba(0,212,255,0.2); border-radius:20px; padding:36px 20px; text-align:center; position:relative; overflow:hidden; transition:transform 0.3s ease, box-shadow 0.3s ease;"
+        onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 20px 40px rgba(0,212,255,0.15)';"
+        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+        <div style="width:56px; height:56px; background:linear-gradient(135deg,#00d4ff,#0099cc); border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:1.6rem;">🧠</div>
+        <span id="stat-students" class="stat-number" style="display:block; font-size:2.4rem; font-weight:800; color:#00d4ff; line-height:1;">589+</span>
+        <span class="stat-label" style="display:block; color:#94a3b8; font-size:0.85rem; margin-top:8px; letter-spacing:0.5px;">Students Assessed</span>
+        <div style="position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#00d4ff,#0099cc);"></div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="stat-card" style="background:rgba(255,255,255,0.04); border:1px solid rgba(167,139,250,0.2); border-radius:20px; padding:36px 20px; text-align:center; position:relative; overflow:hidden; transition:transform 0.3s ease, box-shadow 0.3s ease;"
+        onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 20px 40px rgba(167,139,250,0.15)';"
+        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+        <div style="width:56px; height:56px; background:linear-gradient(135deg,#a78bfa,#7c3aed); border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:1.6rem;">🏋️</div>
+        <span id="stat-sessions" class="stat-number" style="display:block; font-size:2.4rem; font-weight:800; color:#a78bfa; line-height:1;">490+</span>
+        <span class="stat-label" style="display:block; color:#94a3b8; font-size:0.85rem; margin-top:8px; letter-spacing:0.5px;">Brain Gym Sessions</span>
+        <div style="position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#a78bfa,#7c3aed);"></div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="stat-card" style="background:rgba(255,255,255,0.04); border:1px solid rgba(52,211,153,0.2); border-radius:20px; padding:36px 20px; text-align:center; position:relative; overflow:hidden; transition:transform 0.3s ease, box-shadow 0.3s ease;"
+        onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 20px 40px rgba(52,211,153,0.15)';"
+        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+        <div style="width:56px; height:56px; background:linear-gradient(135deg,#34d399,#059669); border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:1.6rem;">📚</div>
+        <span id="stat-courses" class="stat-number" style="display:block; font-size:2.4rem; font-weight:800; color:#34d399; line-height:1;">50+</span>
+        <span class="stat-label" style="display:block; color:#94a3b8; font-size:0.85rem; margin-top:8px; letter-spacing:0.5px;">Courses Offered</span>
+        <div style="position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#34d399,#059669);"></div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="stat-card" style="background:rgba(255,255,255,0.04); border:1px solid rgba(251,146,60,0.2); border-radius:20px; padding:36px 20px; text-align:center; position:relative; overflow:hidden; transition:transform 0.3s ease, box-shadow 0.3s ease;"
+        onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 20px 40px rgba(251,146,60,0.15)';"
+        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+        <div style="width:56px; height:56px; background:linear-gradient(135deg,#fb923c,#ea580c); border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:1.6rem;">🌍</div>
+        <span class="stat-number" style="display:block; font-size:2.4rem; font-weight:800; color:#fb923c; line-height:1;">100%</span>
+        <span class="stat-label" style="display:block; color:#94a3b8; font-size:0.85rem; margin-top:8px; letter-spacing:0.5px;">Online</span>
+        <div style="position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#fb923c,#ea580c);"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mobile responsive -->
+  <style>
+    @media (max-width: 768px) {
+      #stats .stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+    @media (max-width: 480px) {
+      #stats .stats-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
+
+</section>
 
 <!-- ============ ABOUT ============ -->
 <section id="about">
@@ -537,7 +588,7 @@
         <span style="font-size:0.8rem;color:#6b7280;">Mathematics</span>
       </a>
 
-      <a href="Empathy-quest.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
+      <a href="empathy-quest.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
         <div style="font-size:2.5rem;">❤️</div>
         <h4 style="margin:10px 0 6px;">Empathy Quest</h4>
         <span style="font-size:0.8rem;color:#6b7280;">Emotional Intelligence</span>
@@ -567,11 +618,7 @@
         <h4 style="margin:10px 0 6px;">Logical King</h4>
         <span style="font-size:0.8rem;color:#6b7280;">Logical Training</span>
       </a>
-      <a href="memory-match-puzzle.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
-        <div style="font-size:2.5rem;">🃏</div>
-        <h4 style="margin:10px 0 6px;">Memory Match</h4>
-        <span style="font-size:0.8rem;color:#6b7280;">Memory Training</span>
-      </a>
+     
       <a href="GrammarGalaxy.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
         <div style="font-size:2.5rem;">🃏</div>
         <h4 style="margin:10px 0 6px;">English Grammr</h4>
@@ -931,7 +978,7 @@
         <div class="footer-brand">
           <img src="assets/logo.png" alt="Bhāva Tech" class="footer-logo" />
           <p>Bhāva Tech — Cognitive Enhancement &amp; Research Centre.<br />Bridging ancient Indian wisdom with modern science.</p>
-          <p class="footer-reg">UDYAM Registered MSME | Visakhapatnam, AP</p>
+          <p class="footer-reg">Visakhapatnam, AP, India</p>
         </div>
         <div class="footer-links">
           <h4>Services</h4>

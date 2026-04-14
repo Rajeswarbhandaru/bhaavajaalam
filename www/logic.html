@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prism Redirect</title>
+<style>
+    /* =========================================
+       CSS: STYLING, ANIMATIONS, AND UI
+       ========================================= */
+    :root {
+        --bg-color: #0f172a;
+        --panel-bg: #1e293b;
+        --text-color: #f8fafc;
+        --laser-color: #38bdf8;
+        --laser-glow: rgba(56, 189, 248, 0.6);
+        --mirror-color: #94a3b8;
+        --target-color: #22c55e;
+        --block-color: #334155;
+        --accent: #6366f1;
+    }
+
+    * {
+        box-sizing: border-box;
+        user-select: none;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+
+    #game-container {
+        position: relative;
+        background: var(--panel-bg);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Top HUD */
+    #hud {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 0 10px;
+    }
+
+    .hud-text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    button {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.1s, background 0.2s;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    button:hover { background: #4f46e5; }
+    button:active { transform: scale(0.95); }
+
+    /* The actual game board container */
+    #board {
+        position: relative;
+        background: #0f172a;
+        border: 2px solid #334155;
+        border-radius: 8px;
+        display: grid;
+        gap: 2px;
+        padding: 2px;
+        /* Canvas sits directly on top of the grid for laser rendering */
+    }
+
+    canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none; /* Let clicks pass through to grid cells */
+        z-index: 10;
+    }
+
+    /* Grid Cells */
+    .cell {
+        width: 60px;
+        height: 60px;
+        background: #1e293b;
+        border-radius: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: background 0.2s;
+        position: relative;
+    }
+
+    .cell:hover { background: #334155; }
+
+    /* Game Entities */
+    .emitter {
+        width: 30px;
+        height: 30px;
+        background: var(--laser-color);
+        border-radius: 50%;
+        box-shadow: 0 0 15px var(--laser-color);
+        position: relative;
+    }
+
+    /* Emitter direction indicator */
+    .emitter::after {
+        content: '';
+        position: absolute;
+        width: 15px;
+        height: 4px;
+        background: white;
+        top: 13px;
+        left: 15px;
+        border-radius: 2px;
+    }
+
+    .target {
+        width: 40px;
+        height: 40px;
+        background: transparent;
+        border: 4px solid var(--target-color);
+        border-radius: 50%;
+        box-shadow: inset 0 0 10px var(--target-color), 0 0 10px var(--target-color);
+        transition: all 0.3s ease;
+    }
+
+    .target.active {
+        background: var(--target-color);
+        transform: scale(1.1);
+    }
+
+    .block {
+        width: 100%;
+        height: 100%;
+        background: var(--block-color);
+        border-radius: 4px;
+        cursor: not-allowed;
+    }
+
+    /* Mirrors */
+    .mirror {
+        width: 80%;
+        height: 6px;
+        background: var(--mirror-color);
+        border-radius: 3px;
+        box-shadow: 0 0 5px rgba(255,255,255,0.5);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Modal Overlay for Level Complete */
+    #modal-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(15, 23, 42, 0.9);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 20;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+        border-radius: 16px;
+    }
+
+    #modal-overlay.visible {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .modal-title {
+        font-size: 3rem;
+        color: var(--target-color);
+        margin-bottom: 20px;
+        text-shadow: 0 0 20px rgba(34, 197, 94, 0.6);
+    }
+
+    p.instructions {
+        max-width: 400px;
+        text-align: center;
+        color: #94a3b8;
+        line-height: 1.5;
+        margin-top: 20px;
+        font-size: 0.9rem;
+    }
+
+</style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="hud">
+        <div class="hud-text" id="level-display">LEVEL 1</div>
+        <button onclick="resetCurrentLevel()">RESET PUZZLE</button>
+    </div>
+
+    <div id="board">
+        <canvas id="laser-canvas"></canvas>
+    </div>
+
+    <p class="instructions">
+        <strong>Goal:</strong> Redirect the energy beam to the green target.<br>
+        Click on the grey mirrors to rotate them 90 degrees. Avoid the solid blocks!
+    </p>
+
+    <div id="modal-overlay">
+        <div class="modal-title">SYSTEM ONLINE</div>
+        <button id="next-level-btn" onclick="nextLevel()">PROCEED TO NEXT LINK</button>
+    </div>
+</div>
+
+<script>
+    /* =========================================
+       JAVASCRIPT: LOGIC, PHYSICS, AND RENDERING
+       ========================================= */
+
+    // Constants
+    const CELL_SIZE = 60;
+    const GRID_GAP = 2;
+    const TYPES = { EMPTY: 0, EMITTER: 1, TARGET: 2, MIRROR: 3, BLOCK: 4 };
+    const DIRS = { UP: 0, RIGHT: 1, DOWN: 2, LEFT: 3 };
+
+    // Movement Vectors based on Direction
+    const VECTORS = {
+        [DIRS.UP]: { x: 0, y: -1 },
+        [DIRS.RIGHT]: { x: 1, y: 0 },
+        [DIRS.DOWN]: { x: 0, y: 1 },
+        [DIRS.LEFT]: { x: -1, y: 0 }
+    };
+
+    // The Level Data (0: Empty, 1: Emitter, 2: Target, 3: Mirror, 4: Block)
+    // Mirrors have a specific starting angle in the logic
+    const levels = [
+        {
+            cols: 5, rows: 5,
+            grid: [
+                {t:1, d:1}, {t:0}, {t:3, a:45}, {t:0}, {t:0},
+                {t:0}, {t:0}, {t:0}, {t:0}, {t:0},
+                {t:0}, {t:0}, {t:3, a:135}, {t:0}, {t:2},
+                {t:0}, {t:0}, {t:0}, {t:0}, {t:0},
+                {t:0}, {t:0}, {t:0}, {t:0}, {t:0}
+            ]
+        },
+        {
+            cols: 6, rows: 6,
+            grid: [
+                {t:0}, {t:0}, {t:0}, {t:4}, {t:0}, {t:0},
+                {t:1, d:2}, {t:0}, {t:3, a:135}, {t:0}, {t:3, a:45}, {t:2},
+                {t:0}, {t:0}, {t:0}, {t:0}, {t:0}, {t:0},
+                {t:3, a:45}, {t:0}, {t:3, a:45}, {t:4}, {t:0}, {t:0},
+                {t:0}, {t:0}, {t:0}, {t:0}, {t:0}, {t:0},
+                {t:0}, {t:0}, {t:0}, {t:0}, {t:0}, {t:0}
+            ]
+        },
+        {
+            cols: 7, rows: 7,
+            grid: [
+                {t:0}, {t:0}, {t:4}, {t:0}, {t:0}, {t:0}, {t:2},
+                {t:0}, {t:3, a:45}, {t:0}, {t:3, a:135}, {t:0}, {t:3, a:45}, {t:0},
+                {t:0}, {t:0}, {t:4}, {t:0}, {t:4}, {t:0}, {t:0},
+                {t:1, d:1}, {t:0}, {t:3, a:135}, {t:0}, {t:3, a:45}, {t:0}, {t:0},
+                {t:0}, {t:0}, {t:0}, {t:0}, {t:0}, {t:0}, {t:0},
+                {t:0}, {t:4}, {t:0}, {t:4}, {t:0}, {t:0}, {t:0},
+                {t:0}, {t:0}, {t:0}, {t:0}, {t:0}, {t:0}, {t:0}
+            ]
+        }
+    ];
+
+    // Game State
+    let currentLevelIndex = 0;
+    let gridData = [];
+    let cols = 0;
+    let rows = 0;
+    let laserPath = [];
+    let isSolved = false;
+    let animationFrameId;
+
+    // DOM Elements
+    const boardEl = document.getElementById('board');
+    const canvas = document.getElementById('laser-canvas');
+    const ctx = canvas.getContext('2d');
+    const levelDisplay = document.getElementById('level-display');
+    const modal = document.getElementById('modal-overlay');
+
+    // Particle System Setup
+    let particles = [];
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            // Random blast velocity
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 5 + 2;
+            this.vx = Math.cos(angle) * speed;
+            this.vy = Math.sin(angle) * speed;
+            this.life = 1.0; // Fades out
+            this.decay = Math.random() * 0.02 + 0.02;
+            this.size = Math.random() * 4 + 2;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.life -= this.decay;
+        }
+        draw(ctx) {
+            ctx.fillStyle = `rgba(34, 197, 94, ${this.life})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    // ==========================================
+    // INITIALIZATION & LEVEL LOADING
+    // ==========================================
+
+    function loadLevel(index) {
+        if (index >= levels.length) {
+            showWinScreen("ALL SYSTEMS RESTORED. YOU WIN!");
+            return;
+        }
+
+        isSolved = false;
+        particles = [];
+        const level = levels[index];
+        cols = level.cols;
+        rows = level.rows;
+        
+        // Deep copy the grid data so we don't modify the original level preset
+        gridData = JSON.parse(JSON.stringify(level.grid));
+
+        // Setup Board CSS Grid
+        boardEl.style.gridTemplateColumns = `repeat(${cols}, ${CELL_SIZE}px)`;
+        boardEl.style.gridTemplateRows = `repeat(${rows}, ${CELL_SIZE}px)`;
+        
+        // Setup Canvas size to exactly overlay the grid
+        canvas.width = (cols * CELL_SIZE) + ((cols - 1) * GRID_GAP) + 4; // +4 for padding offset
+        canvas.height = (rows * CELL_SIZE) + ((rows - 1) * GRID_GAP) + 4;
+
+        levelDisplay.innerText = `LEVEL ${index + 1}`;
+        modal.classList.remove('visible');
+
+        buildDOMGrid();
+        calculateLaser();
+        startRenderLoop();
+    }
+
+    function buildDOMGrid() {
+        // Clear existing DOM
+        const cells = boardEl.querySelectorAll('.cell');
+        cells.forEach(c => c.remove());
+
+        gridData.forEach((cell, index) => {
+            const div = document.createElement('div');
+            div.className = 'cell';
+            div.dataset.index = index;
+
+            // Render entities based on cell type
+            if (cell.t === TYPES.EMITTER) {
+                const emitter = document.createElement('div');
+                emitter.className = 'emitter';
+                // Rotate visual emitter to match data direction
+                emitter.style.transform = `rotate(${cell.d * 90}deg)`;
+                div.appendChild(emitter);
+            } 
+            else if (cell.t === TYPES.TARGET) {
+                const target = document.createElement('div');
+                target.className = 'target';
+                target.id = 'target-node'; // Easy access later
+                div.appendChild(target);
+            }
+            else if (cell.t === TYPES.MIRROR) {
+                const mirror = document.createElement('div');
+                mirror.className = 'mirror';
+                mirror.style.transform = `rotate(${cell.a}deg)`;
+                div.appendChild(mirror);
+                
+                // Add click listener to rotate mirror
+                div.addEventListener('click', () => {
+                    if(isSolved) return;
+                    cell.a = (cell.a + 90) % 360;
+                    mirror.style.transform = `rotate(${cell.a}deg)`;
+                    calculateLaser();
+                });
+            }
+            else if (cell.t === TYPES.BLOCK) {
+                const block = document.createElement('div');
+                block.className = 'block';
+                div.appendChild(block);
+            }
+
+            boardEl.appendChild(div);
+        });
+    }
+
+    // ==========================================
+    // GAME LOGIC: RAYCASTING
+    // ==========================================
+
+    function getCoord(index) {
+        return { x: index % cols, y: Math.floor(index / cols) };
+    }
+
+    function getIndex(x, y) {
+        if (x < 0 || x >= cols || y < 0 || y >= rows) return -1;
+        return y * cols + x;
+    }
+
+    // Finds the center pixel coordinate for drawing on canvas
+    function getCenterPixel(x, y) {
+        return {
+            x: x * (CELL_SIZE + GRID_GAP) + (CELL_SIZE / 2) + 2,
+            y: y * (CELL_SIZE + GRID_GAP) + (CELL_SIZE / 2) + 2
+        };
+    }
+
+    // The core logic function that traces the laser step by step
+    function calculateLaser() {
+        laserPath = [];
+        let hitTarget = false;
+        
+        // Find Emitter
+        let eIndex = gridData.findIndex(c => c.t === TYPES.EMITTER);
+        let currentPos = getCoord(eIndex);
+        let currentDir = gridData[eIndex].d;
+        
+        // Add start point
+        laserPath.push(getCenterPixel(currentPos.x, currentPos.y));
+
+        // Raycast loop (limit to 100 steps to prevent infinite reflection loops)
+        let steps = 0;
+        while (steps < 100) {
+            steps++;
+            // Move one step in current direction
+            currentPos.x += VECTORS[currentDir].x;
+            currentPos.y += VECTORS[currentDir].y;
+
+            let nextIndex = getIndex(currentPos.x, currentPos.y);
+            
+            // Out of bounds? Laser stops.
+            if (nextIndex === -1) {
+                // Draw line to the edge
+                let px = getCenterPixel(currentPos.x, currentPos.y);
+                laserPath.push(px);
+                break;
+            }
+
+            let cell = gridData[nextIndex];
+            let px = getCenterPixel(currentPos.x, currentPos.y);
+            laserPath.push(px);
+
+            if (cell.t === TYPES.BLOCK) {
+                // Hit a wall, laser stops
+                break;
+            } 
+            else if (cell.t === TYPES.TARGET) {
+                // Hit target!
+                hitTarget = true;
+                break;
+            }
+            else if (cell.t === TYPES.MIRROR) {
+                // Reflection Logic
+                // Mirror angles are visual (45deg or 135deg)
+                // We map this to direction changes
+                if (cell.a === 45 || cell.a === 225) {
+                    // / mirror
+                    if (currentDir === DIRS.RIGHT) currentDir = DIRS.UP;
+                    else if (currentDir === DIRS.DOWN) currentDir = DIRS.LEFT;
+                    else if (currentDir === DIRS.LEFT) currentDir = DIRS.DOWN;
+                    else if (currentDir === DIRS.UP) currentDir = DIRS.RIGHT;
+                } else {
+                    // \ mirror (135deg or 315deg)
+                    if (currentDir === DIRS.RIGHT) currentDir = DIRS.DOWN;
+                    else if (currentDir === DIRS.DOWN) currentDir = DIRS.RIGHT;
+                    else if (currentDir === DIRS.LEFT) currentDir = DIRS.UP;
+                    else if (currentDir === DIRS.UP) currentDir = DIRS.LEFT;
+                }
+            }
+        }
+
+        handleGameState(hitTarget, currentPos);
+    }
+
+    function handleGameState(hitTarget, targetPos) {
+        const targetDOM = document.getElementById('target-node');
+        
+        if (hitTarget && !isSolved) {
+            isSolved = true;
+            if(targetDOM) targetDOM.classList.add('active');
+            
+            // Spawn particles at target location
+            let px = getCenterPixel(targetPos.x, targetPos.y);
+            for(let i=0; i<30; i++) {
+                particles.push(new Particle(px.x, px.y));
+            }
+
+            // Delay modal to allow user to see the success particle effect
+            setTimeout(() => {
+                modal.classList.add('visible');
+            }, 1000);
+        } else if (!hitTarget) {
+            if(targetDOM) targetDOM.classList.remove('active');
+        }
+    }
+
+    // ==========================================
+    // RENDERING LOOP
+    // ==========================================
+
+    function startRenderLoop() {
+        if(animationFrameId) cancelAnimationFrame(animationFrameId);
+        
+        function render() {
+            // Clear Canvas completely
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 1. Draw Laser Path
+            if (laserPath.length > 1) {
+                // Outer glow
+                ctx.beginPath();
+                ctx.moveTo(laserPath[0].x, laserPath[0].y);
+                for (let i = 1; i < laserPath.length; i++) {
+                    ctx.lineTo(laserPath[i].x, laserPath[i].y);
+                }
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+                ctx.lineWidth = 8;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.stroke();
+
+                // Inner core
+                ctx.beginPath();
+                ctx.moveTo(laserPath[0].x, laserPath[0].y);
+                for (let i = 1; i < laserPath.length; i++) {
+                    ctx.lineTo(laserPath[i].x, laserPath[i].y);
+                }
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+
+            // 2. Draw Particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.update();
+                p.draw(ctx);
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+
+            animationFrameId = requestAnimationFrame(render);
+        }
+        render();
+    }
+
+    // ==========================================
+    // UTILITY FUNCTIONS
+    // ==========================================
+
+    function resetCurrentLevel() {
+        loadLevel(currentLevelIndex);
+    }
+
+    function nextLevel() {
+        currentLevelIndex++;
+        loadLevel(currentLevelIndex);
+    }
+
+    function showWinScreen(message) {
+        const modalTitle = modal.querySelector('.modal-title');
+        const btn = document.getElementById('next-level-btn');
+        modalTitle.innerText = message;
+        btn.innerText = "RESTART ENTIRE GAME";
+        btn.onclick = () => {
+            currentLevelIndex = 0;
+            loadLevel(0);
+            // Reset button logic
+            btn.innerText = "PROCEED TO NEXT LINK";
+            btn.onclick = nextLevel;
+        };
+        modal.classList.add('visible');
+    }
+
+    // Start the game on load
+    window.onload = () => {
+        loadLevel(0);
+    };
+
+</script>
+<script src="bhava-tech-all.js"></script>
+</body>
+</html>

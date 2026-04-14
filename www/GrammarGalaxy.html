@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Galaxy 🚀 - English Grammar Adventure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: white;
+        }
+
+        /* ── Stars Background ── */
+        #starfield {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--dur) ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0%  { opacity: .2; transform: scale(1); }
+            100%{ opacity: 1;  transform: scale(1.5); }
+        }
+
+        /* ── Floating Particles ── */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp linear infinite;
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0%   { opacity: 0; transform: translateY(0) rotate(0deg); }
+            10%  { opacity: .7; }
+            90%  { opacity: .3; }
+            100% { opacity: 0; transform: translateY(-100vh) rotate(720deg); }
+        }
+
+        /* ── Screen Management ── */
+        .screen {
+            position: relative; z-index: 1;
+            display: none; min-height: 100vh;
+            padding: 20px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .screen.active { display: flex; }
+
+        /* ══════════════ HOME SCREEN ══════════════ */
+        .mascot {
+            font-size: 110px;
+            animation: mascotBounce 2.5s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(255,210,0,.9));
+            cursor: pointer;
+            user-select: none;
+        }
+        @keyframes mascotBounce {
+            0%,100% { transform: translateY(0) rotate(-5deg); }
+            50%      { transform: translateY(-25px) rotate(5deg); }
+        }
+        .game-title {
+            font-size: clamp(2.5em,6vw,4em);
+            font-weight: 900;
+            background: linear-gradient(90deg,#FFD700,#FF6B6B,#4ECDC4,#a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin: 15px 0 8px;
+            letter-spacing: -1px;
+        }
+        .game-subtitle {
+            font-size: 1.1em;
+            color: #b8b8d4;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .age-badge {
+            background: rgba(255,255,255,.1);
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 50px;
+            padding: 6px 20px;
+            font-size: .9em;
+            color: #FFD700;
+            margin-bottom: 30px;
+            backdrop-filter: blur(6px);
+        }
+        .home-stats {
+            display: flex; gap: 25px; margin-bottom: 35px; flex-wrap: wrap; justify-content: center;
+        }
+        .stat-pill {
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: .95em;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            padding: 14px 38px;
+            font-size: 1.1em;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all .25s cubic-bezier(.34,1.56,.64,1);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            outline: none;
+        }
+        .btn:active { transform: scale(.96) !important; }
+
+        .btn-gold {
+            background: linear-gradient(135deg,#FFD700,#FF8C00);
+            color: #1a1a2e;
+            box-shadow: 0 8px 25px rgba(255,180,0,.45);
+        }
+        .btn-gold:hover { transform: translateY(-4px) scale(1.04); box-shadow: 0 16px 40px rgba(255,180,0,.65); }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,.4);
+        }
+        .btn-outline:hover { background: rgba(255,255,255,.1); border-color: white; transform: translateY(-2px); }
+
+        .btn-green  { background: linear-gradient(135deg,#22c55e,#16a34a); color: white; box-shadow: 0 6px 20px rgba(34,197,94,.4); }
+        .btn-green:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 12px 30px rgba(34,197,94,.55); }
+
+        .btn-purple { background: linear-gradient(135deg,#a855f7,#7c3aed); color: white; box-shadow: 0 6px 20px rgba(168,85,247,.4); }
+        .btn-purple:hover { transform: translateY(-3px) scale(1.04); }
+
+        .btn-red    { background: linear-gradient(135deg,#ef4444,#dc2626); color: white; }
+        .btn-red:hover { transform: translateY(-2px); }
+
+        /* ══════════════ LEVEL SELECT ══════════════ */
+        .section-title {
+            font-size: clamp(1.6em,4vw,2.5em);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .section-sub {
+            color: #b8b8d4; font-size: 1em;
+            text-align: center; margin-bottom: 35px;
+        }
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+            max-width: 880px;
+            width: 100%;
+        }
+        .level-card {
+            background: rgba(255,255,255,.07);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 30px 24px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all .3s cubic-bezier(.34,1.56,.64,1);
+            position: relative;
+            overflow: hidden;
+        }
+        .level-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: var(--glow);
+            opacity: 0; transition: opacity .3s;
+            border-radius: 24px;
+        }
+        .level-card:hover::before { opacity: 1; }
+        .level-card:hover { border-color: var(--color); transform: translateY(-10px) scale(1.02); box-shadow: 0 25px 50px rgba(0,0,0,.4), 0 0 30px var(--shadow); }
+        .level-card.locked { opacity: .45; cursor: not-allowed; }
+        .level-card.locked:hover { transform: none; box-shadow: none; border-color: transparent; }
+
+        .lv-planet { font-size: 60px; margin-bottom: 12px; display: block; animation: spinSlow 8s linear infinite; }
+        @keyframes spinSlow { 0% { transform: rotate(0); } 100% { transform: rotate(360deg); } }
+        .lv-badge {
+            display: inline-block; padding: 4px 14px;
+            border-radius: 50px; font-size: .75em; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px;
+            background: var(--color); color: #1a1a2e;
+            margin-bottom: 10px;
+        }
+        .lv-name { font-size: 1.4em; font-weight: 900; margin-bottom: 8px; }
+        .lv-topics { font-size: .85em; color: #b8b8d4; line-height: 1.6; margin-bottom: 14px; }
+        .lv-info { display: flex; justify-content: center; gap: 15px; font-size: .85em; }
+        .lv-info span { background: rgba(255,255,255,.1); border-radius: 50px; padding: 3px 12px; }
+        .lock-icon { font-size: 2em; margin-top: 10px; display: block; }
+
+        /* ══════════════ QUIZ SCREEN ══════════════ */
+        .quiz-header {
+            width: 100%; max-width: 780px;
+            display: flex; align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+        }
+        .score-display {
+            background: rgba(255,215,0,.15);
+            border: 1.5px solid rgba(255,215,0,.4);
+            border-radius: 50px; padding: 8px 20px;
+            font-size: 1.1em; font-weight: 800;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .lives-display { display: flex; gap: 6px; font-size: 1.8em; }
+        .timer-ring {
+            position: relative; width: 64px; height: 64px;
+        }
+        .timer-ring svg { transform: rotate(-90deg); }
+        .timer-ring .bg { fill: none; stroke: rgba(255,255,255,.1); stroke-width: 5; }
+        .timer-ring .fg { fill: none; stroke: #4ECDC4; stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset .9s linear, stroke .3s; }
+        .timer-text {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1em; font-weight: 900;
+        }
+
+        /* Progress */
+        .progress-bar-wrap {
+            width: 100%; max-width: 780px;
+            background: rgba(255,255,255,.1);
+            border-radius: 50px; height: 10px; margin-bottom: 22px; overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg,#4ECDC4,#45B7D1,#a855f7);
+            border-radius: 50px;
+            transition: width .5s ease;
+        }
+        .progress-label {
+            font-size: .85em; color: #b8b8d4;
+            margin-bottom: 6px; text-align: right;
+            width: 100%; max-width: 780px;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: rgba(255,255,255,.08);
+            backdrop-filter: blur(15px);
+            border: 1.5px solid rgba(255,255,255,.15);
+            border-radius: 28px;
+            padding: 36px 40px;
+            max-width: 780px; width: 100%;
+            margin-bottom: 24px;
+            animation: slideIn .4s cubic-bezier(.34,1.3,.64,1);
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px) scale(.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .q-type-badge {
+            display: inline-block; padding: 4px 14px;
+            border-radius: 50px; font-size: .75em; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 14px;
+        }
+        .q-type-mcq     { background: rgba(78,205,196,.2); border:1px solid #4ECDC4; color:#4ECDC4; }
+        .q-type-fill    { background: rgba(255,180,0,.2);  border:1px solid #FFB800; color:#FFB800; }
+        .q-type-identify{ background: rgba(168,85,247,.2); border:1px solid #a855f7; color:#a855f7; }
+        .q-type-correct { background: rgba(34,197,94,.2);  border:1px solid #22c55e; color:#22c55e; }
+
+        .question-text {
+            font-size: clamp(1.15em,2.5vw,1.45em);
+            font-weight: 700;
+            line-height: 1.55;
+            color: #f0f0ff;
+        }
+        .blank-highlight {
+            background: rgba(255,180,0,.2);
+            border-bottom: 2.5px solid #FFB800;
+            padding: 0 6px; border-radius: 4px;
+            color: #FFD700; font-style: italic;
+        }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            max-width: 780px; width: 100%;
+        }
+        .option-btn {
+            background: rgba(255,255,255,.07);
+            border: 2px solid rgba(255,255,255,.18);
+            border-radius: 18px;
+            padding: 16px 22px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.05em;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all .2s cubic-bezier(.34,1.3,.64,1);
+            text-align: left;
+            display: flex; align-items: center; gap: 12px;
+            position: relative; overflow: hidden;
+        }
+        .option-btn::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: var(--hover-bg, rgba(255,255,255,.05));
+            opacity: 0; transition: opacity .2s;
+            border-radius: 16px;
+        }
+        .option-btn:hover:not(:disabled)::before { opacity: 1; }
+        .option-btn:hover:not(:disabled) { border-color: #4ECDC4; transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 20px rgba(78,205,196,.25); }
+        .option-btn:disabled { cursor: not-allowed; }
+
+        .option-letter {
+            width: 34px; height: 34px; flex-shrink: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,.12);
+            display: flex; align-items: center; justify-content: center;
+            font-size: .9em; font-weight: 900;
+            transition: background .2s;
+        }
+        .option-btn.correct  { background: rgba(34,197,94,.2);  border-color: #22c55e !important; animation: pulseCorrect .4s ease; }
+        .option-btn.correct .option-letter  { background: #22c55e; }
+        .option-btn.wrong    { background: rgba(239,68,68,.2);   border-color: #ef4444 !important; animation: shakeWrong .4s ease; }
+        .option-btn.wrong .option-letter    { background: #ef4444; }
+
+        @keyframes pulseCorrect { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+        @keyframes shakeWrong   { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+        /* Feedback Toast */
+        .feedback-toast {
+            position: fixed;
+            top: 30px; left: 50%;
+            transform: translateX(-50%) translateY(-80px);
+            background: rgba(20,20,40,.95);
+            backdrop-filter: blur(15px);
+            border-radius: 50px;
+            padding: 14px 30px;
+            font-size: 1.1em; font-weight: 800;
+            border: 2px solid transparent;
+            transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+            opacity: 0; z-index: 1000;
+            white-space: nowrap;
+        }
+        .feedback-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .feedback-toast.success { border-color: #22c55e; color: #4ade80; }
+        .feedback-toast.fail    { border-color: #ef4444; color: #f87171; }
+
+        /* ══════════════ RESULTS SCREEN ══════════════ */
+        .results-card {
+            background: rgba(255,255,255,.08);
+            backdrop-filter: blur(15px);
+            border: 1.5px solid rgba(255,255,255,.15);
+            border-radius: 32px;
+            padding: 44px 48px;
+            max-width: 520px; width: 100%;
+            text-align: center;
+            animation: popIn .5s cubic-bezier(.34,1.56,.64,1);
+        }
+        @keyframes popIn { from { opacity:0; transform:scale(.85); } to { opacity:1; transform:scale(1); } }
+
+        .result-icon { font-size: 80px; margin-bottom: 10px; display: block; animation: mascotBounce 2s ease-in-out infinite; }
+        .result-title { font-size: 2em; font-weight: 900; margin-bottom: 6px; }
+        .result-subtitle { font-size: 1em; color: #b8b8d4; margin-bottom: 24px; }
+
+        .stars-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 28px; }
+        .star-icon { font-size: 3em; transition: all .3s; filter: grayscale(1) opacity(.3); }
+        .star-icon.earned { filter: none; animation: starPop .4s cubic-bezier(.34,1.56,.64,1) forwards; }
+        @keyframes starPop { 0% { transform: scale(0) rotate(-30deg); } 100% { transform: scale(1) rotate(0deg); } }
+
+        .score-big { font-size: 3em; font-weight: 900; color: #FFD700; margin-bottom: 6px; }
+        .score-detail { font-size: .95em; color: #b8b8d4; margin-bottom: 28px; }
+
+        .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+        .res-stat {
+            background: rgba(255,255,255,.06);
+            border-radius: 16px; padding: 16px;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .res-stat-value { font-size: 1.6em; font-weight: 900; }
+        .res-stat-label { font-size: .8em; color: #b8b8d4; text-transform: uppercase; letter-spacing: .5px; }
+
+        .btn-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+
+        /* ══════════════ CONFETTI ══════════════ */
+        .confetti-piece {
+            position: fixed;
+            width: 10px; height: 10px;
+            top: -20px;
+            animation: confettiFall linear forwards;
+            pointer-events: none; z-index: 999;
+            border-radius: 2px;
+        }
+        @keyframes confettiFall {
+            to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* ══════════════ STREAK INDICATOR ══════════════ */
+        .streak-badge {
+            position: fixed; top: 20px; right: 20px;
+            background: linear-gradient(135deg,#FF6B6B,#FF8C00);
+            border-radius: 50px; padding: 8px 18px;
+            font-size: .95em; font-weight: 900;
+            z-index: 100; display: none;
+            animation: streakPulse .5s ease;
+        }
+        @keyframes streakPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+        /* ══════════════ LEVEL HEADER STRIP ══════════════ */
+        .level-strip {
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 50px; padding: 7px 20px;
+            font-size: .9em; font-weight: 700;
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .levels-grid { grid-template-columns: 1fr; }
+            .options-grid { grid-template-columns: 1fr; }
+            .question-card { padding: 24px 20px; }
+            .results-card { padding: 30px 22px; }
+            .results-grid { grid-template-columns: 1fr; }
+            .game-title { font-size: 2.2em; }
+        }
+
+        /* ══════════════ INTRO ANIMATION ══════════════ */
+        .intro-text {
+            opacity: 0; transform: translateY(20px);
+            animation: fadeUp .6s ease forwards;
+        }
+        @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+        .intro-text:nth-child(2) { animation-delay: .15s; }
+        .intro-text:nth-child(3) { animation-delay: .3s; }
+        .intro-text:nth-child(4) { animation-delay: .45s; }
+        .intro-text:nth-child(5) { animation-delay: .6s; }
+        .intro-text:nth-child(6) { animation-delay: .75s; }
+    </style>
+</head>
+<body>
+
+<!-- Starfield -->
+<div id="starfield"></div>
+
+<!-- Feedback Toast -->
+<div class="feedback-toast" id="feedbackToast"></div>
+
+<!-- Streak Badge -->
+<div class="streak-badge" id="streakBadge">🔥 <span id="streakCount">0</span>x Streak!</div>
+
+<!-- ══════════════ HOME SCREEN ══════════════ -->
+<div class="screen active" id="homeScreen">
+    <div class="mascot intro-text" id="mascotHome" title="Click me!">🚀</div>
+    <h1 class="game-title intro-text">Grammar Galaxy</h1>
+    <p class="game-subtitle intro-text">Master English Grammar on an Epic Space Adventure!</p>
+    <div class="age-badge intro-text">✨ Designed for Ages 10 – 15</div>
+    <div class="home-stats intro-text">
+        <div class="stat-pill">📚 3 Levels</div>
+        <div class="stat-pill">❓ 30 Questions</div>
+        <div class="stat-pill">🏆 Earn Stars</div>
+        <div class="stat-pill">⚡ Timed Challenges</div>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;" class="intro-text">
+        <button class="btn btn-gold" onclick="showScreen('levelScreen')">🚀 Start Adventure</button>
+        <button class="btn btn-outline" onclick="showHowToPlay()">📖 How to Play</button>
+    </div>
+</div>
+
+<!-- ══════════════ LEVEL SELECT SCREEN ══════════════ -->
+<div class="screen" id="levelScreen">
+    <h2 class="section-title">🌌 Choose Your Planet</h2>
+    <p class="section-sub">Each planet has unique grammar challenges. Conquer them all!</p>
+    <div class="levels-grid">
+        <!-- Level 1 -->
+        <div class="level-card" style="--color:#4ECDC4;--glow:linear-gradient(135deg,rgba(78,205,196,.08),transparent);--shadow:rgba(78,205,196,.3);" onclick="startLevel(1)">
+            <span class="lv-planet">🌍</span>
+            <div class="lv-badge" style="background:#4ECDC4;">Level 1</div>
+            <div class="lv-name">Earth Basics</div>
+            <div class="lv-topics">Nouns · Verbs · Adjectives<br>Articles · Basic Sentences</div>
+            <div class="lv-info"><span>⏱ 20s/Q</span><span>❓ 10 Qs</span><span>❤️ 3 Lives</span></div>
+        </div>
+        <!-- Level 2 -->
+        <div class="level-card" id="lvCard2" style="--color:#a855f7;--glow:linear-gradient(135deg,rgba(168,85,247,.08),transparent);--shadow:rgba(168,85,247,.3);" onclick="startLevel(2)">
+            <span class="lv-planet">🪐</span>
+            <div class="lv-badge" style="background:#a855f7;">Level 2</div>
+            <div class="lv-name">Saturn Tenses</div>
+            <div class="lv-topics">Past · Present · Future<br>Subject-Verb Agreement · Pronouns</div>
+            <div class="lv-info"><span>⏱ 18s/Q</span><span>❓ 10 Qs</span><span>❤️ 3 Lives</span></div>
+        </div>
+        <!-- Level 3 -->
+        <div class="level-card" id="lvCard3" style="--color:#FF6B6B;--glow:linear-gradient(135deg,rgba(255,107,107,.08),transparent);--shadow:rgba(255,107,107,.3);" onclick="startLevel(3)">
+            <span class="lv-planet">🌌</span>
+            <div class="lv-badge" style="background:#FF6B6B;">Level 3</div>
+            <div class="lv-name">Galaxy Master</div>
+            <div class="lv-topics">Active/Passive Voice<br>Conjunctions · Complex Grammar</div>
+            <div class="lv-info"><span>⏱ 15s/Q</span><span>❓ 10 Qs</span><span>❤️ 3 Lives</span></div>
+        </div>
+    </div>
+    <div style="margin-top:28px;">
+        <button class="btn btn-outline" onclick="showScreen('homeScreen')">← Back to Home</button>
+    </div>
+</div>
+
+<!-- ══════════════ QUIZ SCREEN ══════════════ -->
+<div class="screen" id="quizScreen">
+    <div class="quiz-header">
+        <div class="score-display">⭐ <span id="scoreDisplay">0</span></div>
+        <div class="level-strip" id="levelStrip">🌍 Level 1 – Earth Basics</div>
+        <div style="display:flex;align-items:center;gap:14px;">
+            <div class="lives-display" id="livesDisplay">❤️❤️❤️</div>
+            <div class="timer-ring">
+                <svg width="64" height="64" viewBox="0 0 64 64">
+                    <circle class="bg" cx="32" cy="32" r="27"/>
+                    <circle class="fg" id="timerCircle" cx="32" cy="32" r="27" stroke-dasharray="169.6" stroke-dashoffset="0"/>
+                </svg>
+                <div class="timer-text" id="timerText">20</div>
+            </div>
+        </div>
+    </div>
+    <div class="progress-label" id="progressLabel">Question 1 of 10</div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar" style="width:10%"></div></div>
+    <div class="question-card" id="questionCard">
+        <span class="q-type-badge q-type-mcq" id="qTypeBadge">Multiple Choice</span>
+        <p class="question-text" id="questionText">Loading question...</p>
+    </div>
+    <div class="options-grid" id="optionsGrid"></div>
+</div>
+
+<!-- ══════════════ RESULTS SCREEN ══════════════ -->
+<div class="screen" id="resultsScreen">
+    <div class="results-card">
+        <span class="result-icon" id="resultIcon">🎉</span>
+        <h2 class="result-title" id="resultTitle">Level Complete!</h2>
+        <p class="result-subtitle" id="resultSubtitle">Amazing work, Grammar Hero!</p>
+        <div class="stars-row">
+            <span class="star-icon" id="star1">⭐</span>
+            <span class="star-icon" id="star2">⭐</span>
+            <span class="star-icon" id="star3">⭐</span>
+        </div>
+        <div class="score-big" id="finalScore">0</div>
+        <div class="score-detail" id="scoreDetail">0 / 10 correct answers</div>
+        <div class="results-grid">
+            <div class="res-stat">
+                <span class="res-stat-value" id="resCorrect" style="color:#4ade80;">0</span>
+                <span class="res-stat-label">✅ Correct</span>
+            </div>
+            <div class="res-stat">
+                <span class="res-stat-value" id="resWrong" style="color:#f87171;">0</span>
+                <span class="res-stat-label">❌ Wrong</span>
+            </div>
+            <div class="res-stat">
+                <span class="res-stat-value" id="resTime" style="color:#60a5fa;">0s</span>
+                <span class="res-stat-label">⏱ Avg Time</span>
+            </div>
+            <div class="res-stat">
+                <span class="res-stat-value" id="resStreak" style="color:#FB923C;">0</span>
+                <span class="res-stat-label">🔥 Best Streak</span>
+            </div>
+        </div>
+        <div class="btn-row">
+            <button class="btn btn-gold"    id="nextLevelBtn" onclick="goNextLevel()">Next Level 🚀</button>
+            <button class="btn btn-outline" onclick="startLevel(currentLevel)">🔄 Retry</button>
+            <button class="btn btn-purple"  onclick="showScreen('levelScreen')">🌌 Levels</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ════════════════════════════════════════
+//  STARFIELD
+// ════════════════════════════════════════
+(function(){
+    const sf = document.getElementById('starfield');
+    for(let i=0;i<160;i++){
+        const s = document.createElement('div');
+        s.className = 'star';
+        const sz = Math.random()*2.5+.5;
+        s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${Math.random()*3+1.5}s;animation-delay:${Math.random()*3}s`;
+        sf.appendChild(s);
+    }
+    // Floating particles
+    const colors = ['#FFD700','#4ECDC4','#FF6B6B','#a855f7','#60a5fa','#34d399'];
+    for(let i=0;i<25;i++){
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const sz = Math.random()*8+4;
+        p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:${-sz}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*15+10}s;animation-delay:${Math.random()*10}s;opacity:0`;
+        document.body.appendChild(p);
+    }
+})();
+
+// Mascot click
+document.getElementById('mascotHome').addEventListener('click',function(){
+    this.style.animation='none';
+    void this.offsetWidth;
+    this.style.animation='mascotBounce 2.5s ease-in-out infinite';
+    showFeedback("🚀 Let's blast off to Grammar Galaxy!", 'success');
+});
+
+// ════════════════════════════════════════
+//  QUESTION BANK
+// ════════════════════════════════════════
+const questionBank = {
+    1: [
+        { type:'mcq',    text:'Which word is a NOUN in this sentence: "The cat sat on the mat."', options:['sat','the','cat','on'], answer:2, explanation:'A noun is a person, place, or thing. "Cat" and "mat" are nouns.' },
+        { type:'fill',   text:'Choose the correct article: "___ apple a day keeps the doctor away."', options:['A','An','The','Some'], answer:1, explanation:'"An" is used before words starting with a vowel sound.' },
+        { type:'identify',text:'Which word is an ADJECTIVE: "She wore a beautiful red dress."', options:['wore','dress','she','beautiful'], answer:3, explanation:'Adjectives describe nouns. "Beautiful" and "red" describe the dress.' },
+        { type:'mcq',    text:'Which sentence uses a VERB correctly?', options:['The sky blue.','Birds sings songs.','Dogs run fast.','She happy today.'], answer:2, explanation:'"Run" is a verb showing an action. Every sentence needs a verb!' },
+        { type:'fill',   text:'Fill in the blank: "He _____ to school every day."', options:['go','goes','going','gone'], answer:1, explanation:'With "he/she/it", we add -s to the verb: goes.' },
+        { type:'identify',text:'Find the ADVERB: "She speaks very softly."', options:["she','speaks','very','softly"], answer:2, explanation:"Softly' describes HOW she speaks — that's an adverb!" },
+        { type:'mcq',    text:'Which word is a PROPER NOUN?', options:['city','dog','London','river'], answer:2, explanation:'Proper nouns name specific places or people. "London" is a city name.' },
+        { type:'fill',   text:'"The children _____ playing in the park." Choose the right form:', options:['is','was','are','be'], answer:2, explanation:'"Children" is plural, so we use "are".' },
+        { type:'identify',text:'Which word is a PREPOSITION: "The book is on the table."', options:['book','is','on','table'], answer:2, explanation:'Prepositions show position or direction. "On" tells us where the book is.' },
+        { type:'mcq',    text:'Which is a COMPLETE SENTENCE?', options:['Running fast.','The big blue.','She laughed loudly.','Happy always.'], answer:2, explanation:'A complete sentence has a subject (She) and a verb (laughed).' }
+    ],
+    2: [
+        { type:'fill',   text:'"She _____ her homework yesterday." Choose the correct tense:', options:['does','did','do','doing'], answer:1, explanation:'"Yesterday" signals past tense. Use "did" for past simple.' },
+        { type:'mcq',    text:'Which sentence is in FUTURE TENSE?', options:['She walks home.','He walked the dog.','They will travel tomorrow.','We are eating lunch.'], answer:2, explanation:'"Will travel" is future tense — it hasn"t happened yet!' },
+        { type:'fill',   text:'"I _____ reading a book right now."', options:['am','is','are','was'], answer:0, explanation:'"I am" — present continuous shows an action happening right now.' },
+        { type:'identify',text:'Which pronoun replaces "Maria and Tom"?', options:['He','She','They','It'], answer:2, explanation:'"They" is used for two or more people.' },
+        { type:'mcq',    text:'Choose the correct sentence for SUBJECT-VERB AGREEMENT:', options:['The dogs barks.','She run fast.','He plays guitar.','They goes home.'], answer:2, explanation:'"He plays" — singular subject + verb with -s is correct.' },
+        { type:'fill',   text:'"The bird _____ in the sky all morning." (Past Continuous)', options:['flew','was flying','has flown','will fly'], answer:1, explanation:'Past continuous = was/were + -ing, for ongoing past actions.' },
+        { type:'mcq',    text:'Which sentence is in PRESENT PERFECT tense?', options:['I eat lunch.','I ate lunch.','I have eaten lunch.','I will eat lunch.'], answer:2, explanation:'"Have eaten" = present perfect — the action recently completed.' },
+        { type:'identify',text:'"Neither the boys nor the girl _____ ready." Choose the verb:', options:['are','were','is','be'], answer:2, explanation:'When "nor" connects, the verb agrees with the nearest subject (girl = singular → is).' },
+        { type:'fill',   text:'"_____ you please pass the salt?" (polite request)', options:['Shall','Would','Should','Must'], answer:1, explanation:'"Would you" is the most polite form for requests.' },
+        { type:'mcq',    text:'Identify the PAST PERFECT sentence:', options:['She will study.','She has studied.','She had studied before the test.','She is studying.'], answer:2, explanation:'"Had studied" = past perfect — completed before another past event.' }
+    ],
+    3: [
+        { type:'mcq',    text:'Convert to PASSIVE VOICE: "The chef cooked the meal."', options:['The meal is cooking.','The meal was cooked by the chef.','The chef was cooking.','Cooking was done.'], answer:1, explanation:'Passive: Object + was/were + past participle + by + subject.' },
+        { type:'fill',   text:'Choose the right CONJUNCTION: "She was tired, _____ she kept working."', options:['so','but','or','and'], answer:1, explanation:'"But" shows contrast between being tired and continuing to work.' },
+        { type:'identify',text:'Which sentence uses INDIRECT SPEECH correctly? Direct: He said, "I am happy."', options:['"He said he is happy."','He said that he was happy.','He says I am happy.','He told I was happy.'], answer:1, explanation:'In indirect speech: "am" → "was", and we remove the quotes.' },
+        { type:'mcq',    text:'Choose the CORRECT conditional sentence:', options:['If I will study, I pass.','If I study, I will pass.','If I studied, I will passed.','If I have study, I pass.'], answer:1, explanation:'1st conditional: If + present simple, will + base verb.' },
+        { type:'fill',   text:'"The window _____ broken by the storm." (Passive Voice)', options:['is','was','has','did'], answer:1, explanation:'"Was broken" — passive past tense for a completed action.' },
+        { type:'mcq',    text:'Which sentence has a RELATIVE CLAUSE?', options:['She runs fast.','The boy who won the prize is my friend.','He ate quickly.','They left early.'], answer:1, explanation:'"Who won the prize" is a relative clause giving extra info about the boy.' },
+        { type:'identify',text:'Identify the SUBORDINATING CONJUNCTION: "Although it rained, we played outside."', options:['it','rained','although','played'], answer:2, explanation:'"Although" is a subordinating conjunction linking a dependent clause.' },
+        { type:'fill',   text:'"She asked me _____ I had finished my homework." (Indirect question)', options:['that','if','what','which'], answer:1, explanation:'"If" is used in indirect yes/no questions.' },
+        { type:'mcq',    text:'Which is an example of ACTIVE VOICE?', options:['The book was read by her.','A song was sung.','The dog chased the cat.','Mistakes were made.'], answer:2, explanation:'Active voice: Subject (the dog) + verb (chased) + object (the cat).' },
+        { type:'fill',   text:'"Not only did she sing, _____ she also danced."', options:['and','but','or','so'], answer:1, explanation:'"Not only…but also" is a correlative conjunction pair.' }
+    ]
+};
+
+const levelConfig = {
+    1: { name:'Earth Basics',    planet:'🌍', time:20, color:'#4ECDC4', strip:'🌍 Level 1 – Earth Basics' },
+    2: { name:'Saturn Tenses',   planet:'🪐', time:18, color:'#a855f7', strip:'🪐 Level 2 – Saturn Tenses' },
+    3: { name:'Galaxy Master',   planet:'🌌', time:15, color:'#FF6B6B', strip:'🌌 Level 3 – Galaxy Master' }
+};
+
+const qTypeMeta = {
+    mcq:     { label:'Multiple Choice', cls:'q-type-mcq' },
+    fill:    { label:'Fill in the Blank', cls:'q-type-fill' },
+    identify:{ label:'Identify the Word', cls:'q-type-identify' },
+    correct: { label:'Correct the Sentence', cls:'q-type-correct' }
+};
+
+// ════════════════════════════════════════
+//  GAME STATE
+// ════════════════════════════════════════
+let currentLevel = 1;
+let questions = [], currentQ = 0;
+let score = 0, lives = 3, streak = 0, bestStreak = 0;
+let timerInterval, timeLeft, totalTime;
+let answered = false;
+let correctCount = 0, wrongCount = 0;
+let timesUsed = [];
+let starsEarned = { 1:0, 2:0, 3:0 };
+
+const letterMap = ['A','B','C','D'];
+
+// ════════════════════════════════════════
+//  SCREEN MANAGEMENT
+// ════════════════════════════════════════
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+}
+
+function showHowToPlay() {
+    showFeedback('📖 Answer MCQs, fill blanks & identify words! Get stars!','success');
+    setTimeout(()=>{
+        alert(
+            "🚀 HOW TO PLAY GRAMMAR GALAXY\n\n" +
+            "1. Choose a Level (Planet)\n" +
+            "2. Answer 10 Grammar Questions\n" +
+            "3. Each question has a timer — answer quickly for bonus points!\n" +
+            "4. You have ❤️❤️❤️ 3 Lives per level\n" +
+            "5. Build streaks 🔥 for bonus points!\n" +
+            "6. Earn ⭐⭐⭐ Stars based on your score\n\n" +
+            "Question Types:\n" +
+            "📘 Multiple Choice — Choose the best answer\n" +
+            "✏️ Fill in the Blank — Complete the sentence\n" +
+            "🔍 Identify the Word — Spot the grammar element\n\n" +
+            "Good luck, Grammar Hero! 🌌"
+        );
+    }, 100);
+}
+
+// ════════════════════════════════════════
+//  GAME LOGIC
+// ════════════════════════════════════════
+function startLevel(lvl) {
+    currentLevel = lvl;
+    questions = [...questionBank[lvl]];
+    shuffleArray(questions);
+    currentQ = 0; score = 0; lives = 3; streak = 0; bestStreak = 0;
+    correctCount = 0; wrongCount = 0; timesUsed = [];
+    answered = false;
+
+    const cfg = levelConfig[lvl];
+    document.getElementById('levelStrip').textContent = cfg.strip;
+    document.getElementById('levelStrip').style.borderLeft = `4px solid ${cfg.color}`;
+    totalTime = cfg.time;
+
+    updateScoreDisplay();
+    updateLivesDisplay();
+    showScreen('quizScreen');
+    loadQuestion();
+}
+
+function loadQuestion() {
+    if(currentQ >= questions.length) { endLevel(); return; }
+    answered = false;
+
+    const q = questions[currentQ];
+    const cfg = levelConfig[currentLevel];
+
+    // Progress
+    const pct = ((currentQ)/questions.length)*100;
+    document.getElementById('progressBar').style.width = (pct+10)+'%';
+    document.getElementById('progressLabel').textContent = `Question ${currentQ+1} of ${questions.length}`;
+
+    // Q type badge
+    const meta = qTypeMeta[q.type] || qTypeMeta.mcq;
+    document.getElementById('qTypeBadge').textContent = meta.label;
+    document.getElementById('qTypeBadge').className = 'q-type-badge ' + meta.cls;
+
+    // Question text
+    document.getElementById('questionText').innerHTML = q.text.replace(/___+/g,'<span class="blank-highlight">______</span>');
+
+    // Options
+    const grid = document.getElementById('optionsGrid');
+    grid.innerHTML = '';
+    q.options.forEach((opt,i)=>{
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span class="option-letter">${letterMap[i]}</span><span>${opt}</span>`;
+        btn.onclick = () => selectAnswer(i, btn);
+        grid.appendChild(btn);
+    });
+
+    // Animate card
+    const card = document.getElementById('questionCard');
+    card.style.animation = 'none';
+    void card.offsetWidth;
+    card.style.animation = 'slideIn .4s cubic-bezier(.34,1.3,.64,1)';
+
+    // Timer
+    clearInterval(timerInterval);
+    timeLeft = totalTime;
+    updateTimer(timeLeft, totalTime, cfg.color);
+    timerInterval = setInterval(()=>{
+        timeLeft--;
+        updateTimer(timeLeft, totalTime, cfg.color);
+        if(timeLeft <= 0) { clearInterval(timerInterval); timeOut(); }
+    }, 1000);
+}
+
+function updateTimer(t, total, color) {
+    const circle = document.getElementById('timerCircle');
+    const text   = document.getElementById('timerText');
+    const r = 27, circ = 2*Math.PI*r;
+    const offset = circ * (1 - t/total);
+    circle.style.strokeDashoffset = offset;
+    text.textContent = t;
+    const ratio = t/total;
+    if(ratio > .5)      { circle.style.stroke = color; text.style.color = '#f0f0ff'; }
+    else if(ratio > .25){ circle.style.stroke = '#FFB800'; text.style.color = '#FFB800'; }
+    else                { circle.style.stroke = '#ef4444'; text.style.color = '#ef4444'; }
+}
+
+function selectAnswer(idx, btn) {
+    if(answered) return;
+    answered = true;
+    clearInterval(timerInterval);
+
+    const q = questions[currentQ];
+    const timeUsed = totalTime - timeLeft;
+    timesUsed.push(timeUsed);
+    const allBtns = document.querySelectorAll('.option-btn');
+    allBtns.forEach(b=>b.disabled=true);
+
+    if(idx === q.answer) {
+        btn.classList.add('correct');
+        streak++;
+        if(streak > bestStreak) bestStreak = streak;
+        correctCount++;
+        const timeBonus = Math.max(0, Math.floor(timeLeft * 0.5));
+        const streakBonus = streak >= 3 ? 5*(streak-2) : 0;
+        score += 10 + timeBonus + streakBonus;
+        updateScoreDisplay();
+        showFeedback(getCorrectMsg(q.explanation), 'success');
+        if(streak >= 3) showStreak(streak);
+    } else {
+        btn.classList.add('wrong');
+        allBtns[q.answer].classList.add('correct');
+        streak = 0;
+        wrongCount++;
+        lives--;
+        updateLivesDisplay();
+        showFeedback('❌ ' + q.explanation, 'fail');
+        if(lives <= 0) {
+            setTimeout(()=>{ endLevel(true); }, 1600);
+            return;
+        }
+    }
+    setTimeout(()=>{ currentQ++; loadQuestion(); }, 1600);
+}
+
+function timeOut() {
+    if(answered) return;
+    answered = true;
+    const q = questions[currentQ];
+    const allBtns = document.querySelectorAll('.option-btn');
+    allBtns.forEach(b=>b.disabled=true);
+    allBtns[q.answer].classList.add('correct');
+    streak = 0; wrongCount++; lives--;
+    updateLivesDisplay();
+    showFeedback("⏰ Time's up! " + q.explanation, 'fail');
+    if(lives <= 0) { setTimeout(()=>endLevel(true), 1600); return; }
+    setTimeout(()=>{ currentQ++; loadQuestion(); }, 1600);
+}
+
+function endLevel(gameOver=false) {
+    clearInterval(timerInterval);
+    const total = questions.length;
+    const pct = (correctCount / total) * 100;
+    let stars = 0;
+    if(pct >= 90) stars = 3;
+    else if(pct >= 60) stars = 2;
+    else if(pct >= 30) stars = 1;
+    starsEarned[currentLevel] = Math.max(starsEarned[currentLevel]||0, stars);
+
+    const avgTime = timesUsed.length ? Math.round(timesUsed.reduce((a,b)=>a+b,0)/timesUsed.length) : 0;
+
+    // Populate results
+    const icons   = ['😢','🌟','🎉','🏆'];
+    const titles  = ['Keep Practicing!','Good Effort!','Level Complete!','Perfect Score! 🌌'];
+   const subs = [
+  "Don't give up — try again!",
+  "You're improving, Grammar Hero!",
+  "Awesome work, keep going!",
+  "You're a Grammar Galaxy Master!"
+];
+
+    document.getElementById('resultIcon').textContent    = gameOver ? '😢' : icons[stars];
+    document.getElementById('resultTitle').textContent   = gameOver ? 'Game Over!' : titles[stars];
+    document.getElementById('resultSubtitle').textContent= gameOver ? 'You ran out of lives. Try again!' : subs[stars];
+    document.getElementById('finalScore').textContent    = score + ' pts';
+    document.getElementById('scoreDetail').textContent   = `${correctCount} / ${total} correct answers`;
+    document.getElementById('resCorrect').textContent    = correctCount;
+    document.getElementById('resWrong').textContent      = wrongCount;
+    document.getElementById('resTime').textContent       = avgTime + 's';
+    document.getElementById('resStreak').textContent     = bestStreak;
+
+    // Stars
+    ['star1','star2','star3'].forEach((id,i)=>{
+        const el = document.getElementById(id);
+        el.classList.remove('earned');
+        if(i < stars) setTimeout(()=>el.classList.add('earned'), 300*(i+1));
+    });
+
+    // Next level button
+    const nextBtn = document.getElementById('nextLevelBtn');
+    if(currentLevel < 3 && !gameOver) {
+        nextBtn.style.display = ''; nextBtn.textContent = 'Next Level 🚀';
+    } else if(currentLevel === 3 && !gameOver) {
+        nextBtn.style.display = ''; nextBtn.textContent = '🏠 Home';
+        nextBtn.onclick = ()=>showScreen('homeScreen');
+    } else {
+        nextBtn.style.display = 'none';
+    }
+
+    showScreen('resultsScreen');
+    if(stars >= 2 && !gameOver) launchConfetti();
+}
+
+function goNextLevel() {
+    if(currentLevel < 3) startLevel(currentLevel+1);
+    else showScreen('homeScreen');
+}
+
+// ════════════════════════════════════════
+//  UI HELPERS
+// ════════════════════════════════════════
+function updateScoreDisplay() {
+    document.getElementById('scoreDisplay').textContent = score;
+}
+function updateLivesDisplay() {
+    const hearts = '❤️'.repeat(Math.max(0,lives)) + '🖤'.repeat(Math.max(0,3-lives));
+    document.getElementById('livesDisplay').textContent = hearts;
+}
+function showFeedback(msg, type) {
+    const toast = document.getElementById('feedbackToast');
+    toast.textContent = msg.length > 80 ? msg.substring(0,80)+'…' : msg;
+    toast.className = 'feedback-toast ' + type + ' show';
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(()=>{ toast.classList.remove('show'); }, 2400);
+}
+function showStreak(n) {
+    const badge = document.getElementById('streakBadge');
+    document.getElementById('streakCount').textContent = n;
+    badge.style.display = 'block';
+    badge.style.animation = 'none';
+    void badge.offsetWidth;
+    badge.style.animation = 'streakPulse .5s ease';
+    clearTimeout(badge._t);
+    badge._t = setTimeout(()=>{ badge.style.display='none'; }, 2000);
+}
+function getCorrectMsg(exp) {
+    const msgs = ['✅ Correct! ','🎯 Spot on! ','⭐ Excellent! ','🚀 Brilliant! ','🌟 Perfect! '];
+    return msgs[Math.floor(Math.random()*msgs.length)] + exp;
+}
+function shuffleArray(arr) {
+    for(let i=arr.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [arr[i],arr[j]]=[arr[j],arr[i]];
+    }
+}
+
+// ════════════════════════════════════════
+//  CONFETTI
+// ════════════════════════════════════════
+function launchConfetti() {
+    const colors = ['#FFD700','#FF6B6B','#4ECDC4','#a855f7','#60a5fa','#34d399','#fb923c'];
+    for(let i=0;i<80;i++){
+        setTimeout(()=>{
+            const c = document.createElement('div');
+            c.className = 'confetti-piece';
+            c.style.cssText = `
+                left:${Math.random()*100}%;
+                background:${colors[Math.floor(Math.random()*colors.length)]};
+                width:${Math.random()*10+6}px;
+                height:${Math.random()*10+6}px;
+                animation-duration:${Math.random()*2+2}s;
+                animation-delay:0s;
+                border-radius:${Math.random()>0.5?'50%':'2px'};
+            `;
+            document.body.appendChild(c);
+            setTimeout(()=>c.remove(), 4500);
+        }, i*30);
+    }
+}
+</script>
+<script src="bhava-tech-all.js"></script>
+</body>
+</html>

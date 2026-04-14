@@ -1,0 +1,28 @@
+{
+  "name": "bhaavajaalam-main",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script-2.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rajeswarbhandaru/bhaavajaalam.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rajeswarbhandaru/bhaavajaalam/issues"
+  },
+  "homepage": "https://github.com/Rajeswarbhandaru/bhaavajaalam#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.3.0",
+    "@capacitor/cli": "^8.3.0",
+    "@capacitor/core": "^8.3.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5"
+  }
+}

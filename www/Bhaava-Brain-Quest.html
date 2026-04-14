@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bhāva Brain Quest</title>
+<link rel="preconnect" href="https://api.fontshare.com"/>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&f[]=satoshi@400,500,700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --font-display:'Cabinet Grotesk',sans-serif;
+  --font-body:'Satoshi',sans-serif;
+  --text-xs:clamp(0.72rem,.65rem + .25vw,.85rem);
+  --text-sm:clamp(.85rem,.78rem + .35vw,1rem);
+  --text-base:clamp(1rem,.94rem + .25vw,1.12rem);
+  --text-lg:clamp(1.12rem,1rem + .75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;
+  --space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;
+  --space-12:3rem;--space-16:4rem;
+  --radius-sm:.375rem;--radius-md:.75rem;--radius-lg:1.1rem;--radius-xl:1.5rem;--radius-full:9999px;
+  --transition:200ms cubic-bezier(.16,1,.3,1);
+}
+[data-theme="dark"] {
+  --bg:#080d17;
+  --surface:rgba(255,255,255,.05);
+  --surface-2:rgba(255,255,255,.08);
+  --surface-3:rgba(255,255,255,.13);
+  --border:rgba(255,255,255,.1);
+  --border-2:rgba(255,255,255,.18);
+  --text:#e8f0ff;
+  --text-muted:#8899bb;
+  --text-faint:#445577;
+  --primary:#4ee8d4;
+  --primary-dim:rgba(78,232,212,.18);
+  --gold:#f5c842;
+  --gold-dim:rgba(245,200,66,.15);
+  --danger:#ff5575;
+  --success:#5cf0a0;
+  --purple:#b87bff;
+  --purple-dim:rgba(184,123,255,.15);
+  --orange:#ff9944;
+  --shadow:0 8px 40px rgba(0,0,0,.7);
+}
+[data-theme="light"] {
+  --bg:#f0f6ff;
+  --surface:rgba(255,255,255,.85);
+  --surface-2:rgba(255,255,255,.95);
+  --surface-3:rgba(220,235,255,.85);
+  --border:rgba(100,140,220,.18);
+  --border-2:rgba(100,140,220,.32);
+  --text:#0f1f3d;
+  --text-muted:#446;
+  --text-faint:#aab;
+  --primary:#0a8a80;
+  --primary-dim:rgba(10,138,128,.12);
+  --gold:#c9900a;
+  --gold-dim:rgba(201,144,10,.12);
+  --danger:#cc2244;
+  --success:#228833;
+  --purple:#7730bb;
+  --purple-dim:rgba(119,48,187,.12);
+  --orange:#c05500;
+  --shadow:0 8px 40px rgba(80,100,180,.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  min-height:100vh;font-family:var(--font-body);font-size:var(--text-base);
+  background:var(--bg);color:var(--text);line-height:1.55;overflow-x:hidden;
+}
+#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.page{position:relative;z-index:1;min-height:100vh;}
+.hidden{display:none!important;}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:50;padding:var(--space-3) var(--space-6);
+  display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);
+  background:rgba(8,13,23,.7);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+[data-theme="light"] nav{background:rgba(240,246,255,.85);}
+.brand{display:flex;align-items:center;gap:var(--space-3);}
+.brand img{width:42px;height:42px;border-radius:50%;object-fit:cover;}
+.brand-name{font-family:var(--font-display);font-weight:800;font-size:var(--text-lg);}
+.brand-sub{font-size:var(--text-xs);color:var(--text-muted);}
+.nav-right{display:flex;align-items:center;gap:var(--space-3);}
+.pill{
+  display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);
+  border-radius:var(--radius-full);border:1px solid var(--border);
+  background:var(--surface-2);font-size:var(--text-sm);font-weight:600;cursor:pointer;
+  transition:background var(--transition),border-color var(--transition);
+}
+.pill:hover{background:var(--surface-3);border-color:var(--border-2);}
+
+/* SCREENS */
+.screen{padding:var(--space-8) var(--space-6);}
+.center{max-width:min(900px,100%);margin:0 auto;}
+
+/* HOME */
+.hero-badge{
+  display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);
+  border-radius:var(--radius-full);background:var(--primary-dim);border:1px solid rgba(78,232,212,.3);
+  color:var(--primary);font-size:var(--text-sm);font-weight:700;margin-bottom:var(--space-5);
+}
+.hero-title{
+  font-family:var(--font-display);font-size:var(--text-2xl);font-weight:800;
+  background:linear-gradient(135deg,var(--primary) 0%,var(--purple) 60%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1.05;margin-bottom:var(--space-5);
+}
+.hero-desc{color:var(--text-muted);max-width:54ch;font-size:var(--text-lg);margin-bottom:var(--space-8);}
+.categories-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,100%),1fr));gap:var(--space-4);margin-bottom:var(--space-8);}
+.cat-card{
+  border-radius:var(--radius-xl);border:1px solid var(--border);background:var(--surface);
+  padding:var(--space-6) var(--space-5);cursor:pointer;
+  transition:transform var(--transition),border-color var(--transition),background var(--transition),box-shadow var(--transition);
+  text-align:left;
+}
+.cat-card:hover{transform:translateY(-4px);border-color:var(--border-2);background:var(--surface-2);box-shadow:var(--shadow);}
+.cat-card.selected{border-color:var(--primary)!important;background:var(--primary-dim)!important;}
+.cat-icon{font-size:2.2rem;margin-bottom:var(--space-3);}
+.cat-name{font-family:var(--font-display);font-weight:700;font-size:var(--text-lg);}
+.cat-desc{font-size:var(--text-sm);color:var(--text-muted);margin-top:var(--space-2);}
+.cat-tag{
+  display:inline-block;margin-top:var(--space-3);padding:var(--space-1) var(--space-3);
+  border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:700;
+  background:var(--surface-3);color:var(--text-muted);
+}
+.diff-row{display:flex;flex-wrap:wrap;gap:var(--space-3);margin-bottom:var(--space-6);}
+.diff-btn{
+  flex:1;min-width:120px;padding:var(--space-4) var(--space-5);border-radius:var(--radius-lg);
+  border:1px solid var(--border);background:var(--surface);cursor:pointer;text-align:center;
+  font-family:var(--font-body);font-weight:700;font-size:var(--text-sm);
+  transition:all var(--transition);
+}
+.diff-btn:hover{background:var(--surface-2);}
+.diff-btn.selected{border-color:var(--gold);background:var(--gold-dim);color:var(--gold);}
+.start-btn{
+  width:100%;padding:var(--space-5);border-radius:var(--radius-xl);border:none;
+  background:linear-gradient(135deg,var(--primary),var(--purple));
+  color:#fff;font-family:var(--font-display);font-weight:800;font-size:var(--text-xl);
+  cursor:pointer;transition:transform var(--transition),box-shadow var(--transition);
+  box-shadow:0 0 40px rgba(78,232,212,.3);
+}
+.start-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 0 60px rgba(78,232,212,.5);}
+.start-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* GAME SCREEN */
+.game-hud{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  gap:var(--space-3);margin-bottom:var(--space-6);padding:var(--space-4) var(--space-5);
+  border-radius:var(--radius-xl);background:var(--surface);border:1px solid var(--border);
+}
+.hud-item{text-align:center;}
+.hud-label{font-size:var(--text-xs);color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.08em;}
+.hud-value{font-family:var(--font-display);font-weight:800;font-size:var(--text-xl);font-variant-numeric:tabular-nums;}
+.hud-value.score-flash{animation:scoreFlash .35s ease-out;}
+@keyframes scoreFlash{0%{transform:scale(1.35);color:var(--gold);}100%{transform:scale(1);}}
+
+.timer-ring-wrap{position:relative;width:68px;height:68px;display:grid;place-items:center;}
+#timerRing{position:absolute;inset:0;transform:rotate(-90deg);}
+.timer-num{font-family:var(--font-display);font-weight:800;font-size:var(--text-lg);z-index:1;}
+
+.combo-banner{
+  text-align:center;margin-bottom:var(--space-4);padding:var(--space-3);
+  border-radius:var(--radius-lg);background:var(--gold-dim);border:1px solid rgba(245,200,66,.3);
+  font-weight:700;color:var(--gold);font-size:var(--text-sm);
+  animation:comboPop .3s ease-out;
+}
+@keyframes comboPop{from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+.question-card{
+  border-radius:var(--radius-xl);border:1px solid var(--border-2);background:var(--surface);
+  padding:clamp(var(--space-6),4vw,var(--space-10));margin-bottom:var(--space-5);
+  box-shadow:var(--shadow);
+}
+.q-meta{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);margin-bottom:var(--space-4);}
+.q-num{font-size:var(--text-xs);color:var(--text-muted);font-weight:600;}
+.q-cat-pill{
+  display:inline-flex;align-items:center;gap:var(--space-1);padding:var(--space-1) var(--space-3);
+  border-radius:var(--radius-full);background:var(--primary-dim);color:var(--primary);
+  font-size:var(--text-xs);font-weight:700;
+}
+.question-text{font-family:var(--font-display);font-weight:700;font-size:var(--text-xl);line-height:1.25;}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);}
+.option-btn{
+  padding:var(--space-4) var(--space-5);border-radius:var(--radius-lg);
+  border:1px solid var(--border);background:var(--surface-2);
+  text-align:left;font-family:var(--font-body);font-weight:600;font-size:var(--text-base);
+  cursor:pointer;transition:all var(--transition);display:flex;align-items:center;gap:var(--space-3);
+}
+.option-btn:hover:not(:disabled){border-color:var(--primary);background:var(--primary-dim);}
+.option-btn.correct{background:rgba(92,240,160,.18);border-color:var(--success);color:var(--success);animation:bounceIn .3s ease-out;}
+.option-btn.wrong{background:rgba(255,85,117,.18);border-color:var(--danger);color:var(--danger);}
+.option-btn.reveal{background:rgba(92,240,160,.1);border-color:rgba(92,240,160,.4);}
+@keyframes bounceIn{0%{transform:scale(.95);}60%{transform:scale(1.02);}100%{transform:scale(1);}}
+.option-letter{
+  width:30px;height:30px;border-radius:var(--radius-sm);display:grid;place-items:center;
+  font-weight:800;font-size:var(--text-sm);background:var(--surface-3);flex-shrink:0;
+}
+
+.progress-bar{height:6px;border-radius:var(--radius-full);background:var(--surface-3);overflow:hidden;margin-bottom:var(--space-6);}
+.progress-bar > span{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--purple));border-radius:inherit;transition:width .5s ease;}
+
+/* RESULT SCREEN */
+.result-hero{text-align:center;padding:var(--space-10) 0;}
+.result-score{
+  font-family:var(--font-display);font-weight:800;font-size:clamp(4rem,12vw,8rem);
+  background:linear-gradient(135deg,var(--gold),var(--primary));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.result-label{font-size:var(--text-xl);color:var(--text-muted);margin-bottom:var(--space-6);}
+.result-grade{
+  display:inline-block;padding:var(--space-3) var(--space-6);
+  border-radius:var(--radius-full);font-family:var(--font-display);font-weight:800;font-size:var(--text-xl);
+  margin-bottom:var(--space-8);
+}
+.grade-S{background:linear-gradient(135deg,var(--gold-dim),rgba(255,200,0,.25));color:var(--gold);border:1px solid var(--gold);}
+.grade-A{background:linear-gradient(135deg,var(--primary-dim),rgba(78,232,212,.2));color:var(--primary);border:1px solid var(--primary);}
+.grade-B{background:var(--purple-dim);color:var(--purple);border:1px solid var(--purple);}
+.grade-C{background:var(--surface-2);color:var(--text-muted);border:1px solid var(--border);}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-4);margin-bottom:var(--space-8);}
+.stat-card{
+  border-radius:var(--radius-xl);border:1px solid var(--border);background:var(--surface);
+  padding:var(--space-5);text-align:center;
+}
+.stat-val{font-family:var(--font-display);font-weight:800;font-size:var(--text-xl);}
+.stat-lbl{font-size:var(--text-xs);color:var(--text-muted);margin-top:var(--space-1);}
+.review-list{display:grid;gap:var(--space-3);margin-bottom:var(--space-8);}
+.review-item{
+  display:flex;align-items:flex-start;gap:var(--space-3);padding:var(--space-4);
+  border-radius:var(--radius-lg);background:var(--surface);border:1px solid var(--border);
+}
+.review-icon{font-size:1.2rem;flex-shrink:0;margin-top:2px;}
+.review-q{font-weight:600;margin-bottom:var(--space-1);}
+.review-a{font-size:var(--text-sm);color:var(--text-muted);}
+.replay-row{display:flex;flex-wrap:wrap;gap:var(--space-4);}
+.replay-btn{
+  flex:1;min-width:140px;padding:var(--space-4) var(--space-6);border-radius:var(--radius-xl);
+  font-family:var(--font-display);font-weight:800;font-size:var(--text-base);
+  cursor:pointer;border:1px solid var(--border);background:var(--surface-2);
+  transition:all var(--transition);
+}
+.replay-btn.primary{
+  background:linear-gradient(135deg,var(--primary),var(--purple));border:none;
+  color:#fff;box-shadow:0 0 30px rgba(78,232,212,.25);
+}
+.replay-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow);}
+.achievements{display:flex;flex-wrap:wrap;gap:var(--space-3);margin-bottom:var(--space-6);justify-content:center;}
+.ach{
+  display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);
+  border-radius:var(--radius-lg);background:var(--gold-dim);border:1px solid rgba(245,200,66,.3);
+  font-weight:700;font-size:var(--text-sm);color:var(--gold);
+}
+
+@media(max-width:640px){
+  .options-grid{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .game-hud{justify-content:center;}
+  .categories-grid{grid-template-columns:1fr 1fr;}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="brand">
+    <img src="./assets/logo.jpg" alt="Bhāva Tech" width="42" height="42"/>
+    <div>
+      <div class="brand-name">Bhāva Brain Quest</div>
+      <div class="brand-sub">For thinkers aged 10–15</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="pill" id="sessionStars">⭐ <span id="totalStars">0</span></div>
+    <button class="pill" id="themeBtn">🌙 Theme</button>
+    <button class="pill" id="soundBtn" aria-pressed="true">🔊</button>
+  </div>
+</nav>
+
+<!-- HOME SCREEN -->
+<div id="screenHome" class="page screen">
+  <div class="center">
+    <div class="hero-badge">🧠 Bhāva Tech · Phase 1 · Ages 10–15</div>
+    <h1 class="hero-title">The Knowledge<br/>Arena Awaits</h1>
+    <p class="hero-desc">Choose your category, pick your challenge level, and prove how sharp your brain truly is. Beat the clock. Build your combo. Earn your grade.</p>
+
+    <h2 style="font-family:var(--font-display);font-size:var(--text-lg);margin-bottom:var(--space-4);">Pick a Category</h2>
+    <div class="categories-grid" id="catGrid">
+      <button class="cat-card" data-cat="math">
+        <div class="cat-icon">🔢</div>
+        <div class="cat-name">Math Challenge</div>
+        <div class="cat-desc">Arithmetic, percentages, algebra basics, and number puzzles.</div>
+        <div class="cat-tag">Numbers & Logic</div>
+      </button>
+      <button class="cat-card" data-cat="science">
+        <div class="cat-icon">🔬</div>
+        <div class="cat-name">Science Quest</div>
+        <div class="cat-desc">Biology, physics, chemistry, and the natural world.</div>
+        <div class="cat-tag">Explore & Discover</div>
+      </button>
+      <button class="cat-card" data-cat="language">
+        <div class="cat-icon">📖</div>
+        <div class="cat-name">Word Power</div>
+        <div class="cat-desc">Vocabulary, grammar, synonyms, and word reasoning.</div>
+        <div class="cat-tag">Language & Meaning</div>
+      </button>
+      <button class="cat-card" data-cat="logic">
+        <div class="cat-icon">🧩</div>
+        <div class="cat-name">Logic Arena</div>
+        <div class="cat-desc">Sequences, riddles, reasoning puzzles, and critical thinking.</div>
+        <div class="cat-tag">Think Deep</div>
+      </button>
+      <button class="cat-card" data-cat="world">
+        <div class="cat-icon">🌍</div>
+        <div class="cat-name">World Knowledge</div>
+        <div class="cat-desc">Geography, history, culture, and fascinating world facts.</div>
+        <div class="cat-tag">Global & Cultural</div>
+      </button>
+      <button class="cat-card" data-cat="mix">
+        <div class="cat-icon">🎲</div>
+        <div class="cat-name">Mixed Blitz</div>
+        <div class="cat-desc">All categories randomised. The ultimate brain challenge!</div>
+        <div class="cat-tag">All Categories</div>
+      </button>
+    </div>
+
+    <h2 style="font-family:var(--font-display);font-size:var(--text-lg);margin-bottom:var(--space-4);">Select Difficulty</h2>
+    <div class="diff-row">
+      <button class="diff-btn" data-diff="easy">🟢 Easy<br/><small style="font-weight:400;color:var(--text-muted);">20s · 8 questions</small></button>
+      <button class="diff-btn" data-diff="medium">🟡 Medium<br/><small style="font-weight:400;color:var(--text-muted);">15s · 10 questions</small></button>
+      <button class="diff-btn" data-diff="hard">🔴 Hard<br/><small style="font-weight:400;color:var(--text-muted);">10s · 12 questions</small></button>
+    </div>
+
+    <button class="start-btn" id="startBtn" disabled>Choose a category &amp; difficulty to start →</button>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="screenGame" class="page screen hidden">
+  <div class="center">
+    <div class="game-hud">
+      <div class="hud-item">
+        <div class="hud-label">Score</div>
+        <div class="hud-value" id="scoreDisplay">0</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-label">Combo</div>
+        <div class="hud-value" id="comboDisplay" style="color:var(--gold)">×1</div>
+      </div>
+      <div class="hud-item">
+        <div class="timer-ring-wrap">
+          <svg id="timerRing" viewBox="0 0 68 68" fill="none">
+            <circle cx="34" cy="34" r="30" stroke="var(--border-2)" stroke-width="5"/>
+            <circle id="timerArc" cx="34" cy="34" r="30" stroke="var(--primary)" stroke-width="5"
+              stroke-linecap="round" stroke-dasharray="188.5" stroke-dashoffset="0"/>
+          </svg>
+          <span class="timer-num" id="timerNum">20</span>
+        </div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-label">Question</div>
+        <div class="hud-value" id="qNumDisplay">1/10</div>
+      </div>
+      <div class="hud-item">
+        <div class="hud-label">Streak</div>
+        <div class="hud-value" id="streakDisplay" style="color:var(--success)">0🔥</div>
+      </div>
+    </div>
+
+    <div class="progress-bar"><span id="progressFill" style="width:0%"></span></div>
+
+    <div id="comboBanner" class="combo-banner hidden"></div>
+
+    <div class="question-card" id="questionCard">
+      <div class="q-meta">
+        <span class="q-num" id="qNumLabel">Question 1 of 10</span>
+        <span class="q-cat-pill" id="qCatLabel">🔢 Math</span>
+      </div>
+      <p class="question-text" id="questionText">Loading…</p>
+    </div>
+
+    <div class="options-grid" id="optionsGrid"></div>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="screenResult" class="page screen hidden">
+  <div class="center">
+    <div class="result-hero">
+      <div style="font-size:4rem;margin-bottom:var(--space-3)" id="resultEmoji">🏆</div>
+      <div class="result-score" id="resultScore">0</div>
+      <div class="result-label">points earned</div>
+      <div class="result-grade" id="resultGrade">Grade S</div>
+      <div id="achievementsWrap" class="achievements"></div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-val" id="resCorrect">0</div><div class="stat-lbl">Correct</div></div>
+      <div class="stat-card"><div class="stat-val" id="resWrong">0</div><div class="stat-lbl">Wrong</div></div>
+      <div class="stat-card"><div class="stat-val" id="resAccuracy">0%</div><div class="stat-lbl">Accuracy</div></div>
+    </div>
+
+    <h2 style="font-family:var(--font-display);font-size:var(--text-lg);margin-bottom:var(--space-4);">Answer Review</h2>
+    <div class="review-list" id="reviewList"></div>
+
+    <div class="replay-row">
+      <button class="replay-btn primary" id="playAgainBtn">▶ Play Again</button>
+      <button class="replay-btn" id="changeCatBtn">🎲 Change Category</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ======================= QUESTION BANK ======================= */
+const QB = {
+  math:{
+    easy:[
+      {q:"What is 15% of 200?",opts:["25","30","35","40"],a:1},
+      {q:"What is 12 × 12?",opts:["132","144","154","124"],a:1},
+      {q:"What is the square root of 144?",opts:["11","12","13","14"],a:1},
+      {q:"If a train travels 60 km/h for 2 hours, how far does it go?",opts:["100 km","110 km","120 km","130 km"],a:2},
+      {q:"What is 3/4 as a percentage?",opts:["65%","70%","75%","80%"],a:2},
+      {q:"What is 2⁵?",opts:["16","32","64","8"],a:1},
+      {q:"A rectangle has length 8 cm and width 5 cm. What is its area?",opts:["30 cm²","35 cm²","40 cm²","45 cm²"],a:2},
+      {q:"What is the next prime number after 11?",opts:["12","13","14","15"],a:1},
+      {q:"What is 45 ÷ 0.9?",opts:["40","45","50","55"],a:2},
+      {q:"Simplify: 18/24",opts:["2/3","3/4","5/6","4/5"],a:1},
+    ],
+    medium:[
+      {q:"If x + 7 = 15, what is 2x?",opts:["14","16","18","8"],a:1},
+      {q:"A shirt costs ₹800. After 25% discount, what is the final price?",opts:["₹550","₹600","₹650","₹700"],a:1},
+      {q:"What is the LCM of 12 and 18?",opts:["24","36","48","54"],a:1},
+      {q:"The sum of angles in a hexagon is:",opts:["540°","620°","720°","800°"],a:2},
+      {q:"If 3x − 5 = 16, what is x?",opts:["5","6","7","8"],a:2},
+      {q:"What is 0.25² + 0.75²?",opts:["0.5","0.625","0.7","0.8"],a:1},
+      {q:"A circle has radius 7 cm. Its circumference is approximately:",opts:["38.8 cm","44 cm","46.5 cm","22 cm"],a:1},
+      {q:"What is the HCF of 36 and 48?",opts:["6","8","12","18"],a:2},
+      {q:"How many seconds are in 2.5 hours?",opts:["7200","8000","9000","9500"],a:2},
+      {q:"What percentage is 45 out of 180?",opts:["20%","22%","25%","28%"],a:2},
+    ],
+    hard:[
+      {q:"If log₁₀(1000) = x, what is x?",opts:["2","3","4","5"],a:1},
+      {q:"What is the sum of the first 10 natural numbers?",opts:["45","50","55","60"],a:2},
+      {q:"Solve: 2x² - 8 = 0. Find x.",opts:["±2","±3","±4","±1"],a:0},
+      {q:"In an arithmetic sequence 2, 5, 8, ... what is the 20th term?",opts:["56","59","62","65"],a:1},
+      {q:"A bag has 4 red, 3 blue, and 3 green balls. Probability of picking red?",opts:["1/3","2/5","4/10","2/4"],a:1},
+      {q:"What is the volume of a cube with side 5 cm?",opts:["100","125","150","200"],a:1},
+      {q:"If sin 30° = 0.5, what is cos 60°?",opts:["0","0.5","0.866","1"],a:1},
+      {q:"For y = 3x + 2, what is the slope?",opts:["2","3","5","6"],a:1},
+      {q:"What is 7! (7 factorial)?",opts:["2520","5040","5320","720"],a:1},
+      {q:"A car depreciates 20% per year. After 2 years from ₹1,00,000, its value is:",opts:["₹60,000","₹64,000","₹72,000","₹80,000"],a:1},
+      {q:"What is the next term: 1, 4, 9, 16, 25, ?",opts:["30","36","42","49"],a:1},
+      {q:"Two numbers have a ratio of 3:5 and sum 160. What is the larger?",opts:["60","80","100","120"],a:2},
+    ],
+  },
+  science:{
+    easy:[
+      {q:"What gas do plants absorb during photosynthesis?",opts:["Oxygen","Nitrogen","Carbon Dioxide","Hydrogen"],a:2},
+      {q:"What is the chemical symbol for water?",opts:["WO","HO","H₂O","HW"],a:2},
+      {q:"Which planet is closest to the Sun?",opts:["Venus","Earth","Mars","Mercury"],a:3},
+      {q:"What force keeps planets in orbit around the Sun?",opts:["Magnetism","Gravity","Friction","Air pressure"],a:1},
+      {q:"How many bones are in the adult human body?",opts:["196","206","216","226"],a:1},
+      {q:"What is the powerhouse of the cell?",opts:["Nucleus","Ribosome","Mitochondria","Golgi body"],a:2},
+      {q:"Sound travels fastest through:",opts:["Air","Water","Vacuum","Solid"],a:3},
+      {q:"What is the boiling point of water in Celsius?",opts:["90°C","95°C","100°C","105°C"],a:2},
+    ],
+    medium:[
+      {q:"What type of rock is formed from lava?",opts:["Sedimentary","Metamorphic","Igneous","Limestone"],a:2},
+      {q:"Which part of the human eye controls the amount of light entering?",opts:["Retina","Iris","Cornea","Lens"],a:1},
+      {q:"What is Newton's Second Law of Motion?",opts:["Every action has an equal opposite reaction","F = ma","An object at rest stays at rest","E = mc²"],a:1},
+      {q:"Which vitamin is produced when skin is exposed to sunlight?",opts:["Vitamin A","Vitamin B12","Vitamin C","Vitamin D"],a:3},
+      {q:"What is the atomic number of carbon?",opts:["4","6","8","12"],a:1},
+      {q:"Which organelle is responsible for protein synthesis?",opts:["Nucleus","Mitochondria","Ribosome","Vacuole"],a:2},
+      {q:"The speed of light is approximately:",opts:["3×10⁶ m/s","3×10⁸ m/s","3×10¹⁰ m/s","3×10⁴ m/s"],a:1},
+      {q:"What is the pH of pure water?",opts:["6","7","8","9"],a:1},
+      {q:"Ozone protects Earth from which type of radiation?",opts:["Infrared","Visible light","Ultraviolet","Radio waves"],a:2},
+      {q:"Which blood type is the universal donor?",opts:["A","B","AB","O"],a:3},
+    ],
+    hard:[
+      {q:"What is the process by which plants lose water through leaves?",opts:["Osmosis","Transpiration","Photosynthesis","Respiration"],a:1},
+      {q:"Which subatomic particle has no charge?",opts:["Proton","Electron","Neutron","Positron"],a:2},
+      {q:"What is the formula for kinetic energy?",opts:["mgh","½mv²","mv","F×d"],a:1},
+      {q:"In the human body, which organ produces insulin?",opts:["Liver","Kidney","Pancreas","Spleen"],a:2},
+      {q:"What is the term for the tendency of a liquid to minimize its surface area?",opts:["Viscosity","Surface tension","Capillarity","Adhesion"],a:1},
+      {q:"The process of nuclear fusion powers the Sun. What does it primarily fuse?",opts:["Helium to Carbon","Hydrogen to Helium","Carbon to Oxygen","Lithium to Hydrogen"],a:1},
+      {q:"What is the half-life of Carbon-14 approximately?",opts:["570 years","5730 years","57300 years","573 years"],a:1},
+      {q:"Which law states that equal volumes of gases at same T and P contain equal molecules?",opts:["Boyle's Law","Charles' Law","Avogadro's Law","Gay-Lussac's Law"],a:2},
+      {q:"DNA stands for:",opts:["Deoxyribonucleic Acid","Diphosphoric Nucleic Acid","Diribose Nucleic Acid","Deoxyribose Nuclear Acid"],a:0},
+      {q:"What is the SI unit of electric current?",opts:["Volt","Watt","Ampere","Ohm"],a:2},
+      {q:"Which planet has the most moons?",opts:["Jupiter","Saturn","Uranus","Neptune"],a:1},
+      {q:"Refraction of light through a prism separates white light because:",opts:["Light speeds up","Different wavelengths refract differently","The prism absorbs some colors","Reflection changes direction"],a:1},
+    ],
+  },
+  language:{
+    easy:[
+      {q:"What is the synonym of 'Brave'?",opts:["Timid","Courageous","Afraid","Weak"],a:1},
+      {q:"Which word is a noun?",opts:["Beautiful","Quickly","Jump","Intelligence"],a:3},
+      {q:"What is the plural of 'child'?",opts:["Childs","Childen","Children","Childre"],a:2},
+      {q:"Choose the correct sentence:",opts:["She go to school.","She going school.","She goes to school.","She goed to school."],a:2},
+      {q:"What does the prefix 'un-' mean?",opts:["Again","Before","Not","After"],a:2},
+      {q:"Identify the antonym of 'Ancient':",opts:["Old","Modern","Early","Traditional"],a:1},
+      {q:"Which is a verb?",opts:["Quickly","Sky","Swim","Blue"],a:2},
+      {q:"What punctuation ends a question?",opts:["Full stop","Comma","Exclamation mark","Question mark"],a:3},
+    ],
+    medium:[
+      {q:"'Ephemeral' means:",opts:["Eternal","Short-lived","Large","Hidden"],a:1},
+      {q:"Which figure of speech is used in: 'The world is a stage'?",opts:["Simile","Metaphor","Personification","Hyperbole"],a:1},
+      {q:"Complete the analogy: Book : Library :: Painting : ___",opts:["Frame","Museum","Artist","Canvas"],a:1},
+      {q:"What is the passive voice of 'They built a house'?",opts:["A house was built by them","A house is built","They have built a house","A house will be built"],a:0},
+      {q:"'Verbose' means:",opts:["Concise","Using too many words","Polite","Intelligent"],a:1},
+      {q:"Choose the correct spelling:",opts:["Accomodate","Accommodate","Acommodate","Accommoddate"],a:1},
+      {q:"Identify the subordinate clause: 'I went home because it rained.'",opts:["I went home","because it rained","I went","it rained"],a:1},
+      {q:"Which word is an adverb in: 'She speaks very softly'?",opts:["She","very","speaks","softly"],a:1},
+      {q:"'Laconic' is best described as:",opts:["Lengthy","Brief and to the point","Emotional","Confusing"],a:1},
+      {q:"The word 'Philanthropy' means:",opts:["Love of knowledge","Love of music","Love of humanity","Love of nature"],a:2},
+    ],
+    hard:[
+      {q:"What is a 'soliloquy'?",opts:["Dialogue between two characters","A poem with 14 lines","Talking aloud to oneself","A type of metaphor"],a:2},
+      {q:"'Obsequious' means:",opts:["Stubborn","Excessively compliant or fawning","Honest","Rebellious"],a:1},
+      {q:"Identify the rhetorical device: 'To be or not to be, that is the question'",opts:["Alliteration","Anaphora","Antithesis","Assonance"],a:2},
+      {q:"A 'bildungsroman' is a novel about:",opts:["War and conflict","A character's moral and psychological growth","Mystery and crime","Science fiction"],a:1},
+      {q:"'Sycophant' means:",opts:["A type of tree","Someone who flatters to gain favor","A medical professional","A logical argument"],a:1},
+      {q:"Which grammatical term describes 'Running is fun'?",opts:["Infinitive","Gerund","Participle","Clause"],a:1},
+      {q:"'Pleonasm' refers to:",opts:["Using fewer words","Using more words than necessary","A form of paradox","Repetition for effect"],a:1},
+      {q:"In poetry, 'iambic pentameter' has how many syllables per line?",opts:["8","10","12","14"],a:1},
+      {q:"What does 'Zeitgeist' mean?",opts:["A German festival","The spirit or mood of a time period","A type of philosophy","A musical style"],a:1},
+      {q:"The term 'oxymoron' is best illustrated by:",opts:["'The sun rose in the east'","'Deafening silence'","'Running fast'","'Books in a library'"],a:1},
+      {q:"A 'protagonist' is:",opts:["The main villain","The main hero or central character","The narrator","A minor character"],a:1},
+      {q:"'Onomatopoeia' refers to words that:",opts:["Have opposite meanings","Imitate sounds","Are very short","Have hidden meanings"],a:1},
+    ],
+  },
+  logic:{
+    easy:[
+      {q:"What comes next: 2, 4, 8, 16, ?",opts:["24","30","32","36"],a:2},
+      {q:"If all cats are animals and Whiskers is a cat, then:",opts:["Whiskers might be an animal","Whiskers is definitely an animal","Whiskers is not an animal","We cannot say"],a:1},
+      {q:"Which number is the odd one out: 4, 9, 16, 25, 30, 36?",opts:["9","25","30","36"],a:2},
+      {q:"A clock shows 3:15. What angle does the hour hand make with 12?",opts:["82.5°","90°","97.5°","75°"],a:0},
+      {q:"If TODAY is WRBDZ, what is NEXT using the same code?",opts:["MFUW","PBAW","OFYV","QFYV"],a:0},
+      {q:"Complete: If RED = 27, then BLUE = ?",opts:["40","43","42","47"],a:2},
+      {q:"Which shape has the most symmetry lines: Circle, Square, Rectangle, Triangle?",opts:["Triangle","Rectangle","Square","Circle"],a:3},
+      {q:"What is the missing number: 1, 1, 2, 3, 5, 8, ?",opts:["11","12","13","15"],a:2},
+    ],
+    medium:[
+      {q:"A is taller than B. C is taller than A. Who is the tallest?",opts:["A","B","C","Cannot say"],a:2},
+      {q:"What fraction of a week is 3 days 12 hours?",opts:["1/2","5/14","3/7","4/7"],a:1},
+      {q:"If MANGO = 13+1+14+7+15 = 50, what is LIME?",opts:["38","40","43","45"],a:2},
+      {q:"Which is the next in series: AZ, BY, CX, ?",opts:["DV","DW","EW","EV"],a:1},
+      {q:"There are 3 boxes. One has apples, one oranges, one both. All labels are wrong. You pick one fruit from the box labelled BOTH and get an apple. How many boxes need to be re-labelled?",opts:["0","1","2","3"],a:3},
+      {q:"A train 200m long passes a pole in 10s. Its speed is:",opts:["18 km/h","20 km/h","72 km/h","36 km/h"],a:2},
+      {q:"If 5 cats catch 5 mice in 5 minutes, how many cats catch 100 mice in 100 minutes?",opts:["5","10","20","100"],a:0},
+      {q:"The day after tomorrow will be Sunday. What day was three days before yesterday?",opts:["Monday","Tuesday","Wednesday","Thursday"],a:1},
+      {q:"Complete: 3, 6, 11, 18, 27, ?",opts:["36","38","40","42"],a:1},
+      {q:"If a = 1, b = 2, ... z = 26. What is THINK?",opts:["69","72","66","74"],a:0},
+    ],
+    hard:[
+      {q:"In a group of 30 students, 14 play chess, 10 play tennis, and 5 play both. How many play neither?",opts:["9","11","13","15"],a:1},
+      {q:"A snail at the bottom of a 12m well climbs 3m by day and slips 2m by night. How many days to escape?",opts:["9","10","11","12"],a:1},
+      {q:"If FRIEND is coded as HUMJTK, how is CANDLE coded?",opts:["EDRNNM","EDRPNG","DCPNMF","ECPNMF"],a:1},
+      {q:"A bag has balls: 3 red, 4 blue, 2 white. Two are drawn. Probability both are blue?",opts:["1/6","2/9","1/4","2/7"],a:0},
+      {q:"Tom is 3 years older than Mary. In 5 years, Tom will be twice Mary's age then. How old is Mary now?",opts:["1","2","3","4"],a:0},
+      {q:"What is the next letter: B E I N T ?",opts:["X","Y","Z","W"],a:2},
+      {q:"How many 3-digit numbers are divisible by both 4 and 6?",opts:["37","40","42","50"],a:0},
+      {q:"If you have a 3-litre jug and a 5-litre jug, how do you measure exactly 4 litres?",opts:["Fill 3, pour to 5, fill 3 again, pour until 5 full, 3 jug has 1 litre, empty 5, pour 1 into 5, fill 3 and pour all into 5","Fill 5, pour 3, repeat","Can't be done","Fill both and mix"],a:0},
+      {q:"In a race, if you overtake the person in 2nd place, what position are you in?",opts:["1st","2nd","3rd","4th"],a:1},
+      {q:"All roses are flowers. Some flowers fade quickly. What can we conclude?",opts:["All roses fade quickly","No roses fade quickly","Some roses may fade quickly","Roses never fade"],a:2},
+      {q:"A clock is set right at 8:00 AM. It gains 15 minutes every 24 hours. What time will it show at 8:00 PM on the same day?",opts:["8:07.5 PM","8:05 PM","8:15 PM","8:10 PM"],a:0},
+      {q:"What is the number of diagonals in a polygon with 10 sides?",opts:["25","30","35","40"],a:2},
+    ],
+  },
+  world:{
+    easy:[
+      {q:"What is the capital of France?",opts:["London","Berlin","Paris","Madrid"],a:2},
+      {q:"Which is the largest ocean?",opts:["Atlantic","Indian","Arctic","Pacific"],a:3},
+      {q:"In which country is the Taj Mahal located?",opts:["Pakistan","India","Bangladesh","Nepal"],a:1},
+      {q:"Which is the longest river in the world?",opts:["Amazon","Congo","Nile","Yangtze"],a:2},
+      {q:"What is the national animal of India?",opts:["Lion","Elephant","Tiger","Leopard"],a:2},
+      {q:"In which continent is Egypt located?",opts:["Asia","Africa","Europe","Middle East"],a:1},
+      {q:"What is the capital of Japan?",opts:["Osaka","Kyoto","Tokyo","Hiroshima"],a:2},
+      {q:"Which sport uses a shuttlecock?",opts:["Tennis","Badminton","Squash","Cricket"],a:1},
+    ],
+    medium:[
+      {q:"Who wrote 'Romeo and Juliet'?",opts:["Charles Dickens","William Shakespeare","Mark Twain","Jane Austen"],a:1},
+      {q:"The Great Wall of China was primarily built during which dynasty?",opts:["Han","Tang","Ming","Qin"],a:2},
+      {q:"Which gas makes up the most of Earth's atmosphere?",opts:["Oxygen","Carbon Dioxide","Argon","Nitrogen"],a:3},
+      {q:"In which year did World War II end?",opts:["1943","1944","1945","1946"],a:2},
+      {q:"The Amazon Rainforest is in which continent?",opts:["Africa","Asia","South America","North America"],a:2},
+      {q:"Who invented the telephone?",opts:["Thomas Edison","Alexander Graham Bell","Nikola Tesla","Guglielmo Marconi"],a:1},
+      {q:"What is the official language of Brazil?",opts:["Spanish","English","French","Portuguese"],a:3},
+      {q:"The Eiffel Tower was built in which year?",opts:["1879","1889","1899","1869"],a:1},
+      {q:"Which country has the world's largest population?",opts:["USA","India","China","Indonesia"],a:1},
+      {q:"Who was the first person to walk on the Moon?",opts:["Buzz Aldrin","Yuri Gagarin","Neil Armstrong","Michael Collins"],a:2},
+    ],
+    hard:[
+      {q:"The Magna Carta was signed in:",opts:["1066","1215","1348","1415"],a:1},
+      {q:"What is the currency of South Korea?",opts:["Yen","Won","Ringgit","Baht"],a:1},
+      {q:"Which African country was never colonized by a European power?",opts:["Ghana","Kenya","Ethiopia","Nigeria"],a:2},
+      {q:"The Strait of Malacca separates:",opts:["India and Sri Lanka","Malaysia and Indonesia","Japan and Korea","Indonesia and Philippines"],a:1},
+      {q:"The Cold War was primarily between which two nations?",opts:["USA and China","USA and Germany","USA and USSR","UK and USSR"],a:2},
+      {q:"Who painted 'The Persistence of Memory' (melting clocks)?",opts:["Pablo Picasso","Salvador Dalí","Claude Monet","Vincent van Gogh"],a:1},
+      {q:"The UN was founded in which year?",opts:["1944","1945","1946","1948"],a:1},
+      {q:"Which philosopher said 'I think, therefore I am'?",opts:["Kant","Socrates","Descartes","Aristotle"],a:2},
+      {q:"The Ring of Fire is associated with:",opts:["Forest fires","Volcanic and seismic activity","Ocean currents","Desert regions"],a:1},
+      {q:"Which empire was ruled by Genghis Khan?",opts:["Ottoman","Mughal","Mongol","Persian"],a:2},
+      {q:"The Indian independence movement's nonviolent resistance is associated with:",opts:["Jawaharlal Nehru","Subhas Chandra Bose","Mahatma Gandhi","B.R. Ambedkar"],a:2},
+      {q:"The Silk Road connected China to:",opts:["America","Europe and the Middle East","Australia","Southern Africa"],a:1},
+    ],
+  },
+};
+
+/* ======================= STATE ======================= */
+const S = {
+  cat: null, diff: null,
+  questions: [], qIndex: 0,
+  score: 0, combo: 1, streak: 0, bestStreak: 0,
+  correct: 0, wrong: 0,
+  history: [],
+  timer: null, timeLeft: 20,
+  totalTime: 20, totalQ: 10,
+  soundOn: true, stars: 0
+};
+
+const DIFF = { easy:{time:20,count:8}, medium:{time:15,count:10}, hard:{time:12,count:12} };
+
+/* ======================= SOUND ======================= */
+let audioCtx;
+function getCtx() { if (!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function sfx(freq,dur,type='sine',vol=0.05) {
+  if (!S.soundOn) return;
+  try {
+    const ctx = getCtx(); if (!ctx) return;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type=type; o.frequency.value=freq;
+    g.gain.setValueAtTime(vol,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+dur);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(); o.stop(ctx.currentTime+dur);
+  } catch(e){}
+}
+function sfxCorrect(){ sfx(620,.12,'triangle',.07); setTimeout(()=>sfx(820,.1,'triangle',.06),80); }
+function sfxWrong(){ sfx(220,.25,'sawtooth',.05); }
+function sfxCombo(){ sfx(780,.1,'square',.04); setTimeout(()=>sfx(1020,.1,'square',.04),120); }
+function sfxTick(){ sfx(440,.04,'sine',.03); }
+
+/* ======================= BACKGROUND CANVAS ======================= */
+const bgCanvas = document.getElementById('bgCanvas');
+const bctx = bgCanvas.getContext('2d');
+let particles = [];
+function resizeBg(){bgCanvas.width=innerWidth;bgCanvas.height=innerHeight;}
+resizeBg();
+window.addEventListener('resize',resizeBg);
+function mkParticle(){
+  return { x:Math.random()*bgCanvas.width, y:Math.random()*bgCanvas.height,
+    vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
+    r:Math.random()*2+.5, alpha:Math.random()*.6+.1, c:Math.random()<.5?'#4ee8d4':'#b87bff' };
+}
+for(let i=0;i<80;i++) particles.push(mkParticle());
+function animateBg(){
+  bctx.clearRect(0,0,bgCanvas.width,bgCanvas.height);
+  particles.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0||p.x>bgCanvas.width) p.vx*=-1;
+    if(p.y<0||p.y>bgCanvas.height) p.vy*=-1;
+    bctx.beginPath(); bctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    bctx.fillStyle=p.c;
+    bctx.globalAlpha=p.alpha;
+    bctx.fill(); bctx.globalAlpha=1;
+  });
+  requestAnimationFrame(animateBg);
+}
+animateBg();
+
+/* ======================= SCREEN ROUTING ======================= */
+function show(id){
+  ['screenHome','screenGame','screenResult'].forEach(s=>document.getElementById(s).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+/* ======================= HOME SCREEN ======================= */
+document.querySelectorAll('.cat-card').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.cat-card').forEach(c=>c.classList.remove('selected'));
+    btn.classList.add('selected');
+    S.cat = btn.dataset.cat;
+    checkStart();
+    sfx(500,.08,'sine');
+  });
+});
+document.querySelectorAll('.diff-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    S.diff = btn.dataset.diff;
+    checkStart();
+    sfx(480,.08,'sine');
+  });
+});
+function checkStart(){
+  const btn = document.getElementById('startBtn');
+  if(S.cat && S.diff){
+    btn.disabled=false;
+    btn.textContent='Start Brain Quest →';
+  }
+}
+document.getElementById('startBtn').addEventListener('click',startGame);
+
+/* ======================= BUILD QUESTION SET ======================= */
+function buildQuestions(){
+  const cfg = DIFF[S.diff];
+  S.totalTime = cfg.time; S.totalQ = cfg.count;
+  let pool;
+  if(S.cat==='mix'){
+    const cats = ['math','science','language','logic','world'];
+    pool = cats.flatMap(c=> QB[c][S.diff] || []);
+  } else {
+    pool = QB[S.cat][S.diff] || QB[S.cat].medium;
+  }
+  const shuffled = [...pool].sort(()=>Math.random()-.5);
+  S.questions = shuffled.slice(0, Math.min(cfg.count, shuffled.length));
+}
+
+/* ======================= START GAME ======================= */
+function startGame(){
+  buildQuestions();
+  S.qIndex=0; S.score=0; S.combo=1; S.streak=0; S.bestStreak=0;
+  S.correct=0; S.wrong=0; S.history=[];
+  document.getElementById('scoreDisplay').textContent='0';
+  document.getElementById('comboBanner').classList.add('hidden');
+  show('screenGame');
+  sfx(600,.2,'triangle',.06);
+  loadQuestion();
+}
+
+/* ======================= LOAD QUESTION ======================= */
+const catMeta = {
+  math:{icon:'🔢',label:'Math Challenge'},science:{icon:'🔬',label:'Science Quest'},
+  language:{icon:'📖',label:'Word Power'},logic:{icon:'🧩',label:'Logic Arena'},
+  world:{icon:'🌍',label:'World Knowledge'},mix:{icon:'🎲',label:'Mixed Blitz'}
+};
+function loadQuestion(){
+  if(S.qIndex >= S.questions.length){ endGame(); return; }
+  const q = S.questions[S.qIndex];
+  const total = S.questions.length;
+  document.getElementById('qNumLabel').textContent=`Question ${S.qIndex+1} of ${total}`;
+  document.getElementById('qNumDisplay').textContent=`${S.qIndex+1}/${total}`;
+  document.getElementById('progressFill').style.width=`${(S.qIndex/total)*100}%`;
+  const cm = catMeta[S.cat];
+  document.getElementById('qCatLabel').textContent=`${cm.icon} ${cm.label}`;
+  document.getElementById('questionText').textContent=q.q;
+  const letters=['A','B','C','D'];
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn';
+    btn.innerHTML=`<span class="option-letter">${letters[i]}</span>${opt}`;
+    btn.addEventListener('click',()=>answerQuestion(i));
+    grid.appendChild(btn);
+  });
+  startTimer();
+}
+
+/* ======================= TIMER ======================= */
+function startTimer(){
+  clearInterval(S.timer);
+  S.timeLeft = S.totalTime;
+  updateTimerUI();
+  S.timer=setInterval(()=>{
+    S.timeLeft--;
+    updateTimerUI();
+    if(S.timeLeft<=5) sfxTick();
+    if(S.timeLeft<=0){
+      clearInterval(S.timer);
+      timeOut();
+    }
+  },1000);
+}
+function updateTimerUI(){
+  const el=document.getElementById('timerNum');
+  el.textContent=S.timeLeft;
+  const arc=document.getElementById('timerArc');
+  const pct=S.timeLeft/S.totalTime;
+  arc.setAttribute('stroke-dashoffset',188.5*(1-pct));
+  arc.setAttribute('stroke', pct>.5?'var(--primary)':pct>.25?'var(--gold)':'var(--danger)');
+  el.style.color=pct>.5?'var(--text)':pct>.25?'var(--gold)':'var(--danger)';
+}
+function timeOut(){
+  S.combo=1; S.streak=0;
+  document.getElementById('comboDisplay').textContent='×1';
+  document.getElementById('streakDisplay').textContent='0🔥';
+  sfxWrong();
+  const q=S.questions[S.qIndex];
+  revealAnswer(q.a, null);
+  S.history.push({q:q.q,correct:false,yourAns:'⏱ Time out',rightAns:q.opts[q.a]});
+  S.wrong++;
+  document.getElementById('comboBanner').classList.add('hidden');
+  setTimeout(()=>{ S.qIndex++; loadQuestion(); },1400);
+}
+
+/* ======================= ANSWER ======================= */
+function answerQuestion(chosen){
+  clearInterval(S.timer);
+  const q=S.questions[S.qIndex];
+  const isCorrect = chosen===q.a;
+  revealAnswer(q.a, chosen);
+
+  if(isCorrect){
+    const speedBonus=Math.round((S.timeLeft/S.totalTime)*50);
+    const base=100;
+    const pts=(base+speedBonus)*S.combo;
+    S.score+=pts; S.correct++; S.streak++; S.stars+=1;
+    if(S.streak>S.bestStreak) S.bestStreak=S.streak;
+    if(S.streak>=3){ S.combo=Math.min(4,Math.floor(S.streak/3)+1); }
+    document.getElementById('scoreDisplay').textContent=S.score;
+    document.getElementById('comboBanner').classList.remove('hidden');
+    document.getElementById('comboBanner').textContent=`+${pts} pts! ${S.streak>=3?'🔥 Combo ×'+S.combo+' active!':''} Speed bonus: +${speedBonus}`;
+    sfxCorrect();
+    if(S.streak>=3) sfxCombo();
+    document.getElementById('totalStars').textContent=S.stars;
+    S.history.push({q:q.q,correct:true,yourAns:q.opts[chosen],rightAns:q.opts[q.a]});
+  } else {
+    S.combo=1; S.streak=0;
+    sfxWrong();
+    document.getElementById('comboBanner').classList.add('hidden');
+    S.history.push({q:q.q,correct:false,yourAns:q.opts[chosen],rightAns:q.opts[q.a]});
+    S.wrong++;
+  }
+  document.getElementById('comboDisplay').textContent=`×${S.combo}`;
+  document.getElementById('streakDisplay').textContent=`${S.streak}🔥`;
+  setTimeout(()=>{ document.getElementById('comboBanner').classList.add('hidden'); S.qIndex++; loadQuestion(); },1400);
+}
+function revealAnswer(correct, chosen){
+  const btns=document.querySelectorAll('.option-btn');
+  btns.forEach((btn,i)=>{
+    btn.disabled=true;
+    if(i===correct) btn.classList.add('correct');
+    else if(i===chosen) btn.classList.add('wrong');
+    else btn.classList.add('reveal');
+  });
+}
+
+/* ======================= END GAME ======================= */
+function endGame(){
+  clearInterval(S.timer);
+  const total=S.questions.length;
+  const acc=total>0?Math.round((S.correct/total)*100):0;
+  let grade,gClass,emoji;
+  if(acc>=90&&S.bestStreak>=5){grade='Grade S 🏆';gClass='grade-S';emoji='🏆';}
+  else if(acc>=80){grade='Grade A 🌟';gClass='grade-A';emoji='🌟';}
+  else if(acc>=60){grade='Grade B 💪';gClass='grade-B';emoji='💪';}
+  else{grade='Grade C 📘';gClass='grade-C';emoji='📘';}
+
+  document.getElementById('resultEmoji').textContent=emoji;
+  document.getElementById('resultScore').textContent=S.score;
+  document.getElementById('resultGrade').textContent=grade;
+  document.getElementById('resultGrade').className='result-grade '+gClass;
+  document.getElementById('resCorrect').textContent=S.correct;
+  document.getElementById('resWrong').textContent=S.wrong;
+  document.getElementById('resAccuracy').textContent=acc+'%';
+
+  // achievements
+  const ach=[];
+  if(acc===100) ach.push({icon:'🎯',label:'Perfect Score'});
+  if(S.bestStreak>=5) ach.push({icon:'🔥',label:'5-Streak Fire'});
+  if(S.bestStreak>=8) ach.push({icon:'⚡',label:'8-Streak Lightning'});
+  if(S.correct===total && total>=10) ach.push({icon:'🧠',label:'Mind Master'});
+  if(S.diff==='hard'&&acc>=80) ach.push({icon:'💎',label:'Hard Mode Hero'});
+  const achWrap=document.getElementById('achievementsWrap');
+  achWrap.innerHTML=ach.map(a=>`<div class="ach">${a.icon} ${a.label}</div>`).join('');
+
+  // review
+  const rev=document.getElementById('reviewList');
+  rev.innerHTML=S.history.map(h=>`
+    <div class="review-item">
+      <span class="review-icon">${h.correct?'✅':'❌'}</span>
+      <div>
+        <div class="review-q">${h.q}</div>
+        <div class="review-a">Your answer: <strong>${h.yourAns}</strong>${!h.correct?` · Correct: <strong>${h.rightAns}</strong>`:''}</div>
+      </div>
+    </div>`).join('');
+
+  show('screenResult');
+  sfx(h=>h,0,'sine');
+  [600,700,850,1000].forEach((f,i)=>setTimeout(()=>sfx(f,.15,'triangle',.06),i*130));
+}
+
+document.getElementById('playAgainBtn').addEventListener('click',()=>{ startGame(); });
+document.getElementById('changeCatBtn').addEventListener('click',()=>{
+  S.cat=null; S.diff=null;
+  document.querySelectorAll('.cat-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('startBtn').disabled=true;
+  document.getElementById('startBtn').textContent='Choose a category & difficulty to start →';
+  show('screenHome');
+});
+
+document.getElementById('themeBtn').addEventListener('click',()=>{
+  const r=document.documentElement;
+  r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';
+  document.getElementById('themeBtn').textContent=r.dataset.theme==='dark'?'🌙 Theme':'☀️ Theme';
+});
+document.getElementById('soundBtn').addEventListener('click',e=>{
+  S.soundOn=!S.soundOn;
+  e.currentTarget.textContent=S.soundOn?'🔊':'🔈';
+  e.currentTarget.setAttribute('aria-pressed',String(S.soundOn));
+});
+
+document.addEventListener('click',()=>{ try{getCtx().resume();}catch(e){} },{once:true});
+window.render_game_to_text=()=>JSON.stringify({screen:document.querySelector('[class*="screen"]:not(.hidden)')?.id,score:S.score,q:S.qIndex,correct:S.correct});
+</script>
+<script src="bhava-tech-all.js"></script>
+</body>
+</html>
