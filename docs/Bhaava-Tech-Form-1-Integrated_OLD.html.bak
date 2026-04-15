@@ -684,31 +684,35 @@ initQ();
 // GOOGLE SHEETS INTEGRATION — Auto-save on every assessment
 // Replace APPS_SCRIPT_URL below with your deployed script URL
 // ============================================================
-const APPSSCRIPTURL = "https://script.google.com/macros/s/AKfycbwu4vPBshYg82pHzI_xU4VFrkTqaQur131wUvQnhbTqCYXomNP0WIqlKPvk4Grjblk8/exec";
+const APPSSCRIPTURL = "https://script.google.com/macros/s/AKfycbyGcEKKgbdXD5mRB0xJKLDPpmCuUeZNBAgclZAo8K0tlAnqVDoLsgyfN-kftMhbx1txAA/exec";
+
 async function saveToGoogleSheets(data) {
   const statusEl = document.getElementById('sheets-sync-status');
   if (statusEl) {
     statusEl.style.display = 'flex';
-    statusEl.innerHTML = '⏳ Sending to Google Sheets...';
-    statusEl.style.background = '#d0ecee';
-    statusEl.style.color = '#00858c';
-    statusEl.style.borderColor = '#00858c';
+    statusEl.innerHTML = '⏳ Saving to Google Sheets...';
   }
   try {
     await fetch(APPSSCRIPTURL, {
       method: 'POST',
       mode: 'no-cors',
-      body: JSON.stringify(data)
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'data=' + encodeURIComponent(JSON.stringify(data))
     });
+
     if (statusEl) {
-      statusEl.innerHTML = '📤 Sent! Open your Google Sheet to verify the new row.';
+      statusEl.innerHTML = '✅ Saved to Google Sheets successfully!';
+      statusEl.style.background = '#2e8b5720';
+      statusEl.style.color = '#2e8b57';
+      statusEl.style.borderColor = '#2e8b57';
     }
   } catch (err) {
     if (statusEl) {
-      statusEl.innerHTML = '❌ Network error — use Excel Export as backup.';
+      statusEl.innerHTML = '⚠️ Could not save online. Please use Excel Export as backup.';
       statusEl.style.background = '#fdecea';
       statusEl.style.color = '#c0392b';
     }
+    console.warn('Sheets sync error:', err);
   }
 }
 </script>

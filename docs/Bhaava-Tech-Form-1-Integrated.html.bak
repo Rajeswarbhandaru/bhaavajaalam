@@ -597,10 +597,10 @@ function exportToExcel(){
     'Daily Screen Time (hrs)','Sleep (hrs/night)','Academic Level',
     'Parent Name','Relation','Parent Occupation','Phone',
     'Visit Date','Status',
-    'G1 Preoccupation','G2 Tolerance','G3 Withdrawal','G4 Loss of Ctrl','G5 Giving Up',
+    'G1 Preoccupation','G2 Tolerance','G3 Withdrawal','G4 Loss of Ctrl','G5 Giving Up','G6 Hiding/Lying','G7 Escape',
     'C1 Focus','C2 Memory','C3 Reasoning','C4 Spatial','C5 Academic',
-    'E1 Self-Aware','E2 Frustration','E3 Friendships','E4 Empathy','E5 Confidence',
-    'P1 Posture','P2 Eye Health','P3 Activity','P4 Diet',
+    'E1 Self-Aware','E2 Frustration','E3 Friendships','E4 Empathy','E5 Confidence','E6 Stress Mgmt',
+    'P1 Posture','P2 Eye Health','P3 Activity','P4 Diet','P5 Sleep Rhythm',
     'GASA Total /35','IQ Score /25','EQ Score /30','Physical /25',
     'Risk Level','Program Assigned','Sessions Completed','Notes'
   ];
@@ -610,10 +610,10 @@ function exportToExcel(){
     d.screenT, d.sleep, d.acad,
     d.parentName, d.parentRel, d.parentOcc, d.parentPhone,
     d.visitDate, d.status,
-    d.g1, d.g2, d.g3, d.g4, d.g5,
+    d.g1, d.g2, d.g3, d.g4, d.g5, d.g6, d.g7,
     d.c1, d.c2, d.c3, d.c4, d.c5,
-    d.e1, d.e2, d.e3, d.e4, d.e5,
-    d.p1, d.p2, d.p3, d.p4,
+    d.e1, d.e2, d.e3, d.e4, d.e5, d.e6,
+    d.p1, d.p2, d.p3, d.p4, d.p5,
     d.gasaTotal, d.cogTotal, d.eqTotal, d.phyTotal,
     d.riskLevel, d.program, d.sessions, d.notes
   ];
@@ -684,39 +684,33 @@ initQ();
 // GOOGLE SHEETS INTEGRATION — Auto-save on every assessment
 // Replace APPS_SCRIPT_URL below with your deployed script URL
 // ============================================================
-const APPSSCRIPTURL = "https://script.google.com/macros/s/AKfycbwP1IIDOy_cnziKJIZqJjGrF9GoL6ygtsWtk3K4KCoSNPSAvroYkIZ_ACV3MTqYjbT9ZQ/exec";
-
+const APPSSCRIPTURL = "https://script.google.com/macros/s/AKfycbw1XC-cYflmJ1LoLePgu4XTffewYT3xoDWwDPIF31S8jREf6FXxhvVi4XfZIgj2b1zm/exec";
 async function saveToGoogleSheets(data) {
   const statusEl = document.getElementById('sheets-sync-status');
   if (statusEl) {
     statusEl.style.display = 'flex';
-    statusEl.innerHTML = '⏳ Saving to Google Sheets...';
+    statusEl.innerHTML = '⏳ Sending to Google Sheets...';
+    statusEl.style.background = '#d0ecee';
+    statusEl.style.color = '#00858c';
+    statusEl.style.borderColor = '#00858c';
   }
   try {
-    const formData = new FormData();
-    formData.append('data', JSON.stringify(data));
-
     await fetch(APPSSCRIPTURL, {
       method: 'POST',
-      body: formData        // ← FormData works with no-cors, no Content-Type needed
+      mode: 'no-cors',
+      body: JSON.stringify(data)
     });
-
     if (statusEl) {
-      statusEl.innerHTML = '✅ Saved to Google Sheets successfully!';
-      statusEl.style.background = '#2e8b5720';
-      statusEl.style.color = '#2e8b57';
-      statusEl.style.borderColor = '#2e8b57';
+      statusEl.innerHTML = '📤 Sent! Open your Google Sheet to verify the new row.';
     }
   } catch (err) {
     if (statusEl) {
-      statusEl.innerHTML = '⚠️ Could not save online. Please use Excel Export as backup.';
+      statusEl.innerHTML = '❌ Network error — use Excel Export as backup.';
       statusEl.style.background = '#fdecea';
       statusEl.style.color = '#c0392b';
     }
-    console.warn('Sheets sync error:', err);
   }
 }
-
 </script>
 </body>
 </html>
