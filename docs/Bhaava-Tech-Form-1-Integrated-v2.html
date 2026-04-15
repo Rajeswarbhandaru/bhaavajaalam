@@ -193,7 +193,73 @@ footer{text-align:center;padding:var(--space-6);font-size:var(--text-xs);color:v
 }
 #print-thankyou { display: none; }
 
-</style>
+
+    /* ── Celebration Card ──────────────────────────────────── */
+    .celebration-card {
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      background: var(--color-surface);
+      border: 2px solid var(--color-primary);
+      border-radius: var(--radius-xl);
+      padding: var(--space-10) var(--space-8);
+      box-shadow: var(--shadow-lg);
+      margin: var(--space-6) 0;
+    }
+    .confetti-wrap {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none; overflow: hidden;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      animation: confetti-fall linear infinite;
+      opacity: 0;
+    }
+    @keyframes confetti-fall {
+      0%   { transform: translateY(-20px) rotate(0deg);   opacity: 1; }
+      100% { transform: translateY(500px)  rotate(720deg); opacity: 0; }
+    }
+    .cele-emoji {
+      font-size: 4.5rem;
+      margin-bottom: var(--space-4);
+      display: block;
+      animation: bounce-in 0.7s cubic-bezier(.16,1,.3,1);
+    }
+    @keyframes bounce-in {
+      0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+      60%  { transform: scale(1.2) rotate(5deg);  opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    .cele-title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      color: var(--color-primary);
+      margin-bottom: var(--space-4);
+    }
+    .cele-msg {
+      font-size: var(--text-base);
+      color: var(--color-text);
+      line-height: 1.8;
+      max-width: 50ch;
+      margin: 0 auto var(--space-4);
+    }
+    .cele-tagline {
+      font-size: var(--text-lg);
+      color: var(--color-accent);
+      font-style: italic;
+      font-weight: 600;
+      margin-bottom: var(--space-6);
+    }
+    .admin-export {
+      margin-top: var(--space-5);
+      opacity: 0.7;
+    }
+    .admin-export:hover { opacity: 1; }
+    .btn-sm { padding: var(--space-2) var(--space-4) !important; font-size: var(--text-xs) !important; }
+
+  </style>
 </head>
 <body>
 <div class="app-shell">
@@ -352,55 +418,52 @@ footer{text-align:center;padding:var(--space-6);font-size:var(--text-xs);color:v
 
   <!-- SCREEN 6: RESULTS -->
   <div class="screen" id="screen-6">
-    <div class="results-header">
-      <div class="results-client">Assessment Report for</div>
-      <div class="results-name" id="resultsName">—</div>
-      <div class="results-date" id="resultsDate">—</div>
-    </div>
-    <div class="score-grid" id="scoreGrid"></div>
-    <div class="root-causes" id="rootCauses"></div>
-    <div class="program-section" id="programSection"></div>
-    <div class="fee-box">
-      <h3>💰 Recommended Fee Structure</h3>
-      <table class="fee-table">
-        <tr><td>First Assessment Session (Today — Complimentary)</td><td>₹0</td></tr>
-        <tr><td>Individual Brain Gym Session (45 min)</td><td>₹400 – ₹600</td></tr>
-        <tr><td>4-Week Pilot Program (8 sessions)</td><td>₹3,500</td></tr>
-        <tr><td>Monthly Progress Report</td><td>₹300</td></tr>
-        <tr><td><strong>Recommended: 4-Week Starter Package</strong></td><td><strong>₹3,800</strong></td></tr>
-      </table>
+
+    <!-- HIDDEN anchors: JS still populates these for Google Sheets / Excel export -->
+    <div style="display:none" aria-hidden="true">
+      <div class="results-header">
+        <div class="results-client">Assessment Report for</div>
+        <div class="results-name" id="resultsName">—</div>
+        <div class="results-date" id="resultsDate">—</div>
+      </div>
+      <div class="score-grid"      id="scoreGrid"></div>
+      <div class="root-causes"     id="rootCauses"></div>
+      <div class="program-section" id="programSection"></div>
     </div>
 
-    <!-- ── EXCEL EXPORT INTEGRATION BOX ── -->
-    <div class="export-box">
-      <div class="export-box-title">
-        <span style="font-size:1.8rem">📊</span>
-        <strong>Export to Excel Tracker</strong>
-      </div>
-      <p>This student's complete data row is ready to be added to <strong>Bhāva Tech_Student_Tracker.xlsx</strong>. Click below — a pre-filled Excel row file will download. Open your Master Tracker → go to <em>📋 Student Records</em> sheet → paste the row at the bottom.</p>
-      <div id="sheets-sync-status" style="
-  display:none; align-items:center; gap:8px;
-  padding:10px 14px; border-radius:8px; font-size:0.85rem;
-  font-weight:600; margin-bottom:12px;
-  border:1.5px solid #2e8b57; background:#e8f5ee; color:#2e8b57;">
-</div>
-        <div class="export-actions">
-        <button class="btn btn-excel" onclick="exportToExcel()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          Download Excel Row
+    <!-- HIDDEN: sync status & excel toast (admin-only feedback) -->
+    <div id="sheets-sync-status" style="display:none;align-items:center;gap:8px;
+      padding:10px 14px;border-radius:8px;font-size:0.85rem;font-weight:600;
+      border:1.5px solid #2e8b57;background:#e8f5ee;color:#2e8b57;"></div>
+    <div class="success-toast" id="exportToast">✅ Excel row downloaded! Open Bhāva Tech_Student_Tracker.xlsx → Student Records → paste at bottom.</div>
+
+    <!-- ✅ VISIBLE: Celebration card shown to parent / child -->
+    <div class="celebration-card" id="celebrationCard">
+      <div class="confetti-wrap" id="confettiWrap"></div>
+      <span class="cele-emoji">🎉</span>
+      <h2 class="cele-title">Thank You!</h2>
+      <p class="cele-msg">
+        Thank you for contacting <strong>Bhāva Tech — Brain Gym &amp; IQ Enhancing Centre</strong>.<br>
+        We have recorded your details and our team will get in touch with you very soon.
+      </p>
+      <p class="cele-tagline">✨ Your brain's best journey starts here. ✨</p>
+      <!-- Admin-only: low-key Excel save button -->
+      <div class="admin-export">
+        <button class="btn btn-excel btn-sm" onclick="exportToExcel()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          Admin: Save Excel Row
         </button>
-        <button class="btn btn-orange" onclick="window.print()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          Print Report
-        </button>
       </div>
-      <div class="success-toast" id="exportToast">✅ Excel row downloaded! Open Bhāva Tech_Student_Tracker.xlsx → Student Records → paste at bottom.</div>
     </div>
 
-    <div class="print-section">
-      <p>Start a new assessment for the next student.</p>
-      <div class="btn-row-center"><button class="btn btn-ghost" onclick="resetAssessment()">↺ New Assessment</button></div>
+    <div class="btn-row-center" style="margin-top:1.5rem;">
+      <button class="btn btn-ghost" onclick="resetAssessment()">↺ New Assessment</button>
     </div>
+
   </div>
 </main>
 <footer>Bhāva  Tech Brain Gym &amp; IQ Enhancing Center &nbsp;|&nbsp; Confidential Client Assessment &nbsp;|&nbsp; &copy; 2026</footer>
@@ -596,6 +659,7 @@ function generateResults(){
     // ── AUTO-SAVE TO GOOGLE SHEETS ──
   saveToGoogleSheets(exportData);
   goScreen(6);
+  launchConfetti();
 }
 
 // ── EXCEL EXPORT — Matches Bhāva Tech_Student_Tracker.xlsx column structure ──
@@ -726,6 +790,29 @@ async function saveToGoogleSheets(data) {
     }
   }
 }
+
+  // ── Confetti launcher ─────────────────────────────────────────────────────
+  function launchConfetti() {
+    const wrap = document.getElementById('confettiWrap');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    const colors = ['#00858c','#e67e22','#7b5ea7','#2e8b57','#d4a017','#3db8bf'];
+    for (let i = 0; i < 60; i++) {
+      const p = document.createElement('div');
+      p.className = 'confetti-piece';
+      p.style.cssText = [
+        `left:${Math.random()*100}%`,
+        `background:${colors[Math.floor(Math.random()*colors.length)]}`,
+        `animation-duration:${1.5 + Math.random()*2}s`,
+        `animation-delay:${Math.random()*1.5}s`,
+        `width:${6+Math.random()*8}px`,
+        `height:${6+Math.random()*8}px`,
+        `border-radius:${Math.random()>0.5?'50%':'2px'}`
+      ].join(';');
+      wrap.appendChild(p);
+    }
+  }
+
 </script>
 
 <div id="print-thankyou">

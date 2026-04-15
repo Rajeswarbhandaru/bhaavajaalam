@@ -669,10 +669,10 @@
         <span style="font-size:0.8rem;color:#6b7280;">Brain Level Up</span>
       </a>
 
-      <a href="Percentail_Game.html" class="game-card" target="_blank"
+      <a href="Percentile_Game.html" class="game-card" target="_blank"
          style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
         <div style="font-size:2.5rem;">📊</div>
-        <h4 style="margin:10px 0 6px;">Percentail</h4>
+        <h4 style="margin:10px 0 6px;">Percentile</h4>
         <span style="font-size:0.8rem;color:#6b7280;">Maths & Percentages</span>
       </a>
 
@@ -995,7 +995,7 @@
           <h4>Quick Links</h4>
           <ul>
             <li><a href="#about">About Us</a></li>
-            <li><a href="student-form.html">Enroll Now</a></li>
+            <li><a href="Bhaava-Tech-Form-1-Integrated">Enroll Now</a></li>
             <li><a href="#pricing">Pricing</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#contact">Contact &amp; Book</a></li>
@@ -1038,6 +1038,5 @@
 
   <!-- ============ SCRIPTS ============ -->
  <script src="bhava-tech-all.js"></script>
-</script>
 </body>
 </html>

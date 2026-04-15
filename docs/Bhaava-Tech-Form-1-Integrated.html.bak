@@ -177,7 +177,22 @@ a,button,[role="button"]{transition:color var(--transition),background var(--tra
 .alert-warn{background:var(--color-gold-light);border:1px solid rgba(212,160,23,.2);color:#8a6500}
 footer{text-align:center;padding:var(--space-6);font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider)}
 @media(max-width:600px){.form-grid{grid-template-columns:1fr}.btn-row{flex-direction:column-reverse}.btn{justify-content:center}.score-grid{grid-template-columns:1fr 1fr}.steps-preview{grid-template-columns:repeat(2,1fr)}.topbar{padding:var(--space-2) var(--space-4)}}
-@media print{.topbar,.btn-row,.print-section,.export-box,.theme-btn{display:none!important}.screen{display:block!important}.main-content{max-width:100%;padding:0}body{font-size:12px}}
+
+@media print {
+  body * { display: none !important; }
+  #print-thankyou, #print-thankyou * { display: block !important; }
+  #print-thankyou {
+    text-align: center;
+    padding: 80px 40px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  #print-thankyou .print-celebration { font-size: 80px; margin-bottom: 24px; }
+  #print-thankyou h1 { font-size: 36px; color: #00858c; margin-bottom: 20px; }
+  #print-thankyou p { font-size: 18px; color: #333; margin-bottom: 14px; line-height: 1.6; }
+  #print-thankyou .print-tagline { font-size: 20px; color: #e67e22; font-style: italic; }
+}
+#print-thankyou { display: none; }
+
 </style>
 </head>
 <body>
@@ -241,20 +256,20 @@ footer{text-align:center;padding:var(--space-6);font-size:var(--text-xs);color:v
     <div style="margin-bottom:var(--space-5)">
       <div style="font-size:var(--text-sm);font-weight:700;color:var(--color-text);margin-bottom:var(--space-3);padding-bottom:var(--space-2);border-bottom:1px solid var(--color-divider)">👦 Child's Information</div>
       <div class="form-grid">
-        <div class="form-group"><label class="form-label">Child's Full Name <span>*</span></label><input class="form-input" id="childName" type="text" placeholder="e.g. Arjun Kumar"></div>
+        <div class="form-group"><label class="form-label">Full Name <span>*</span></label><input class="form-input" id="childName" type="text" placeholder="e.g. Arjun Kumar"></div>
         <div class="form-group"><label class="form-label">Age <span>*</span></label><input class="form-input" id="childAge" type="number" placeholder="14" min="5" max="25"></div>
-        <div class="form-group"><label class="form-label">Class / Grade</label><input class="form-input" id="childClass" type="text" placeholder="9th Grade"></div>
-        <div class="form-group"><label class="form-label">School Name</label><input class="form-input" id="schoolName" type="text" placeholder="School name"></div>
+        <div class="form-group"><label class="form-label">Class / Profession</label><input class="form-input" id="childClass" type="text" placeholder="Student/job"></div>
+        <div class="form-group"><label class="form-label">Gender</label><input class="form-input" id="schoolName" type="text" placeholder=" Male"></div>
         <div class="form-group"><label class="form-label">Daily Screen Time (hrs)</label><input class="form-input" id="screenTime" type="number" placeholder="6" min="0" max="24"></div>
         <div class="form-group"><label class="form-label">Sleep per night (hrs)</label><input class="form-input" id="sleepHours" type="number" placeholder="7" min="1" max="12"></div>
-        <div class="form-group full"><label class="form-label">Academic Performance</label>
+        <div class="form-group full"><label class="form-label">Academic/Job Satisfaction</label>
           <select class="form-select" id="academicPerf">
             <option value="">Select level</option>
-            <option value="Excellent">Excellent (90%+)</option>
-            <option value="Good">Good (75–90%)</option>
-            <option value="Average">Average (50–75%)</option>
-            <option value="Below Average">Below Average (&lt;50%)</option>
-            <option value="Struggling">Struggling significantly</option>
+            <option value="Excellent">Fully Satisfied</option>
+            <option value="Good">Satisfied</option>
+            <option value="Average">Neutral</option>
+            <option value="Below Average">Not Satisied</option>
+            <option value="Struggling">Do not want to say</option>
           </select></div>
         <div class="form-group full"><label class="form-label">Other hobbies / interests</label><input class="form-input" id="hobbies" type="text" placeholder="e.g. drawing, cricket, music..."></div>
       </div>
@@ -684,7 +699,7 @@ initQ();
 // GOOGLE SHEETS INTEGRATION — Auto-save on every assessment
 // Replace APPS_SCRIPT_URL below with your deployed script URL
 // ============================================================
-const APPSSCRIPTURL = "https://script.google.com/macros/s/AKfycbw1XC-cYflmJ1LoLePgu4XTffewYT3xoDWwDPIF31S8jREf6FXxhvVi4XfZIgj2b1zm/exec";
+const APPSSCRIPTURL = "https://script.google.com/macros/s/AKfycbwu4vPBshYg82pHzI_xU4VFrkTqaQur131wUvQnhbTqCYXomNP0WIqlKPvk4Grjblk8/exec";
 async function saveToGoogleSheets(data) {
   const statusEl = document.getElementById('sheets-sync-status');
   if (statusEl) {
@@ -701,7 +716,7 @@ async function saveToGoogleSheets(data) {
       body: JSON.stringify(data)
     });
     if (statusEl) {
-      statusEl.innerHTML = '📤 Sent! Open your Google Sheet to verify the new row.';
+      statusEl.innerHTML = 'Thank you for contacting us. We will get in touch in soon';
     }
   } catch (err) {
     if (statusEl) {
@@ -711,6 +726,14 @@ async function saveToGoogleSheets(data) {
     }
   }
 }
-</script>
+
 </body>
+<div id="print-thankyou">
+  <div class="print-celebration">🎉</div>
+  <h1>Thank You!</h1>
+  <p>Thank you for visiting <strong>Bhāva Tech Brain Gym &amp; IQ Enhancing Centre</strong>.</p>
+  <p>We have recorded your details and our team will get in touch with you shortly.</p>
+  <p class="print-tagline">✨ Your brain's best journey starts here. ✨</p>
+</div>
+</script>
 </html>
