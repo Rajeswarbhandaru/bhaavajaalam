@@ -644,11 +644,36 @@ function toggleTest(cardId) {
   const EMAIL_KEY     = "bv_email";
   const TICK_INTERVAL = 10;
   const EXEMPT_PAGES  = ["take-test.html"];
-  const VALID_CODES   = [
-    "BVMONTH1","BVMONTH2","BVMONTH3","BVMONTH4","BVMONTH5",
-    "BVQTR01","BVQTR02","BVQTR03","BVQTR04","BVQTR05",
-    "BVYEAR1","BVYEAR2","BVYEAR3","BVYEAR4","BVYEAR5"
-  ];
+ // ── UNLOCK CODE VALIDATOR ─────────────────────────────────────────────────
+// Hidden logic: code = PREFIX(3) + BODY(8) + CHECK(4)  total 15 chars
+// Prefix encodes plan:  BVM=monthly  BVQ=quarterly  BVY=yearly
+// BODY is base-36 encoded hash.  CHECK is a 4-char integrity stamp.
+// Secret salt — change this string to invalidate ALL old codes instantly.
+const _BV_SALT = "BhaavaTech@2026#Vizag";
+
+function isValidCode(raw) {
+  const code = raw.trim().toUpperCase();
+  if (code.length < 15 || code.length > 20) return false;
+
+  const prefix = code.slice(0, 3);
+  if (!["BVM", "BVQ", "BVY"].includes(prefix)) return false;
+
+  // Body: chars 3–10 (8 chars), Check: last 4 chars
+  const body  = code.slice(3, 11);   // 8-char base-36 hash segment
+  const check = code.slice(11, 15);  // 4-char integrity stamp
+
+  // Re-derive expected check from body + salt
+  const seed = body + _BV_SALT + prefix;
+  let h = 0x811C9DC5; // FNV-1a 32-bit offset basis
+  for (let i = 0; i < seed.length; i++) {
+    h ^= seed.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+    h >>>= 0; // keep unsigned 32-bit
+  }
+  const expected = (h >>> 0).toString(36).toUpperCase().padStart(6, "0").slice(0, 4);
+  return check === expected;
+}
+// ── END VALIDATOR ─────────────────────────────────────────────────────────
 
   const page = window.location.pathname.split("/").pop();
   if (EXEMPT_PAGES.some(p => page.includes(p))) return;
@@ -748,7 +773,7 @@ function toggleTest(cardId) {
         <hr class="bv-divider">
         <div class="bv-code-label">Already paid? Enter your unlock code:</div>
         <div class="bv-code-row">
-          <input class="bv-code-input" id="bv-code-input" type="text" placeholder="e.g. BVQTR01" maxlength="10">
+          <input class="bv-code-input" id="bv-code-input" type="text" placeholder="Enter unlock code" maxlength="20">
           <button class="bv-unlock-btn" onclick="bvUnlock()">Unlock ✅</button>
         </div>
         <div class="bv-code-err" id="bv-code-err">❌ Invalid code. Please check and try again.</div>
@@ -764,7 +789,7 @@ function toggleTest(cardId) {
     const input = document.getElementById("bv-code-input");
     const err   = document.getElementById("bv-code-err");
     const code  = (input.value || "").trim().toUpperCase();
-    if (VALID_CODES.includes(code)) {
+    if (isValidCode(code)) {
       localStorage.setItem(UNLOCK_KEY, "1");
       localStorage.setItem(STORAGE_KEY, "0");
       document.getElementById("bv-popup").remove();
