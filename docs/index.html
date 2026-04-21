@@ -103,52 +103,33 @@
 </head>
 
   <!-- ============ WORLDWIDE BANNER ============ -->
-  <div class="worldwide-banner">
-    🌍 We serve students <strong>worldwide</strong> — 100% Online sessions available &nbsp;|&nbsp;
-    <a href="https://wa.me/919573057516">Chat on WhatsApp</a> &nbsp;|&nbsp;
-    Results delivered in <strong>48 hrs</strong>
-  </div>
-
-  <!-- ============ SCROLL PROGRESS BAR ============ -->
+  
   <div id="scroll-progress"></div>
 
-  <!-- ============ NAVIGATION ============ -->
-  <nav id="main-nav">
-    <div class="nav-container">
-      <a href="#hero" class="nav-brand">
-        <img src="assets/logo.png" alt="Bhāva Tech Logo" class="nav-logo" />
-        <span>Bhāva Tech</span>
-      </a>
-      <ul class="nav-links">
-  <li><a href="#about">About</a></li>
-  <li><a href="#brain-gym">What is Brain Gym?</a></li>
-  <li><a href="Bhaava-Tech-Form-1-Integrated-v2.html">Enroll Now</a></li>
-  <li><a href="#games">Games</a></li>
-  <li><a href="#pricing">Pricing</a></li>
-  <li><a href="#faq">FAQ</a></li>
-  <li><a href="#contact" class="nav-cta">CONTACT</a></li>
-</ul>
-    </div>
-  </nav>
+ <nav id="main-nav">
+  <div class="nav-container">
+    <a href="#hero" class="nav-brand">
+      <img src="assets/logo.png" alt="Bhāva Tech Logo" class="nav-logo" />
+      <span>Bhāva Tech</span>
+    </a>
 
-  
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-  <!-- Mobile responsive -->
-  <style>
-    @media (max-width: 768px) {
-      #stats .stats-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-      }
-    }
-    @media (max-width: 480px) {
-      #stats .stats-grid {
-        grid-template-columns: 1fr !important;
-      }
-    }
-  </style>
-
-</section>
-
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#brain-gym">What is Brain Gym?</a></li>
+      <li><a href="Bhaava-Tech-Form-1-Integrated-v2.html">Enroll Now</a></li>
+      <li><a href="#games">Games</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact" class="nav-cta">CONTACT</a></li>
+    </ul>
+  </div>
+</nav>
 
 <style>
 
@@ -1724,7 +1705,7 @@ function bgtMode(mode){
         <span style="font-size:0.8rem;color:#6b7280;">Language Learning</span>
       </a>
 
-      <a href="devanagari-game/" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
+<a href="devanagari-game/index.html" class="game-card" target="_blank" style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none;color:inherit;">
         <div style="font-size:2.5rem;">अ</div>
         <h4 style="margin:10px 0 6px;">Devanagari Game</h4>
         <span style="font-size:0.8rem;color:#6b7280;">Sanskrit Script</span>
@@ -2149,13 +2130,16 @@ function bgtMode(mode){
     }
 
     // Scroll progress
-    window.addEventListener('scroll', () => {
-      const el = document.getElementById('scroll-progress');
-      if(el) {
-        const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-        el.style.width = pct + '%';
-      }
-    });
+   window.addEventListener('scroll', function () {
+  if (window.innerWidth <= 768) {
+    if (window.scrollY > 300)
+      backToTopBtn.style.display = 'block';
+    else
+      backToTopBtn.style.display = 'none';
+  } else {
+    backToTopBtn.style.display = 'none';
+  }
+});
 
     // Back to top
     const btt = document.getElementById('back-to-top');
@@ -2249,5 +2233,39 @@ function bgtMode(mode){
 
   <!-- ============ SCRIPTS ============ -->
  <script src="bhava-tech-all.js"></script>
+ <script>
+  // On Android Capacitor, open game links in same tab (not new tab)
+  // On browser, keep opening in new tab as before
+  document.querySelectorAll('a.game-card').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      var isAndroid = window.location.protocol === 'https:' &&
+                      navigator.userAgent.toLowerCase().includes('wv'); // WebView
+      if (isAndroid) {
+        e.preventDefault();
+        window.location.href = link.getAttribute('href');
+      }
+      // On browser: default behaviour (opens new tab) continues
+    });
+  });
+</script>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.querySelector('.nav-links');
+
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    hamburger.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  // Auto-close menu when a link is tapped
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      hamburger.classList.remove('active');
+    });
+  });
+</script>
 </body>
 </html>

@@ -154,6 +154,47 @@ body{display:flex;flex-direction:column;align-items:center;justify-content:cente
 .bg-grid{position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;opacity:.5;z-index:0}
 .bg-glow{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(100,255,218,.04) 0%,transparent 70%);top:-200px;left:50%;transform:translateX(-50%);pointer-events:none;z-index:0}
 </style>
+
+  <!-- Bhava Game Menu - Auto Injected -->
+  <style>
+    .bv-menu-btn {
+      position: fixed; top: 14px; right: 16px; z-index: 9999;
+      background: #3b5bdb; color: white; border: none;
+      border-radius: 8px; padding: 8px 14px;
+      font-size: 20px; cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .bv-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45); z-index: 10000;
+      justify-content: center; align-items: center;
+    }
+    .bv-overlay.active { display: flex; }
+    .bv-box {
+      background: white; border-radius: 14px;
+      padding: 24px; width: 270px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      animation: bvFadeIn 0.2s ease;
+    }
+    @keyframes bvFadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .bv-box h3 {
+      text-align: center; margin: 0 0 16px;
+      color: #333; font-size: 18px;
+    }
+    .bv-box a {
+      display: block; padding: 13px 0;
+      border-bottom: 1px solid #eee;
+      color: #333; text-decoration: none; font-size: 16px;
+      cursor: pointer;
+    }
+    .bv-box a:last-child { border-bottom: none; color: #e53; }
+    .bv-box a:hover { color: #3b5bdb; }
+  </style>
+  <!-- End Bhava Game Menu CSS -->
+
 </head>
 <body>
 <div class="bg-grid"></div>
@@ -733,6 +774,40 @@ showMenu();
 document.addEventListener('click',()=>{initAudio();},{once:true});
 </script>
 <script src="bhava-tech-all.js"></script>
+
+
+  <!-- Bhava Game Menu - Auto Injected -->
+  <button class="bv-menu-btn" onclick="bvOpenMenu()">☰</button>
+
+  <div class="bv-overlay" id="bvOverlay" onclick="bvCloseMenu()">
+    <div class="bv-box" onclick="event.stopPropagation()">
+      <h3>☰ Menu</h3>
+      <a href="/index.html">🏠 Home</a>
+      <a href="/about.html">ℹ️ About</a>
+      <a href="/feedback.html">📝 Feedback</a>
+      <a onclick="history.back()">← Go Back</a>
+      <a onclick="bvCloseMenu()">✕ Close</a>
+    </div>
+  </div>
+
+  <script>
+    function bvOpenMenu()  { document.getElementById('bvOverlay').classList.add('active'); }
+    function bvCloseMenu() { document.getElementById('bvOverlay').classList.remove('active'); }
+
+    // Back button fix for Capacitor Android
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.App) {
+        Capacitor.Plugins.App.addListener('backButton', function (e) {
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            Capacitor.Plugins.App.exitApp();
+          }
+        });
+      }
+    });
+  </script>
+  <!-- End Bhava Game Menu -->
 
 </body>
 </html>

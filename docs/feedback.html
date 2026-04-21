@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feedback - Bhāva Tech</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f0f4ff; padding: 24px; }
+
+    h2 { color: #3b5bdb; margin-bottom: 6px; }
+    p  { color: #888; margin-bottom: 24px; font-size: 14px; }
+
+    label { display: block; font-weight: 600; color: #444;
+            margin-top: 14px; margin-bottom: 4px; }
+
+    input, textarea, select {
+      width: 100%; padding: 12px 14px;
+      border: 1px solid #ddd; border-radius: 10px;
+      font-size: 15px; color: #333; background: #fff;
+    }
+
+    textarea { height: 120px; resize: none; }
+
+    .cat-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .cat-btn {
+      padding: 8px 16px; border-radius: 20px;
+      border: 1px solid #ccc; background: white;
+      cursor: pointer; font-size: 13px; color: #555;
+    }
+    .cat-btn.active { background: #3b5bdb; color: white; border-color: #3b5bdb; }
+
+    .submit-btn {
+      margin-top: 24px; width: 100%; padding: 14px;
+      background: #3b5bdb; color: white; border: none;
+      border-radius: 12px; font-size: 16px;
+      font-weight: bold; cursor: pointer;
+    }
+
+    .back-btn {
+      display: inline-block; margin-bottom: 20px;
+      color: #3b5bdb; font-size: 15px;
+      cursor: pointer; text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <a class="back-btn" onclick="history.back()">← Back</a>
+  <h2>📝 Feedback</h2>
+  <p>Help us improve Bhāva Tech App</p>
+
+  <form id="feedbackForm">
+    <label>Your Name *</label>
+    <input type="text" id="name" placeholder="Enter your name" required />
+
+    <label>Email (optional)</label>
+    <input type="email" id="email" placeholder="your@email.com" />
+
+    <label>Category</label>
+    <div class="cat-row">
+      <button type="button" class="cat-btn active" onclick="selectCat(this)">Bug</button>
+      <button type="button" class="cat-btn" onclick="selectCat(this)">Suggestion</button>
+      <button type="button" class="cat-btn" onclick="selectCat(this)">Game Issue</button>
+      <button type="button" class="cat-btn" onclick="selectCat(this)">Other</button>
+    </div>
+
+    <label>Message *</label>
+    <textarea id="message" placeholder="Describe your issue or suggestion..." required></textarea>
+
+    <button type="submit" class="submit-btn">Submit Feedback</button>
+  </form>
+
+  <script>
+    function selectCat(el) {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const message = document.getElementById('message').value;
+      if (!name || !message) {
+        alert('Please fill in name and message.');
+        return;
+      }
+      // Later: connect to EmailJS or Firebase here
+      alert('Thank you for your feedback, ' + name + '!');
+      this.reset();
+    });
+  </script>
+
+</body>
+</html>

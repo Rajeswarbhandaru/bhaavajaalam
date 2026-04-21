@@ -1,7 +1,7 @@
 {
   "appId": "com.bhavatech.bhaavajaalam",
-  "appName": "bhaavajaalam",
-  "webDir": "www",
+  "appName": "Bhāva Tech",
+  "webDir": "docs",
   "server": {
     "androidScheme": "https"
   }

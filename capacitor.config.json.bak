@@ -1,0 +1,8 @@
+{
+  "appId": "com.bhavatech.bhaavajaalam",
+  "appName": "bhaavajaalam",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
