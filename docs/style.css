@@ -363,7 +363,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.78);padding:60px 0 0;}
   .stat-card{flex:1 1 140px !important;max-width:160px !important;}
   .z1 a[href="take-test-v2.html"]{display:block !important;width:90% !important;margin:0 auto !important;text-align:center !important;}
 }
-/* ── GameSpark Popup ── */
+/* ── Game Spark Popup ── */
 .gs-overlay {
   position: fixed; inset: 0; z-index: 9999;
   background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
