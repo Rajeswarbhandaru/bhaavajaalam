@@ -363,3 +363,78 @@ footer{background:var(--dark);color:rgba(255,255,255,.78);padding:60px 0 0;}
   .stat-card{flex:1 1 140px !important;max-width:160px !important;}
   .z1 a[href="take-test-v2.html"]{display:block !important;width:90% !important;margin:0 auto !important;text-align:center !important;}
 }
+/* ── GameSpark Popup ── */
+.gs-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; animation: gsFadeIn .4s ease;
+}
+.gs-overlay.hidden { display: none; }
+@keyframes gsFadeIn { from{opacity:0} to{opacity:1} }
+
+.gs-modal {
+  background: linear-gradient(145deg, #0f0c29, #1a0a3e);
+  border: 1px solid rgba(124,58,237,0.5);
+  border-radius: 24px; padding: 40px 36px;
+  max-width: 520px; width: 100%; text-align: center;
+  position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  animation: gsPopIn .45s cubic-bezier(.68,-.55,.27,1.55);
+}
+@keyframes gsPopIn { from{transform:scale(0.7);opacity:0} to{transform:scale(1);opacity:1} }
+
+.gs-close {
+  position: absolute; top: 14px; right: 18px;
+  background: rgba(255,255,255,0.08); border: none;
+  color: #fff; font-size: 1.1rem; width: 32px; height: 32px;
+  border-radius: 50%; cursor: pointer; transition: background .2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.gs-close:hover { background: rgba(255,255,255,0.18); }
+
+.gs-badge {
+  display: inline-block; background: rgba(245,158,11,0.15);
+  border: 1px solid rgba(245,158,11,0.4); color: #fde68a;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; padding: 5px 16px;
+  border-radius: 30px; margin-bottom: 16px;
+}
+.gs-modal h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 900;
+  background: linear-gradient(90deg,#f7971e,#ffd200,#21d4fd,#b721ff,#f7971e);
+  background-size: 400%; -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; background-clip: text;
+  animation: shimmer 4s linear infinite; margin-bottom: 10px;
+}
+.gs-modal p {
+  font-size: 0.9rem; color: rgba(226,232,240,0.7);
+  line-height: 1.75; margin-bottom: 20px;
+}
+.gs-prizes {
+  display: flex; justify-content: center; gap: 12px;
+  flex-wrap: wrap; margin-bottom: 24px;
+}
+.gs-prize {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 10px 16px;
+  font-size: 0.82rem; font-weight: 700;
+}
+.gs-prize span { display: block; font-size: 1rem; margin-bottom: 2px; }
+.gs-btn {
+  display: inline-block; width: 100%;
+  background: linear-gradient(135deg,#7c3aed,#06b6d4);
+  color: #fff; font-weight: 800; font-size: 1rem;
+  padding: 14px 28px; border-radius: 50px;
+  text-decoration: none; border: none; cursor: pointer;
+  box-shadow: 0 6px 24px rgba(124,58,237,0.45);
+  transition: transform .2s, box-shadow .2s; margin-bottom: 12px;
+  display: block;
+}
+.gs-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(124,58,237,.6); }
+.gs-skip {
+  font-size: 0.78rem; color: rgba(255,255,255,0.4);
+  cursor: pointer; background: none; border: none;
+  text-decoration: underline; transition: color .2s;
+}
+.gs-skip:hover { color: rgba(255,255,255,0.7); }

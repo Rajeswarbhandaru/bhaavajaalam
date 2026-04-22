@@ -125,6 +125,7 @@
       <li><a href="Bhaava-Tech-Form-1-Integrated-v2.html">Enroll Now</a></li>
       <li><a href="#games">Games</a></li>
       <li><a href="#pricing">Pricing</a></li>
+	  <li><a href="#collaborate">Collaborate</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="#contact" class="nav-cta">CONTACT</a></li>
     </ul>
@@ -1630,6 +1631,7 @@ function bgtMode(mode){
 })();
 </script>
 
+
 <!-- ===== GAMES & APPS SECTION ===== -->
 <section id="games">
   <div class="container">
@@ -1758,6 +1760,69 @@ function bgtMode(mode){
         <h4 style="margin:10px 0 6px;">Heart Heroes</h4>
         <span style="font-size:0.8rem;color:#6b7280;">Kindness & Empathy</span>
       </a>
+
+<!-- ══ GameSpark Permanent Banner ══ -->
+<section style="padding: 60px 20px; background: linear-gradient(135deg, #0f0c29 0%, #1a0a3e 50%, #0a1520 100%); position: relative; overflow: hidden;">
+
+  <!-- Glow orbs -->
+  <div style="position:absolute;width:300px;height:300px;background:#7c3aed;opacity:.08;border-radius:50%;filter:blur(80px);top:-80px;left:-60px;pointer-events:none;"></div>
+  <div style="position:absolute;width:250px;height:250px;background:#06b6d4;opacity:.07;border-radius:50%;filter:blur(70px);bottom:-60px;right:-40px;pointer-events:none;"></div>
+
+  <div style="max-width:960px;margin:0 auto;position:relative;z-index:1;">
+
+    <!-- Top badge -->
+    <div style="text-align:center;margin-bottom:28px;">
+      <span style="display:inline-block;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.45);color:#fde68a;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:30px;">
+        🎮 Now Open · 1st National Competition · Bhāva Tech
+      </span>
+    </div>
+
+    <!-- Main content row -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:32px;">
+
+      <!-- Left: Text -->
+      <div style="flex:1;min-width:260px;">
+        <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;background:linear-gradient(90deg,#f7971e,#ffd200,#21d4fd,#b721ff,#f7971e);background-size:400%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 5s linear infinite;line-height:1.15;margin-bottom:12px;">
+          Bhāva GameSpark 2026
+        </h2>
+        <p style="font-size:0.95rem;color:rgba(226,232,240,0.7);line-height:1.75;margin-bottom:20px;max-width:480px;">
+          India's <strong style="color:#fff;">1st National Learn-with-Fun Game Challenge</strong> — open to all students aged 16–20. Build an educational game using <em>any</em> language or tool. Win cash prizes and get your game published on Bhāva Tech.
+        </p>
+
+        <!-- Info pills -->
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;">
+          <span style="padding:6px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.35);color:#c4b5fd;">📅 25 Apr – 25 May 2026</span>
+          <span style="padding:6px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:#6ee7b7;">🌍 All India · Ages 16–20</span>
+          <span style="padding:6px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#fde68a;">💳 ₹100 Entry Fee</span>
+          <span style="padding:6px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);color:#67e8f9;">🏆 Results: 1st June 2026</span>
+        </div>
+
+        <!-- CTA Button -->
+        <a href="gamespark.html" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;font-weight:800;font-size:1rem;padding:14px 32px;border-radius:50px;text-decoration:none;box-shadow:0 6px 24px rgba(124,58,237,.45);transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+          🚀 Register Now &amp; View Details
+        </a>
+      </div>
+
+      <!-- Right: Prize cards -->
+      <div style="display:flex;flex-direction:column;gap:12px;min-width:180px;">
+        <div style="background:linear-gradient(135deg,#3b2000,#7a4800);border:1px solid rgba(245,158,11,.4);border-radius:16px;padding:16px 22px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 20px rgba(245,158,11,.15);">
+          <span style="font-size:1.8rem;">🥇</span>
+          <div><div style="font-size:1.4rem;font-weight:900;color:#fde68a;">₹10,000</div><div style="font-size:0.72rem;color:rgba(255,255,255,.6);">1st Place</div></div>
+        </div>
+        <div style="background:linear-gradient(135deg,#1a1a2e,#2a2a4a);border:1px solid rgba(148,163,184,.25);border-radius:16px;padding:16px 22px;display:flex;align-items:center;gap:14px;">
+          <span style="font-size:1.8rem;">🥈</span>
+          <div><div style="font-size:1.4rem;font-weight:900;color:#cbd5e1;">₹7,000</div><div style="font-size:0.72rem;color:rgba(255,255,255,.6);">2nd Place</div></div>
+        </div>
+        <div style="background:linear-gradient(135deg,#2a1000,#5a2800);border:1px solid rgba(180,83,9,.3);border-radius:16px;padding:16px 22px;display:flex;align-items:center;gap:14px;">
+          <span style="font-size:1.8rem;">🥉</span>
+          <div><div style="font-size:1.4rem;font-weight:900;color:#fb923c;">₹5,000</div><div style="font-size:0.72rem;color:rgba(255,255,255,.6);">3rd Place</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- ══ End GameSpark Banner ══ -->
 
     </div><!-- ← end of games-grid -->
     </div>
@@ -2008,6 +2073,240 @@ function bgtMode(mode){
 
   </div>
 </section>
+
+<!-- INLINE STYLES for Collaboration Section -->
+<style>
+  /* ── Collab Section Wrapper ── */
+  .collab-section {
+    padding: 80px 20px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #0a0a1a 0%, #130d2e 50%, #0a1520 100%);
+  }
+  .collab-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(108,63,207,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(0,194,203,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ── Section Label & Title ── */
+  .collab-eyebrow {
+    text-align: center;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: #a78bfa; margin-bottom: 12px;
+  }
+  .collab-title {
+    text-align: center;
+    font-size: clamp(1.7rem, 4vw, 2.6rem);
+    font-weight: 900; line-height: 1.2;
+    background: linear-gradient(90deg, #f7971e, #ffd200, #21d4fd, #b721ff);
+    background-size: 300%;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 5s linear infinite;
+    margin-bottom: 12px;
+  }
+  .collab-subtitle {
+    text-align: center;
+    color: rgba(255,255,255,0.55);
+    font-size: 1rem; max-width: 540px;
+    margin: 0 auto 52px; line-height: 1.75;
+  }
+
+  /* ── 6 Partner Cards Grid ── */
+  .collab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+    max-width: 1060px; margin: 0 auto 48px;
+  }
+  .collab-card {
+    border-radius: 20px;
+    padding: 30px 18px 24px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer;
+    text-decoration: none;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 10px;
+    position: relative; overflow: hidden;
+    transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease,
+                box-shadow 0.35s, border-color 0.35s;
+  }
+  .collab-card.bgt-fade.visible {
+    opacity: 1; transform: translateY(0);
+  }
+  .collab-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--cc-accent);
+    opacity: 0.8;
+  }
+  .collab-card:hover {
+    transform: translateY(-8px) scale(1.03) !important;
+    border-color: var(--cc-accent);
+    box-shadow: 0 16px 48px var(--cc-glow);
+  }
+  .collab-card .cc-emoji {
+    font-size: 2.4rem;
+    animation: bgt-bob 3s ease-in-out infinite;
+    display: block;
+  }
+  .collab-card:nth-child(2) .cc-emoji { animation-delay: 0.5s; }
+  .collab-card:nth-child(3) .cc-emoji { animation-delay: 1s; }
+  .collab-card:nth-child(4) .cc-emoji { animation-delay: 1.5s; }
+  .collab-card:nth-child(5) .cc-emoji { animation-delay: 2s; }
+  .collab-card:nth-child(6) .cc-emoji { animation-delay: 2.5s; }
+
+  .collab-card h4 {
+    font-size: 0.95rem; font-weight: 800;
+    color: #fff; margin: 0;
+  }
+  .collab-card p {
+    font-size: 0.78rem; color: rgba(255,255,255,0.55);
+    line-height: 1.55; margin: 0;
+  }
+  .cc-badge {
+    font-size: 0.68rem; font-weight: 700;
+    padding: 3px 12px; border-radius: 20px;
+    background: var(--cc-accent-bg);
+    color: var(--cc-accent);
+    border: 1px solid var(--cc-accent);
+    letter-spacing: 0.5px; text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* Card color themes */
+  .cc1 { background: linear-gradient(145deg, #0f0a2e, #1e1060); --cc-accent: #a78bfa; --cc-accent-bg: rgba(167,139,250,0.1); --cc-glow: rgba(167,139,250,0.25); }
+  .cc2 { background: linear-gradient(145deg, #041820, #072d3a); --cc-accent: #67e8f9; --cc-accent-bg: rgba(103,232,249,0.1); --cc-glow: rgba(103,232,249,0.2); }
+  .cc3 { background: linear-gradient(145deg, #1a0e00, #3a2200); --cc-accent: #fde68a; --cc-accent-bg: rgba(253,230,138,0.1); --cc-glow: rgba(253,230,138,0.2); }
+  .cc4 { background: linear-gradient(145deg, #031a0e, #073d20); --cc-accent: #6ee7b7; --cc-accent-bg: rgba(110,231,183,0.1); --cc-glow: rgba(110,231,183,0.2); }
+  .cc5 { background: linear-gradient(145deg, #1f0010, #450028); --cc-accent: #f9a8d4; --cc-accent-bg: rgba(249,168,212,0.1); --cc-glow: rgba(249,168,212,0.2); }
+  .cc6 { background: linear-gradient(145deg, #0d0d1f, #1a1a3a); --cc-accent: #c4b5fd; --cc-accent-bg: rgba(196,181,253,0.08); --cc-glow: rgba(196,181,253,0.2); }
+
+  /* ── Bottom CTA Banner ── */
+  .collab-cta-banner {
+    max-width: 1060px; margin: 0 auto;
+    background: linear-gradient(135deg, rgba(108,63,207,0.18), rgba(0,194,203,0.12));
+    border: 1px solid rgba(167,139,250,0.25);
+    border-radius: 22px; padding: 40px 36px;
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 28px;
+    flex-wrap: wrap;
+  }
+  .collab-cta-text h3 {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 800; color: #fff; margin-bottom: 8px;
+  }
+  .collab-cta-text p {
+    font-size: 0.88rem; color: rgba(255,255,255,0.6);
+    max-width: 440px; line-height: 1.65;
+  }
+  .collab-cta-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, #a78bfa, #21d4fd);
+    color: #fff; font-weight: 800; font-size: 0.95rem;
+    padding: 15px 32px; border-radius: 40px;
+    text-decoration: none; white-space: nowrap;
+    box-shadow: 0 6px 28px rgba(167,139,250,0.45);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: btnPulse 2.5s ease-in-out infinite alternate;
+  }
+  .collab-cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(167,139,250,0.6);
+  }
+
+  @media (max-width: 640px) {
+    .collab-cta-banner { flex-direction: column; text-align: center; }
+    .collab-cta-btn { width: 100%; justify-content: center; }
+    .collab-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+
+<!-- ═══ COLLABORATION SECTION ═══ -->
+<section id="collaborate" class="collab-section">
+  <div class="bgt-inner" style="position:relative;z-index:1;">
+
+    <p class="collab-eyebrow bgt-fade">🤝 Open Collaborations 2026</p>
+    <h2 class="collab-title bgt-fade">Partner With Bhāva Tech</h2>
+    <p class="collab-subtitle bgt-fade">
+      We welcome schools, colleges, researchers, NGOs, EdTech companies,
+      and individual changemakers — to build whole-brain education together.
+    </p>
+
+    <!-- 6 Partner Type Cards -->
+    <div class="collab-grid">
+
+      <a href="collaborate.html?type=school" class="collab-card cc1 bgt-fade d1">
+        <span class="cc-emoji">🏫</span>
+        <h4>Schools</h4>
+        <p>Deploy IQ/EQ tools, run group Brain Gym sessions, get class-level cognitive reports.</p>
+        <span class="cc-badge">School Partner</span>
+      </a>
+
+      <a href="collaborate.html?type=college" class="collab-card cc2 bgt-fade d2">
+        <span class="cc-emoji">🎓</span>
+        <h4>Colleges</h4>
+        <p>Research collab, B.Ed. & Psychology projects, student internships, joint publications.</p>
+        <span class="cc-badge">Academic Partner</span>
+      </a>
+
+      <a href="collaborate.html?type=research" class="collab-card cc3 bgt-fade d3">
+        <span class="cc-emoji">🔬</span>
+        <h4>Research Orgs</h4>
+        <p>Co-design studies, share anonymised cognitive data, apply for joint grants.</p>
+        <span class="cc-badge">Research Partner</span>
+      </a>
+
+      <a href="collaborate.html?type=ngo" class="collab-card cc4 bgt-fade d4">
+        <span class="cc-emoji">🌱</span>
+        <h4>NGOs</h4>
+        <p>Subsidised tools for underprivileged children and rural community programs.</p>
+        <span class="cc-badge">Impact Partner</span>
+      </a>
+
+      <a href="collaborate.html?type=edtech" class="collab-card cc5 bgt-fade d5">
+        <span class="cc-emoji">💻</span>
+        <h4>EdTech Companies</h4>
+        <p>API access, white-label Bhāva games, integrate with your LMS or platform.</p>
+        <span class="cc-badge">Technology Partner</span>
+      </a>
+
+      <a href="collaborate.html?type=individual" class="collab-card cc6 bgt-fade d6">
+        <span class="cc-emoji">🙋</span>
+        <h4>Individuals</h4>
+        <p>Freelancers, researchers, educators, developers — every changemaker is welcome.</p>
+        <span class="cc-badge">Open Partner</span>
+      </a>
+
+    </div><!-- /collab-grid -->
+
+    <!-- Bottom CTA Banner -->
+    <div class="collab-cta-banner bgt-fade">
+      <div class="collab-cta-text">
+        <h3>Ready to Build Something Meaningful?</h3>
+        <p>
+          Whether you represent a 2,000-student school or work solo as a
+          developer or researcher — there is a place for you in the Bhāva Tech
+          ecosystem. Let's talk.
+        </p>
+      </div>
+      <a href="collaborate.html" class="collab-cta-btn">
+        🤝 Apply for Partnership →
+      </a>
+    </div>
+
+  </div><!-- /bgt-inner -->
+</section>
+<!-- ═══════════════════════════════════════════════════════════
+     END COLLABORATIONS SECTION
+     ═══════════════════════════════════════════════════════════ -->
  <!-- ===== FAQ ===== -->
   <section id="faq">
     <div class="container">
@@ -2192,6 +2491,7 @@ function bgtMode(mode){
             <li><a href="#about">About Us</a></li>
             <li><a href="Bhaava-Tech-Form-1-Integrated">Enroll Now</a></li>
             <li><a href="#pricing">Pricing</a></li>
+			<li><a href="collaborate.html">Partner With Us</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#contact">Contact &amp; Book</a></li>
             <li><a href="assets/sample-report.pdf" download>Sample Report (PDF)</a></li>
@@ -2204,7 +2504,32 @@ function bgtMode(mode){
           <p>✉️ <a href="mailto:bhaavatech@gmail.com">bhaavatech@gmail.com</a></p>
           <div class="footer-social">
             <a href="https://wa.me/919573057516" target="_blank">💬 WhatsApp Chat</a>
-          </div>
+          <a href="https://github.com/Rajeswarbhandaru/bhaavajaalam/releases/download/v1.0.0/BhavaTech_Setup.exe"
+   style="
+     display: inline-flex;
+     align-items: center;
+     gap: 8px;
+     margin-top: 10px;
+     background: linear-gradient(135deg, #6c47ff, #a259ff);
+     color: #fff;
+     padding: 10px 20px;
+     border-radius: 30px;
+     text-decoration: none;
+     font-size: 0.88rem;
+     font-weight: 700;
+     box-shadow: 0 4px 14px rgba(108,71,255,0.4);
+     transition: transform 0.2s;
+   "
+   onmouseover="this.style.transform='scale(1.05)'"
+   onmouseout="this.style.transform='scale(1.0)'"
+>
+  💻 Download for Windows
+</a>
+<div style="font-size: 0.75rem; color: #888; margin-top: 5px;">
+  Free • Windows 10/11 • v1.0.0
+</div>
+		  </div>
+		  
         </div>
       </div>
       <div class="footer-bottom">
@@ -2212,14 +2537,70 @@ function bgtMode(mode){
       </div>
     </div>
   </footer>
+<!-- FLOATING WHATSAPP -->
+<div id="whatsapp-float-wrap" style="
+  position: fixed;
+  bottom: 14px;
+  right: 14px;
+  z-index: 999;
+  animation: floatBounce 2s ease-in-out infinite;
+">
+  <!-- Close Button -->
+  <div onclick="document.getElementById('whatsapp-float-wrap').style.display='none'"
+    style="
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 22px;
+      height: 22px;
+      background: #ff4d4d;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      z-index: 10000;
+    ">✕</div>
 
-  <!-- ============ FLOATING WHATSAPP ============ -->
-  <a id="whatsapp-float" href="https://wa.me/919573057516?text=Hi%2C%20I%20saw%20your%20Brain%20Gym%20post%20and%20I%20am%20interested%20in%20online%20assessments%20for%20my%20child" target="_blank" title="Chat on WhatsApp" style="text-decoration:none;">
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.104.544 4.082 1.497 5.803L.057 23.4l5.73-1.502A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.653-.498-5.183-1.367L2.4 21.6l.994-4.27A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
-    </svg>
+  <!-- WhatsApp Button -->
+  <a href="https://wa.me/919573057516?text=Hi%2C%20I%20saw%20your%20Brain%20Gym%20post%20and%20I%20am%20interested%20in%20online%20assessments%20for%20my%20child"
+    target="_blank"
+    style="
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #25d366 0%, #128C7E 100%);
+      color: white;
+      padding: 14px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-family: sans-serif;
+      box-shadow: 0 6px 25px rgba(37,211,102,0.6);
+      transition: transform 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    "
+    onmouseover="this.style.transform='scale(1.08)'; this.style.boxShadow='0 10px 35px rgba(37,211,102,0.8)'"
+    onmouseout="this.style.transform='scale(1.0)'; this.style.boxShadow='0 6px 25px rgba(37,211,102,0.6)'"
+  >
+    <span style="font-size: 26px;">💬</span>
+    <span style="font-size: 14px; font-weight: bold;">WhatsApp Us</span>
+    <span style="font-size: 11px; opacity: 0.85;">Reply in minutes</span>
   </a>
+
+  <!-- Pulse Ring -->
+  <div style="
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 20px;
+    animation: pulseRingGreen 2s ease-out infinite;
+    pointer-events: none;
+  "></div>
+</div>
 
   <!-- ============ MEDITATION LAB MODAL ============ -->
   <div id="medlab-modal" role="dialog" aria-modal="true">
@@ -2255,8 +2636,136 @@ function bgtMode(mode){
 
   hamburger.addEventListener('click', () => {
     const open = navLinks.classList.toggle('open');
+    hamburger.classList.toggle('active');
     hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
+
+  // Auto-close menu when a link is tapped
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      hamburger.classList.remove('active');
+    });
+  });
+</script>
+<!-- Floating Download Button -->
+<div id="floatDownload" style="
+  position: fixed;
+  bottom: 140px;
+  right: 30px;
+  z-index: 9999;
+  text-align: center;
+  animation: floatBounce 2s ease-in-out infinite;
+">
+  <!-- Close Button -->
+  <div onclick="document.getElementById('floatDownload').style.display='none'"
+     style="
+       position: absolute;
+       top: -8px;
+       right: -8px;
+       width: 22px;
+       height: 22px;
+       background: #ff4d4d;
+       border-radius: 50%;
+       cursor: pointer;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       font-size: 13px;
+       color: white;
+       font-weight: bold;
+       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+       line-height: 1;
+       z-index: 10000;
+     ">✕</div>
+
+  <!-- Download Button -->
+  <a href="https://github.com/Rajeswarbhandaru/bhaavajaalam/releases/download/v1.0.0/BhavaTech_Setup.exe"
+     style="
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       gap: 6px;
+       background: linear-gradient(135deg, #6c47ff 0%, #a259ff 50%, #ff6fd8 100%);
+       color: white;
+       padding: 16px 24px;
+       border-radius: 20px;
+       text-decoration: none;
+       font-family: sans-serif;
+       box-shadow: 0 6px 25px rgba(108,71,255,0.6);
+       transition: transform 0.2s, box-shadow 0.2s;
+       min-width: 180px;
+     "
+     onmouseover="this.style.transform='scale(1.08)'; this.style.boxShadow='0 10px 35px rgba(108,71,255,0.8)'"
+     onmouseout="this.style.transform='scale(1.0)'; this.style.boxShadow='0 6px 25px rgba(108,71,255,0.6)'"
+  >
+    <span style="font-size: 28px;">💻</span>
+    <span style="font-size: 15px; font-weight: bold; letter-spacing: 0.5px;">Download App</span>
+    <span style="font-size: 11px; opacity: 0.85;">Free • Windows 10/11</span>
+  </a>
+
+  <!-- Pulsing Ring Animation -->
+  <div style="
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 20px;
+    animation: pulseRing 2s ease-out infinite;
+    pointer-events: none;
+  "></div>
+</div>
+
+<style>
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes pulseRing {
+  0%   { box-shadow: 0 0 0 0 rgba(108,71,255,0.5); }
+  70%  { box-shadow: 0 0 0 14px rgba(108,71,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(108,71,255,0); }
+}
+/* FIX: Force cards visible — override bgt-fade opacity conflict */
+.collab-section .bgt-fade,
+.collab-section .collab-card {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+</style>
+
+<!-- ══ GameSpark Popup ══ -->
+<div class="gs-overlay" id="gs-overlay">
+  <div class="gs-modal">
+    <button class="gs-close" onclick="closeGSPopup()">✕</button>
+    <div class="gs-badge">🎮 Now Open · Registration Live</div>
+    <h2>Bhāva GameSpark 2026</h2>
+    <p>
+      India's 1st National Learn-with-Fun Game Challenge.<br/>
+      Build an educational game. Win big. Get published.
+    </p>
+    <div class="gs-prizes">
+      <div class="gs-prize"><span>🥇</span>₹10,000</div>
+      <div class="gs-prize"><span>🥈</span>₹7,000</div>
+      <div class="gs-prize"><span>🥉</span>₹5,000</div>
+    </div>
+    <p style="font-size:0.8rem;margin-bottom:20px;">
+      📅 25 Apr – 25 May 2026 &nbsp;·&nbsp; Ages 16–20 &nbsp;·&nbsp; All India &nbsp;·&nbsp; ₹100 Entry
+    </p>
+    <a href="gamespark.html" class="gs-btn">🚀 Register Now &amp; Learn More</a>
+    <button class="gs-skip" onclick="closeGSPopup()">Maybe later, close this</button>
+  </div>
+</div>
+<script>
+// GameSpark Popup — show once per session
+function closeGSPopup() {
+  document.getElementById('gs-overlay').classList.add('hidden');
+  sessionStorage.setItem('gs-popup-seen', '1');
+}
+// Only show if not already seen this session
+if (!sessionStorage.getItem('gs-popup-seen')) {
+  document.getElementById('gs-overlay').classList.remove('hidden');
+} else {
+  document.getElementById('gs-overlay').classList.add('hidden');
+}
 </script>
 </body>
 </html>
