@@ -371,7 +371,7 @@
         <div class="payment-box">
           <h4>💳 Pay ₹100 Registration Fee First</h4>
           <p>Scan with any UPI app (GPay, PhonePe, Paytm, or any bank app)</p>
-          <img src="QR_CODE" alt="Scan to Pay ₹100 Registration Fee" class="qr-img"/>
+          <img src="QR_CODE.jpg" alt="Scan to Pay ₹100 Registration Fee" class="qr-img"/>
           <ul class="payment-steps">
             <li>1️⃣ Scan QR → Pay exactly ₹100</li>
             <li>2️⃣ Take a screenshot of the confirmation</li>
