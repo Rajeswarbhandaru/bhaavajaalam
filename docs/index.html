@@ -2204,7 +2204,32 @@ function bgtMode(mode){
           <p>✉️ <a href="mailto:bhaavatech@gmail.com">bhaavatech@gmail.com</a></p>
           <div class="footer-social">
             <a href="https://wa.me/919573057516" target="_blank">💬 WhatsApp Chat</a>
-          </div>
+          <a href="https://github.com/Rajeswarbhandaru/bhaavajaalam/releases/download/v1.0.0/BhavaTech_Setup.exe"
+   style="
+     display: inline-flex;
+     align-items: center;
+     gap: 8px;
+     margin-top: 10px;
+     background: linear-gradient(135deg, #6c47ff, #a259ff);
+     color: #fff;
+     padding: 10px 20px;
+     border-radius: 30px;
+     text-decoration: none;
+     font-size: 0.88rem;
+     font-weight: 700;
+     box-shadow: 0 4px 14px rgba(108,71,255,0.4);
+     transition: transform 0.2s;
+   "
+   onmouseover="this.style.transform='scale(1.05)'"
+   onmouseout="this.style.transform='scale(1.0)'"
+>
+  💻 Download for Windows
+</a>
+<div style="font-size: 0.75rem; color: #888; margin-top: 5px;">
+  Free • Windows 10/11 • v1.0.0
+</div>
+		  </div>
+		  
         </div>
       </div>
       <div class="footer-bottom">
@@ -2212,14 +2237,70 @@ function bgtMode(mode){
       </div>
     </div>
   </footer>
+<!-- FLOATING WHATSAPP -->
+<div id="whatsapp-float-wrap" style="
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  animation: floatBounce 2s ease-in-out infinite;
+">
+  <!-- Close Button -->
+  <div onclick="document.getElementById('whatsapp-float-wrap').style.display='none'"
+    style="
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 22px;
+      height: 22px;
+      background: #ff4d4d;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      z-index: 10000;
+    ">✕</div>
 
-  <!-- ============ FLOATING WHATSAPP ============ -->
-  <a id="whatsapp-float" href="https://wa.me/919573057516?text=Hi%2C%20I%20saw%20your%20Brain%20Gym%20post%20and%20I%20am%20interested%20in%20online%20assessments%20for%20my%20child" target="_blank" title="Chat on WhatsApp" style="text-decoration:none;">
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.104.544 4.082 1.497 5.803L.057 23.4l5.73-1.502A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.653-.498-5.183-1.367L2.4 21.6l.994-4.27A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
-    </svg>
+  <!-- WhatsApp Button -->
+  <a href="https://wa.me/919573057516?text=Hi%2C%20I%20saw%20your%20Brain%20Gym%20post%20and%20I%20am%20interested%20in%20online%20assessments%20for%20my%20child"
+    target="_blank"
+    style="
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #25d366 0%, #128C7E 100%);
+      color: white;
+      padding: 14px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-family: sans-serif;
+      box-shadow: 0 6px 25px rgba(37,211,102,0.6);
+      transition: transform 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    "
+    onmouseover="this.style.transform='scale(1.08)'; this.style.boxShadow='0 10px 35px rgba(37,211,102,0.8)'"
+    onmouseout="this.style.transform='scale(1.0)'; this.style.boxShadow='0 6px 25px rgba(37,211,102,0.6)'"
+  >
+    <span style="font-size: 26px;">💬</span>
+    <span style="font-size: 14px; font-weight: bold;">WhatsApp Us</span>
+    <span style="font-size: 11px; opacity: 0.85;">Reply in minutes</span>
   </a>
+
+  <!-- Pulse Ring -->
+  <div style="
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 20px;
+    animation: pulseRingGreen 2s ease-out infinite;
+    pointer-events: none;
+  "></div>
+</div>
 
   <!-- ============ MEDITATION LAB MODAL ============ -->
   <div id="medlab-modal" role="dialog" aria-modal="true">
@@ -2267,5 +2348,82 @@ function bgtMode(mode){
     });
   });
 </script>
+<!-- Floating Download Button -->
+<div id="floatDownload" style="
+  position: fixed;
+  bottom: 140px;
+  right: 30px;
+  z-index: 9999;
+  text-align: center;
+  animation: floatBounce 2s ease-in-out infinite;
+">
+  <!-- Close Button -->
+  <div onclick="document.getElementById('floatDownload').style.display='none'"
+     style="
+       position: absolute;
+       top: -8px;
+       right: -8px;
+       width: 22px;
+       height: 22px;
+       background: #ff4d4d;
+       border-radius: 50%;
+       cursor: pointer;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       font-size: 13px;
+       color: white;
+       font-weight: bold;
+       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+       line-height: 1;
+       z-index: 10000;
+     ">✕</div>
+
+  <!-- Download Button -->
+  <a href="https://github.com/Rajeswarbhandaru/bhaavajaalam/releases/download/v1.0.0/BhavaTech_Setup.exe"
+     style="
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       gap: 6px;
+       background: linear-gradient(135deg, #6c47ff 0%, #a259ff 50%, #ff6fd8 100%);
+       color: white;
+       padding: 16px 24px;
+       border-radius: 20px;
+       text-decoration: none;
+       font-family: sans-serif;
+       box-shadow: 0 6px 25px rgba(108,71,255,0.6);
+       transition: transform 0.2s, box-shadow 0.2s;
+       min-width: 180px;
+     "
+     onmouseover="this.style.transform='scale(1.08)'; this.style.boxShadow='0 10px 35px rgba(108,71,255,0.8)'"
+     onmouseout="this.style.transform='scale(1.0)'; this.style.boxShadow='0 6px 25px rgba(108,71,255,0.6)'"
+  >
+    <span style="font-size: 28px;">💻</span>
+    <span style="font-size: 15px; font-weight: bold; letter-spacing: 0.5px;">Download App</span>
+    <span style="font-size: 11px; opacity: 0.85;">Free • Windows 10/11</span>
+  </a>
+
+  <!-- Pulsing Ring Animation -->
+  <div style="
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 20px;
+    animation: pulseRing 2s ease-out infinite;
+    pointer-events: none;
+  "></div>
+</div>
+
+<style>
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes pulseRing {
+  0%   { box-shadow: 0 0 0 0 rgba(108,71,255,0.5); }
+  70%  { box-shadow: 0 0 0 14px rgba(108,71,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(108,71,255,0); }
+}
+</style>
 </body>
 </html>
