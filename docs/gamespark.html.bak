@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bhāva GameSpark 2026 | 1st National Learn-with-Fun Game Challenge</title>
-  <meta name="description" content="Bhāva GameSpark 2026 — India's first national educational game development competition for ages 16-20. Win ₹10,000 in prizes!"/>
+  <title>Bhāva Game Spark 2026 | 1st National Learn-with-Fun Game Challenge</title>
+  <meta name="description" content="Bhāva Game Spark 2026 — India's first national educational game development competition for ages 16-20. Win ₹10,000 in prizes!"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
   <style>
@@ -406,7 +406,7 @@
         </div>
         <div class="terms-check">
           <input type="checkbox" id="r-terms" required/>
-          <label for="r-terms">I have read and agree to the <a href="#terms">Terms & Conditions</a> of Bhāva GameSpark 2026. I understand that all decisions by Bhāva Tech are final and binding.</label>
+          <label for="r-terms">I have read and agree to the <a href="#terms">Terms & Conditions</a> of Bhāva Game Spark 2026. I understand that all decisions by Bhāva Tech are final and binding.</label>
         </div>
         <button class="btn-submit-form" onclick="submitRegistration()"><i class="fas fa-paper-plane"></i> Submit Registration</button>
         <div class="success-box" id="reg-success">
