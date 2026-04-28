@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Habits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-display: 'Fredoka One', cursive;
+  --font-body: 'Nunito', sans-serif;
+  --c-sky:    #5ec9f5;
+  --c-sun:    #FFD93D;
+  --c-grass:  #6BCB77;
+  --c-pink:   #FF6B9D;
+  --c-purple: #C77DFF;
+  --c-orange: #FF9A3C;
+  --c-red:    #FF5252;
+  --c-teal:   #00BCD4;
+  --c-white:  #FFFFFF;
+  --c-bg:     #e8f8ff;
+  --c-text:   #2d3561;
+  --c-muted:  #7b88b8;
+  --shadow:   0 6px 20px rgba(0,0,0,.18);
+  --radius-card: 28px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--c-bg);}
+body{font-family:var(--font-body);color:var(--c-text);}
+
+.sky-bg{
+  position:fixed;inset:0;z-index:0;
+  background:linear-gradient(180deg,#a0d8ff 0%,#d4f0ff 52%,#b5f0b5 52%,#7dce82 100%);
+}
+.cloud{position:absolute;opacity:.88;animation:floatCloud linear infinite;}
+@keyframes floatCloud{from{transform:translateX(-220px)}to{transform:translateX(110vw)}}
+
+.screen{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,transform .5s;}
+.screen.hidden{opacity:0;pointer-events:none;transform:scale(.95);}
+
+/* START */
+#start-screen{gap:22px;}
+.game-logo{
+  background:var(--c-white);border-radius:999px;
+  padding:16px 42px;box-shadow:0 8px 32px rgba(255,107,157,.35),0 0 0 6px var(--c-pink);
+  display:flex;align-items:center;gap:14px;
+}
+.game-logo h1{font-family:var(--font-display);font-size:clamp(2.2rem,6vw,4.2rem);color:var(--c-pink);line-height:1;}
+.logo-icon{font-size:clamp(2rem,5vw,3.5rem);}
+.tagline{font-family:var(--font-display);font-size:clamp(1.1rem,3vw,1.6rem);color:var(--c-white);text-shadow:0 2px 8px rgba(0,0,0,.25);}
+.habit-previews{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;max-width:600px;}
+.preview-card{
+  background:var(--c-white);border-radius:20px;padding:12px 16px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  box-shadow:var(--shadow);cursor:default;min-width:80px;
+  transition:transform .22s;
+}
+.preview-card:hover{transform:translateY(-6px) scale(1.08);}
+.preview-card .icon{font-size:2.2rem;}
+.btn-play{
+  background:linear-gradient(135deg,var(--c-grass),#44c767);
+  color:#fff;border:none;border-radius:999px;
+  font-family:var(--font-display);font-size:clamp(1.4rem,4vw,2rem);
+  padding:18px 60px;cursor:pointer;
+  box-shadow:0 8px 24px rgba(107,203,119,.5),0 0 0 5px #fff;
+  transition:transform .18s;
+  animation:pulse 1.9s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.btn-play:active{transform:scale(.96);animation:none;}
+
+/* GAME */
+#game-screen{justify-content:flex-start;padding-top:10px;gap:0;}
+.hud{
+  width:100%;max-width:680px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 18px;
+  background:rgba(255,255,255,.8);
+  backdrop-filter:blur(10px);
+  border-radius:999px;box-shadow:var(--shadow);z-index:20;
+}
+.hud-score{font-family:var(--font-display);font-size:1.8rem;color:var(--c-pink);display:flex;align-items:center;gap:6px;}
+.progress-bar-wrap{flex:1;margin:0 12px;height:16px;background:rgba(0,0,0,.1);border-radius:999px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--c-grass),var(--c-sun));border-radius:999px;transition:width .6s ease;}
+.hud-lives{font-size:1.6rem;display:flex;gap:4px;}
+.life{transition:opacity .3s;}
+.life.lost{opacity:.2;}
+.stage-wrap{
+  flex:1;width:100%;max-width:680px;
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:14px;gap:16px;
+}
+.habit-card{
+  background:#fff5f9;border-radius:var(--radius-card);
+  padding:26px 30px;box-shadow:var(--shadow);
+  text-align:center;width:100%;max-width:480px;
+  animation:cardIn .55s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes cardIn{from{opacity:0;transform:scale(.65) translateY(50px)}to{opacity:1;transform:none}}
+.habit-scene{font-size:clamp(5rem,17vw,8.5rem);line-height:1;animation:bounce 1.3s ease-in-out infinite alternate;}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-16px)}}
+.habit-question{font-family:var(--font-display);font-size:clamp(1.3rem,4vw,2rem);color:var(--c-text);margin-top:8px;}
+.habit-sub{font-size:.95rem;color:var(--c-muted);margin-top:4px;}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:480px;}
+.choice-btn{
+  background:var(--c-white);border:4px solid transparent;border-radius:22px;
+  padding:14px 8px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+  font-family:var(--font-display);font-size:1rem;color:var(--c-text);
+}
+.choice-btn .choice-icon{font-size:clamp(2.2rem,7vw,3rem);}
+.choice-btn:hover:not(:disabled){transform:translateY(-5px) scale(1.05);box-shadow:0 10px 28px rgba(0,0,0,.2);}
+.choice-btn.correct{background:#e8fff0;border-color:var(--c-grass);animation:correctBounce .5s;}
+.choice-btn.wrong{background:#fff0f0;border-color:var(--c-red);animation:shake .4s;}
+@keyframes correctBounce{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.choice-btn:disabled{cursor:default;}
+
+/* FEEDBACK */
+.feedback-overlay{
+  position:fixed;inset:0;z-index:100;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;pointer-events:none;transition:opacity .4s;
+}
+.feedback-overlay.hidden{opacity:0;}
+.feedback-emoji{font-size:clamp(4rem,12vw,7rem);animation:emojiPop .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes emojiPop{from{transform:scale(0) rotate(-20deg)}to{transform:scale(1) rotate(0)}}
+.feedback-bubble{
+  background:var(--c-white);border-radius:999px;
+  padding:20px 44px;font-family:var(--font-display);
+  font-size:clamp(1.8rem,5vw,3.2rem);box-shadow:var(--shadow);
+  animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
+.feedback-bubble.good{color:var(--c-grass);}
+.feedback-bubble.bad{color:var(--c-red);}
+
+/* PARTICLE CANVAS */
+#particle-canvas{position:fixed;inset:0;z-index:50;pointer-events:none;}
+
+/* WIN */
+#win-screen{gap:18px;}
+.win-trophy{font-size:clamp(4.5rem,14vw,8rem);animation:trophy 1.2s ease-in-out infinite alternate;}
+@keyframes trophy{from{transform:scale(1) rotate(-6deg)}to{transform:scale(1.12) rotate(6deg)}}
+.win-title{font-family:var(--font-display);font-size:clamp(2.4rem,7vw,5rem);color:var(--c-white);text-shadow:0 4px 16px rgba(0,0,0,.25);text-align:center;}
+.win-score{
+  background:var(--c-white);border-radius:28px;
+  padding:20px 48px;text-align:center;box-shadow:var(--shadow);
+}
+.win-score .big-num{font-family:var(--font-display);font-size:clamp(3.5rem,10vw,5.5rem);color:var(--c-pink);}
+.win-score .label{font-size:1rem;color:var(--c-muted);}
+.stars-display{font-size:2.2rem;margin-top:8px;}
+.btn-replay{
+  background:linear-gradient(135deg,var(--c-pink),var(--c-purple));
+  color:#fff;border:none;border-radius:999px;
+  font-family:var(--font-display);font-size:1.7rem;
+  padding:16px 54px;cursor:pointer;
+  box-shadow:0 8px 24px rgba(199,125,255,.45),0 0 0 5px #fff;
+  transition:transform .18s;animation:pulse 2s ease-in-out infinite;
+}
+.btn-replay:hover{animation:none;transform:scale(1.06);}
+
+@media(max-width:480px){
+  .choices{gap:9px;}
+  .choice-btn{padding:11px 5px;}
+  .hud{padding:6px 10px;}
+  .habit-card{padding:16px 12px;}
+  .feedback-bubble{padding:14px 28px;}
+}
+</style>
+</head>
+<body>
+
+<div class="sky-bg" id="sky-bg">
+  <svg style="position:absolute;bottom:0;left:0;width:100%;display:block" viewBox="0 0 1440 70" preserveAspectRatio="none">
+    <path fill="#7dce82" d="M0,70 Q180,20 360,55 Q540,90 720,45 Q900,0 1080,55 Q1260,110 1440,45 L1440,70 Z"/>
+  </svg>
+</div>
+
+<canvas id="particle-canvas"></canvas>
+
+<!-- START SCREEN -->
+<div id="start-screen" class="screen">
+  <div class="game-logo">
+    <span class="logo-icon">🌟</span>
+    <h1>Happy Habits</h1>
+    <span class="logo-icon">🌈</span>
+  </div>
+  <div class="tagline">Pick the GOOD habit! ✨</div>
+  <div class="habit-previews" id="habit-previews"></div>
+  <button class="btn-play" id="btn-play">&#9654; Play!</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="game-screen" class="screen hidden">
+  <div class="hud">
+    <div class="hud-score">&#11088; <span id="score-val">0</span></div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:0%"></div></div>
+    <div class="hud-lives" id="hud-lives"></div>
+  </div>
+  <div class="stage-wrap">
+    <div class="habit-card" id="habit-card">
+      <div class="habit-scene" id="habit-scene">🦷</div>
+      <div class="habit-question" id="habit-question">What should you do?</div>
+      <div class="habit-sub" id="habit-sub"></div>
+    </div>
+    <div class="choices" id="choices"></div>
+  </div>
+</div>
+
+<!-- FEEDBACK -->
+<div class="feedback-overlay hidden" id="feedback-overlay">
+  <div class="feedback-emoji" id="feedback-emoji"></div>
+  <div class="feedback-bubble" id="feedback-bubble"></div>
+</div>
+
+<!-- WIN SCREEN -->
+<div id="win-screen" class="screen hidden">
+  <div class="win-trophy">&#127942;</div>
+  <div class="win-title">Amazing Job!</div>
+  <div class="win-score">
+    <div class="big-num" id="final-score">0</div>
+    <div class="label">points earned</div>
+    <div class="stars-display" id="final-stars"></div>
+  </div>
+  <button class="btn-replay" id="btn-replay">&#128260; Play Again!</button>
+</div>
+
+<script>
+const HABITS = [
+  {scene:'🦷',question:'Morning time!',sub:'Time to get ready!',choices:[{icon:'🪥',label:'Brush Teeth',correct:true},{icon:'🍭',label:'Eat Candy',correct:false},{icon:'😴',label:'Keep Sleeping',correct:false},{icon:'📺',label:'Watch TV',correct:false}]},
+  {scene:'🤧',question:'Achoo! You sneeze!',sub:'What do you do?',choices:[{icon:'🤲',label:'Cover Mouth',correct:true},{icon:'💨',label:'Sneeze Freely',correct:false},{icon:'🍔',label:'Eat Food',correct:false},{icon:'😝',label:'Tease Friend',correct:false}]},
+  {scene:'🍎',question:'Snack time!',sub:'Pick the healthy snack!',choices:[{icon:'🍎',label:'Apple',correct:true},{icon:'🍟',label:'French Fries',correct:false},{icon:'🍰',label:'Cake',correct:false},{icon:'🥤',label:'Soda',correct:false}]},
+  {scene:'🛏️',question:'Bedtime!',sub:'What helps you sleep?',choices:[{icon:'📚',label:'Read Book',correct:true},{icon:'📱',label:'Play Phone',correct:false},{icon:'🎮',label:'Video Games',correct:false},{icon:'🍫',label:'Eat Chocolate',correct:false}]},
+  {scene:'🌧️',question:'Going outside!',sub:'It is raining! What to wear?',choices:[{icon:'🧥',label:'Rain Coat',correct:true},{icon:'👙',label:'Swimsuit',correct:false},{icon:'🩲',label:'Shorts Only',correct:false},{icon:'🎩',label:'Party Hat',correct:false}]},
+  {scene:'🍽️',question:'After eating!',sub:'What do you do?',choices:[{icon:'🧼',label:'Wash Dish',correct:true},{icon:'🪑',label:'Leave It',correct:false},{icon:'🙈',label:'Hide It',correct:false},{icon:'😴',label:'Take a Nap',correct:false}]},
+  {scene:'🌿',question:'In the garden!',sub:'How do we treat plants?',choices:[{icon:'💧',label:'Water Them',correct:true},{icon:'✂️',label:'Cut Them',correct:false},{icon:'🦶',label:'Step On Them',correct:false},{icon:'🔥',label:'Burn Them',correct:false}]},
+  {scene:'🫂',question:'Your friend is sad!',sub:'What do you do?',choices:[{icon:'🤗',label:'Hug Them',correct:true},{icon:'😝',label:'Tease Them',correct:false},{icon:'🏃',label:'Run Away',correct:false},{icon:'😤',label:'Ignore Them',correct:false}]},
+  {scene:'🚰',question:'So thirsty!',sub:'Best drink for you?',choices:[{icon:'💧',label:'Water',correct:true},{icon:'🥤',label:'Soda',correct:false},{icon:'☕',label:'Coffee',correct:false},{icon:'🍹',label:'Juice Box',correct:false}]},
+  {scene:'📚',question:'Back from school!',sub:'What first?',choices:[{icon:'✏️',label:'Homework',correct:true},{icon:'🎮',label:'Games All Day',correct:false},{icon:'📺',label:'Watch TV',correct:false},{icon:'💤',label:'Nap Only',correct:false}]},
+  {scene:'🛁',question:'Before bedtime!',sub:'Stay clean!',choices:[{icon:'🛁',label:'Take a Bath',correct:true},{icon:'🍕',label:'Eat Pizza',correct:false},{icon:'📢',label:'Shout Loud',correct:false},{icon:'🎠',label:'Play Outside',correct:false}]},
+  {scene:'🐶',question:'After petting a pet!',sub:'What should you do?',choices:[{icon:'🧼',label:'Wash Hands',correct:true},{icon:'🍽️',label:'Eat Dinner',correct:false},{icon:'😴',label:'Sleep',correct:false},{icon:'🎮',label:'Play Game',correct:false}]},
+  {scene:'🚮',question:'You have trash!',sub:'Where does it go?',choices:[{icon:'🗑️',label:'Trash Bin',correct:true},{icon:'🌳',label:'Behind a Tree',correct:false},{icon:'🛣️',label:'On the Road',correct:false},{icon:'🌊',label:'In the River',correct:false}]},
+  {scene:'🧹',question:'Your room is messy!',sub:'What do you do?',choices:[{icon:'🧹',label:'Clean It Up',correct:true},{icon:'🛋️',label:'Hide Under Sofa',correct:false},{icon:'🙈',label:'Ignore the Mess',correct:false},{icon:'😴',label:'Go to Sleep',correct:false}]},
+  {scene:'🌞',question:'Good morning!',sub:'After waking up, first thing?',choices:[{icon:'🧘',label:'Morning Stretch',correct:true},{icon:'📱',label:'Check Phone',correct:false},{icon:'🎮',label:'Play Games',correct:false},{icon:'🛌',label:'Stay in Bed',correct:false}]},
+  {scene:'🚶',question:'Going to school!',sub:'How do you cross the road?',choices:[{icon:'🚦',label:'Use Zebra Crossing',correct:true},{icon:'🏃',label:'Run Across Fast',correct:false},{icon:'👀',label:'Eyes Closed',correct:false},{icon:'🛴',label:'Ride a Scooter',correct:false}]},
+  {scene:'🍱',question:'Lunchtime!',sub:'Best meal choice?',choices:[{icon:'🥗',label:'Salad and Rice',correct:true},{icon:'🍔',label:'Burger and Fries',correct:false},{icon:'🍕',label:'Pizza Only',correct:false},{icon:'🍬',label:'Candy Bar',correct:false}]},
+  {scene:'🤝',question:'A new kid joins class!',sub:'What do you do?',choices:[{icon:'😊',label:'Say Hello!',correct:true},{icon:'😒',label:'Ignore Them',correct:false},{icon:'😤',label:'Walk Away',correct:false},{icon:'🙅',label:'Tell Them No',correct:false}]},
+  {scene:'🌙',question:'It is getting late!',sub:'What time should kids sleep?',choices:[{icon:'🛌',label:'Early Bedtime',correct:true},{icon:'📺',label:'Watch TV All Night',correct:false},{icon:'🎮',label:'Play Till Dawn',correct:false},{icon:'🍿',label:'Eat Popcorn',correct:false}]},
+  {scene:'🧴',question:'Going out in the sun!',sub:'Protect your skin!',choices:[{icon:'🧴',label:'Apply Sunscreen',correct:true},{icon:'🌶️',label:'Rub Chilli',correct:false},{icon:'🍯',label:'Put Honey',correct:false},{icon:'🪣',label:'Pour Water',correct:false}]},
+  {scene:'🎒',question:'Pack your school bag!',sub:'What must you check?',choices:[{icon:'📓',label:'Books and Pencils',correct:true},{icon:'🪆',label:'Toys Only',correct:false},{icon:'🍫',label:'Candy Stash',correct:false},{icon:'🎸',label:'Guitar',correct:false}]},
+  {scene:'😡',question:'You feel very angry!',sub:'Best way to calm down?',choices:[{icon:'🧘',label:'Deep Breaths',correct:true},{icon:'🤬',label:'Yell Loudly',correct:false},{icon:'👊',label:'Hit Something',correct:false},{icon:'🏃',label:'Run and Cry',correct:false}]},
+  {scene:'🌍',question:'Saving the Earth!',sub:'How can you help?',choices:[{icon:'♻️',label:'Recycle Waste',correct:true},{icon:'🚗',label:'Drive Everywhere',correct:false},{icon:'💡',label:'Leave Lights On',correct:false},{icon:'🚿',label:'Waste Water',correct:false}]},
+  {scene:'🤒',question:'You feel sick!',sub:'What should you do?',choices:[{icon:'🩺',label:'Tell an Adult',correct:true},{icon:'🏊',label:'Go Swimming',correct:false},{icon:'🍕',label:'Eat Junk Food',correct:false},{icon:'🎠',label:'Play in Rain',correct:false}]},
+  {scene:'🙏',question:'Someone helps you!',sub:'What do you say?',choices:[{icon:'🙏',label:'Thank You!',correct:true},{icon:'😒',label:'Nothing',correct:false},{icon:'😤',label:'Walk Away',correct:false},{icon:'🤷',label:'Shrug',correct:false}]},
+];
+
+const BG_COLORS=['#fff5f9','#f5f0ff','#f0fff5','#f0faff','#fffcf0','#fff8e1','#fce4ff'];
+let score=0,lives=3,currentIdx=0,questions=[],answered=false;
+
+// CLOUDS
+function makeClouds(){
+  const sky=document.getElementById('sky-bg');
+  for(let i=0;i<6;i++){
+    const div=document.createElement('div');div.className='cloud';
+    const sz=70+Math.random()*90;
+    const top=4+Math.random()*36;
+    const dur=26+Math.random()*22;
+    const delay=-Math.random()*dur;
+    div.style.cssText=`top:${top}%;animation-duration:${dur}s;animation-delay:${delay}s;`;
+    div.innerHTML=`<svg width="${sz}" height="${sz*.55}" viewBox="0 0 120 66"><ellipse cx="60" cy="50" rx="55" ry="25" fill="white"/><ellipse cx="40" cy="40" rx="28" ry="24" fill="white"/><ellipse cx="78" cy="36" rx="24" ry="21" fill="white"/></svg>`;
+    sky.appendChild(div);
+  }
+}
+
+// PARTICLES
+const pCanvas=document.getElementById('particle-canvas');
+const pCtx=pCanvas.getContext('2d');
+let particles=[];
+function resizeP(){pCanvas.width=innerWidth;pCanvas.height=innerHeight;}
+window.addEventListener('resize',resizeP);resizeP();
+
+class Particle{
+  constructor(x,y,color,type){
+    this.x=x;this.y=y;this.color=color;this.type=type;
+    this.vx=(Math.random()-.5)*12;
+    this.vy=-(Math.random()*12+3);
+    this.gravity=0.38;
+    this.life=1;this.decay=0.013+Math.random()*.012;
+    this.size=type==='star'?24:8+Math.random()*12;
+    this.rotation=Math.random()*Math.PI*2;
+    this.rotSpeed=(Math.random()-.5)*.28;
+  }
+  update(){this.x+=this.vx;this.y+=this.vy;this.vy+=this.gravity;this.life-=this.decay;this.rotation+=this.rotSpeed;}
+  draw(ctx){
+    ctx.save();ctx.globalAlpha=Math.max(0,this.life);
+    ctx.translate(this.x,this.y);ctx.rotate(this.rotation);
+    if(this.type==='star'){
+      ctx.font=`${this.size}px serif`;ctx.fillText('⭐',-this.size/2,-this.size/2);
+    } else {
+      ctx.fillStyle=this.color;
+      ctx.beginPath();
+      if(this.type==='circle'){ctx.arc(0,0,this.size/2,0,Math.PI*2);}
+      else{ctx.fillRect(-this.size/2,-this.size*.3,this.size,this.size*.6);}
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+}
+
+function burst(x,y,count,type){
+  const cols=['#FF6B9D','#FFD93D','#6BCB77','#5ec9f5','#C77DFF','#FF9A3C','#FF5252','#00BCD4'];
+  for(let i=0;i<count;i++) particles.push(new Particle(x,y,cols[i%cols.length],type||'rect'));
+}
+
+function animP(){
+  pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+  particles=particles.filter(p=>p.life>0);
+  particles.forEach(p=>{p.update();p.draw(pCtx);});
+  requestAnimationFrame(animP);
+}
+animP();
+
+// PREVIEWS
+function buildPreviews(){
+  const wrap=document.getElementById('habit-previews');
+  ['🦷','🍎','🛁','💧','📚','🤗','🌿','🚮','🌍','♻️'].forEach(icon=>{
+    const c=document.createElement('div');c.className='preview-card';
+    c.innerHTML=`<span class="icon">${icon}</span>`;wrap.appendChild(c);
+  });
+}
+
+// SCREENS
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('hidden',s.id!==id));}
+
+// HUD
+function renderHud(){
+  document.getElementById('score-val').textContent=score;
+  const el=document.getElementById('hud-lives');el.innerHTML='';
+  for(let i=0;i<3;i++){const h=document.createElement('span');h.className='life'+(i>=lives?' lost':'');h.textContent='❤️';el.appendChild(h);}
+  const pct=(currentIdx/questions.length)*100;
+  document.getElementById('prog-bar').style.width=pct+'%';
+}
+
+// LOAD Q
+function loadQuestion(){
+  if(currentIdx>=questions.length){endGame();return;}
+  answered=false;
+  const q=questions[currentIdx];
+  const card=document.getElementById('habit-card');
+  card.style.background=BG_COLORS[currentIdx%BG_COLORS.length];
+  card.style.animation='none';requestAnimationFrame(()=>{card.style.animation='';});
+  document.getElementById('habit-scene').textContent=q.scene;
+  document.getElementById('habit-question').textContent=q.question;
+  document.getElementById('habit-sub').textContent=q.sub;
+  const scene=document.getElementById('habit-scene');
+  scene.style.animation='none';requestAnimationFrame(()=>{scene.style.animation='';});
+
+  const choicesEl=document.getElementById('choices');choicesEl.innerHTML='';
+  [...q.choices].sort(()=>Math.random()-.5).forEach(ch=>{
+    const btn=document.createElement('button');btn.className='choice-btn';
+    btn.innerHTML=`<span class="choice-icon">${ch.icon}</span><span>${ch.label}</span>`;
+    btn.addEventListener('click',()=>handleAnswer(btn,ch.correct,ch.icon));
+    choicesEl.appendChild(btn);
+  });
+  renderHud();
+}
+
+// HANDLE ANSWER
+const GOOD=['Great! 🎉','Awesome! ✨','Super! 🌟','Yes! 💪','Perfect! 🥰','Brilliant! 💡'];
+const BAD=['Oops! 😬','Try Again! 💭','Hmm... 🤔','Not Quite! 😅'];
+
+function handleAnswer(btn,correct,icon){
+  if(answered)return;answered=true;
+  document.querySelectorAll('.choice-btn').forEach(b=>b.disabled=true);
+  if(correct){
+    btn.classList.add('correct');score+=10;
+    const r=btn.getBoundingClientRect();
+    burst(r.left+r.width/2,r.top+r.height/2,55,'rect');
+    burst(r.left+r.width/2,r.top+r.height/2,12,'star');
+    burst(r.left+r.width/2,r.top+r.height/2,20,'circle');
+    showFeedback(true,icon);playSFX('correct');
+  } else {
+    btn.classList.add('wrong');lives--;
+    showFeedback(false,icon);playSFX('wrong');
+    if(lives<=0){setTimeout(()=>{hideFeedback();endGame();},1500);return;}
+  }
+  renderHud();
+  setTimeout(()=>{hideFeedback();currentIdx++;loadQuestion();},1500);
+}
+
+function showFeedback(good,icon){
+  const ov=document.getElementById('feedback-overlay');
+  const bub=document.getElementById('feedback-bubble');
+  const em=document.getElementById('feedback-emoji');
+  em.textContent=good?icon:'❌';
+  em.style.animation='none';requestAnimationFrame(()=>{em.style.animation='';});
+  bub.textContent=good?GOOD[Math.floor(Math.random()*GOOD.length)]:BAD[Math.floor(Math.random()*BAD.length)];
+  bub.className='feedback-bubble '+(good?'good':'bad');
+  bub.style.animation='none';requestAnimationFrame(()=>{bub.style.animation='';});
+  ov.classList.remove('hidden');
+}
+function hideFeedback(){document.getElementById('feedback-overlay').classList.add('hidden');}
+
+// AUDIO
+let audioCtx;
+function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();}
+function playSFX(type){
+  try{
+    initAudio();if(audioCtx.state==='suspended')audioCtx.resume();
+    const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+    osc.connect(gain);gain.connect(audioCtx.destination);
+    if(type==='correct'){
+      osc.type='sine';
+      osc.frequency.setValueAtTime(523,audioCtx.currentTime);
+      osc.frequency.setValueAtTime(659,audioCtx.currentTime+.1);
+      osc.frequency.setValueAtTime(784,audioCtx.currentTime+.2);
+      osc.frequency.setValueAtTime(1047,audioCtx.currentTime+.32);
+      gain.gain.setValueAtTime(.28,audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.7);
+      osc.start();osc.stop(audioCtx.currentTime+.7);
+    } else {
+      osc.type='sawtooth';
+      osc.frequency.setValueAtTime(260,audioCtx.currentTime);
+      osc.frequency.setValueAtTime(200,audioCtx.currentTime+.18);
+      gain.gain.setValueAtTime(.18,audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.45);
+      osc.start();osc.stop(audioCtx.currentTime+.45);
+    }
+  }catch(e){}
+}
+function playWinFanfare(){
+  try{
+    initAudio();if(audioCtx.state==='suspended')audioCtx.resume();
+    [523,659,784,1047,1175].forEach((freq,i)=>{
+      const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+      osc.connect(gain);gain.connect(audioCtx.destination);
+      osc.type='sine';osc.frequency.value=freq;
+      const t=audioCtx.currentTime+i*.16;
+      gain.gain.setValueAtTime(.22,t);
+      gain.gain.exponentialRampToValueAtTime(.001,t+.55);
+      osc.start(t);osc.stop(t+.55);
+    });
+  }catch(e){}
+}
+
+// END GAME
+function endGame(){
+  hideFeedback();
+  document.getElementById('final-score').textContent=score;
+  const maxScore=questions.length*10;
+  const earned=score>=maxScore?3:score>=maxScore*.6?2:score>0?1:0;
+  document.getElementById('final-stars').textContent='⭐'.repeat(earned)+'☆'.repeat(3-earned);
+  showScreen('win-screen');playWinFanfare();
+  setTimeout(()=>{
+    burst(innerWidth/2,innerHeight*.35,90,'rect');
+    burst(innerWidth*.2,innerHeight*.5,30,'circle');
+    burst(innerWidth*.8,innerHeight*.5,30,'star');
+    burst(innerWidth/2,innerHeight*.5,20,'star');
+  },300);
+}
+
+// START
+function startGame(){
+  score=0;lives=3;currentIdx=0;
+  questions=[...HABITS].sort(()=>Math.random()-.5).slice(0,25);
+  showScreen('game-screen');loadQuestion();playSFX('correct');
+}
+
+// INIT
+makeClouds();buildPreviews();
+document.getElementById('btn-play').addEventListener('click',()=>{initAudio();startGame();});
+document.getElementById('btn-replay').addEventListener('click',()=>showScreen('start-screen'));
+
+window.render_game_to_text=()=>JSON.stringify({
+  screen:document.querySelector('.screen:not(.hidden)')?.id,
+  score,lives,currentIdx,totalQ:questions.length,answered
+});
+window.advanceTime=()=>{};
+</script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Feedback & Suggestions — Bhāva Tech</title>
+<meta name="description" content="Share your feedback and suggestions for Bhāva Tech — Cognitive Enhancement & Research Centre, Visakhapatnam." />
+<link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Poppins',sans-serif;background:linear-gradient(160deg,#0a0a1a 0%,#0f0c29 45%,#0a1520 100%);color:#e2e8f0;min-height:100vh;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07);padding:14px 24px;display:flex;align-items:center;gap:14px;}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#e2e8f0;font-weight:700;font-size:1.1rem;}
+.nav-logo{width:36px;height:36px;border-radius:8px;}
+.nav-back{margin-left:auto;font-size:0.82rem;color:#a78bfa;text-decoration:none;font-weight:600;padding:6px 16px;border:1px solid rgba(167,139,250,.35);border-radius:20px;transition:all .2s;}
+.nav-back:hover{background:rgba(167,139,250,.12);}
+
+/* HERO */
+.hero{text-align:center;padding:60px 20px 36px;}
+.hero-badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#a78bfa;border:1px solid rgba(167,139,250,.35);background:rgba(167,139,250,.08);padding:6px 18px;border-radius:30px;margin-bottom:20px;}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;line-height:1.2;background:linear-gradient(90deg,#f7971e,#ffd200,#21d4fd,#b721ff,#f7971e);background-size:400%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 5s linear infinite;margin-bottom:12px;}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:400%}}
+.hero p{font-size:0.95rem;color:#94a3b8;max-width:520px;margin:0 auto;line-height:1.7;}
+
+/* FORM CARD */
+.form-wrap{max-width:640px;margin:0 auto;padding:0 20px 60px;}
+.form-card{background:rgba(255,255,255,.03);border:1px solid rgba(167,139,250,.22);border-radius:24px;padding:40px 36px;position:relative;overflow:hidden;}
+.form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#06b6d4,#a78bfa,#fbbf24,#34d399);background-size:400%;animation:shimmer 3s linear infinite;}
+
+/* SHEETS NOTICE */
+.sheets-bar{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2);border-radius:10px;padding:8px 16px;margin-bottom:24px;font-size:12px;color:#6ee7b7;font-weight:600;}
+
+/* FIELDS */
+.field{margin-bottom:18px;}
+.field label{display:block;font-size:11px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:#94a3b8;margin-bottom:7px;}
+.field input,.field textarea{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:12px 16px;font-size:14px;color:#e2e8f0;font-family:inherit;outline:none;transition:border-color .3s,background .3s,box-shadow .3s;}
+.field input::placeholder,.field textarea::placeholder{color:rgba(148,163,184,.6);}
+.field input:focus,.field textarea:focus{border-color:rgba(167,139,250,.6);background:rgba(167,139,250,.06);box-shadow:0 0 0 3px rgba(167,139,250,.12);}
+.field textarea{min-height:110px;resize:vertical;line-height:1.6;}
+
+/* RATINGS */
+.rating-section{margin-bottom:24px;}
+.rating-section h3{font-size:11px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:#94a3b8;margin-bottom:14px;}
+.rating-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.rating-row:last-child{border-bottom:none;}
+.rating-label{font-size:13px;color:#c4b5fd;font-weight:600;min-width:110px;}
+.stars{display:flex;gap:5px;cursor:pointer;}
+.star{font-size:22px;color:#374151;transition:color .15s,transform .15s;cursor:pointer;user-select:none;line-height:1;}
+.star.active{color:#fbbf24;transform:scale(1.15);}
+.rating-hint{font-size:10px;color:#64748b;min-width:58px;text-align:right;}
+
+/* SUBMIT */
+.submit-btn{width:100%;padding:14px;background:linear-gradient(135deg,#6c47ff,#a78bfa);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(108,71,255,.45);letter-spacing:.4px;}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(108,71,255,.6);}
+.submit-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* SENDING SPINNER */
+.sending{display:none;align-items:center;justify-content:center;gap:10px;font-size:13px;color:#94a3b8;margin-top:14px;text-align:center;}
+.sending.on{display:flex;}
+.spinner{width:18px;height:18px;border:2px solid rgba(167,139,250,.3);border-top-color:#a78bfa;border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* MESSAGES */
+.msg-success{display:none;margin-top:18px;padding:20px;border-radius:14px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);text-align:center;}
+.msg-success.on{display:block;animation:fadeUp .5s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.msg-success .ok-icon{font-size:40px;margin-bottom:10px;}
+.msg-success h4{color:#6ee7b7;font-size:18px;margin-bottom:6px;}
+.msg-success p{color:#94a3b8;font-size:13px;line-height:1.6;}
+
+.msg-error{display:none;margin-top:14px;padding:14px 18px;border-radius:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);font-size:13px;color:#fca5a5;text-align:center;}
+.msg-error.on{display:block;}
+
+/* FOOTER */
+footer{background:rgba(0,0,0,.35);border-top:1px solid rgba(255,255,255,.07);padding:56px 24px 28px;}
+.footer-grid{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:36px;margin-bottom:40px;}
+.footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.footer-logo img{width:38px;border-radius:8px;}
+.footer-logo span{font-size:1rem;font-weight:700;color:#e2e8f0;}
+.footer-brand p{font-size:0.8rem;color:#64748b;line-height:1.7;max-width:260px;margin-top:8px;}
+.footer-col h4{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#475569;margin-bottom:14px;}
+.footer-col ul{list-style:none;}
+.footer-col li{margin-bottom:8px;}
+.footer-col a{font-size:0.82rem;color:#94a3b8;text-decoration:none;transition:color .2s;}
+.footer-col a:hover{color:#a78bfa;}
+.footer-contact p{font-size:0.82rem;color:#94a3b8;line-height:1.9;}
+.footer-contact a{color:#94a3b8;text-decoration:none;transition:color .2s;}
+.footer-contact a:hover{color:#a78bfa;}
+.wa-link{color:#25d366!important;font-weight:600;}
+.footer-bottom{max-width:1060px;margin:0 auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-bottom p{font-size:0.76rem;color:#475569;}
+.footer-bottom a{color:#a78bfa;text-decoration:none;font-weight:600;font-size:0.76rem;}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr;gap:24px;}.form-card{padding:28px 20px;}}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr;}.rating-label{min-width:80px;font-size:12px;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <img src="assets/logo.png" alt="Bhāva Tech" class="nav-logo" />
+    <span>Bhāva Tech</span>
+  </a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Your Voice Matters</div>
+  <h1>Share Feedback & Suggestions</h1>
+  <p>Takes less than 2 minutes. Every response is read personally and shapes what we build next.</p>
+</div>
+
+<div class="form-wrap">
+  <div class="form-card">
+
+    <div class="sheets-bar">
+      <span>📊</span> Responses saved directly to our <strong style="color:#6ee7b7;">Google Sheets</strong> dashboard
+    </div>
+
+    <form id="feedbackForm" onsubmit="submitFeedback(event)" novalidate>
+
+      <div class="field">
+        <label for="fb-name">Your Name</label>
+        <input type="text" id="fb-name" placeholder="Full name" required />
+      </div>
+
+      <div class="field">
+        <label for="fb-email">Email Address</label>
+        <input type="email" id="fb-email" placeholder="you@example.com" required />
+      </div>
+
+      <!-- RATINGS -->
+      <div class="rating-section">
+        <h3>Rate Our Website &nbsp;·&nbsp; 1 = Poor &nbsp; 5 = Excellent</h3>
+
+        <div class="rating-row">
+          <span class="rating-label">🌐 Website</span>
+          <div class="stars" data-field="website">
+            <span class="star" data-val="1">★</span><span class="star" data-val="2">★</span>
+            <span class="star" data-val="3">★</span><span class="star" data-val="4">★</span>
+            <span class="star" data-val="5">★</span>
+          </div>
+          <span class="rating-hint" id="hint-website">tap a star</span>
+        </div>
+
+        <div class="rating-row">
+          <span class="rating-label">📚 Content</span>
+          <div class="stars" data-field="content">
+            <span class="star" data-val="1">★</span><span class="star" data-val="2">★</span>
+            <span class="star" data-val="3">★</span><span class="star" data-val="4">★</span>
+            <span class="star" data-val="5">★</span>
+          </div>
+          <span class="rating-hint" id="hint-content">tap a star</span>
+        </div>
+
+        <div class="rating-row">
+          <span class="rating-label">🎨 Design</span>
+          <div class="stars" data-field="design">
+            <span class="star" data-val="1">★</span><span class="star" data-val="2">★</span>
+            <span class="star" data-val="3">★</span><span class="star" data-val="4">★</span>
+            <span class="star" data-val="5">★</span>
+          </div>
+          <span class="rating-hint" id="hint-design">tap a star</span>
+        </div>
+
+        <div class="rating-row">
+          <span class="rating-label">🎮 Engaging</span>
+          <div class="stars" data-field="engaging">
+            <span class="star" data-val="1">★</span><span class="star" data-val="2">★</span>
+            <span class="star" data-val="3">★</span><span class="star" data-val="4">★</span>
+            <span class="star" data-val="5">★</span>
+          </div>
+          <span class="rating-hint" id="hint-engaging">tap a star</span>
+        </div>
+
+        <div class="rating-row">
+          <span class="rating-label">💡 Benefits</span>
+          <div class="stars" data-field="benefits">
+            <span class="star" data-val="1">★</span><span class="star" data-val="2">★</span>
+            <span class="star" data-val="3">★</span><span class="star" data-val="4">★</span>
+            <span class="star" data-val="5">★</span>
+          </div>
+          <span class="rating-hint" id="hint-benefits">tap a star</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="fb-msg">Suggestion / Feedback</label>
+        <textarea id="fb-msg" placeholder="What did you love? What can we improve? Any game or feature you want?"></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">📨 Submit Feedback</button>
+
+      <div class="sending" id="sendingMsg">
+        <div class="spinner"></div> Saving your response…
+      </div>
+
+      <div class="msg-success" id="successMsg">
+        <div class="ok-icon">✅</div>
+        <h4>Thank You!</h4>
+        <p>Your feedback has been saved. We read every response personally.</p>
+      </div>
+
+      <div class="msg-error" id="errorMsg">
+        ⚠️ Could not save. Please try again or
+        <a href="https://wa.me/919573057516" target="_blank" style="color:#fca5a5;font-weight:600;">WhatsApp us directly</a>.
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">
+        <img src="assets/logo.png" alt="Bhāva Tech" />
+        <span>Bhāva Tech</span>
+      </div>
+      <p class="footer-brand" style="font-size:0.8rem;color:#64748b;line-height:1.7;max-width:260px;">
+        Cognitive Enhancement &amp; Research Centre.<br/>Visakhapatnam, AP, India.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="index.html#games">Brain Gym &amp; Games</a></li>
+        <li><a href="index.html#tests">IQ / EQ / SQ Tests</a></li>
+        <li><a href="index.html#braingym">Brain Gym (Online)</a></li>
+        <li><a href="index.html#medlab">Meditation Lab</a></li>
+        <li><a href="index.html#pricing">Enhancement Courses</a></li>
+        <li><a href="index.html#research">Linguistic Research</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="index.html#about">About Us</a></li>
+        <li><a href="Bhaava-Tech-Form-1-Integrated-v2.html">Enroll Now</a></li>
+        <li><a href="index.html#pricing">Pricing</a></li>
+        <li><a href="collaborate.html">Partner With Us</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="index.html#contact">Contact &amp; Book</a></li>
+        <li><a href="assets/sample-report.pdf" target="_blank">Sample Report (PDF)</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col footer-contact">
+      <h4>Contact</h4>
+      <p>
+        📍 48-6-38, 2nd Floor, Ramatalkies,<br/>
+        Visakhapatnam – 530016<br/>
+        📞 <a href="tel:+919573057516">+91 95730 57516</a><br/>
+        ✉️ <a href="mailto:bhaavatech@gmail.com">bhaavatech@gmail.com</a><br/>
+        <a href="https://wa.me/919573057516" target="_blank" class="wa-link">💬 WhatsApp Chat</a><br/>
+        <a href="https://github.com/Rajeswarbhandaru/bhaavajaalam/releases/download/v1.0.0/BhavaTech_Setup.exe" target="_blank">💻 Download for Windows</a><br/>
+        <span style="font-size:0.72rem;color:#475569;">Free · Windows 10/11 · v1.0.0</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© <span id="yr"></span> Bhāva Tech. All rights reserved.</p>
+    <a href="feedback.html">📝 Share Feedback</a>
+  </div>
+</footer>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// ── Apps Script URL (same pattern as your careers form) ───────────────────
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbx5vJ0KOrVmV8pU94EklHWHCJZYd566mUiIeokljoXeE8PCmFsVZc1fJe_TJzdcMxM/exec';
+
+// ── Star ratings ──────────────────────────────────────────────────────────
+const ratings = { website:0, content:0, design:0, engaging:0, benefits:0 };
+const hints   = ['','Poor','Fair','Good','Great','Excellent'];
+
+document.querySelectorAll('.stars').forEach(group => {
+  const field = group.dataset.field;
+  const stars = group.querySelectorAll('.star');
+
+  stars.forEach(star => {
+    star.addEventListener('mouseenter', () => {
+      const v = +star.dataset.val;
+      stars.forEach(s => s.classList.toggle('active', +s.dataset.val <= v));
+    });
+    star.addEventListener('mouseleave', () => {
+      stars.forEach(s => s.classList.toggle('active', +s.dataset.val <= ratings[field]));
+    });
+    star.addEventListener('click', () => {
+      ratings[field] = +star.dataset.val;
+      stars.forEach(s => s.classList.toggle('active', +s.dataset.val <= ratings[field]));
+      document.getElementById('hint-' + field).textContent = hints[ratings[field]];
+    });
+  });
+});
+
+// ── Submit — same pattern as careers form (JSON.stringify + e.postData.contents) ─
+async function submitFeedback(e) {
+  e.preventDefault();
+
+  const name  = document.getElementById('fb-name').value.trim();
+  const email = document.getElementById('fb-email').value.trim();
+
+  if (!name || !email) {
+    alert('Please enter your name and email.');
+    return;
+  }
+
+  const btn     = document.getElementById('submitBtn');
+  const sending = document.getElementById('sendingMsg');
+  btn.disabled  = true;
+  sending.classList.add('on');
+
+  const payload = {
+    name:       name,
+    email:      email,
+    message:    document.getElementById('fb-msg').value.trim(),
+    r_website:  ratings.website,
+    r_content:  ratings.content,
+    r_design:   ratings.design,
+    r_engaging: ratings.engaging,
+    r_benefits: ratings.benefits,
+    submitted:  new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+  };
+
+  // ── This is the EXACT same fetch pattern your careers form uses ──────────
+  fetch(SHEET_URL, {
+    method:  'POST',
+    mode:    'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload)
+  })
+  .then(function() {
+    sending.classList.remove('on');
+    document.getElementById('successMsg').classList.add('on');
+    document.getElementById('feedbackForm').reset();
+    // Reset stars
+    Object.keys(ratings).forEach(k => {
+      ratings[k] = 0;
+      document.querySelectorAll('.stars[data-field="' + k + '"] .star')
+        .forEach(s => s.classList.remove('active'));
+      document.getElementById('hint-' + k).textContent = 'tap a star';
+    });
+  })
+  .catch(function() {
+    sending.classList.remove('on');
+    document.getElementById('errorMsg').classList.add('on');
+  })
+  .finally(function() {
+    btn.disabled = false;
+  });
+}
+</script>
+</body>
+</html>
