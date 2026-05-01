@@ -394,19 +394,7 @@ function startTest(){
   if(!n||!a||!c||!p){alert("Please fill all required fields ✨");return;}
   ud.name=n;ud.age=a;ud.cls=c;ud.phone=p;
   ud.email=document.getElementById("rEmail").value.trim();
-  initTest();
   show("s-iq-intro");
-}
-
-function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
-
-function initTest(){
-  const iq=shuffle(QS.slice(0,20));
-  const eq=shuffle(QS.slice(20,40));
-  const sq=shuffle(QS.slice(40,60));
-  [...iq,...eq,...sq].forEach(q=>{q.opts=shuffle([...q.opts]);});
-  const shuffled=[...iq,...eq,...sq];
-  for(let i=0;i<60;i++) QS[i]=shuffled[i];
 }
 
 function show(id){
@@ -551,10 +539,7 @@ function launchConfetti(){
   }
 }
 
-const QS_ORIG=QS.map(q=>({...q,opts:[...q.opts]}));
-
 function restartTest(){
-  for(let i=0;i<60;i++) QS[i]={...QS_ORIG[i],opts:[...QS_ORIG[i].opts]};
   scores={iq:0,eq:0,sq:0};curQ=0;answered=false;clearInterval(timerInt);
   document.getElementById("liveScore").textContent="0";
   show("s0");

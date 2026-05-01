@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bhaava Brain Garden</title>
-  <meta name="description" content="Bhāva Tech Phase 1 mini web app for children: a playful brain training garden with memory, focus, and pattern games." />
+  <meta name="description" content="Bhāva Tech Phase 1 · Five playful brain training games for children: memory, focus, patterns, counting, and rhymes." />
   <link rel="preconnect" href="https://api.fontshare.com" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,7 +17,9 @@
       --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
       --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
       --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
-      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem; --space-16: 4rem;
+      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+      --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
+      --space-12: 3rem; --space-16: 4rem;
       --color-bg: #f5fbfb;
       --color-surface: #ffffff;
       --color-surface-2: #eef8f7;
@@ -34,7 +36,8 @@
       --color-primary-highlight: #cceeed;
       --color-gold: #f0bc42;
       --color-success: #4f9c62;
-      --radius-sm: 0.375rem; --radius-md: 0.75rem; --radius-lg: 1.125rem; --radius-xl: 1.5rem; --radius-full: 9999px;
+      --radius-sm: 0.375rem; --radius-md: 0.75rem; --radius-lg: 1.125rem;
+      --radius-xl: 1.5rem; --radius-full: 9999px;
       --shadow-sm: 0 1px 2px rgb(18 54 59 / 0.08);
       --shadow-md: 0 10px 30px rgb(18 54 59 / 0.10);
       --shadow-lg: 0 18px 50px rgb(18 54 59 / 0.14);
@@ -85,6 +88,8 @@
     .skip-link { position:absolute; left:-999px; top:var(--space-2); background:var(--color-surface); padding:var(--space-3) var(--space-4); z-index:999; }
     .skip-link:focus { left:var(--space-3); }
     .shell { width:min(1150px, calc(100% - 2rem)); margin-inline:auto; }
+
+    /* Topbar */
     .topbar {
       position: sticky; top: 0; z-index: 50;
       backdrop-filter: blur(14px);
@@ -106,6 +111,8 @@
       padding: 0 var(--space-4); display:inline-flex; align-items:center; gap:var(--space-2);
       box-shadow: var(--shadow-sm);
     }
+
+    /* Layout */
     main { padding: var(--space-8) 0 var(--space-12); }
     .hero {
       display:grid; grid-template-columns: 1.2fr 0.8fr; gap:var(--space-8); align-items:center;
@@ -121,10 +128,11 @@
     .eyebrow {
       display:inline-flex; align-items:center; gap:var(--space-2); margin-bottom:var(--space-4);
       padding: var(--space-2) var(--space-3); border-radius: var(--radius-full);
-      background: var(--color-primary-highlight); color: var(--color-primary-active); font-size: var(--text-sm); font-weight:700;
+      background: var(--color-primary-highlight); color: var(--color-primary-active);
+      font-size: var(--text-sm); font-weight:700;
     }
     h1, h2, h3 { margin:0; font-family: var(--font-display); line-height:1.08; }
-    h1 { font-size: var(--text-2xl); max-width: 12ch; }
+    h1 { font-size: var(--text-2xl); max-width: 14ch; }
     .hero-card p { color: var(--color-text-muted); max-width: 58ch; }
     .hero-actions { display:flex; flex-wrap:wrap; gap:var(--space-3); margin-top:var(--space-5); }
     .btn {
@@ -134,6 +142,8 @@
     .btn:hover { transform: translateY(-1px); }
     .btn-primary { background: var(--color-primary); color: var(--color-text-inverse); }
     .btn-secondary { background: var(--color-surface-2); color: var(--color-text); border:1px solid color-mix(in srgb, var(--color-text) 10%, transparent); }
+
+    /* Hero visual */
     .hero-visual {
       position:relative; min-height: 360px; overflow:hidden; padding:var(--space-6);
       display:flex; align-items:center; justify-content:center;
@@ -143,27 +153,37 @@
       background:
         radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--color-primary) 16%, transparent) 0 24%, transparent 25%),
         radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--color-gold) 50%, transparent) 0 2%, transparent 3%),
-        conic-gradient(from 0deg, color-mix(in srgb, var(--color-primary) 75%, white) 0deg 90deg, color-mix(in srgb, var(--color-gold) 80%, white) 90deg 180deg, color-mix(in srgb, var(--color-success) 70%, white) 180deg 270deg, color-mix(in srgb, var(--color-primary) 75%, white) 270deg 360deg);
+        conic-gradient(from 0deg,
+          color-mix(in srgb, var(--color-primary) 75%, white) 0deg 90deg,
+          color-mix(in srgb, var(--color-gold) 80%, white) 90deg 180deg,
+          color-mix(in srgb, var(--color-success) 70%, white) 180deg 270deg,
+          color-mix(in srgb, var(--color-primary) 75%, white) 270deg 360deg);
       mask: radial-gradient(circle at center, transparent 0 28%, black 29% 74%, transparent 75%);
       animation: spin 14s linear infinite;
       opacity:.9;
     }
     .hero-logo {
-      position:absolute; width:160px; height:160px; border-radius:50%; object-fit:cover; background:var(--color-surface);
-      padding:var(--space-2); box-shadow: var(--shadow-lg);
+      position:absolute; width:160px; height:160px; border-radius:50%; object-fit:cover;
+      background:var(--color-surface); padding:var(--space-2); box-shadow: var(--shadow-lg);
     }
     .floating-note {
-      position:absolute; padding:var(--space-3) var(--space-4); border-radius: var(--radius-lg); background:var(--color-surface);
-      font-size:var(--text-sm); font-weight:700; box-shadow: var(--shadow-sm); border:1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+      position:absolute; padding:var(--space-3) var(--space-4); border-radius: var(--radius-lg);
+      background:var(--color-surface); font-size:var(--text-sm); font-weight:700;
+      box-shadow: var(--shadow-sm); border:1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
       animation: float 4.5s ease-in-out infinite;
     }
     .note-1 { top:10%; left:2%; }
     .note-2 { right:4%; top:18%; animation-delay: .8s; }
     .note-3 { bottom:12%; left:10%; animation-delay: 1.6s; }
+    .note-4 { right:6%; bottom:20%; animation-delay: 2.4s; }
+
+    /* Stats */
     .stats { display:grid; grid-template-columns: repeat(3, 1fr); gap:var(--space-4); margin-top:var(--space-6); }
     .badge-card { padding:var(--space-5); }
     .stat-number { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-primary-active); }
     .stat-label { color: var(--color-text-muted); font-size: var(--text-sm); }
+
+    /* Games grid */
     .section-head { display:flex; align-items:end; justify-content:space-between; gap:var(--space-4); margin:var(--space-6) 0 var(--space-4); }
     .section-head p { color:var(--color-text-muted); max-width: 52ch; margin:0; }
     .games-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:var(--space-5); }
@@ -172,47 +192,121 @@
     .icon-bubble {
       width:52px; height:52px; border-radius:16px; display:grid; place-items:center; font-size:1.5rem;
       background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
+      flex-shrink: 0;
     }
     .game-card p { margin:0; color:var(--color-text-muted); }
     .tag-row { display:flex; flex-wrap:wrap; gap:var(--space-2); }
     .tag { font-size:var(--text-xs); padding:var(--space-1) var(--space-3); border-radius:var(--radius-full); background:var(--color-surface-2); color:var(--color-text-muted); }
+
+    /* Panel layout */
     .panel-wrap { display:grid; grid-template-columns: 1fr 320px; gap:var(--space-5); margin-top:var(--space-5); }
     .panel { padding:var(--space-6); }
     .panel[hidden] { display:none; }
     .panel-title { display:flex; justify-content:space-between; align-items:center; gap:var(--space-3); margin-bottom:var(--space-4); }
     .helper { color:var(--color-text-muted); font-size:var(--text-sm); }
+
+    /* Memory game */
     .memory-grid { display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap:var(--space-3); }
     .memory-tile {
-      aspect-ratio: 1 / 1; border:none; border-radius: var(--radius-lg); font-size: clamp(1.6rem, 2vw, 2rem);
-      background: var(--color-surface-2); color: transparent; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-text) 10%, transparent);
+      aspect-ratio: 1 / 1; border:none; border-radius: var(--radius-lg);
+      font-size: clamp(1.6rem, 2vw, 2rem);
+      background: var(--color-surface-2); color: transparent;
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-text) 10%, transparent);
       transition: transform var(--transition), background var(--transition), color var(--transition);
     }
     .memory-tile.flipped, .memory-tile.matched { background: var(--color-primary-highlight); color: var(--color-primary-active); }
     .memory-tile.matched { background: color-mix(in srgb, var(--color-success) 22%, var(--color-surface)); }
     .memory-tile:disabled { cursor: default; }
+
+    /* Focus game */
     .focus-lane {
-      position:relative; height:220px; border-radius: var(--radius-xl); background:linear-gradient(180deg, color-mix(in srgb, var(--color-surface-2) 92%, transparent), var(--color-surface));
+      position:relative; height:260px; border-radius: var(--radius-xl);
+      background:linear-gradient(180deg,
+        color-mix(in srgb, var(--color-primary) 8%, var(--color-surface-2)),
+        color-mix(in srgb, var(--color-gold) 8%, var(--color-surface)));
       overflow:hidden; border:1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
     }
     .focus-player {
-      position:absolute; bottom:16px; left:18px; width:82px; height:82px; border-radius:24px;
-      display:grid; place-items:center; font-size:2rem; background: var(--color-gold); box-shadow:var(--shadow-sm);
-      transition:left 140ms linear;
+      position:absolute; bottom:14px; left:18px; width:80px; height:80px; border-radius:22px;
+      display:grid; place-items:center; font-size:2rem; background: var(--color-gold);
+      box-shadow:var(--shadow-sm); transition:left 80ms linear;
+      user-select: none;
     }
-    .focus-star {
-      position:absolute; top:-48px; width:44px; height:44px; border-radius:50%; display:grid; place-items:center; font-size:1.3rem;
-      background: color-mix(in srgb, var(--color-primary) 16%, white); animation: fall linear forwards;
+    .focus-star-el {
+      position:absolute; width:40px; height:40px; border-radius:50%;
+      display:grid; place-items:center; font-size:1.3rem;
+      background: color-mix(in srgb, var(--color-primary) 18%, white);
+      pointer-events: none; user-select: none;
     }
-    .focus-controls { display:flex; gap:var(--space-3); flex-wrap:wrap; margin-top:var(--space-4); }
+    .focus-controls { display:flex; gap:var(--space-3); flex-wrap:wrap; margin-top:var(--space-4); align-items:center; }
     .arrow-btn { min-width:88px; }
+    .focus-hint { font-size: var(--text-xs); color: var(--color-text-faint); margin-top: var(--space-2); }
+
+    /* Pattern game */
     .pattern-stage { display:grid; gap:var(--space-4); }
-    .pattern-display, .pattern-options { display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap:var(--space-3); }
+    .pattern-display { display:grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap:var(--space-3); }
+    .pattern-options { display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap:var(--space-3); }
     .pattern-cell, .option-btn {
-      min-height:72px; border-radius: var(--radius-lg); display:grid; place-items:center; font-size:1.7rem;
+      min-height:64px; border-radius: var(--radius-lg); display:grid; place-items:center; font-size:1.7rem;
       background: var(--color-surface-2); border:1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
     }
+    .pattern-cell.missing {
+      background: color-mix(in srgb, var(--color-gold) 25%, var(--color-surface));
+      border: 2px dashed var(--color-gold);
+      font-size: 1.4rem; color: var(--color-gold);
+    }
+    .option-btn { border:none; cursor:pointer; transition: transform var(--transition), background var(--transition); }
+    .option-btn:hover { transform: translateY(-2px); background: var(--color-primary-highlight); }
     .option-btn.correct { background: color-mix(in srgb, var(--color-success) 22%, var(--color-surface)); }
     .option-btn.wrong { background: color-mix(in srgb, #ff6b6b 20%, var(--color-surface)); }
+    .puzzle-counter { font-size:var(--text-xs); color:var(--color-text-faint); text-align:right; }
+
+    /* Quick Count game */
+    .count-stage { display:grid; gap:var(--space-4); }
+    .count-field {
+      min-height: 160px; border-radius: var(--radius-xl);
+      background: var(--color-surface-2);
+      border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+      display:flex; flex-wrap:wrap; gap:var(--space-3); padding: var(--space-4);
+      align-content: flex-start; align-items: flex-start;
+    }
+    .count-item { font-size: 2rem; line-height:1; }
+    .count-options { display:grid; grid-template-columns: repeat(4, 1fr); gap:var(--space-3); }
+    .count-btn {
+      min-height:64px; border-radius: var(--radius-lg); display:grid; place-items:center;
+      font-size: var(--text-xl); font-family: var(--font-display); font-weight:700;
+      background: var(--color-surface-2); border:1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+      cursor:pointer; transition: transform var(--transition), background var(--transition);
+    }
+    .count-btn:hover { transform: translateY(-2px); background: var(--color-primary-highlight); }
+    .count-btn.correct { background: color-mix(in srgb, var(--color-success) 22%, var(--color-surface)); }
+    .count-btn.wrong { background: color-mix(in srgb, #ff6b6b 20%, var(--color-surface)); }
+
+    /* Word Rhyme game */
+    .rhyme-stage { display:grid; gap:var(--space-5); }
+    .rhyme-word-display {
+      text-align:center; padding: var(--space-6);
+      background: var(--color-surface-2); border-radius: var(--radius-xl);
+      border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+    }
+    .rhyme-word-display .big-word {
+      font-family: var(--font-display); font-size: var(--text-xl); font-weight:800;
+      color: var(--color-primary-active); letter-spacing: 0.05em;
+    }
+    .rhyme-word-display .word-emoji { font-size: 2.5rem; margin-bottom: var(--space-2); }
+    .rhyme-options { display:grid; grid-template-columns: repeat(2, 1fr); gap:var(--space-3); }
+    .rhyme-btn {
+      min-height:72px; border-radius: var(--radius-lg); display:grid; place-items:center;
+      font-family: var(--font-display); font-size: var(--text-lg); font-weight:700;
+      background: var(--color-surface-2); border:1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+      cursor:pointer; transition: transform var(--transition), background var(--transition);
+      letter-spacing: 0.04em;
+    }
+    .rhyme-btn:hover { transform: translateY(-2px); background: var(--color-primary-highlight); }
+    .rhyme-btn.correct { background: color-mix(in srgb, var(--color-success) 22%, var(--color-surface)); }
+    .rhyme-btn.wrong { background: color-mix(in srgb, #ff6b6b 20%, var(--color-surface)); }
+
+    /* Sidebar */
     .side-stack { display:grid; gap:var(--space-4); }
     .progress-list { display:grid; gap:var(--space-3); }
     .progress-item { padding:var(--space-4); border-radius:var(--radius-lg); background:var(--color-surface-2); }
@@ -221,31 +315,38 @@
     .bar > span { display:block; height:100%; width:0; background:linear-gradient(90deg, var(--color-primary), var(--color-gold)); border-radius:inherit; transition: width 300ms ease; }
     .tips { padding-left:1rem; margin:0; color:var(--color-text-muted); }
     .tips li + li { margin-top:var(--space-2); }
+
+    /* Completion bar */
     .completion { margin-top:var(--space-5); padding:var(--space-5); display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); }
     .completion strong { font-size:var(--text-lg); font-family: var(--font-display); }
     .footer-note { margin-top:var(--space-6); text-align:center; color:var(--color-text-muted); font-size:var(--text-sm); }
+
+    /* Animations */
     @keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
     @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-    @keyframes fall { from { transform: translateY(0); } to { transform: translateY(270px); } }
+
+    /* Responsive */
     @media (max-width: 960px) {
-      .hero, .panel-wrap, .games-grid { grid-template-columns: 1fr; }
-      .stats { grid-template-columns: 1fr; }
+      .hero, .panel-wrap { grid-template-columns: 1fr; }
+      .games-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats { grid-template-columns: repeat(3, 1fr); }
       .hero-visual { min-height:300px; }
     }
     @media (max-width: 720px) {
       .topbar-inner, .section-head, .panel-title, .completion { align-items:flex-start; flex-direction:column; }
       .memory-grid { grid-template-columns: repeat(4, 1fr); }
-      .pattern-display, .pattern-options { grid-template-columns: repeat(2, 1fr); }
+      .pattern-display { grid-template-columns: repeat(3, 1fr); }
+      .pattern-options { grid-template-columns: repeat(2, 1fr); }
+      .games-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
       .shell { width:min(100% - 1rem, 1150px); }
       .hero-card, .panel, .game-card, .badge-card, .completion { border-radius: 1.1rem; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
     }
-  </style>
 
-  <!-- Bhava Game Menu - Auto Injected -->
-  <style>
+    /* Bhava nav menu */
     .bv-menu-btn {
       position: fixed; top: 14px; right: 16px; z-index: 9999;
       background: #3b5bdb; color: white; border: none;
@@ -265,35 +366,23 @@
       box-shadow: 0 8px 32px rgba(0,0,0,0.25);
       animation: bvFadeIn 0.2s ease;
     }
-    @keyframes bvFadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-    .bv-box h3 {
-      text-align: center; margin: 0 0 16px;
-      color: #333; font-size: 18px;
-    }
-    .bv-box a {
-      display: block; padding: 13px 0;
-      border-bottom: 1px solid #eee;
-      color: #333; text-decoration: none; font-size: 16px;
-      cursor: pointer;
-    }
-    .bv-box a:last-child { border-bottom: none; color: #e53; }
-    .bv-box a:hover { color: #3b5bdb; }
+    @keyframes bvFadeIn { from { opacity:0; transform:scale(0.9); } to { opacity:1; transform:scale(1); } }
+    .bv-box h3 { text-align:center; margin:0 0 16px; color:#333; font-size:18px; }
+    .bv-box a { display:block; padding:13px 0; border-bottom:1px solid #eee; color:#333; text-decoration:none; font-size:16px; cursor:pointer; }
+    .bv-box a:last-child { border-bottom:none; color:#e53; }
+    .bv-box a:hover { color:#3b5bdb; }
   </style>
-  <!-- End Bhava Game Menu CSS -->
-
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
+
   <header class="topbar">
     <div class="shell topbar-inner">
       <div class="brand" aria-label="Bhāva Tech brand">
         <img src="./assets/logo.jpg" alt="Bhāva Tech logo" width="52" height="52" />
         <div>
           <div class="brand-title">Bhāva Tech</div>
-          <div class="brand-sub">Phase 1 · Brain Garden mini app</div>
+          <div class="brand-sub">Phase 1 · Brain Garden</div>
         </div>
       </div>
       <div class="toolbar">
@@ -305,23 +394,25 @@
   </header>
 
   <main id="main-content" class="shell">
+
+    <!-- Hero -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-card">
         <div class="eyebrow">🧠 Learn · Play · Grow</div>
-        <h1 id="hero-title">A joyful brain gym for children in Bhāva Tech Phase 1</h1>
-        <p>This small web app turns early cognitive training into short, bright, game-like activities. Children practice memory, focus, and pattern thinking in a calmer way than passive video watching.</p>
+        <h1 id="hero-title">Five brain games for curious children</h1>
+        <p>Short, bright, game-like activities that build memory, focus, pattern sense, counting, and language — one star at a time.</p>
         <div class="hero-actions">
           <button class="btn btn-primary" data-open-panel="memory">Start with Memory</button>
-          <button class="btn btn-secondary" data-open-panel="focus">Try Focus Catcher</button>
+          <button class="btn btn-secondary" data-open-panel="count">Try Quick Count</button>
         </div>
-        <div class="stats" aria-label="Learning outcomes">
+        <div class="stats" aria-label="Session scores">
           <article class="badge-card">
-            <div class="stat-number" id="gamesFinished">0/3</div>
+            <div class="stat-number" id="gamesFinished">0/5</div>
             <div class="stat-label">Games completed</div>
           </article>
           <article class="badge-card">
             <div class="stat-number" id="bestMemory">0</div>
-            <div class="stat-label">Best memory matches</div>
+            <div class="stat-label">Memory pairs found</div>
           </article>
           <article class="badge-card">
             <div class="stat-number" id="bestFocus">0</div>
@@ -329,20 +420,22 @@
           </article>
         </div>
       </div>
-      <aside class="hero-card hero-visual" aria-label="Playful Bhāva Tech visual">
+      <aside class="hero-card hero-visual" aria-label="Brain Garden visual">
         <div class="lotus-ring" aria-hidden="true"></div>
-        <img class="hero-logo" src="./assets/logo.jpg" alt="Bhāva Tech learning garden emblem" width="160" height="160" />
+        <img class="hero-logo" src="./assets/logo.jpg" alt="Bhāva Tech emblem" width="160" height="160" />
         <div class="floating-note note-1">🎯 Focus</div>
         <div class="floating-note note-2">🧩 Memory</div>
         <div class="floating-note note-3">🔁 Patterns</div>
+        <div class="floating-note note-4">🔢 Count</div>
       </aside>
     </section>
 
+    <!-- Games menu -->
     <section aria-labelledby="games-title">
       <div class="section-head">
         <div>
-          <h2 id="games-title">Three mini games</h2>
-          <p>Each activity is short, attractive, and skill-based. A child can move between games freely and collect stars after every success.</p>
+          <h2 id="games-title">Five mini games</h2>
+          <p>Each activity is short, skill-based, and child-friendly. Move between games freely and collect stars for every success.</p>
         </div>
       </div>
       <div class="games-grid">
@@ -350,7 +443,7 @@
           <div class="game-top">
             <div>
               <h3>Lotus Memory Match</h3>
-              <p>Turn over cards and find pairs.</p>
+              <p>Flip cards two at a time and find all matching pairs. Remember where each picture is hiding.</p>
             </div>
             <div class="icon-bubble" aria-hidden="true">🌸</div>
           </div>
@@ -361,7 +454,7 @@
           <div class="game-top">
             <div>
               <h3>Star Focus Catcher</h3>
-              <p>Move your catcher and grab falling stars.</p>
+              <p>Move the lotus left and right to catch falling stars. Use the arrow buttons or your keyboard.</p>
             </div>
             <div class="icon-bubble" aria-hidden="true">⭐</div>
           </div>
@@ -372,47 +465,74 @@
           <div class="game-top">
             <div>
               <h3>Pattern Path</h3>
-              <p>See the logic and choose the missing symbol.</p>
+              <p>Look at the row of symbols, find the rule, then tap the symbol that fills the golden gap.</p>
             </div>
             <div class="icon-bubble" aria-hidden="true">🔶</div>
           </div>
           <div class="tag-row"><span class="tag">Pattern sense</span><span class="tag">Reasoning</span><span class="tag">Ages 7+</span></div>
           <button class="btn btn-primary" data-open-panel="pattern">Play now</button>
         </article>
+        <article class="game-card">
+          <div class="game-top">
+            <div>
+              <h3>Quick Count</h3>
+              <p>Look at the picture, count all the objects carefully, then tap the correct number.</p>
+            </div>
+            <div class="icon-bubble" aria-hidden="true">🔢</div>
+          </div>
+          <div class="tag-row"><span class="tag">Counting</span><span class="tag">Number sense</span><span class="tag">Ages 5+</span></div>
+          <button class="btn btn-primary" data-open-panel="count">Play now</button>
+        </article>
+        <article class="game-card">
+          <div class="game-top">
+            <div>
+              <h3>Word Rhyme</h3>
+              <p>See the word shown, then pick the word from the four choices that sounds most like it at the end.</p>
+            </div>
+            <div class="icon-bubble" aria-hidden="true">🎵</div>
+          </div>
+          <div class="tag-row"><span class="tag">Phonics</span><span class="tag">Language</span><span class="tag">Ages 6+</span></div>
+          <button class="btn btn-primary" data-open-panel="rhyme">Play now</button>
+        </article>
       </div>
     </section>
 
+    <!-- Play area -->
     <section class="panel-wrap" aria-labelledby="play-area-title">
       <div>
         <div class="section-head">
           <div>
             <h2 id="play-area-title">Play area</h2>
-            <p>Choose a game card above or use the action buttons below. All progress stays on this page during the session.</p>
+            <p>Choose any game above or switch using these buttons.</p>
           </div>
           <div class="hero-actions">
             <button class="btn btn-secondary" data-open-panel="memory">Memory</button>
             <button class="btn btn-secondary" data-open-panel="focus">Focus</button>
             <button class="btn btn-secondary" data-open-panel="pattern">Pattern</button>
+            <button class="btn btn-secondary" data-open-panel="count">Count</button>
+            <button class="btn btn-secondary" data-open-panel="rhyme">Rhyme</button>
           </div>
         </div>
 
+        <!-- Memory panel -->
         <section id="panel-memory" class="panel" aria-labelledby="memory-title">
           <div class="panel-title">
             <div>
-              <h3 id="memory-title">Lotus Memory Match</h3>
-              <p class="helper">Find all 6 matching pairs. Fewer turns is better.</p>
+              <h3 id="memory-title">🌸 Lotus Memory Match</h3>
+              <p class="helper">Flip two cards at a time. Find all 8 matching pairs. Fewer turns = better score!</p>
             </div>
             <button class="btn btn-secondary" id="resetMemory">Reset game</button>
           </div>
           <div class="memory-grid" id="memoryGrid" aria-live="polite"></div>
-          <p class="helper" id="memoryStatus">Tap two cards to begin.</p>
+          <p class="helper" id="memoryStatus" aria-live="polite">Tap any card to begin. Try to remember where each picture appears.</p>
         </section>
 
+        <!-- Focus panel -->
         <section id="panel-focus" class="panel" aria-labelledby="focus-title" hidden>
           <div class="panel-title">
             <div>
-              <h3 id="focus-title">Star Focus Catcher</h3>
-              <p class="helper">Catch 10 stars before time ends. Use arrow buttons or keyboard.</p>
+              <h3 id="focus-title">⭐ Star Focus Catcher</h3>
+              <p class="helper">Stars fall from the top. Move 🪷 under a star to catch it. Catch 10 stars before time runs out!</p>
             </div>
             <button class="btn btn-secondary" id="startFocus">Start round</button>
           </div>
@@ -423,99 +543,206 @@
             <button class="btn btn-secondary arrow-btn" id="moveLeft">⬅ Left</button>
             <button class="btn btn-secondary arrow-btn" id="moveRight">Right ➡</button>
             <div class="chip">Score: <span id="focusScore">0</span></div>
-            <div class="chip">Time: <span id="focusTime">20</span>s</div>
+            <div class="chip">Time: <span id="focusTime">25</span>s</div>
           </div>
-          <p class="helper" id="focusStatus">Press start when ready.</p>
+          <p class="focus-hint">Tip: You can also use the ← → arrow keys on a keyboard.</p>
+          <p class="helper" id="focusStatus" aria-live="polite">Press "Start round" to begin catching stars!</p>
         </section>
 
+        <!-- Pattern panel -->
         <section id="panel-pattern" class="panel" aria-labelledby="pattern-title" hidden>
           <div class="panel-title">
             <div>
-              <h3 id="pattern-title">Pattern Path</h3>
-              <p class="helper">Look at the sequence and choose the best missing symbol.</p>
+              <h3 id="pattern-title">🔶 Pattern Path</h3>
+              <p class="helper">Study the row of symbols, find the repeating rule, then tap the answer that fits the golden gap (❓).</p>
             </div>
-            <button class="btn btn-secondary" id="nextPattern">Next puzzle</button>
+            <button class="btn btn-secondary" id="nextPattern">Next puzzle ›</button>
           </div>
           <div class="pattern-stage">
-            <div class="pattern-display" id="patternDisplay"></div>
+            <div class="pattern-display" id="patternDisplay" aria-label="Pattern sequence"></div>
+            <p class="helper" style="margin:0">↓ Choose the correct answer:</p>
             <div class="pattern-options" id="patternOptions"></div>
-            <p class="helper" id="patternStatus">Ready for puzzle 1.</p>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <p class="helper" id="patternStatus" aria-live="polite">Puzzle 1 — what symbol fills the gap?</p>
+              <span class="puzzle-counter" id="patternCounter">1 / 10</span>
+            </div>
           </div>
         </section>
 
+        <!-- Quick Count panel -->
+        <section id="panel-count" class="panel" aria-labelledby="count-title" hidden>
+          <div class="panel-title">
+            <div>
+              <h3 id="count-title">🔢 Quick Count</h3>
+              <p class="helper">Count all the pictures in the box carefully, then tap the correct number below.</p>
+            </div>
+            <button class="btn btn-secondary" id="nextCount">Next round ›</button>
+          </div>
+          <div class="count-stage">
+            <div class="count-field" id="countField" aria-label="Objects to count"></div>
+            <p class="helper" style="margin:0">↓ How many do you see?</p>
+            <div class="count-options" id="countOptions"></div>
+            <p class="helper" id="countStatus" aria-live="polite">Count the pictures and choose your answer!</p>
+          </div>
+        </section>
+
+        <!-- Word Rhyme panel -->
+        <section id="panel-rhyme" class="panel" aria-labelledby="rhyme-title" hidden>
+          <div class="panel-title">
+            <div>
+              <h3 id="rhyme-title">🎵 Word Rhyme</h3>
+              <p class="helper">Look at the word shown. Which of the four choices rhymes with it? Words rhyme when their endings sound the same.</p>
+            </div>
+            <button class="btn btn-secondary" id="nextRhyme">Next word ›</button>
+          </div>
+          <div class="rhyme-stage">
+            <div class="rhyme-word-display">
+              <div class="word-emoji" id="rhymeEmoji" aria-hidden="true">🐱</div>
+              <div class="big-word" id="rhymeWord">CAT</div>
+              <div class="helper" style="margin-top:var(--space-2)">Find the word that sounds like this one at the end</div>
+            </div>
+            <div class="rhyme-options" id="rhymeOptions"></div>
+            <p class="helper" id="rhymeStatus" aria-live="polite">Which word rhymes? Tap your choice!</p>
+          </div>
+        </section>
+
+        <!-- Completion bar -->
         <section class="completion" aria-live="polite">
           <div>
             <strong id="gardenMessage">Welcome to the Brain Garden.</strong>
-            <p class="helper">Complete all three games to unlock the celebration message.</p>
+            <p class="helper">Complete all five games to make the whole garden bloom 🌸</p>
           </div>
           <button class="btn btn-primary" id="resetAll">Reset all</button>
         </section>
       </div>
 
+      <!-- Sidebar -->
       <aside class="side-stack" aria-labelledby="progress-title">
         <section class="panel">
           <div class="panel-title">
             <div>
               <h3 id="progress-title">Progress board</h3>
-              <p class="helper">Children see effort and improvement instantly.</p>
+              <p class="helper">Effort and improvement shown instantly.</p>
             </div>
           </div>
           <div class="progress-list">
             <div class="progress-item">
-              <div class="progress-top"><strong>Memory</strong><span id="memoryPercent">0%</span></div>
+              <div class="progress-top">
+                <strong>🌸 Memory</strong>
+                <span id="memoryPercent" class="helper">0%</span>
+              </div>
               <div class="bar"><span id="memoryBar"></span></div>
             </div>
             <div class="progress-item">
-              <div class="progress-top"><strong>Focus</strong><span id="focusPercent">0%</span></div>
+              <div class="progress-top">
+                <strong>⭐ Focus</strong>
+                <span id="focusPercent" class="helper">0%</span>
+              </div>
               <div class="bar"><span id="focusBar"></span></div>
             </div>
             <div class="progress-item">
-              <div class="progress-top"><strong>Pattern</strong><span id="patternPercent">0%</span></div>
+              <div class="progress-top">
+                <strong>🔶 Pattern</strong>
+                <span id="patternPercent" class="helper">0%</span>
+              </div>
               <div class="bar"><span id="patternBar"></span></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-top">
+                <strong>🔢 Count</strong>
+                <span id="countPercent" class="helper">0%</span>
+              </div>
+              <div class="bar"><span id="countBar"></span></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-top">
+                <strong>🎵 Rhyme</strong>
+                <span id="rhymePercent" class="helper">0%</span>
+              </div>
+              <div class="bar"><span id="rhymeBar"></span></div>
             </div>
           </div>
         </section>
+
         <section class="panel">
-          <div class="panel-title">
-            <div>
-              <h3>Why this fits Phase 1</h3>
-            </div>
-          </div>
+          <h3 style="margin-bottom:var(--space-3)">Parent tips</h3>
           <ul class="tips">
-            <li>Simple static HTML, CSS, and JavaScript, easy to extend into more games later.</li>
-            <li>Short learning loops so children stay active instead of only watching.</li>
-            <li>Bhāva Tech branding built in with the attached logo and calm cognitive theme.</li>
-            <li>Can be embedded into your main startup website as a first playable module.</li>
+            <li>Sit beside your child for the first round of each game.</li>
+            <li>Praise effort, not just right answers.</li>
+            <li>Pattern Path builds logical reasoning — talk through the rule together.</li>
+            <li>Word Rhyme supports early reading and phonics awareness.</li>
+            <li>Two sessions a day of 5–10 minutes is ideal.</li>
           </ul>
         </section>
       </aside>
     </section>
 
-    <p class="footer-note">Bhāva Tech · Cognitive play for children · Phase 1 prototype</p>
+    <p class="footer-note">Bhāva Tech Phase 1 · Brain Garden · Built for curious minds 🌱</p>
   </main>
 
   <script>
+    /* ── State ── */
     const state = {
       stars: 0,
       soundOn: true,
-      completed: { memory: false, focus: false, pattern: false },
+      completed: { memory: false, focus: false, pattern: false, count: false, rhyme: false },
       bestMemory: 0,
       bestFocus: 0,
-      bestPattern: 0,
       memory: { matches: 0, turns: 0, first: null, second: null, lock: false },
-      focus: { running: false, score: 0, time: 20, playerX: 18, tick: null, spawn: null, stars: [] },
+      focus: { running: false, score: 0, time: 25, playerX: 18, tick: null, spawn: null, loop: null, starList: [] },
       patternIndex: 0,
-      patternScore: 0
+      patternScore: 0,
+      countIndex: 0,
+      countScore: 0,
+      rhymeIndex: 0,
+      rhymeScore: 0
     };
 
+    /* ── Data ── */
+    const memoryIcons = ['🪷','🧠','⭐','🎯','🌈','🔶','🦋','🌻'];
+
     const patterns = [
-      { sequence: ['🔺','🔷','🔺','🔷','❓'], answer: '🔺', options: ['🔺','🔶','⭐','🌙'] },
-      { sequence: ['🌱','🌱','🌼','🌱','🌱','❓'], answer: '🌼', options: ['🌼','🌸','🌙','⭐'] },
+      { sequence: ['🔺','🔷','🔺','🔷','🔺','❓'], answer: '🔷', options: ['🔶','🔷','⭐','🌙'] },
+      { sequence: ['🌱','🌼','🌱','🌼','🌱','❓'], answer: '🌼', options: ['🌼','🌸','🌙','⭐'] },
       { sequence: ['1️⃣','2️⃣','3️⃣','1️⃣','2️⃣','❓'], answer: '3️⃣', options: ['2️⃣','3️⃣','4️⃣','1️⃣'] },
-      { sequence: ['🟡','🟢','🟡','🟢','❓'], answer: '🟡', options: ['🔵','🟡','🟢','🟣'] }
+      { sequence: ['🟡','🟢','🟡','🟢','🟡','❓'], answer: '🟢', options: ['🔵','🟡','🟢','🟣'] },
+      { sequence: ['🐶','🐱','🐶','🐱','🐶','❓'], answer: '🐱', options: ['🐭','🐱','🐸','🦊'] },
+      { sequence: ['🍎','🍎','🍊','🍎','🍎','❓'], answer: '🍊', options: ['🍋','🍇','🍊','🍎'] },
+      { sequence: ['⬛','⬜','⬛','⬜','⬛','❓'], answer: '⬜', options: ['🟥','⬛','⬜','🟦'] },
+      { sequence: ['🌙','⭐','⭐','🌙','⭐','❓'], answer: '⭐', options: ['🌙','⭐','☀️','🌟'] },
+      { sequence: ['🚗','🚕','🚗','🚕','🚗','❓'], answer: '🚕', options: ['🚌','🚗','🚕','🚂'] },
+      { sequence: ['🔴','🔵','🔴','🔵','🔴','❓'], answer: '🔵', options: ['🟢','🔴','🟡','🔵'] },
     ];
 
-    const memoryIcons = ['🪷','🧠','⭐','🎯','🌈','🔶'];
+    const countItems = [
+      { emoji: '🍎', count: 7 },
+      { emoji: '⭐', count: 5 },
+      { emoji: '🐟', count: 9 },
+      { emoji: '🌸', count: 6 },
+      { emoji: '🎈', count: 11 },
+      { emoji: '🦋', count: 8 },
+      { emoji: '🍦', count: 4 },
+      { emoji: '🐝', count: 13 },
+      { emoji: '🌻', count: 10 },
+      { emoji: '🎵', count: 12 },
+    ];
+
+    const rhymes = [
+      { word: 'CAT', emoji: '🐱', answer: 'HAT', options: ['HAT','RUN','BLUE','FISH'] },
+      { word: 'DOG', emoji: '🐶', answer: 'LOG', options: ['LOG','CAR','SUN','BIG'] },
+      { word: 'SUN', emoji: '☀️', answer: 'FUN', options: ['FUN','DAY','CAT','TOP'] },
+      { word: 'BALL', emoji: '🏀', answer: 'TALL', options: ['TALL','JUMP','RED','FLY'] },
+      { word: 'STAR', emoji: '⭐', answer: 'CAR', options: ['CAR','MOON','SING','TREE'] },
+      { word: 'FISH', emoji: '🐠', answer: 'DISH', options: ['DISH','BIRD','CAKE','HILL'] },
+      { word: 'TREE', emoji: '🌳', answer: 'BEE', options: ['BEE','ROCK','FROG','SAND'] },
+      { word: 'MOON', emoji: '🌙', answer: 'SOON', options: ['SOON','LAKE','BIRD','STEP'] },
+      { word: 'RAIN', emoji: '🌧️', answer: 'TRAIN', options: ['TRAIN','FISH','LAMP','BLUE'] },
+      { word: 'CAKE', emoji: '🎂', answer: 'LAKE', options: ['LAKE','BIRD','JUMP','SOCK'] },
+      { word: 'RING', emoji: '💍', answer: 'SING', options: ['SING','JUMP','ROCK','BLUE'] },
+      { word: 'BEAR', emoji: '🐻', answer: 'PEAR', options: ['PEAR','LION','ROAD','FISH'] },
+    ];
+
+    /* ── DOM refs ── */
     const memoryGrid = document.getElementById('memoryGrid');
     const memoryStatus = document.getElementById('memoryStatus');
     const focusLane = document.getElementById('focusLane');
@@ -526,20 +753,28 @@
     const patternDisplay = document.getElementById('patternDisplay');
     const patternOptions = document.getElementById('patternOptions');
     const patternStatus = document.getElementById('patternStatus');
+    const countField = document.getElementById('countField');
+    const countOptions = document.getElementById('countOptions');
+    const countStatus = document.getElementById('countStatus');
+    const rhymeOptions = document.getElementById('rhymeOptions');
+    const rhymeStatus = document.getElementById('rhymeStatus');
 
+    /* ── Audio ── */
     function beep(freq = 440, duration = 0.12, type = 'sine') {
       if (!state.soundOn) return;
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = type; osc.frequency.value = freq;
-      gain.gain.value = 0.04;
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + duration);
-      osc.onended = () => ctx.close();
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type; osc.frequency.value = freq;
+        gain.gain.value = 0.04;
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + duration);
+        osc.onended = () => ctx.close();
+      } catch(e) {}
     }
 
+    /* ── Helpers ── */
     function shuffle(arr) {
       const copy = [...arr];
       for (let i = copy.length - 1; i > 0; i--) {
@@ -554,15 +789,24 @@
       document.getElementById('bestMemory').textContent = state.bestMemory;
       document.getElementById('bestFocus').textContent = state.bestFocus;
       const finished = Object.values(state.completed).filter(Boolean).length;
-      document.getElementById('gamesFinished').textContent = `${finished}/3`;
-      const memoryPercent = Math.round((state.memory.matches / 6) * 100);
-      const focusPercent = Math.min(100, state.bestFocus * 10);
-      const patternPercent = Math.min(100, state.patternScore * 25);
-      setProgress('memory', memoryPercent);
-      setProgress('focus', focusPercent);
-      setProgress('pattern', patternPercent);
+      document.getElementById('gamesFinished').textContent = `${finished}/5`;
+
+      const memP = Math.round((state.memory.matches / 8) * 100);
+      const focP = Math.min(100, state.bestFocus * 10);
+      const patP = Math.min(100, Math.round((state.patternScore / 10) * 100));
+      const cntP = Math.min(100, Math.round((state.countScore / 8) * 100));
+      const rhmP = Math.min(100, Math.round((state.rhymeScore / 8) * 100));
+
+      setProgress('memory', memP);
+      setProgress('focus', focP);
+      setProgress('pattern', patP);
+      setProgress('count', cntP);
+      setProgress('rhyme', rhmP);
+
       const allDone = Object.values(state.completed).every(Boolean);
-      document.getElementById('gardenMessage').textContent = allDone ? 'Wonderful! The whole Brain Garden is blooming.' : 'Welcome to the Brain Garden.';
+      document.getElementById('gardenMessage').textContent = allDone
+        ? '🌸 Wonderful! The whole Brain Garden is blooming!'
+        : 'Welcome to the Brain Garden.';
     }
 
     function setProgress(key, value) {
@@ -576,8 +820,18 @@
       document.getElementById('gardenMessage').textContent = message;
       updateBoard();
       beep(620, 0.18, 'triangle');
+      setTimeout(() => beep(780, 0.14, 'triangle'), 200);
     }
 
+    function openPanel(key) {
+      ['memory','focus','pattern','count','rhyme'].forEach(name => {
+        document.getElementById(`panel-${name}`).hidden = name !== key;
+      });
+    }
+
+    /* ══════════════════════════════════════
+       GAME 1 — MEMORY MATCH
+    ══════════════════════════════════════ */
     function initMemory() {
       const deck = shuffle([...memoryIcons, ...memoryIcons]);
       state.memory = { matches: 0, turns: 0, first: null, second: null, lock: false };
@@ -588,12 +842,12 @@
         button.type = 'button';
         button.dataset.icon = icon;
         button.dataset.index = index;
-        button.setAttribute('aria-label', 'Hidden memory card');
+        button.setAttribute('aria-label', 'Hidden memory card — tap to reveal');
         button.textContent = icon;
         button.addEventListener('click', () => flipCard(button));
         memoryGrid.appendChild(button);
       });
-      memoryStatus.textContent = 'Tap two cards to begin.';
+      memoryStatus.textContent = 'Tap any card to reveal it, then find its matching pair.';
       updateBoard();
     }
 
@@ -616,20 +870,20 @@
         state.memory.second.disabled = true;
         state.memory.matches += 1;
         state.bestMemory = Math.max(state.bestMemory, state.memory.matches);
-        memoryStatus.textContent = `Great! ${state.memory.matches} pairs found.`;
+        memoryStatus.textContent = `Great! ${state.memory.matches} pair${state.memory.matches > 1 ? 's' : ''} found so far.`;
         beep(540, 0.12, 'triangle');
         resetMemoryTurn();
-        if (state.memory.matches === 6) {
-          reward('memory', 3, 'Memory garden complete!');
-          memoryStatus.textContent = `You solved all pairs in ${state.memory.turns} turns.`;
+        if (state.memory.matches === 8) {
+          reward('memory', 3, '🌸 Memory garden complete!');
+          memoryStatus.textContent = `You solved all pairs in ${state.memory.turns} turns. Well done!`;
         }
       } else {
-        memoryStatus.textContent = 'Try again. Watch carefully.';
+        memoryStatus.textContent = 'Not a match — watch carefully and try again!';
         setTimeout(() => {
           state.memory.first.classList.remove('flipped');
           state.memory.second.classList.remove('flipped');
           resetMemoryTurn();
-        }, 700);
+        }, 800);
       }
       updateBoard();
     }
@@ -640,75 +894,89 @@
       state.memory.lock = false;
     }
 
-    function openPanel(key) {
-      ['memory','focus','pattern'].forEach(name => {
-        document.getElementById(`panel-${name}`).hidden = name !== key;
-      });
-    }
-
+    /* ══════════════════════════════════════
+       GAME 2 — STAR FOCUS CATCHER
+       Uses JS-driven star positions for reliable collision detection
+    ══════════════════════════════════════ */
     function movePlayer(delta) {
-      const laneWidth = focusLane.clientWidth - 100;
-      state.focus.playerX = Math.min(Math.max(10, state.focus.playerX + delta), laneWidth);
+      const laneWidth = focusLane.clientWidth - 90;
+      state.focus.playerX = Math.min(Math.max(8, state.focus.playerX + delta), laneWidth);
       focusPlayer.style.left = `${state.focus.playerX}px`;
     }
 
     function spawnStar() {
       if (!state.focus.running) return;
       const star = document.createElement('div');
-      star.className = 'focus-star';
-      star.textContent = '⭐';
-      const x = Math.random() * (focusLane.clientWidth - 50);
-      star.style.left = `${x}px`;
-      const duration = 2.2 + Math.random() * 1.2;
-      star.style.animationDuration = `${duration}s`;
+      star.className = 'focus-star-el';
+      const starEmojis = ['⭐','🌟','💫'];
+      star.textContent = starEmojis[Math.floor(Math.random() * starEmojis.length)];
+      const laneW = focusLane.clientWidth;
+      const x = 8 + Math.random() * (laneW - 56);
+      star.style.left = x + 'px';
+      star.style.top = '-44px';
+      const speed = 1.0 + Math.random() * 0.8;
+      const starObj = { el: star, x, y: -44, speed, caught: false };
+      state.focus.starList.push(starObj);
       focusLane.appendChild(star);
-      state.focus.stars.push({ el: star, x, caught: false });
-      setTimeout(() => {
-        if (star.isConnected) star.remove();
-        state.focus.stars = state.focus.stars.filter(item => item.el !== star);
-      }, duration * 1000);
     }
 
-    function checkCatch() {
-      const playerLeft = state.focus.playerX;
-      const playerRight = playerLeft + 82;
-      state.focus.stars.forEach(item => {
-        const rect = item.el.getBoundingClientRect();
-        const laneRect = focusLane.getBoundingClientRect();
-        const relativeTop = rect.top - laneRect.top;
-        if (!item.caught && relativeTop > 140 && item.x + 22 >= playerLeft && item.x <= playerRight) {
-          item.caught = true;
-          item.el.remove();
-          state.focus.score += 1;
-          focusScoreEl.textContent = state.focus.score;
-          focusStatus.textContent = 'Nice catch!';
-          beep(700, 0.08, 'square');
-          if (state.focus.score >= 10) endFocus(true);
+    function runFocusLoop() {
+      if (!state.focus.running) return;
+      const laneH = focusLane.clientHeight;
+      const catchZoneTop = laneH - 105;
+      const catchZoneBot = laneH - 10;
+
+      state.focus.starList.forEach(s => {
+        if (s.caught) return;
+        s.y += s.speed;
+        s.el.style.top = s.y + 'px';
+        // Catch check
+        if (s.y >= catchZoneTop && s.y <= catchZoneBot) {
+          const starRight = s.x + 40;
+          const playerRight = state.focus.playerX + 80;
+          if (starRight >= state.focus.playerX && s.x <= playerRight) {
+            s.caught = true;
+            s.el.remove();
+            state.focus.score += 1;
+            focusScoreEl.textContent = state.focus.score;
+            focusStatus.textContent = `Nice catch! ${state.focus.score} star${state.focus.score > 1 ? 's' : ''} caught.`;
+            beep(700, 0.08, 'square');
+            if (state.focus.score >= 10) { endFocus(true); return; }
+          }
+        }
+        // Remove if off screen
+        if (s.y > laneH + 10) {
+          s.el.remove();
+          s.caught = true;
         }
       });
-      state.focus.stars = state.focus.stars.filter(item => item.el.isConnected && !item.caught);
+      state.focus.starList = state.focus.starList.filter(s => !s.caught);
     }
 
     function startFocus() {
       clearInterval(state.focus.tick);
       clearInterval(state.focus.spawn);
-      state.focus.stars.forEach(item => item.el.remove());
-      state.focus = { running: true, score: 0, time: 20, playerX: 18, tick: null, spawn: null, stars: [] };
+      cancelAnimationFrame(state.focus.loop);
+      state.focus.starList.forEach(s => { if (s.el.isConnected) s.el.remove(); });
+      state.focus = { running: true, score: 0, time: 25, playerX: 18, tick: null, spawn: null, loop: null, starList: [] };
+      focusPlayer.style.left = '18px';
       focusScoreEl.textContent = '0';
-      focusTimeEl.textContent = '20';
-      movePlayer(0);
-      focusStatus.textContent = 'Catch the stars!';
-      state.focus.spawn = setInterval(spawnStar, 850);
+      focusTimeEl.textContent = '25';
+      focusStatus.textContent = 'Stars are falling — move 🪷 to catch them!';
+
+      state.focus.spawn = setInterval(spawnStar, 900);
       state.focus.tick = setInterval(() => {
         state.focus.time -= 1;
         focusTimeEl.textContent = state.focus.time;
-        checkCatch();
         if (state.focus.time <= 0) endFocus(state.focus.score >= 10);
       }, 1000);
-      const collisionLoop = setInterval(() => {
-        if (!state.focus.running) return clearInterval(collisionLoop);
-        checkCatch();
-      }, 90);
+
+      function loop() {
+        if (!state.focus.running) return;
+        runFocusLoop();
+        state.focus.loop = requestAnimationFrame(loop);
+      }
+      state.focus.loop = requestAnimationFrame(loop);
     }
 
     function endFocus(win) {
@@ -717,22 +985,26 @@
       state.focus.running = false;
       state.bestFocus = Math.max(state.bestFocus, state.focus.score);
       if (win) {
-        reward('focus', 4, 'Focus garden complete!');
-        focusStatus.textContent = `Excellent! You caught ${state.focus.score} stars.`;
+        reward('focus', 4, '⭐ Focus garden complete!');
+        focusStatus.textContent = `Excellent! You caught ${state.focus.score} stars. Garden complete!`;
       } else {
-        focusStatus.textContent = `Time up. You caught ${state.focus.score} stars. Try once more.`;
+        focusStatus.textContent = `Time up! You caught ${state.focus.score} star${state.focus.score !== 1 ? 's' : ''}. Try again to catch 10!`;
         beep(220, 0.16, 'sawtooth');
       }
       updateBoard();
     }
 
+    /* ══════════════════════════════════════
+       GAME 3 — PATTERN PATH
+    ══════════════════════════════════════ */
     function renderPattern() {
       const puzzle = patterns[state.patternIndex % patterns.length];
       patternDisplay.innerHTML = '';
       puzzle.sequence.forEach(symbol => {
         const cell = document.createElement('div');
-        cell.className = 'pattern-cell';
-        cell.textContent = symbol;
+        cell.className = 'pattern-cell' + (symbol === '❓' ? ' missing' : '');
+        cell.textContent = symbol === '❓' ? '?' : symbol;
+        if (symbol === '❓') cell.setAttribute('aria-label', 'Missing symbol — choose below');
         patternDisplay.appendChild(cell);
       });
       patternOptions.innerHTML = '';
@@ -741,10 +1013,13 @@
         button.className = 'option-btn';
         button.type = 'button';
         button.textContent = option;
+        button.setAttribute('aria-label', `Choose ${option}`);
         button.addEventListener('click', () => answerPattern(button, option, puzzle.answer));
         patternOptions.appendChild(button);
       });
-      patternStatus.textContent = `Puzzle ${state.patternIndex + 1} of 4.`;
+      const num = (state.patternIndex % patterns.length) + 1;
+      patternStatus.textContent = `Puzzle ${num} — what symbol fills the golden gap?`;
+      document.getElementById('patternCounter').textContent = `${num} / ${patterns.length}`;
     }
 
     function answerPattern(button, chosen, answer) {
@@ -753,48 +1028,150 @@
       if (chosen === answer) {
         button.classList.add('correct');
         state.patternScore += 1;
-        patternStatus.textContent = 'Correct! Pattern understood.';
+        patternStatus.textContent = '✅ Correct! You found the pattern.';
         beep(580, 0.12, 'triangle');
-        if (state.patternScore >= 4) reward('pattern', 5, 'Pattern garden complete!');
+        if (state.patternScore >= 8) reward('pattern', 5, '🔶 Pattern garden complete!');
       } else {
         button.classList.add('wrong');
-        patternStatus.textContent = `Good try. The correct answer was ${answer}.`;
+        patternStatus.textContent = `Not quite. The correct answer was ${answer}. Keep going!`;
         buttons.find(btn => btn.textContent === answer)?.classList.add('correct');
         beep(250, 0.14, 'sawtooth');
       }
       updateBoard();
     }
 
+    /* ══════════════════════════════════════
+       GAME 4 — QUICK COUNT
+    ══════════════════════════════════════ */
+    function renderCount() {
+      const round = countItems[state.countIndex % countItems.length];
+      countField.innerHTML = '';
+      for (let i = 0; i < round.count; i++) {
+        const item = document.createElement('span');
+        item.className = 'count-item';
+        item.textContent = round.emoji;
+        item.setAttribute('aria-hidden', 'true');
+        countField.appendChild(item);
+      }
+      countField.setAttribute('aria-label', `Count these ${round.emoji} objects`);
+
+      // Generate 3 wrong answers near the correct one
+      const correct = round.count;
+      const wrongs = new Set();
+      while (wrongs.size < 3) {
+        const offset = Math.floor(Math.random() * 5) + 1;
+        const candidate = correct + (Math.random() < 0.5 ? offset : -offset);
+        if (candidate > 0 && candidate !== correct) wrongs.add(candidate);
+      }
+      const choices = shuffle([correct, ...wrongs]);
+      countOptions.innerHTML = '';
+      choices.forEach(num => {
+        const btn = document.createElement('button');
+        btn.className = 'count-btn';
+        btn.type = 'button';
+        btn.textContent = num;
+        btn.setAttribute('aria-label', `${num}`);
+        btn.addEventListener('click', () => answerCount(btn, num, correct));
+        countOptions.appendChild(btn);
+      });
+      countStatus.textContent = `Count the pictures, then tap the right number!`;
+    }
+
+    function answerCount(button, chosen, correct) {
+      const buttons = [...countOptions.querySelectorAll('button')];
+      buttons.forEach(btn => btn.disabled = true);
+      if (chosen === correct) {
+        button.classList.add('correct');
+        state.countScore += 1;
+        countStatus.textContent = `✅ Yes! There were exactly ${correct}. Well counted!`;
+        beep(580, 0.12, 'triangle');
+        if (state.countScore >= 8) reward('count', 3, '🔢 Count garden complete!');
+      } else {
+        button.classList.add('wrong');
+        countStatus.textContent = `Not quite — there were ${correct}. Count again next time!`;
+        buttons.find(btn => +btn.textContent === correct)?.classList.add('correct');
+        beep(250, 0.14, 'sawtooth');
+      }
+      updateBoard();
+    }
+
+    /* ══════════════════════════════════════
+       GAME 5 — WORD RHYME
+    ══════════════════════════════════════ */
+    function renderRhyme() {
+      const round = rhymes[state.rhymeIndex % rhymes.length];
+      document.getElementById('rhymeWord').textContent = round.word;
+      document.getElementById('rhymeEmoji').textContent = round.emoji;
+
+      rhymeOptions.innerHTML = '';
+      shuffle(round.options).forEach(word => {
+        const btn = document.createElement('button');
+        btn.className = 'rhyme-btn';
+        btn.type = 'button';
+        btn.textContent = word;
+        btn.addEventListener('click', () => answerRhyme(btn, word, round.answer));
+        rhymeOptions.appendChild(btn);
+      });
+      rhymeStatus.textContent = `Which word rhymes with "${round.word}"? Tap your answer.`;
+    }
+
+    function answerRhyme(button, chosen, answer) {
+      const buttons = [...rhymeOptions.querySelectorAll('button')];
+      buttons.forEach(btn => btn.disabled = true);
+      if (chosen === answer) {
+        button.classList.add('correct');
+        state.rhymeScore += 1;
+        rhymeStatus.textContent = `✅ "${answer}" rhymes! Great ear for sounds!`;
+        beep(620, 0.14, 'triangle');
+        if (state.rhymeScore >= 8) reward('rhyme', 4, '🎵 Rhyme garden complete!');
+      } else {
+        button.classList.add('wrong');
+        rhymeStatus.textContent = `Not quite — "${answer}" was the rhyme. They end with the same sound!`;
+        buttons.find(btn => btn.textContent === answer)?.classList.add('correct');
+        beep(250, 0.14, 'sawtooth');
+      }
+      updateBoard();
+    }
+
+    /* ── Events ── */
     document.querySelectorAll('[data-open-panel]').forEach(btn => {
       btn.addEventListener('click', () => openPanel(btn.dataset.openPanel));
     });
 
     document.getElementById('resetMemory').addEventListener('click', initMemory);
     document.getElementById('startFocus').addEventListener('click', startFocus);
-    document.getElementById('moveLeft').addEventListener('click', () => movePlayer(-50));
-    document.getElementById('moveRight').addEventListener('click', () => movePlayer(50));
+    document.getElementById('moveLeft').addEventListener('click', () => movePlayer(-55));
+    document.getElementById('moveRight').addEventListener('click', () => movePlayer(55));
+
     document.getElementById('nextPattern').addEventListener('click', () => {
       state.patternIndex = (state.patternIndex + 1) % patterns.length;
       renderPattern();
     });
+    document.getElementById('nextCount').addEventListener('click', () => {
+      state.countIndex = (state.countIndex + 1) % countItems.length;
+      renderCount();
+    });
+    document.getElementById('nextRhyme').addEventListener('click', () => {
+      state.rhymeIndex = (state.rhymeIndex + 1) % rhymes.length;
+      renderRhyme();
+    });
+
     document.getElementById('resetAll').addEventListener('click', () => {
       state.stars = 0;
-      state.completed = { memory: false, focus: false, pattern: false };
-      state.bestMemory = 0;
-      state.bestFocus = 0;
-      state.patternScore = 0;
-      state.patternIndex = 0;
-      initMemory();
-      renderPattern();
-      focusStatus.textContent = 'Press start when ready.';
-      focusScoreEl.textContent = '0';
-      focusTimeEl.textContent = '20';
+      state.completed = { memory: false, focus: false, pattern: false, count: false, rhyme: false };
+      state.bestMemory = 0; state.bestFocus = 0;
+      state.patternScore = 0; state.patternIndex = 0;
+      state.countScore = 0; state.countIndex = 0;
+      state.rhymeScore = 0; state.rhymeIndex = 0;
+      initMemory(); renderPattern(); renderCount(); renderRhyme();
+      focusStatus.textContent = 'Press "Start round" to begin catching stars!';
+      focusScoreEl.textContent = '0'; focusTimeEl.textContent = '25';
       updateBoard();
     });
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowLeft') movePlayer(-45);
-      if (event.key === 'ArrowRight') movePlayer(45);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft')  movePlayer(-50);
+      if (e.key === 'ArrowRight') movePlayer(50);
     });
 
     document.getElementById('themeToggle').addEventListener('click', () => {
@@ -802,21 +1179,24 @@
       root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
     });
 
-    document.getElementById('soundToggle').addEventListener('click', (event) => {
+    document.getElementById('soundToggle').addEventListener('click', (e) => {
       state.soundOn = !state.soundOn;
-      event.currentTarget.textContent = state.soundOn ? '🔊 Sound On' : '🔈 Sound Off';
-      event.currentTarget.setAttribute('aria-pressed', String(state.soundOn));
+      e.currentTarget.textContent = state.soundOn ? '🔊 Sound On' : '🔈 Sound Off';
+      e.currentTarget.setAttribute('aria-pressed', String(state.soundOn));
     });
 
+    /* ── Init ── */
     initMemory();
     renderPattern();
+    renderCount();
+    renderRhyme();
     updateBoard();
   </script>
+
   <script src="bhava-tech-all.js"></script>
 
-  <!-- Bhava Game Menu - Auto Injected -->
+  <!-- Bhava Game Menu -->
   <button class="bv-menu-btn" onclick="bvOpenMenu()">☰</button>
-
   <div class="bv-overlay" id="bvOverlay" onclick="bvCloseMenu()">
     <div class="bv-box" onclick="event.stopPropagation()">
       <h3>☰ Menu</h3>
@@ -827,25 +1207,9 @@
       <a onclick="bvCloseMenu()">✕ Close</a>
     </div>
   </div>
-
   <script>
     function bvOpenMenu()  { document.getElementById('bvOverlay').classList.add('active'); }
     function bvCloseMenu() { document.getElementById('bvOverlay').classList.remove('active'); }
-
-    // Back button fix for Capacitor Android
-    document.addEventListener('DOMContentLoaded', function () {
-      if (window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.App) {
-        Capacitor.Plugins.App.addListener('backButton', function (e) {
-          if (window.history.length > 1) {
-            window.history.back();
-          } else {
-            Capacitor.Plugins.App.exitApp();
-          }
-        });
-      }
-    });
   </script>
-  <!-- End Bhava Game Menu -->
-
 </body>
 </html>

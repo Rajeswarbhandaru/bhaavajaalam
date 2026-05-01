@@ -1,0 +1,774 @@
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║  bhava-enhance.css  — Bhāva Tech Visual Enhancement Layer           ║
+   ║  HOW TO USE: In your index.html <head>, add this LINE after your    ║
+   ║  existing stylesheet:                                                ║
+   ║    <link rel="stylesheet" href="bhava-enhance.css">                 ║
+   ║  This file adds polish WITHOUT changing your HTML or script.js      ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
+
+/* ════════════════════════════════════════════════════════════
+   STEP 1 — Design Tokens (CSS Variables)
+   One place to control all colors, spacing, transitions.
+   Change a value here → it updates everywhere on the page.
+   ════════════════════════════════════════════════════════════ */
+:root {
+  --bt-bg:          #0a0a1a;
+  --bt-surface:     rgba(255,255,255,0.04);
+  --bt-surface-2:   rgba(255,255,255,0.07);
+  --bt-border:      rgba(255,255,255,0.09);
+  --bt-border-glow: rgba(167,139,250,0.38);
+  --bt-text:        #e2e8f0;
+  --bt-muted:       #94a3b8;
+  --bt-faint:       #475569;
+  --bt-accent:      #a78bfa;       /* primary purple accent */
+  --bt-cyan:        #67e8f9;
+  --bt-gold:        #fde68a;
+  --bt-green:       #6ee7b7;
+  --bt-radius:      18px;
+  --bt-ease:        cubic-bezier(0.16, 1, 0.3, 1);
+  --bt-speed:       0.35s;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 2 — Navigation: Glassmorphism Dark Bar
+   Makes the nav feel like a floating glass panel, exactly
+   like Shortwave and Linear. The blur + border together
+   create depth without heavy shadows.
+   ════════════════════════════════════════════════════════════ */
+#main-nav {
+  backdrop-filter: blur(24px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+  background: rgba(10, 10, 26, 0.72) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+  transition: background var(--bt-speed) ease,
+              box-shadow var(--bt-speed) ease !important;
+}
+
+#main-nav.scrolled {
+  background: rgba(10, 10, 26, 0.93) !important;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.55) !important;
+}
+
+/* Nav links — subtle muted color, brightens on hover */
+.nav-links a {
+  font-size: 0.84rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.015em !important;
+  color: rgba(226,232,240,0.68) !important;
+  transition: color var(--bt-speed) var(--bt-ease) !important;
+  position: relative;
+  padding-bottom: 3px !important;
+}
+
+/* Animated underline slide on hover */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--bt-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--bt-speed) var(--bt-ease);
+}
+
+.nav-links a:hover {
+  color: #fff !important;
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
+}
+
+/* CONTACT nav button — pill style */
+.nav-links .nav-cta {
+  background: rgba(167,139,250,0.1) !important;
+  border: 1px solid rgba(167,139,250,0.38) !important;
+  padding: 5px 16px !important;
+  border-radius: 30px !important;
+  color: #c4b5fd !important;
+  transition: background var(--bt-speed) ease,
+              box-shadow var(--bt-speed) ease !important;
+}
+
+.nav-links .nav-cta:hover {
+  background: rgba(167,139,250,0.2) !important;
+  box-shadow: 0 0 16px rgba(167,139,250,0.25) !important;
+  color: #e0d4ff !important;
+}
+
+.nav-links .nav-cta::after { display: none !important; }
+
+/* Scroll progress bar — colorful gradient glow */
+#scroll-progress {
+  height: 2px !important;
+  background: linear-gradient(90deg, #7c3aed, #06b6d4, #fbbf24, #a78bfa) !important;
+  background-size: 300% 100% !important;
+  animation: progressShimmer 3s linear infinite !important;
+  box-shadow: 0 0 8px rgba(124,58,237,0.5) !important;
+}
+
+@keyframes progressShimmer {
+  0%   { background-position: 0% 0; }
+  100% { background-position: 300% 0; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 3 — Hero Section: Focused Typography
+   The rainbow shimmer on heading text is striking, but
+   we make it slightly calmer so it reads more clearly.
+   The brain float and pills are already great — keep them.
+   ════════════════════════════════════════════════════════════ */
+.z1-heading {
+  background: linear-gradient(135deg, #f0e6ff 0%, #c4b5fd 40%, #67e8f9 80%, #fde68a 100%) !important;
+  background-size: 300% 300% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  animation: heroGradient 6s ease-in-out infinite !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.12 !important;
+}
+
+@keyframes heroGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+/* Hero tag pill — cleaner border */
+.z1-tag {
+  font-size: 10.5px !important;
+  letter-spacing: 2.5px !important;
+  border-radius: 40px !important;
+  padding: 5px 16px !important;
+}
+
+/* Hero CTA button — clean gradient, not overloaded */
+.z1 a[href*="take-test"],
+.z1 a[href*="evaluation"] {
+  background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%) !important;
+  box-shadow: 0 4px 24px rgba(124,58,237,0.4) !important;
+  border-radius: 40px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  transition: transform var(--bt-speed) var(--bt-ease),
+              box-shadow var(--bt-speed) ease !important;
+  animation: ctaPulse 3s ease-in-out infinite !important;
+}
+
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 4px 24px rgba(124,58,237,0.4); }
+  50%       { box-shadow: 0 6px 36px rgba(6,182,212,0.5); }
+}
+
+/* Stat cards — improve hover glow */
+.stat-card {
+  border-radius: 20px !important;
+  transition: transform var(--bt-speed) var(--bt-ease),
+              box-shadow var(--bt-speed) ease,
+              border-color var(--bt-speed) ease !important;
+}
+
+/* Location bar */
+.location-bar {
+  border-radius: 12px !important;
+  font-size: 12.5px !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 4 — Bhāva Definition Box: Dark Theme
+   Currently this box is white/light — it breaks the dark
+   page theme. We convert it to a purple-tinted dark card.
+   ════════════════════════════════════════════════════════════ */
+.bhava-box {
+  background: linear-gradient(135deg, rgba(109,40,217,0.14), rgba(8,145,178,0.10)) !important;
+  border: 1px solid rgba(167,139,250,0.32) !important;
+  box-shadow: 0 8px 40px rgba(109,40,217,0.2),
+              inset 0 1px 0 rgba(255,255,255,0.06) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.bhava-box h3 {
+  color: #c4b5fd !important;
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+}
+
+.bhava-box p {
+  color: #e2e8f0 !important;
+}
+
+.bhava-line {
+  color: #94a3b8 !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 5 — Light bgt-sections → Dark Theme
+   Sections like bgt-about, bgt-unique, bgt-braingym etc.
+   use light gradients (white/cream/mint). They interrupt the
+   dark space-feel of the rest of the page. We flip them dark.
+   ════════════════════════════════════════════════════════════ */
+.bgt-section {
+  background: linear-gradient(160deg, #0a0a1a 0%, #0f0f25 100%) !important;
+  padding-top: 80px !important;
+  padding-bottom: 80px !important;
+}
+
+.bgt-section.bgt-about   { background: linear-gradient(160deg, #0a0a1a, #0d1120) !important; }
+.bgt-section.bgt-unique  { background: linear-gradient(160deg, #0a0f1a, #070d1f) !important; }
+.bgt-section.bgt-braingym{ background: linear-gradient(160deg, #080f0e, #0a1816) !important; }
+.bgt-section.bgt-games   { background: linear-gradient(160deg, #0d0a00, #130e00) !important; }
+.bgt-section.bgt-coglab  { background: linear-gradient(160deg, #0e0a1e, #130828) !important; }
+.bgt-section.bgt-holistic{ background: linear-gradient(160deg, #150a10, #1a0812) !important; }
+
+/* Section headings in bgt-sections */
+.bgt-h h2 {
+  color: #e2e8f0 !important;
+}
+
+.bgt-h p {
+  color: #94a3b8 !important;
+}
+
+/* bgt-cards → dark glass cards */
+.bgt-card {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.09) !important;
+  box-shadow: none !important;
+  transition: transform var(--bt-speed) var(--bt-ease),
+              box-shadow var(--bt-speed) ease,
+              border-color var(--bt-speed) ease !important;
+}
+
+.bgt-card:hover {
+  background: rgba(255,255,255,0.07) !important;
+  border-color: rgba(167,139,250,0.35) !important;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.45) !important;
+}
+
+.bgt-card h4 {
+  color: #e2e8f0 !important;
+}
+
+.bgt-card p {
+  color: #94a3b8 !important;
+}
+
+/* Flip card fronts */
+.bgt-flip-front {
+  background: rgba(255,255,255,0.05) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+  border: 1px solid rgba(255,255,255,0.09) !important;
+}
+
+.bgt-flip-front h4 {
+  color: #e2e8f0 !important;
+}
+
+.bgt-hint {
+  color: #64748b !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 6 — Testimonials Section → Dark Theme
+   The .testimonials-section uses a light blue background.
+   We convert it to match the dark space theme.
+   ════════════════════════════════════════════════════════════ */
+.testimonials-section {
+  background: linear-gradient(160deg, #0a0a1a 0%, #0f0c29 100%) !important;
+}
+
+.testimonials-section h2,
+.testimonials-section .section-title,
+.testimonials-section [class*="title"] {
+  color: #e2e8f0 !important;
+}
+
+.testimonials-section p:not(.testi-text):not(.testi-role) {
+  color: #94a3b8 !important;
+}
+
+/* Individual testi cards */
+.testi-card {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.09) !important;
+  box-shadow: none !important;
+  transition: transform var(--bt-speed) var(--bt-ease),
+              border-color var(--bt-speed) ease,
+              box-shadow var(--bt-speed) ease !important;
+}
+
+.testi-card:hover {
+  border-color: rgba(167,139,250,0.35) !important;
+  transform: translateY(-5px) !important;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5) !important;
+}
+
+.testi-card::before {
+  color: var(--bt-accent) !important;
+  opacity: 0.8;
+}
+
+.testi-text {
+  color: #94a3b8 !important;
+}
+
+.testi-author {
+  color: #e2e8f0 !important;
+}
+
+.testi-role {
+  color: #64748b !important;
+}
+
+.stars {
+  color: #fde68a !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 7 — Pricing Section → Dark Theme
+   Currently white card backgrounds break the dark theme.
+   We convert all pricing cards to dark glass cards.
+   ════════════════════════════════════════════════════════════ */
+#pricing,
+.section-light {
+  background: linear-gradient(160deg, #0a0a1a 0%, #0f0c29 50%, #0a1520 100%) !important;
+  color: #e2e8f0 !important;
+}
+
+/* All white/light cards in pricing section */
+#pricing .section-animate > div,
+#pricing [style*="background:fff"],
+#pricing [style*="background: fff"],
+#pricing [style*="background:#fff"],
+#pricing [style*="background: #fff"] {
+  background: rgba(255,255,255,0.04) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: #e2e8f0 !important;
+}
+
+/* Pricing text overrides */
+#pricing [style*="color:1e1b4b"],
+#pricing [style*="color: 1e1b4b"],
+#pricing [style*="color:#1e1b4b"] {
+  color: #e2e8f0 !important;
+}
+
+#pricing [style*="color:374151"],
+#pricing [style*="color: 374151"],
+#pricing [style*="color:#374151"] {
+  color: #94a3b8 !important;
+}
+
+#pricing [style*="color:6b7280"],
+#pricing [style*="color: 6b7280"],
+#pricing [style*="color:#6b7280"] {
+  color: #64748b !important;
+}
+
+/* MOST POPULAR card — indigo accent dark card */
+#pricing [style*="6366f1"] {
+  background: rgba(99,102,241,0.1) !important;
+  border-color: rgba(99,102,241,0.45) !important;
+}
+
+/* BEST VALUE card — amber accent */
+#pricing [style*="f59e0b"]:not(a):not(button):not(span) {
+  background: rgba(245,158,11,0.08) !important;
+  border-color: rgba(245,158,11,0.35) !important;
+}
+
+/* Section headers in pricing */
+.section-header h2,
+.section-header p {
+  color: #e2e8f0 !important;
+}
+
+.section-header p {
+  color: #94a3b8 !important;
+}
+
+/* Course cards */
+#pricing [style*="border:1px solid e5e7eb"],
+#pricing [style*="border: 1px solid e5e7eb"],
+#pricing [style*="border:1px solid #e5e7eb"],
+#pricing [style*="border: 1px solid #e5e7eb"] {
+  background: rgba(255,255,255,0.04) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+}
+
+/* Payment info bar */
+#pricing p[style*="color:6b7280"],
+#pricing [class*="payment"] {
+  color: #64748b !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 8 — FAQ Section → Dark Theme
+   The .faq-item uses light text colors from the .section-light
+   context. We override all to match the dark theme.
+   ════════════════════════════════════════════════════════════ */
+#faq {
+  background: linear-gradient(160deg, #0a0a1a 0%, #0f0c29 50%, #0a0a1a 100%) !important;
+  padding: 80px 20px !important;
+}
+
+/* FAQ title/subtitle */
+#faq h2,
+#faq .section-header h2 {
+  color: #e2e8f0 !important;
+}
+
+#faq p,
+#faq .section-header p {
+  color: #94a3b8 !important;
+}
+
+.faq-item {
+  border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+  padding: 22px 0 !important;
+  transition: padding var(--bt-speed) ease !important;
+}
+
+.faq-question {
+  color: #d4d8e0 !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+  gap: 16px !important;
+}
+
+.faq-question:hover {
+  color: #c4b5fd !important;
+}
+
+.faq-item.open .faq-question {
+  color: #c4b5fd !important;
+}
+
+.faq-arrow {
+  color: #64748b !important;
+  flex-shrink: 0;
+}
+
+.faq-item.open .faq-arrow {
+  color: var(--bt-accent) !important;
+}
+
+.faq-answer {
+  color: #94a3b8 !important;
+  font-size: 0.9rem !important;
+  line-height: 1.8 !important;
+  padding-right: 32px !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 9 — Button System: Unified & Polished
+   Consistent hover transitions and sizing across all buttons.
+   ════════════════════════════════════════════════════════════ */
+.btn {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  padding: 10px 20px !important;
+  transition: transform var(--bt-speed) var(--bt-ease),
+              box-shadow var(--bt-speed) ease,
+              background var(--bt-speed) ease,
+              border-color var(--bt-speed) ease !important;
+  cursor: pointer !important;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 4px 16px rgba(124,58,237,0.3) !important;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 28px rgba(124,58,237,0.5) !important;
+}
+
+.btn-outline {
+  border: 1.5px solid rgba(167,139,250,0.38) !important;
+  color: #c4b5fd !important;
+  background: rgba(167,139,250,0.06) !important;
+}
+
+.btn-outline:hover {
+  background: rgba(167,139,250,0.14) !important;
+  border-color: rgba(167,139,250,0.65) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 10 — Contact & Booking Section → Dark
+   Makes the contact section consistent with the dark theme.
+   ════════════════════════════════════════════════════════════ */
+#contact {
+  background: linear-gradient(160deg, #0a0a1a 0%, #0f0c29 100%) !important;
+  color: #e2e8f0 !important;
+}
+
+/* Headings and paragraphs in contact */
+#contact h2,
+#contact h3,
+#contact h4 {
+  color: #e2e8f0 !important;
+}
+
+#contact p,
+#contact address,
+#contact span {
+  color: #94a3b8 !important;
+}
+
+/* Contact info boxes / cards */
+#contact .contact-box,
+#contact .info-box,
+#contact [class*="contact-card"],
+#contact [class*="book-box"],
+#contact [class*="booking"],
+#contact [class*="address-box"],
+#contact table {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.09) !important;
+  border-radius: var(--bt-radius) !important;
+  color: #94a3b8 !important;
+}
+
+/* Strong text inside contact — make it pop */
+#contact strong,
+#contact b {
+  color: #e2e8f0 !important;
+  font-weight: 700 !important;
+}
+
+/* Links in contact */
+#contact a:not(.btn) {
+  color: var(--bt-cyan) !important;
+  transition: color var(--bt-speed) ease !important;
+}
+
+#contact a:not(.btn):hover {
+  color: #fff !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 11 — Gain Cards: Smoother Enter Animations
+   The gain-card already has scroll-triggered JS animations.
+   We enhance their transition with a better easing curve.
+   ════════════════════════════════════════════════════════════ */
+.gain-card {
+  transition: transform 0.5s var(--bt-ease),
+              box-shadow 0.5s ease,
+              background 0.5s ease,
+              opacity 0.5s ease !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+.gain-card:hover {
+  transform: translateY(-10px) scale(1.03) !important;
+  box-shadow: 0 20px 56px rgba(56,189,248,0.25) !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 12 — Online Flow Steps (process steps)
+   ════════════════════════════════════════════════════════════ */
+.oflow-step {
+  transition: transform var(--bt-speed) var(--bt-ease) !important;
+}
+
+.oflow-step:hover {
+  transform: translateY(-4px) !important;
+}
+
+.oflow-num {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4) !important;
+  box-shadow: 0 4px 12px rgba(124,58,237,0.35) !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 13 — Sample Report Box: Dark
+   ════════════════════════════════════════════════════════════ */
+.sample-report-box {
+  background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(124,58,237,0.08)) !important;
+  border: 2px dashed rgba(99,102,241,0.4) !important;
+}
+
+.sample-report-box h4 {
+  color: #e2e8f0 !important;
+}
+
+.sample-report-box p {
+  color: #94a3b8 !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 14 — Worldwide Banner: Better gradient
+   ════════════════════════════════════════════════════════════ */
+.worldwide-banner {
+  background: linear-gradient(135deg, #1e1b4b, #1e3a5f) !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.2px !important;
+}
+
+.worldwide-banner a {
+  color: #fde68a !important;
+  font-weight: 700 !important;
+  transition: color var(--bt-speed) ease !important;
+}
+
+.worldwide-banner a:hover {
+  color: #fff !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 15 — Section-to-Section Breathing Space
+   Each section now has a very subtle top divider line and
+   consistent vertical rhythm — like Shortwave's clean spacing.
+   ════════════════════════════════════════════════════════════ */
+section {
+  scroll-margin-top: 72px;
+}
+
+section + section {
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Consistent zone-label (section eyebrow labels) */
+.zone-label,
+.collab-eyebrow,
+.c-badge,
+.g-header + *,
+.bgt-eyebrow {
+  font-size: 10.5px !important;
+  letter-spacing: 2.8px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 16 — Floating WhatsApp Button: Refined
+   ════════════════════════════════════════════════════════════ */
+#whatsapp-float-btn {
+  transition: transform var(--bt-speed) var(--bt-ease),
+              box-shadow var(--bt-speed) ease !important;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4) !important;
+}
+
+#whatsapp-float-btn:hover {
+  transform: scale(1.12) translateY(-2px) !important;
+  box-shadow: 0 8px 32px rgba(37,211,102,0.6) !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 17 — Modal: Glassmorphism Overlay
+   ════════════════════════════════════════════════════════════ */
+#medlab-modal {
+  backdrop-filter: blur(8px) !important;
+  background: rgba(10,10,26,0.75) !important;
+}
+
+.modal-box {
+  background: linear-gradient(135deg, rgba(30,20,60,0.96), rgba(10,18,30,0.98)) !important;
+  border: 1px solid rgba(167,139,250,0.25) !important;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.7) !important;
+  border-radius: 24px !important;
+}
+
+.modal-box h2 {
+  color: #c4b5fd !important;
+}
+
+.modal-box p {
+  color: #94a3b8 !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 18 — Footer: Dark & Clean
+   ════════════════════════════════════════════════════════════ */
+footer {
+  background: #070710 !important;
+  border-top: 1px solid rgba(255,255,255,0.07) !important;
+  color: #64748b !important;
+}
+
+footer a {
+  color: #94a3b8 !important;
+  transition: color var(--bt-speed) ease !important;
+}
+
+footer a:hover {
+  color: #fff !important;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.05) !important;
+}
+
+.footer-bottom p {
+  color: #475569 !important;
+  font-size: 0.82rem !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 19 — Mobile: Touch-Friendly Refinements
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Nav links larger tap area */
+  .nav-links a {
+    padding: 12px 0 !important;
+    font-size: 1rem !important;
+  }
+
+  /* Bgt cards on mobile */
+  .bgt-card {
+    padding: 20px 16px !important;
+  }
+
+  /* Collab grid on mobile — 2 columns */
+  .collab-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Testimonials single column */
+  .testimonials-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* FAQ answers better readability */
+  .faq-answer {
+    padding-right: 0 !important;
+    font-size: 0.88rem !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   STEP 20 — Reduced Motion Accessibility
+   Users who prefer less motion see instant transitions.
+   ════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .z1-heading,
+  #scroll-progress,
+  .ctaPulse,
+  .heroGradient,
+  .progressShimmer {
+    animation: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   END OF bhava-enhance.css
+   Total enhancements: 20 steps across all major sections
+   ════════════════════════════════════════════════════════════ */
