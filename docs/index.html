@@ -3184,6 +3184,128 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
 		  
         </div>
       </div>
+
+      <!-- ═══════════════════════════════════════════
+           REFERRAL CODE WIDGET — self-contained
+           Paste anywhere; no external CSS/JS needed
+      ════════════════════════════════════════════ -->
+      <div id="bt-referral-widget">
+        <style>
+          #bt-referral-widget{padding:28px 0;border-top:1px solid rgba255,255,255,.08}
+          .btrw-inner{max-width:960px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center}
+          .btrw-left{}
+          .btrw-pill{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;border-radius:9999px;background:linear-gradient(135deg,rgba245,158,11,.18),rgba245,158,11,.08;border:1px solid rgba245,158,11,.35;color:#fde68a;font-size:.7rem;font-weight:700;letter-spacing:.04em;margin-bottom:10px}
+          .btrw-title{font-size:1rem;font-weight:700;color:#fff;margin-bottom:4px}
+          .btrw-sub{font-size:.82rem;color:rgba255,255,255,.55;max-width:38ch;line-height:1.6}
+          .btrw-sub strong{color:#fde68a}
+          .btrw-form{background:rgba255,255,255,.07;border:1px solid rgba255,255,255,.12;border-radius:14px;padding:16px 18px;min-width:310px}
+          .btrw-label{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba255,255,255,.6;margin-bottom:8px}
+          .btrw-row{display:flex;gap:8px}
+          .btrw-input{flex:1;padding:9px 14px;border-radius:8px;border:1.5px solid rgba255,255,255,.2;background:rgba255,255,255,.1;color:#fff;font-size:.85rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-family:inherit}
+          .btrw-input::placeholder{color:rgba255,255,255,.35;font-weight:400;letter-spacing:0;text-transform:none}
+          .btrw-input:focus{outline:none;border-color:rgba255,255,255,.55;background:rgba255,255,255,.15}
+          .btrw-btn{padding:9px 18px;border-radius:8px;background:#f59e0b;color:#1a0a00;font-weight:800;font-size:.82rem;border:none;cursor:pointer;white-space:nowrap;transition:background .18s,transform .18s;font-family:inherit}
+          .btrw-btn:hover{background:#fbbf24;transform:scale(1.03)}
+          .btrw-btn:active{transform:scale(.97)}
+          .btrw-feedback{font-size:.72rem;margin-top:8px;min-height:16px}
+          .btrw-feedback.err{color:#fca5a5}
+          .btrw-feedback.ok{color:#86efac}
+          .btrw-chip{display:none;align-items:center;gap:8px;margin-top:10px;padding:6px 12px;border-radius:9999px;background:rgba52,211,153,.12;border:1px solid rgba52,211,153,.3;font-size:.75rem;font-weight:600;color:#6ee7b7}
+          .btrw-chip.show{display:flex}
+          .btrw-chip-remove{margin-left:auto;font-size:.65rem;color:rgba255,255,255,.4;cursor:pointer;background:none;border:none;font-family:inherit}
+          .btrw-chip-remove:hover{color:#fff}
+          .btrw-discount{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:9999px;background:rgba245,158,11,.15;border:1px solid rgba245,158,11,.3;color:#fde68a;font-size:.68rem;font-weight:700;margin-left:6px}
+          @media(max-width:680px){.btrw-inner{grid-template-columns:1fr}.btrw-form{min-width:unset}}
+        </style>
+
+        <div class="btrw-inner">
+          <div class="btrw-left">
+            <div class="btrw-pill">⭐ Referral Offer</div>
+            <div class="btrw-title">Were you referred by someone?</div>
+            <div class="btrw-sub">Enter a referral code and get <strong>10% OFF</strong> on any course or subscription.</div>
+          </div>
+
+          <div class="btrw-form">
+            <div class="btrw-label">Enter Referral Code</div>
+            <div class="btrw-row">
+              <input class="btrw-input" id="btrwInput" type="text" placeholder="e.g. BT-K7XQ2M" maxlength="10" autocomplete="off"
+                oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')">
+              <button class="btrw-btn" onclick="btrwApply()">Apply</button>
+            </div>
+            <div class="btrw-feedback" id="btrwFeedback"></div>
+            <div class="btrw-chip" id="btrwChip">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              <span id="btrwChipText">Code applied</span>
+              <span class="btrw-discount">10% OFF</span>
+              <button class="btrw-chip-remove" onclick="btrwRemove()">✕ Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <script>
+        // ── Config ─────────────────────────────────────────────────────
+        var BTRW_SHEETS_URL = ''; // ← paste your Apps Script /exec URL here
+
+        var BTRW_FALLBACK = {
+          'BT-K7XQ2M':'Deepikaa Sharma',
+          'BT-9XPMN3':'Ravi Kumar',
+          'BT-A2VQKR':'Ananya Reddy'
+        };
+        var _btrwCache = null, _btrwCacheTime = 0;
+
+        async function _btrwFetchCodes(){
+          if(_btrwCache && Date.now()-_btrwCacheTime < 300000) return _btrwCache;
+          if(!BTRW_SHEETS_URL){ _btrwCache=BTRW_FALLBACK; return _btrwCache; }
+          try{
+            var r = await fetch(BTRW_SHEETS_URL+'?action=getCodes&t='+Date.now());
+            var j = await r.json();
+            if(j.status==='ok'&&j.codes){ _btrwCache=j.codes; _btrwCacheTime=Date.now(); return _btrwCache; }
+          }catch(e){}
+          _btrwCache=BTRW_FALLBACK; return _btrwCache;
+        }
+
+        async function btrwApply(){
+          var input   = document.getElementById('btrwInput');
+          var fb      = document.getElementById('btrwFeedback');
+          var chip    = document.getElementById('btrwChip');
+          var code    = input.value.trim().toUpperCase();
+          fb.className='btrw-feedback'; fb.textContent='';
+          chip.classList.remove('show');
+          if(!code){ fb.className='btrw-feedback err'; fb.textContent='Please enter a referral code.'; return; }
+          var btn = document.querySelector('.btrw-btn');
+          btn.textContent='…'; btn.disabled=true;
+          var codes = await _btrwFetchCodes();
+          btn.textContent='Apply'; btn.disabled=false;
+          if(codes[code]){
+            document.getElementById('btrwChipText').textContent = '✓ '+code+' — referred by '+codes[code];
+            chip.classList.add('show');
+            input.style.display='none'; btn.style.display='none';
+            sessionStorage.setItem('referral_code', code);
+            sessionStorage.setItem('referral_by', codes[code]);
+            sessionStorage.setItem('referral_discount', '10');
+            fb.className='btrw-feedback'; fb.textContent='';
+          } else {
+            fb.className='btrw-feedback err'; fb.textContent='❌ Invalid code. Please check and try again.';
+          }
+        }
+
+        function btrwRemove(){
+          sessionStorage.removeItem('referral_code');
+          sessionStorage.removeItem('referral_by');
+          sessionStorage.removeItem('referral_discount');
+          document.getElementById('btrwInput').value='';
+          document.getElementById('btrwInput').style.display='';
+          document.querySelector('.btrw-btn').style.display='';
+          document.getElementById('btrwChip').classList.remove('show');
+          document.getElementById('btrwFeedback').textContent='';
+        }
+
+        // Pre-warm cache
+        if(BTRW_SHEETS_URL) _btrwFetchCodes();
+        <\/script>
+      </div>
+      <!-- ═══ END REFERRAL WIDGET ═══ -->
+
       <div class="footer-bottom">
         <p>© <span id="footer-year"></span> Bhāva Tech. All rights reserved.</p>
       </div>
