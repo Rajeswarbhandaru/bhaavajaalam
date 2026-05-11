@@ -3228,7 +3228,7 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
           <div class="btrw-form">
             <div class="btrw-label">Enter Referral Code</div>
             <div class="btrw-row">
-              <input class="btrw-input" id="btrwInput" type="text" placeholder="e.g. BT-B6XQ5Q" maxlength="10" autocomplete="off"
+              <input class="btrw-input" id="btrwInput" type="text" placeholder="e.g. BT-K7XQ2M" maxlength="10" autocomplete="off"
                 oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')">
               <button class="btrw-btn" onclick="btrwApply()">Apply</button>
             </div>
