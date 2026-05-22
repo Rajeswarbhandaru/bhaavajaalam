@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NeuroAscend — IQ Training</title>
+<title>Neuro Ascend IQ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -962,6 +962,7 @@ function nextQuestion() {
 }
 
 function endGame() {
+  BhavaSession.end(score); // Bhava auto-tracked
   clearInterval(timerInterval);
   const accuracy = Math.round((correctCount / questions.length) * 100);
   const iqDelta = Math.round((accuracy - 50) / 5);
@@ -1061,5 +1062,9 @@ window.render_game_to_text = () => JSON.stringify({
   </script>
   <!-- End Bhava Game Menu -->
 
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Neuro Ascend IQ";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

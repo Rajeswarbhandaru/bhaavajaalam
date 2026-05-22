@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Memory Match 🌟</title>
+<title>Memory Match</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{min-height:100vh;background:linear-gradient(160deg,#0f0c29,#302b63,#24243e);font-family:Arial,sans-serif;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;padding-bottom:30px;}
@@ -497,6 +497,7 @@ function updateHUD(){
 
 // ═══════════════════ WIN ═══════════════════
 function showWin(){
+  BhavaSession.end(totalScore); // Bhava auto-tracked
   clearInterval(timerInterval);
   clearInterval(countdownInterval);
   const pairsCount=currentCols===4?8:currentCols===5?10:18;
@@ -582,5 +583,9 @@ function launchConfetti(){
   draw();
 }
 </script>
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Memory Match Ultimate";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

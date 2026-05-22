@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Visual Difference Detector</title>
+  <title>Focus Flow</title>
   <link rel="preconnect" href="https://api.fontshare.com" />
   <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
   <style>
@@ -604,6 +604,7 @@
             state.mistakes += 1;
             mistakeValue.textContent = String(state.mistakes);
             setMessage('Breathe and continue. The timer gently rolled over.', false);
+      BhavaSession.end(Math.round((state.found / state.totalDiffs) * 100)); // Bhava Tech auto-tracked
           }
         }
         drawScene(lctx, state.scene, now, 'left');
@@ -683,5 +684,9 @@
       startRound();
     })();
   </script>
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Visual Difference Detector";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

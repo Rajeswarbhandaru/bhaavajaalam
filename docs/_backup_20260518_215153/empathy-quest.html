@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Empathy Quest Deluxe</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#0b1026;
+  --bg2:#170f39;
+  --panel:rgba(255,255,255,.08);
+  --panel2:rgba(255,255,255,.05);
+  --line:rgba(255,255,255,.12);
+  --text:#eef2ff;
+  --muted:#a7b0d6;
+  --purple:#8b5cf6;
+  --pink:#ec4899;
+  --teal:#06b6d4;
+  --gold:#f59e0b;
+  --green:#10b981;
+  --red:#ef4444;
+  --blue:#3b82f6;
+  --font:'Nunito',system-ui,sans-serif;
+  --shadow:0 24px 70px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--font);
+  color:var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(139,92,246,.28), transparent 26%),
+    radial-gradient(circle at top right, rgba(236,72,153,.18), transparent 24%),
+    radial-gradient(circle at bottom center, rgba(6,182,212,.18), transparent 28%),
+    linear-gradient(160deg, var(--bg1), var(--bg2));
+  overflow:hidden;
+}
+button{font-family:var(--font)}
+.hidden{display:none!important}
+
+.bg-layer{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.orb{
+  position:absolute;border-radius:50%;opacity:.16;filter:blur(2px);
+  animation:floatUp linear infinite;
+}
+.spark{
+  position:absolute;font-size:18px;opacity:.18;
+  animation:twinkle linear infinite;
+}
+@keyframes floatUp{
+  from{transform:translateY(110vh) rotate(0deg)}
+  to{transform:translateY(-15vh) rotate(360deg)}
+}
+@keyframes twinkle{
+  0%,100%{transform:scale(.6);opacity:.08}
+  50%{transform:scale(1.2);opacity:.22}
+}
+
+.app{
+  position:relative;z-index:1;
+  width:min(920px,100%);
+  height:100dvh;
+  margin:auto;
+  display:flex;
+  align-items:stretch;
+  justify-content:center;
+}
+.shell{
+  width:100%;
+  height:100%;
+  background:rgba(10,13,33,.68);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+@media (min-width:860px){
+  .shell{margin:14px;border-radius:32px;height:calc(100dvh - 28px)}
+}
+
+.screen{display:none;flex:1;min-height:0}
+.screen.active{display:flex}
+
+#welcome{
+  align-items:center;
+  justify-content:center;
+  padding:32px 22px;
+  text-align:center;
+}
+.hero{
+  width:min(760px,100%);
+  display:flex;flex-direction:column;align-items:center;
+  gap:18px;
+  animation:fadeRise .7s ease;
+}
+@keyframes fadeRise{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.mascot-wrap{position:relative}
+.mascot-glow{
+  position:absolute;inset:50% auto auto 50%;
+  width:140px;height:140px;transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(236,72,153,.45), rgba(139,92,246,.08) 65%, transparent 70%);
+  filter:blur(18px);
+  animation:glowPulse 2.6s ease-in-out infinite;
+}
+@keyframes glowPulse{
+  0%,100%{transform:translate(-50%,-50%) scale(1)}
+  50%{transform:translate(-50%,-50%) scale(1.18)}
+}
+.mascot{
+  position:relative;
+  font-size:88px;
+  animation:floatBob 3.2s ease-in-out infinite;
+}
+@keyframes floatBob{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-12px)}
+}
+.hero h1{
+  font-size:clamp(34px,7vw,58px);
+  font-weight:900;
+  line-height:1;
+  letter-spacing:-1px;
+  background:linear-gradient(135deg,#fff,#c4b5fd,#f9a8d4,#fde68a);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.hero .sub{
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:#cbd5ff;
+  font-size:12px;
+  font-weight:800;
+}
+.intro-card{
+  width:min(620px,100%);
+  padding:20px 20px 18px;
+  border-radius:24px;
+  background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.05));
+  border:1px solid var(--line);
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
+}
+.intro-card p{
+  color:#dde4ff;
+  line-height:1.7;
+  font-size:15px;
+}
+.pill-row{
+  display:flex;gap:10px;flex-wrap:wrap;justify-content:center
+}
+.pill{
+  padding:10px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.1);
+  color:#f4f6ff;
+  font-size:13px;
+  font-weight:800;
+}
+.hero-grid{
+  width:min(720px,100%);
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+.hero-box{
+  padding:16px 10px;
+  border-radius:22px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+}
+.hero-box .i{font-size:28px;display:block;margin-bottom:6px}
+.hero-box .t{font-size:13px;font-weight:800;color:#e8edff}
+.start-btn,.secondary-btn{
+  border:none;cursor:pointer;border-radius:999px;
+  padding:17px 34px;
+  font-size:18px;font-weight:900;
+  color:white;
+  transition:.22s ease;
+}
+.start-btn{
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  box-shadow:0 16px 36px rgba(139,92,246,.34);
+}
+.start-btn:hover,.secondary-btn:hover{transform:translateY(-2px) scale(1.02)}
+.secondary-btn{
+  background:linear-gradient(135deg,var(--teal),var(--blue));
+  box-shadow:0 16px 36px rgba(59,130,246,.22);
+}
+.note{color:var(--muted);font-size:12px}
+
+@media (max-width:700px){
+  .hero-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+#game{flex-direction:column;min-height:0}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:14px 16px;
+  background:linear-gradient(135deg,rgba(139,92,246,.22),rgba(59,130,246,.12));
+  border-bottom:1px solid rgba(255,255,255,.08);
+  flex-shrink:0;
+}
+.stat-bubble{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 14px;border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.08);
+  font-size:14px;font-weight:900;
+}
+.hearts{display:flex;gap:4px;flex-wrap:wrap}
+.heart{font-size:22px;filter:drop-shadow(0 0 8px rgba(239,68,68,.6));transition:.25s ease}
+.heart.lost{opacity:.28;transform:scale(.82);filter:grayscale(1)}
+.progress-wrap{
+  padding:12px 16px 8px;
+  flex-shrink:0;
+}
+.progress-top{
+  display:flex;justify-content:space-between;gap:10px;
+  margin-bottom:8px;font-size:12px;font-weight:800;color:#d9def8
+}
+.progress-bar{
+  width:100%;height:10px;border-radius:999px;overflow:hidden;
+  background:rgba(255,255,255,.08);
+}
+.progress-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--teal),var(--purple),var(--pink));
+  border-radius:999px;
+  transition:width .45s ease;
+}
+
+.main{
+  display:grid;
+  grid-template-columns:1.02fr .98fr;
+  gap:14px;
+  padding:12px 16px 18px;
+  min-height:0;
+  flex:1;
+}
+.panel{
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.045));
+  border:1px solid var(--line);
+  border-radius:28px;
+  overflow:hidden;
+  min-height:0;
+}
+.story{
+  position:relative;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.story::after{
+  content:"";
+  position:absolute;inset:auto -30px -40px auto;
+  width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,.08), transparent 70%);
+}
+.story-head{
+  display:flex;align-items:center;gap:14px;
+}
+.avatar{
+  width:84px;height:84px;border-radius:28px;
+  display:grid;place-items:center;
+  font-size:44px;
+  flex-shrink:0;
+  position:relative;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+  animation:avatarFloat 2.8s ease-in-out infinite;
+}
+@keyframes avatarFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-6px)}
+}
+.story-title-wrap{min-width:0}
+.story-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 12px;border-radius:999px;
+  background:rgba(255,255,255,.08);
+  color:#fff;font-size:12px;font-weight:900;
+  margin-bottom:8px;
+}
+.story-title{
+  font-size:24px;font-weight:900;line-height:1.1;margin-bottom:4px
+}
+.story-sub{
+  color:#d4dcff;font-size:13px;font-weight:700
+}
+.scene-box{
+  padding:16px;
+  border-radius:22px;
+  background:rgba(7,10,29,.22);
+  border:1px solid rgba(255,255,255,.07);
+}
+.scene-line{
+  font-size:15px;line-height:1.7;color:#edf2ff;
+}
+.clue-label{
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:1.6px;
+  color:#c4b5fd;
+}
+.clues{
+  display:flex;flex-wrap:wrap;gap:10px
+}
+.clue{
+  padding:10px 12px;border-radius:16px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.08);
+  color:#e8edff;font-size:13px;font-weight:800;
+  animation:popIn .35s ease both;
+}
+.clue:nth-child(2){animation-delay:.06s}
+.clue:nth-child(3){animation-delay:.12s}
+.clue:nth-child(4){animation-delay:.18s}
+@keyframes popIn{
+  from{opacity:0;transform:translateY(10px) scale(.96)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.story-graphic{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 14px;
+  border-radius:20px;
+  background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.08);
+}
+.mood-strip{
+  display:flex;gap:10px;align-items:center
+}
+.mood-ball{
+  width:42px;height:42px;border-radius:50%;
+  display:grid;place-items:center;font-size:22px;
+  background:rgba(255,255,255,.08);
+  animation:bobAlt 2.4s ease-in-out infinite;
+}
+.mood-ball:nth-child(2){animation-delay:.2s}
+.mood-ball:nth-child(3){animation-delay:.4s}
+@keyframes bobAlt{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+.story-graphic .big{
+  font-size:44px;opacity:.9
+}
+
+.quiz{
+  display:flex;flex-direction:column;min-height:0;
+  padding:18px;
+  gap:14px;
+}
+.mode-row{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap
+}
+.mode-pill{
+  padding:8px 14px;border-radius:999px;
+  font-size:12px;font-weight:900;letter-spacing:1px;text-transform:uppercase;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.08);
+}
+.mode-pill.active{background:linear-gradient(135deg,var(--purple),var(--pink))}
+.mode-pill.done{background:rgba(16,185,129,.18);color:#bbf7d0}
+.question{
+  font-size:22px;font-weight:900;line-height:1.28
+}
+.tip-box{
+  padding:12px 14px;border-radius:18px;
+  background:rgba(6,182,212,.09);
+  border:1px solid rgba(6,182,212,.18);
+  color:#dff8ff;font-size:13px;font-weight:700;
+}
+.choices{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.choice{
+  border:none;cursor:pointer;text-align:left;
+  display:flex;align-items:center;gap:12px;
+  padding:14px;border-radius:22px;
+  background:rgba(255,255,255,.06);
+  border:2px solid rgba(255,255,255,.08);
+  color:#f8faff;
+  transition:.2s ease;
+  position:relative;
+  min-height:88px;
+}
+.choice:hover{
+  transform:translateY(-3px);
+  border-color:rgba(139,92,246,.55);
+  background:rgba(139,92,246,.12);
+  box-shadow:0 14px 24px rgba(0,0,0,.16);
+}
+.choice:disabled{cursor:not-allowed}
+.opt-key{
+  width:34px;height:34px;flex-shrink:0;
+  border-radius:12px;display:grid;place-items:center;
+  background:rgba(255,255,255,.1);font-weight:900
+}
+.opt-emoji{font-size:28px;flex-shrink:0}
+.opt-text{font-size:14px;font-weight:800;line-height:1.45;color:#ecf1ff}
+.choice.correct{border-color:#22c55e;background:rgba(34,197,94,.14)}
+.choice.wrong{border-color:#ef4444;background:rgba(239,68,68,.14);animation:shake .35s ease}
+.choice.best{border-color:#22c55e;background:rgba(34,197,94,.14)}
+.choice.good{border-color:#06b6d4;background:rgba(6,182,212,.14)}
+.choice.neutral{border-color:#f59e0b;background:rgba(245,158,11,.12)}
+.choice.bad{border-color:#ef4444;background:rgba(239,68,68,.13)}
+.choice.selected{box-shadow:0 0 0 2px rgba(255,255,255,.08) inset}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-6px)}
+  75%{transform:translateX(6px)}
+}
+
+.feedback{
+  position:fixed;inset:0;z-index:50;
+  display:none;align-items:center;justify-content:center;
+  padding:16px;
+  background:rgba(4,8,24,.58);
+  backdrop-filter:blur(8px);
+}
+.feedback.open{display:flex}
+.fb-card{
+  width:min(460px,100%);
+  border-radius:30px;
+  padding:24px;
+  background:linear-gradient(180deg,#12193f,#12112d);
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 24px 70px rgba(0,0,0,.4);
+  animation:fbIn .28s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes fbIn{
+  from{transform:scale(.88);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+.fb-icon{font-size:56px;text-align:center;margin-bottom:6px}
+.fb-points{text-align:center;font-size:24px;font-weight:900;margin-bottom:14px}
+.fb-points.pos{color:#fde68a}
+.fb-points.neg{color:#fca5a5}
+.fb-text{
+  padding:14px 16px;border-radius:18px;
+  background:rgba(255,255,255,.06);
+  color:#e7edff;line-height:1.7;font-size:14px;
+}
+.fb-lesson{
+  margin-top:12px;
+  padding:14px 16px;border-radius:18px;
+  background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(236,72,153,.12));
+  border:1px solid rgba(255,255,255,.08);
+}
+.fb-lesson .label{
+  font-size:11px;font-weight:900;letter-spacing:1.5px;
+  text-transform:uppercase;color:#c4b5fd;margin-bottom:6px
+}
+.fb-btn{
+  width:100%;margin-top:16px;
+  border:none;cursor:pointer;border-radius:999px;
+  padding:15px 18px;font-size:16px;font-weight:900;color:white;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+}
+
+#results{
+  align-items:center;justify-content:center;
+  padding:26px 18px;
+  overflow:auto;
+}
+.result-card{
+  width:min(760px,100%);
+  border-radius:32px;
+  padding:26px;
+  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.045));
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:var(--shadow);
+  text-align:center;
+  animation:fadeRise .55s ease;
+}
+.result-icon{font-size:82px;margin-bottom:8px}
+.result-title{font-size:34px;font-weight:900;line-height:1.15}
+.result-sub{color:#d1d8fa;margin-top:8px;line-height:1.7}
+.score-grid{
+  margin-top:18px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px
+}
+.score-box{
+  padding:18px 12px;border-radius:24px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+}
+.score-box .num{font-size:34px;font-weight:900}
+.score-box .lbl{font-size:12px;font-weight:800;color:#b5bfeb;text-transform:uppercase;letter-spacing:1px}
+.badge-box{
+  margin-top:18px;
+  padding:20px;border-radius:26px;
+  background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(139,92,246,.12));
+  border:1px solid rgba(255,255,255,.09);
+}
+.badge-emoji{font-size:60px}
+.badge-name{font-size:22px;font-weight:900;margin-top:4px}
+.badge-desc{color:#d9e0ff;line-height:1.7;margin-top:6px}
+.lesson-list{
+  margin-top:18px;text-align:left;
+  display:grid;grid-template-columns:1fr 1fr;gap:10px
+}
+.lesson-item{
+  padding:14px;border-radius:18px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  color:#e8edff;line-height:1.55;font-size:14px;
+}
+.action-row{
+  margin-top:20px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap
+}
+
+.score-pop{
+  position:fixed;z-index:70;pointer-events:none;
+  font-size:22px;font-weight:900;color:#fde68a;
+  animation:flyUp 1s ease forwards;
+}
+@keyframes flyUp{
+  from{opacity:1;transform:translateY(0) scale(1)}
+  to{opacity:0;transform:translateY(-70px) scale(1.25)}
+}
+
+.theme-school{background:linear-gradient(135deg,#1e3a8a,#0f766e)}
+.theme-sport{background:linear-gradient(135deg,#166534,#1d4ed8)}
+.theme-art{background:linear-gradient(135deg,#6d28d9,#be185d)}
+.theme-home{background:linear-gradient(135deg,#7c2d12,#7e22ce)}
+.theme-social{background:linear-gradient(135deg,#0f766e,#1d4ed8)}
+.theme-music{background:linear-gradient(135deg,#4338ca,#db2777)}
+.theme-nature{background:linear-gradient(135deg,#15803d,#0f766e)}
+.theme-class{background:linear-gradient(135deg,#3730a3,#7c3aed)}
+
+@media (max-width:860px){
+  .main{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .choices{grid-template-columns:1fr}
+  .score-grid{grid-template-columns:repeat(2,1fr)}
+  .lesson-list{grid-template-columns:1fr}
+  .story-title{font-size:21px}
+  .question{font-size:19px}
+}
+</style>
+</head>
+<body>
+<div class="bg-layer" id="bgLayer"></div>
+
+<div class="app">
+  <div class="shell">
+
+    <section id="welcome" class="screen active">
+      <div class="hero">
+        <div class="mascot-wrap">
+          <div class="mascot-glow"></div>
+          <div class="mascot">🕵️‍♀️</div>
+        </div>
+        <div class="sub">Heart Detective Adventure</div>
+        <h1>Empathy Quest Deluxe</h1>
+
+        <div class="intro-card">
+          <p>
+            Read short real-life situations, spot the hidden feeling, and choose the kindest response.
+            This upgraded version uses <strong>20 randomized missions</strong>, shuffled answer options,
+            lighter text, animated scene cards, and a smoother game flow.
+          </p>
+        </div>
+
+        <div class="pill-row">
+          <div class="pill">🎲 Random mission order</div>
+          <div class="pill">🔀 Random answer order</div>
+          <div class="pill">✨ Lighter visual storytelling</div>
+        </div>
+
+        <div class="hero-grid">
+          <div class="hero-box"><span class="i">❤️</span><span class="t">4 Hearts</span></div>
+          <div class="hero-box"><span class="i">🏆</span><span class="t">20 Missions</span></div>
+          <div class="hero-box"><span class="i">🔥</span><span class="t">Streak Bonus</span></div>
+          <div class="hero-box"><span class="i">💡</span><span class="t">Kindness Lessons</span></div>
+        </div>
+
+        <button class="start-btn" onclick="startGame()">🚀 Start Mission</button>
+        <div class="note">Ages 7–15 • Fast rounds • Mobile friendly</div>
+      </div>
+    </section>
+
+    <section id="game" class="screen">
+      <div class="topbar">
+        <div class="stat-bubble">
+          <span>❤️</span>
+          <div class="hearts" id="hearts"></div>
+        </div>
+        <div class="stat-bubble">⭐ Score: <span id="score">0</span></div>
+        <div class="stat-bubble">🔥 Streak: <span id="streak">0</span></div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-top">
+          <div id="missionText">Mission 1 / 20</div>
+          <div id="phaseText">Feeling Round</div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+
+      <div class="main">
+        <div class="panel story" id="storyPanel">
+          <div class="story-head">
+            <div class="avatar" id="avatarBox">👧</div>
+            <div class="story-title-wrap">
+              <div class="story-tag" id="placeTag">🏫 School</div>
+              <div class="story-title" id="storyTitle">Mission</div>
+              <div class="story-sub" id="storySub">Character</div>
+            </div>
+          </div>
+
+          <div class="scene-box">
+            <div class="scene-line" id="sceneLine"></div>
+          </div>
+
+          <div>
+            <div class="clue-label">Clues</div>
+            <div class="clues" id="clues"></div>
+          </div>
+
+          <div class="story-graphic">
+            <div class="mood-strip">
+              <div class="mood-ball">💭</div>
+              <div class="mood-ball">❤️</div>
+              <div class="mood-ball">✨</div>
+            </div>
+            <div class="big" id="sceneDeco">📚</div>
+          </div>
+        </div>
+
+        <div class="panel quiz">
+          <div class="mode-row">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <div class="mode-pill active" id="modeFeeling">🎯 Feeling</div>
+              <div class="mode-pill" id="modeAction">💡 Action</div>
+            </div>
+            <div class="mode-pill" id="miniHint">Read the clues</div>
+          </div>
+
+          <div class="question" id="questionText"></div>
+
+          <div class="tip-box" id="tipText">
+            Watch body language, tone, and what happened just before the moment.
+          </div>
+
+          <div class="choices" id="choices"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="results" class="screen">
+      <div class="result-card">
+        <div class="result-icon" id="resultIcon">🏆</div>
+        <div class="result-title" id="resultTitle">Great Job!</div>
+        <div class="result-sub" id="resultSub">You finished the empathy adventure.</div>
+
+        <div class="score-grid">
+          <div class="score-box">
+            <div class="num" id="finalScore">0</div>
+            <div class="lbl">Points</div>
+          </div>
+          <div class="score-box">
+            <div class="num" id="finalPercent">0%</div>
+            <div class="lbl">Empathy</div>
+          </div>
+          <div class="score-box">
+            <div class="num" id="finalStreak">0</div>
+            <div class="lbl">Best Streak</div>
+          </div>
+          <div class="score-box">
+            <div class="num">20</div>
+            <div class="lbl">Missions</div>
+          </div>
+        </div>
+
+        <div class="badge-box">
+          <div class="badge-emoji" id="badgeEmoji">🌟</div>
+          <div class="badge-name" id="badgeName">Empathy Star</div>
+          <div class="badge-desc" id="badgeDesc"></div>
+        </div>
+
+        <div class="lesson-list" id="lessonList"></div>
+
+        <div class="action-row">
+          <button class="start-btn" onclick="startGame()">🔁 Play Again</button>
+          <button class="secondary-btn" onclick="showScreen('welcome')">🏠 Home</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="feedback" id="feedback">
+  <div class="fb-card">
+    <div class="fb-icon" id="fbIcon">🎯</div>
+    <div class="fb-points pos" id="fbPoints">+2 Points</div>
+    <div class="fb-text" id="fbText"></div>
+    <div class="fb-lesson hidden" id="fbLesson">
+      <div class="label">Empathy Lesson</div>
+      <div id="fbLessonText"></div>
+    </div>
+    <button class="fb-btn" id="fbBtn" onclick="continueGame()">Continue ➜</button>
+  </div>
+</div>
+
+<script>
+const SCENARIOS = [
+  {
+    id:1, char:"Priya", avatar:"👧", place:"🏫 Cafeteria", title:"Forgotten Lunch", theme:"theme-school", deco:"🍱", avatarBg:"#2563eb",
+    scene:"Priya opens her bag, finds no lunch box, and quietly stares at her empty desk while others begin eating.",
+    clues:["Quiet body", "Empty desk", "Others are eating"],
+    eq:"How is Priya most likely feeling?",
+    emotions:[
+      {i:"😄", t:"Happy and excited", c:false, fb:"Priya is not showing joy. Her quiet posture and empty desk point to worry and hunger."},
+      {i:"😟", t:"Worried and hungry", c:true, fb:"Yes. Priya may feel hungry, awkward, and a little embarrassed."},
+      {i:"😠", t:"Angry at the teacher", c:false, fb:"Nothing here suggests anger toward the teacher."},
+      {i:"😴", t:"Sleepy and bored", c:false, fb:"Her problem is missing lunch, not being tired."}
+    ],
+    aq:"What is the most empathetic response?",
+    actions:[
+      {i:"🍱", t:"Quietly ask if she is okay and offer to share", e:3, type:"best", fb:"Excellent. You notice the feeling and help without embarrassing her."},
+      {i:"📢", t:"Tell everyone she forgot lunch", e:-1, type:"bad", fb:"That would make Priya feel exposed at a vulnerable moment."},
+      {i:"🙈", t:"Ignore it and keep eating", e:0, type:"neutral", fb:"Ignoring her leaves her alone with the problem."},
+      {i:"😊", t:"Smile at her but do nothing else", e:1, type:"good", fb:"A smile helps a little, but real support would help more."}
+    ],
+    lesson:"Small, quiet help can make someone feel safe and seen."
+  },
+  {
+    id:2, char:"Arjun", avatar:"👦", place:"🏃 PE Ground", title:"The Big Fall", theme:"theme-sport", deco:"⚽", avatarBg:"#16a34a",
+    scene:"Arjun trips during a race. A few students laugh. He stands up fast, looks down, and his face turns red.",
+    clues:["Others laugh", "Looks down", "Red face"],
+    eq:"What is Arjun feeling?",
+    emotions:[
+      {i:"😎", t:"Cool and confident", c:false, fb:"His body language shows the opposite of confidence."},
+      {i:"😔", t:"Embarrassed and hurt", c:true, fb:"Correct. Being laughed at often hurts more inside than the fall itself."},
+      {i:"😂", t:"Happy and playful", c:false, fb:"Arjun is not enjoying the moment."},
+      {i:"😡", t:"Ready to fight", c:false, fb:"He looks embarrassed, not aggressive."}
+    ],
+    aq:"What should you do next?",
+    actions:[
+      {i:"🤝", t:"Help him up and say, 'You okay? It happens to everyone.'", e:3, type:"best", fb:"Perfect. You support him and help reduce the embarrassment."},
+      {i:"😂", t:"Laugh too because the fall looked funny", e:-1, type:"bad", fb:"Joining the laughter deepens the hurt."},
+      {i:"👀", t:"Pretend you did not notice", e:0, type:"neutral", fb:"Silence can leave someone feeling alone."},
+      {i:"🛑", t:"Tell others to stop laughing", e:2, type:"good", fb:"That is brave and kind. Checking on him too would make it even better."}
+    ],
+    lesson:"When someone feels embarrassed, kindness protects their dignity."
+  },
+  {
+    id:3, char:"Meera", avatar:"👧", place:"🎨 Art Room", title:"Art Prize", theme:"theme-art", deco:"🖼️", avatarBg:"#7c3aed",
+    scene:"The teacher announces that Meera's painting won first place. Her eyes shine and she breaks into a huge smile.",
+    clues:["Big smile", "Eyes shining", "Her work was chosen"],
+    eq:"How is Meera feeling?",
+    emotions:[
+      {i:"😢", t:"Sad and upset", c:false, fb:"Her expression clearly shows joy, not sadness."},
+      {i:"😊", t:"Proud and overjoyed", c:true, fb:"Exactly. Her effort was recognized, and that feels wonderful."},
+      {i:"😐", t:"Neutral and uninterested", c:false, fb:"Her bright expression shows strong feeling."},
+      {i:"😰", t:"Scared and tense", c:false, fb:"The visible clue here is happiness and pride."}
+    ],
+    aq:"What is the kindest response?",
+    actions:[
+      {i:"🥳", t:"Say, 'Congratulations! Your painting is beautiful.'", e:3, type:"best", fb:"Wonderful. Celebrating someone else's success is real empathy."},
+      {i:"😤", t:"Say your own picture was better", e:-1, type:"bad", fb:"That turns her happy moment into a hurtful one."},
+      {i:"🤐", t:"Say nothing and walk away", e:0, type:"neutral", fb:"You miss a chance to affirm her effort."},
+      {i:"🙂", t:"Give her a thumbs-up from across the room", e:1, type:"good", fb:"That is kind, though direct words would mean even more."}
+    ],
+    lesson:"Empathy includes sharing in another person's joy."
+  },
+  {
+    id:4, char:"Ravi", avatar:"👦", place:"📚 Classroom", title:"Heavy Worry", theme:"theme-class", deco:"🏥", avatarBg:"#dc2626",
+    scene:"Ravi is unusually silent all day. He sits alone at recess. You heard his mother is very ill in hospital.",
+    clues:["Very quiet", "Sitting alone", "Family illness"],
+    eq:"What is Ravi likely carrying inside?",
+    emotions:[
+      {i:"😞", t:"Worried and deeply sad", c:true, fb:"Yes. Family illness can create heavy fear and sadness."},
+      {i:"😴", t:"Only tired from homework", c:false, fb:"His withdrawal suggests something more serious."},
+      {i:"😤", t:"Angry at classmates", c:false, fb:"Nothing here points to anger at others."},
+      {i:"🤩", t:"Excited about a secret", c:false, fb:"His behavior does not match excitement."}
+    ],
+    aq:"How would you approach Ravi?",
+    actions:[
+      {i:"🧡", t:"Sit near him and say, 'I am here if you want to talk or just sit.'", e:3, type:"best", fb:"Beautiful. Presence can be powerful when words are hard."},
+      {i:"📢", t:"Ask loudly why he is sad", e:-1, type:"bad", fb:"Public questions can feel invasive and embarrassing."},
+      {i:"😄", t:"Force jokes to make him cheer up", e:1, type:"good", fb:"The intention is kind, but he may need quiet support first."},
+      {i:"🚶", t:"Stay away completely", e:0, type:"neutral", fb:"Space matters, but gentle support matters too."}
+    ],
+    lesson:"Sometimes empathy means offering calm company, not quick fixes."
+  },
+  {
+    id:5, char:"Leela", avatar:"👧", place:"🆕 First Day", title:"New Student", theme:"theme-social", deco:"👋", avatarBg:"#0ea5e9",
+    scene:"Leela joins the class today. She sits in a corner, looking at her hands while everyone chats with friends.",
+    clues:["Sitting alone", "Looking down", "New place"],
+    eq:"How is Leela most likely feeling?",
+    emotions:[
+      {i:"😨", t:"Nervous and lonely", c:true, fb:"Yes. New places often bring uncertainty and isolation."},
+      {i:"😊", t:"Happy to be alone", c:false, fb:"Her posture suggests discomfort, not contentment."},
+      {i:"😠", t:"Angry at the class", c:false, fb:"Nothing suggests anger here."},
+      {i:"😎", t:"Fully confident", c:false, fb:"Looking down in a corner usually signals the opposite."}
+    ],
+    aq:"What would help her most?",
+    actions:[
+      {i:"👋", t:"Introduce yourself and invite her to sit with your group", e:3, type:"best", fb:"Perfect. Inclusion can change a whole day."},
+      {i:"🤫", t:"Whisper that she seems weird", e:-1, type:"bad", fb:"That increases isolation and unfair judgment."},
+      {i:"⏳", t:"Wait for someone else to help", e:0, type:"neutral", fb:"Waiting can leave her alone longer."},
+      {i:"😊", t:"Smile from far away but do not go over", e:1, type:"good", fb:"A smile helps, but connection helps more."}
+    ],
+    lesson:"Being the first to include someone can be life-changing."
+  },
+  {
+    id:6, char:"Sai", avatar:"👦", place:"🏅 Sports Day", title:"Last Place", theme:"theme-sport", deco:"🏃", avatarBg:"#059669",
+    scene:"Sai practiced for weeks, ran his hardest, and still finished last. He walks away with his head down.",
+    clues:["Worked hard", "Finished last", "Head down"],
+    eq:"What is Sai feeling right now?",
+    emotions:[
+      {i:"😞", t:"Disappointed after trying hard", c:true, fb:"Right. Giving your best and still losing can feel painful."},
+      {i:"😄", t:"Happy because he joined", c:false, fb:"He may value participation later, but disappointment comes first here."},
+      {i:"😡", t:"Angry at the winners", c:false, fb:"His body language looks sad, not angry."},
+      {i:"😴", t:"Too sleepy to care", c:false, fb:"The clues point to discouragement."}
+    ],
+    aq:"Which response shows empathy?",
+    actions:[
+      {i:"🌟", t:"Say, 'You trained so hard. I am proud you kept going.'", e:3, type:"best", fb:"Excellent. You honor effort, not just results."},
+      {i:"🏆", t:"Say only winners matter", e:-1, type:"bad", fb:"That dismisses his hard work and feelings."},
+      {i:"🤷", t:"Say nothing because he lost", e:0, type:"neutral", fb:"He may need encouragement most in this moment."},
+      {i:"🙂", t:"Tell him maybe next time will be better", e:1, type:"good", fb:"That is supportive, but recognizing his effort is even stronger."}
+    ],
+    lesson:"Empathy notices effort, not only success."
+  },
+  {
+    id:7, char:"Anika", avatar:"👧", place:"🧪 Project Table", title:"Broken Model", theme:"theme-class", deco:"🏺", avatarBg:"#f97316",
+    scene:"Anika carries her clay project to class. It slips, cracks, and she freezes with watery eyes.",
+    clues:["Project broke", "Freezes", "Watery eyes"],
+    eq:"What is Anika probably feeling?",
+    emotions:[
+      {i:"😭", t:"Upset and overwhelmed", c:true, fb:"Yes. Losing something she worked hard on can feel crushing."},
+      {i:"😎", t:"Relaxed and fine", c:false, fb:"Her reaction shows emotional pain, not ease."},
+      {i:"😂", t:"Amused by the accident", c:false, fb:"Nothing here suggests she finds it funny."},
+      {i:"🤔", t:"Only curious", c:false, fb:"The watery eyes show much more than curiosity."}
+    ],
+    aq:"What should you do?",
+    actions:[
+      {i:"🧩", t:"Help gather the pieces and ask how you can help", e:3, type:"best", fb:"Perfect. You respond to both the problem and the feeling."},
+      {i:"📱", t:"Take a picture and laugh", e:-1, type:"bad", fb:"That turns pain into public embarrassment."},
+      {i:"🙃", t:"Say, 'It is just a project'", e:0, type:"neutral", fb:"Minimizing the loss can feel dismissive."},
+      {i:"🙂", t:"Tell her accidents happen", e:1, type:"good", fb:"That helps a little, especially if combined with practical help."}
+    ],
+    lesson:"When something breaks, gentle help matters more than easy words."
+  },
+  {
+    id:8, char:"Kabir", avatar:"👦", place:"⚽ Playground", title:"Left Out", theme:"theme-sport", deco:"🧍", avatarBg:"#22c55e",
+    scene:"Teams are chosen quickly for football. Kabir is picked last and then told there is no space this round.",
+    clues:["Picked last", "No space", "Standing aside"],
+    eq:"How might Kabir feel?",
+    emotions:[
+      {i:"😞", t:"Rejected and left out", c:true, fb:"Correct. Exclusion can sting even when no one says much."},
+      {i:"😄", t:"Relieved he can rest", c:false, fb:"The context suggests disappointment, not relief."},
+      {i:"😤", t:"Angry for no reason", c:false, fb:"The clearest feeling here is hurt from exclusion."},
+      {i:"😴", t:"Bored and sleepy", c:false, fb:"The issue is belonging, not tiredness."}
+    ],
+    aq:"What is the best move?",
+    actions:[
+      {i:"🙋", t:"Ask if teams can rotate so Kabir gets a turn", e:3, type:"best", fb:"Excellent. You advocate for fairness and inclusion."},
+      {i:"😂", t:"Joke that he was too slow anyway", e:-1, type:"bad", fb:"That adds shame to exclusion."},
+      {i:"👀", t:"Watch quietly and say nothing", e:0, type:"neutral", fb:"Silence can make exclusion feel normal."},
+      {i:"🙂", t:"Stand near him for a moment", e:1, type:"good", fb:"Kind, though helping him be included would be stronger."}
+    ],
+    lesson:"Empathy often means noticing who is not being included."
+  },
+  {
+    id:9, char:"Tara", avatar:"👧", place:"🎂 Classroom", title:"Forgotten Birthday", theme:"theme-social", deco:"🎈", avatarBg:"#db2777",
+    scene:"Tara brought chocolates for her birthday, but her close friends forgot it was her special day until the last minute.",
+    clues:["Special day", "Friends forgot", "Smile looks smaller"],
+    eq:"What might Tara be feeling beneath the smile?",
+    emotions:[
+      {i:"😕", t:"Disappointed and a little hurt", c:true, fb:"Yes. Even when someone smiles, they may still feel let down."},
+      {i:"😄", t:"Completely fine", c:false, fb:"The context suggests some hurt under the surface."},
+      {i:"😡", t:"Furious with everyone", c:false, fb:"The feeling seems softer and sadder than rage."},
+      {i:"😴", t:"Tired of birthdays", c:false, fb:"Nothing suggests tiredness here."}
+    ],
+    aq:"What would be empathetic?",
+    actions:[
+      {i:"🎉", t:"Wish her warmly and help make the day feel special", e:3, type:"best", fb:"Great choice. You help repair a disappointing moment."},
+      {i:"🙄", t:"Say birthdays are not important", e:-1, type:"bad", fb:"That dismisses what matters to her."},
+      {i:"🤫", t:"Avoid mentioning it since it is already awkward", e:0, type:"neutral", fb:"Avoiding it can make the hurt linger."},
+      {i:"🙂", t:"Give a quick late wish and move on", e:1, type:"good", fb:"Better than silence, though warmth matters here."}
+    ],
+    lesson:"Empathy notices the feelings hidden behind polite smiles."
+  },
+  {
+    id:10, char:"Nikhil", avatar:"👦", place:"📝 Test Day", title:"Low Marks", theme:"theme-class", deco:"📄", avatarBg:"#3b82f6",
+    scene:"Nikhil gets his test paper back and sees a low score. He folds the paper quickly and stops talking.",
+    clues:["Low marks", "Hides paper", "Goes silent"],
+    eq:"What is Nikhil likely feeling?",
+    emotions:[
+      {i:"😣", t:"Ashamed and discouraged", c:true, fb:"Yes. Hiding the paper and going quiet are strong clues."},
+      {i:"😄", t:"Proud of the result", c:false, fb:"His behavior shows discomfort, not pride."},
+      {i:"😎", t:"Unbothered and cool", c:false, fb:"The folded paper suggests he cares a lot."},
+      {i:"🤩", t:"Excited to show others", c:false, fb:"He is doing the opposite of showing others."}
+    ],
+    aq:"How do you respond kindly?",
+    actions:[
+      {i:"🫶", t:"Tell him one test does not define him and offer help studying", e:3, type:"best", fb:"Excellent. You support both feelings and growth."},
+      {i:"📢", t:"Ask loudly what score he got", e:-1, type:"bad", fb:"That can increase shame in front of others."},
+      {i:"🤐", t:"Say nothing because marks are personal", e:0, type:"neutral", fb:"Privacy matters, but quiet support can still help."},
+      {i:"🙂", t:"Say, 'Better luck next time'", e:1, type:"good", fb:"Supportive, though it can be made warmer and more specific."}
+    ],
+    lesson:"When someone feels ashamed, respect and encouragement matter most."
+  },
+  {
+    id:11, char:"Diya", avatar:"👧", place:"🎤 Assembly Hall", title:"Stage Fright", theme:"theme-music", deco:"🎙️", avatarBg:"#8b5cf6",
+    scene:"Diya is about to give a speech. Her hands shake, and she keeps taking deep breaths behind the curtain.",
+    clues:["Shaky hands", "Deep breaths", "About to perform"],
+    eq:"How is Diya probably feeling?",
+    emotions:[
+      {i:"😰", t:"Nervous and pressured", c:true, fb:"Exactly. Physical signs like shaking often show anxiety."},
+      {i:"😄", t:"Playful and carefree", c:false, fb:"Her body is showing tension, not playfulness."},
+      {i:"😠", t:"Angry at the audience", c:false, fb:"The clues point to nerves, not anger."},
+      {i:"😴", t:"Half asleep", c:false, fb:"Her reactions match stress, not sleepiness."}
+    ],
+    aq:"What helps most before the speech?",
+    actions:[
+      {i:"💬", t:"Say, 'You practiced well. I believe in you. Want one calm breath together?'", e:3, type:"best", fb:"Beautiful. You bring reassurance and calm."},
+      {i:"😂", t:"Tease her for being scared", e:-1, type:"bad", fb:"Mocking fear makes it bigger."},
+      {i:"🏃", t:"Leave quickly so you do not distract her", e:0, type:"neutral", fb:"Leaving may be fine, but gentle support could help more."},
+      {i:"👍", t:"Give a thumbs-up and smile", e:1, type:"good", fb:"That is encouraging, though words plus calm support would help most."}
+    ],
+    lesson:"Empathy can help another person borrow calm from you."
+  },
+  {
+    id:12, char:"Omar", avatar:"👦", place:"🏡 Home", title:"Lost Pet", theme:"theme-home", deco:"🐶", avatarBg:"#f59e0b",
+    scene:"Omar's pet dog has gone missing. He keeps checking the gate and looking close to tears.",
+    clues:["Missing pet", "Checking gate", "Near tears"],
+    eq:"What is Omar feeling?",
+    emotions:[
+      {i:"😢", t:"Worried and heartbroken", c:true, fb:"Yes. Losing a pet can feel like losing family."},
+      {i:"😄", t:"Excited for an adventure", c:false, fb:"The near tears show distress, not excitement."},
+      {i:"😠", t:"Only angry at neighbors", c:false, fb:"His strongest feeling here is worry and sadness."},
+      {i:"😎", t:"Calm and casual", c:false, fb:"His actions show urgent concern."}
+    ],
+    aq:"What is the kindest response?",
+    actions:[
+      {i:"🔎", t:"Help him search and make simple posters together", e:3, type:"best", fb:"Excellent. You turn care into action."},
+      {i:"🙄", t:"Say it is just an animal", e:-1, type:"bad", fb:"That dismisses a deep attachment."},
+      {i:"🤷", t:"Say the dog will probably come back", e:0, type:"neutral", fb:"That may not comfort him much right now."},
+      {i:"🙂", t:"Tell him you hope the dog returns soon", e:1, type:"good", fb:"Kind, though active help would mean more."}
+    ],
+    lesson:"Empathy respects what someone loves, even if it seems small to others."
+  },
+  {
+    id:13, char:"Sita", avatar:"👧", place:"🏠 Neighborhood", title:"Best Friend Moved", theme:"theme-home", deco:"📦", avatarBg:"#ef4444",
+    scene:"Sita's best friend moved to another city yesterday. She keeps staring at old photos on her tablet.",
+    clues:["Friend moved away", "Looking at photos", "Very quiet"],
+    eq:"How might Sita be feeling?",
+    emotions:[
+      {i:"💔", t:"Lonely and missing her friend", c:true, fb:"Correct. Separation from a close friend hurts."},
+      {i:"😄", t:"Happy for extra free time", c:false, fb:"The clues show longing, not relief."},
+      {i:"😡", t:"Angry at everyone", c:false, fb:"The emotion here seems more sad than angry."},
+      {i:"🤩", t:"Excited to make no new friends", c:false, fb:"That does not fit the situation."}
+    ],
+    aq:"What would be thoughtful?",
+    actions:[
+      {i:"📹", t:"Sit with her and suggest a video call or memory scrapbook", e:3, type:"best", fb:"Perfect. You honor the loss and help her stay connected."},
+      {i:"🙃", t:"Say, 'Just forget her and move on'", e:-1, type:"bad", fb:"That dismisses meaningful friendship."},
+      {i:"🤐", t:"Avoid the topic so she does not cry", e:0, type:"neutral", fb:"Avoiding it can make her feel unseen."},
+      {i:"🙂", t:"Tell her she will make new friends soon", e:1, type:"good", fb:"That may help later, but her current loss still needs care."}
+    ],
+    lesson:"Empathy gives space to miss what matters."
+  },
+  {
+    id:14, char:"Varun", avatar:"👦", place:"🚌 School Bus", title:"Teased for Glasses", theme:"theme-social", deco:"👓", avatarBg:"#14b8a6",
+    scene:"Two students copy the way Varun adjusts his new glasses. He laughs weakly, but then turns to the window.",
+    clues:["Others mocking", "Weak laugh", "Turns away"],
+    eq:"What might Varun really be feeling?",
+    emotions:[
+      {i:"😣", t:"Embarrassed and hurt", c:true, fb:"Yes. A weak laugh can hide discomfort."},
+      {i:"😂", t:"Truly amused", c:false, fb:"Sometimes people laugh just to protect themselves."},
+      {i:"😎", t:"Extra confident", c:false, fb:"Turning away suggests hurt, not confidence."},
+      {i:"😴", t:"Too sleepy to care", c:false, fb:"The clues are social, not about tiredness."}
+    ],
+    aq:"What is the most empathetic action?",
+    actions:[
+      {i:"🛡️", t:"Tell the others to stop and sit with Varun", e:3, type:"best", fb:"Excellent. You protect dignity and offer support."},
+      {i:"🤭", t:"Join the joke so nobody targets you", e:-1, type:"bad", fb:"That protects you by hurting him."},
+      {i:"👀", t:"Look away and stay silent", e:0, type:"neutral", fb:"Silence can feel like agreement to the person being teased."},
+      {i:"🙂", t:"Compliment his glasses later", e:1, type:"good", fb:"Nice, though stopping the teasing would help more immediately."}
+    ],
+    lesson:"Empathy is strongest when it protects someone in the moment."
+  },
+  {
+    id:15, char:"Neha", avatar:"👧", place:"🌧️ Bus Stop", title:"Ruined Notes", theme:"theme-nature", deco:"☔", avatarBg:"#0ea5e9",
+    scene:"Rainwater splashes over Neha's notebook just before the exam. Several pages smear and tear.",
+    clues:["Exam soon", "Notes ruined", "Stares in shock"],
+    eq:"How is Neha most likely feeling?",
+    emotions:[
+      {i:"😱", t:"Panicked and upset", c:true, fb:"Correct. The timing makes the problem feel huge."},
+      {i:"😄", t:"Happy for a surprise", c:false, fb:"Her notes were damaged at the worst moment."},
+      {i:"😌", t:"Peaceful and relaxed", c:false, fb:"The clues suggest stress, not calm."},
+      {i:"😠", t:"Only angry at the rain", c:false, fb:"There may be frustration, but panic and worry are stronger."}
+    ],
+    aq:"What would help most?",
+    actions:[
+      {i:"📘", t:"Share your notes and help her review quickly", e:3, type:"best", fb:"Perfect. You respond with practical kindness."},
+      {i:"📵", t:"Tell her she should have protected them better", e:-1, type:"bad", fb:"That adds blame to an already stressful moment."},
+      {i:"🤷", t:"Say bad luck and move on", e:0, type:"neutral", fb:"That acknowledges the event but not the person."},
+      {i:"🙂", t:"Offer a tissue and say it will be okay", e:1, type:"good", fb:"Kind, though study help would ease the bigger worry."}
+    ],
+    lesson:"Empathy often means asking, 'What practical help is needed right now?'"
+  },
+  {
+    id:16, char:"Ishaan", avatar:"👦", place:"🔬 Science Fair", title:"Project Collapse", theme:"theme-class", deco:"🧪", avatarBg:"#6366f1",
+    scene:"Just before judging starts, Ishaan's volcano model tips over and the top falls off.",
+    clues:["Big event", "Model broke", "Freezes silently"],
+    eq:"What is Ishaan feeling?",
+    emotions:[
+      {i:"😖", t:"Stressed and crushed", c:true, fb:"Yes. A last-minute failure can feel devastating."},
+      {i:"😄", t:"Thrilled for more attention", c:false, fb:"This is a setback, not a celebration."},
+      {i:"😎", t:"Calm because he does not care", c:false, fb:"Freezing silently suggests he cares a lot."},
+      {i:"🤔", t:"Only curious", c:false, fb:"The emotional load here is much heavier."}
+    ],
+    aq:"How do you respond with empathy?",
+    actions:[
+      {i:"🛠️", t:"Help fix what you can and remind him the work still matters", e:3, type:"best", fb:"Excellent. You support both the task and the emotion."},
+      {i:"📸", t:"Record it because it looks dramatic", e:-1, type:"bad", fb:"Turning failure into entertainment is hurtful."},
+      {i:"😶", t:"Stand back so you do not get involved", e:0, type:"neutral", fb:"Distance may feel cold in a crisis moment."},
+      {i:"🙂", t:"Say, 'That is unfortunate'", e:1, type:"good", fb:"Sympathetic, but practical help would be stronger."}
+    ],
+    lesson:"Empathy becomes powerful when caring turns into action."
+  },
+  {
+    id:17, char:"Pooja", avatar:"👧", place:"🏠 Living Room", title:"Broken Toy", theme:"theme-home", deco:"🧸", avatarBg:"#ec4899",
+    scene:"Pooja's little brother accidentally snaps her favorite toy. She holds the pieces and goes very still.",
+    clues:["Favorite toy", "Broken by sibling", "Sudden silence"],
+    eq:"What might Pooja be feeling?",
+    emotions:[
+      {i:"😢", t:"Sad and protective of something special", c:true, fb:"Exactly. Sentimental objects can carry strong feelings."},
+      {i:"😄", t:"Glad it finally broke", c:false, fb:"Nothing here suggests relief."},
+      {i:"😴", t:"Too tired to react", c:false, fb:"Her silence points to hurt, not sleepiness."},
+      {i:"🤩", t:"Excited for a new toy", c:false, fb:"She is reacting to loss, not a reward."}
+    ],
+    aq:"What is the kindest thing to do?",
+    actions:[
+      {i:"🫂", t:"Acknowledge her feelings and help repair or preserve it", e:3, type:"best", fb:"Perfect. You validate the loss instead of dismissing it."},
+      {i:"🙄", t:"Say it is only a toy", e:-1, type:"bad", fb:"That ignores what it means to her."},
+      {i:"🤐", t:"Stay out of it because family problems are private", e:0, type:"neutral", fb:"Sometimes a little support still matters."},
+      {i:"🙂", t:"Tell her she can buy another one later", e:1, type:"good", fb:"Helpful idea, but first she needs her feelings recognized."}
+    ],
+    lesson:"Something small to you may be emotionally huge to someone else."
+  },
+  {
+    id:18, char:"Manu", avatar:"👦", place:"💬 Group Chat", title:"Left on Read", theme:"theme-social", deco:"📱", avatarBg:"#06b6d4",
+    scene:"Manu shares his drawing in the class group. Messages continue, but nobody responds to his post.",
+    clues:["Shared effort", "No reply", "Chat moves on"],
+    eq:"How could Manu feel?",
+    emotions:[
+      {i:"😕", t:"Ignored and unsure", c:true, fb:"Yes. Silence after sharing something personal can sting."},
+      {i:"😄", t:"Proud because everyone saw it", c:false, fb:"Without response, the feeling is more likely uncertainty."},
+      {i:"😠", t:"Ready to fight everyone", c:false, fb:"The first feeling is more often hurt than rage."},
+      {i:"😎", t:"Totally unaffected", c:false, fb:"Most people care how others react to their work."}
+    ],
+    aq:"What is an empathetic response?",
+    actions:[
+      {i:"🎨", t:"Reply kindly and point out something you like in the drawing", e:3, type:"best", fb:"Great. Specific appreciation helps him feel seen."},
+      {i:"😂", t:"Send a joke about nobody noticing it", e:-1, type:"bad", fb:"That makes the exclusion sharper."},
+      {i:"👀", t:"Read it and move on", e:0, type:"neutral", fb:"That continues the silence."},
+      {i:"🙂", t:"Send a simple thumbs-up later", e:1, type:"good", fb:"Helpful, though specific words are warmer."}
+    ],
+    lesson:"Online spaces need empathy too."
+  },
+  {
+    id:19, char:"Deepak", avatar:"👦", place:"🎵 Music Room", title:"Wrong Note", theme:"theme-music", deco:"🎸", avatarBg:"#f97316",
+    scene:"Deepak sings the wrong note during rehearsal. A few classmates laugh, and he steps back from the microphone.",
+    clues:["Public mistake", "Others laugh", "Steps back"],
+    eq:"What is Deepak likely feeling?",
+    emotions:[
+      {i:"😣", t:"Embarrassed and discouraged", c:true, fb:"Correct. Public mistakes can shake confidence fast."},
+      {i:"😄", t:"Happy to entertain everyone", c:false, fb:"He is stepping back, not leaning in."},
+      {i:"😎", t:"Cool and fearless", c:false, fb:"His retreat shows hurt confidence."},
+      {i:"😴", t:"Too tired to sing", c:false, fb:"The emotional clue is embarrassment."}
+    ],
+    aq:"What should you do?",
+    actions:[
+      {i:"🎶", t:"Encourage him and remind him one mistake does not define his talent", e:3, type:"best", fb:"Excellent. Encouragement can restore courage."},
+      {i:"🤭", t:"Repeat the wrong note to make others laugh more", e:-1, type:"bad", fb:"That deepens humiliation."},
+      {i:"😶", t:"Ignore it because rehearsal must continue", e:0, type:"neutral", fb:"The task continues, but so do feelings."},
+      {i:"🙂", t:"Tell him later that he usually sings well", e:1, type:"good", fb:"That helps, though immediate support is stronger."}
+    ],
+    lesson:"A kind word after a public mistake can rebuild confidence."
+  },
+  {
+    id:20, char:"Asha", avatar:"👧", place:"💃 Festival Hall", title:"Torn Costume", theme:"theme-art", deco:"🧵", avatarBg:"#a855f7",
+    scene:"Minutes before a dance performance, Asha notices a tear in her costume and looks close to crying.",
+    clues:["Performance soon", "Costume torn", "Near tears"],
+    eq:"What is Asha probably feeling?",
+    emotions:[
+      {i:"😰", t:"Panicked and embarrassed", c:true, fb:"Yes. Timing and visibility make the problem feel huge."},
+      {i:"😄", t:"Excited for attention", c:false, fb:"Her near tears show stress, not excitement."},
+      {i:"😠", t:"Only angry with the costume", c:false, fb:"There may be frustration, but panic is stronger here."},
+      {i:"😎", t:"Completely relaxed", c:false, fb:"The clues clearly point to worry."}
+    ],
+    aq:"What would be most empathetic?",
+    actions:[
+      {i:"🧵", t:"Help find a safety pin or teacher and stay with her until it is fixed", e:3, type:"best", fb:"Perfect. You reduce both stress and isolation."},
+      {i:"📢", t:"Announce the tear to everyone", e:-1, type:"bad", fb:"That would increase embarrassment."},
+      {i:"🤷", t:"Say it is probably fine and walk away", e:0, type:"neutral", fb:"That does not address her urgent worry."},
+      {i:"🙂", t:"Tell her she still looks good", e:1, type:"good", fb:"Kind, though practical help is needed most."}
+    ],
+    lesson:"In stressful moments, staying with someone matters as much as solving the problem."
+  }
+];
+
+const MAX_LIVES = 4;
+let deck = [];
+let currentIndex = 0;
+let score = 0;
+let lives = MAX_LIVES;
+let streak = 0;
+let bestStreak = 0;
+let currentScenario = null;
+let currentOptions = [];
+let currentMode = "emotion";
+let currentContinue = null;
+let collectedLessons = [];
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function buildBg(){
+  const holder = document.getElementById('bgLayer');
+  if(holder.dataset.ready) return;
+  holder.dataset.ready = "1";
+  const colors = ['#8b5cf6','#ec4899','#06b6d4','#f59e0b','#3b82f6','#10b981'];
+  for(let i=0;i<18;i++){
+    const orb = document.createElement('div');
+    const size = 40 + Math.random()*110;
+    orb.className = 'orb';
+    orb.style.width = size + 'px';
+    orb.style.height = size + 'px';
+    orb.style.left = Math.random()*100 + '%';
+    orb.style.bottom = (-100 - Math.random()*240) + 'px';
+    orb.style.background = colors[i % colors.length];
+    orb.style.animationDuration = (10 + Math.random()*16) + 's';
+    orb.style.animationDelay = (Math.random()*10) + 's';
+    holder.appendChild(orb);
+  }
+  const sparkIcons = ['✨','💖','⭐','💫'];
+  for(let i=0;i<26;i++){
+    const s = document.createElement('div');
+    s.className = 'spark';
+    s.textContent = sparkIcons[i % sparkIcons.length];
+    s.style.left = Math.random()*100 + '%';
+    s.style.top = Math.random()*100 + '%';
+    s.style.animationDuration = (2 + Math.random()*4) + 's';
+    s.style.animationDelay = (Math.random()*4) + 's';
+    holder.appendChild(s);
+  }
+}
+
+function startGame(){
+  deck = shuffle(SCENARIOS);
+  currentIndex = 0;
+  score = 0;
+  lives = MAX_LIVES;
+  streak = 0;
+  bestStreak = 0;
+  collectedLessons = [];
+  showScreen('game');
+  updateHUD();
+  loadScenario();
+}
+
+function updateHUD(){
+  document.getElementById('score').textContent = score;
+  document.getElementById('streak').textContent = streak;
+  const hearts = document.getElementById('hearts');
+  hearts.innerHTML = '';
+  for(let i=0;i<MAX_LIVES;i++){
+    const h = document.createElement('span');
+    h.className = 'heart' + (i >= lives ? ' lost' : '');
+    h.textContent = '❤️';
+    hearts.appendChild(h);
+  }
+}
+
+function loadScenario(){
+  currentScenario = deck[currentIndex];
+  currentMode = 'emotion';
+  document.getElementById('missionText').textContent = `Mission ${currentIndex + 1} / ${deck.length}`;
+  document.getElementById('phaseText').textContent = 'Feeling Round';
+  document.getElementById('progressFill').style.width = ((currentIndex / deck.length) * 100) + '%';
+
+  const storyPanel = document.getElementById('storyPanel');
+  storyPanel.className = 'panel story ' + currentScenario.theme;
+
+  document.getElementById('avatarBox').textContent = currentScenario.avatar;
+  document.getElementById('avatarBox').style.background = currentScenario.avatarBg + '33';
+  document.getElementById('placeTag').textContent = currentScenario.place;
+  document.getElementById('storyTitle').textContent = currentScenario.title;
+  document.getElementById('storySub').textContent = currentScenario.char;
+  document.getElementById('sceneLine').textContent = currentScenario.scene;
+  document.getElementById('sceneDeco').textContent = currentScenario.deco;
+  document.getElementById('questionText').textContent = currentScenario.eq;
+  document.getElementById('tipText').textContent = 'Use the clues. Look at body language, silence, timing, and what just happened.';
+  document.getElementById('miniHint').textContent = 'Read the clues';
+
+  document.getElementById('modeFeeling').className = 'mode-pill active';
+  document.getElementById('modeAction').className = 'mode-pill';
+
+  const clues = document.getElementById('clues');
+  clues.innerHTML = '';
+  currentScenario.clues.forEach(c=>{
+    const chip = document.createElement('div');
+    chip.className = 'clue';
+    chip.textContent = c;
+    clues.appendChild(chip);
+  });
+
+  renderChoices(shuffle(currentScenario.emotions.map(o=>({...o}))), 'emotion');
+}
+
+function renderChoices(options, mode){
+  currentOptions = options;
+  currentMode = mode;
+  const holder = document.getElementById('choices');
+  holder.innerHTML = '';
+
+  options.forEach((opt, idx)=>{
+    const btn = document.createElement('button');
+    btn.className = 'choice';
+    btn.innerHTML = `
+      <div class="opt-key">${String.fromCharCode(65 + idx)}</div>
+      <div class="opt-emoji">${opt.i}</div>
+      <div class="opt-text">${opt.t}</div>
+    `;
+    btn.onclick = ()=>handleChoice(idx);
+    holder.appendChild(btn);
+  });
+}
+
+function handleChoice(idx){
+  const buttons = [...document.querySelectorAll('.choice')];
+  buttons.forEach(b=>b.disabled = true);
+
+  const picked = currentOptions[idx];
+  buttons[idx].classList.add('selected');
+
+  if(currentMode === 'emotion'){
+    buttons.forEach((btn, i)=>{
+      if(currentOptions[i].c) btn.classList.add('correct');
+      else if(i === idx) btn.classList.add('wrong');
+    });
+
+    if(picked.c){
+      score += 2;
+      streak += 1;
+      bestStreak = Math.max(bestStreak, streak);
+      updateHUD();
+      spawnPopup('+2 ⭐');
+      showFeedback(
+        '🎯',
+        '+2 Points! Great reading!',
+        picked.fb,
+        '',
+        'Continue to Action ➜',
+        showActionPhase
+      );
+    }else{
+      lives = Math.max(0, lives - 1);
+      streak = 0;
+      updateHUD();
+      showFeedback(
+        '🤔',
+        lives === 0 ? 'No hearts left — keep learning!' : 'Not quite — try the next step',
+        picked.fb,
+        '',
+        'Continue to Action ➜',
+        showActionPhase
+      );
+    }
+  } else {
+    buttons.forEach((btn, i)=>{
+      const type = currentOptions[i].type;
+      btn.classList.add(type === 'best' ? 'best' : type === 'good' ? 'good' : type === 'neutral' ? 'neutral' : 'bad');
+    });
+
+    const pts = Math.max(0, picked.e);
+    score += pts;
+    if(picked.e >= 2){
+      streak += 1;
+      bestStreak = Math.max(bestStreak, streak);
+    } else {
+      streak = 0;
+    }
+    updateHUD();
+
+    if(pts > 0) spawnPopup(`+${pts} ⭐`);
+
+    collectedLessons.push(currentScenario.lesson);
+
+    const icon = picked.e >= 3 ? '🌟' : picked.e >= 1 ? '👍' : '💭';
+    const pointText = picked.e >= 3 ? '+3 Perfect empathy!' :
+                      picked.e >= 2 ? '+2 Strong response!' :
+                      picked.e >= 1 ? '+1 Kind start!' :
+                      'Could be kinder';
+
+    showFeedback(
+      icon,
+      pointText,
+      picked.fb,
+      currentScenario.lesson,
+      currentIndex < deck.length - 1 ? 'Next Mission ➜' : 'See Results 🏆',
+      nextScenario
+    );
+  }
+}
+
+function showActionPhase(){
+  document.getElementById('phaseText').textContent = 'Action Round';
+  document.getElementById('questionText').textContent = currentScenario.aq;
+  document.getElementById('tipText').textContent = 'Choose the response that protects feelings, dignity, and belonging.';
+  document.getElementById('miniHint').textContent = 'Pick the kindest action';
+  document.getElementById('modeFeeling').className = 'mode-pill done';
+  document.getElementById('modeAction').className = 'mode-pill active';
+  renderChoices(shuffle(currentScenario.actions.map(o=>({...o}))), 'action');
+}
+
+function showFeedback(icon, points, text, lesson, btnText, cb){
+  currentContinue = cb;
+  document.getElementById('fbIcon').textContent = icon;
+  document.getElementById('fbPoints').textContent = points;
+  document.getElementById('fbPoints').className = 'fb-points ' + (points.includes('+') ? 'pos' : 'neg');
+  document.getElementById('fbText').textContent = text;
+  const lessonBox = document.getElementById('fbLesson');
+  if(lesson){
+    lessonBox.classList.remove('hidden');
+    document.getElementById('fbLessonText').textContent = lesson;
+  }else{
+    lessonBox.classList.add('hidden');
+    document.getElementById('fbLessonText').textContent = '';
+  }
+  document.getElementById('fbBtn').textContent = btnText;
+  document.getElementById('feedback').classList.add('open');
+}
+
+function continueGame(){
+  document.getElementById('feedback').classList.remove('open');
+  if(typeof currentContinue === 'function') currentContinue();
+}
+
+function nextScenario(){
+  currentIndex += 1;
+  if(currentIndex >= deck.length){
+    showResults();
+  }else{
+    loadScenario();
+  }
+}
+
+function showResults(){
+  showScreen('results');
+  document.getElementById('progressFill').style.width = '100%';
+
+  const maxScore = deck.length * 5;
+  const percent = Math.round((score / maxScore) * 100);
+
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('finalPercent').textContent = percent + '%';
+  document.getElementById('finalStreak').textContent = bestStreak;
+
+  let title, sub, icon, badge, desc;
+  if(percent >= 90){
+    icon = '👑';
+    title = 'Outstanding Empathy!';
+    sub = 'You noticed feelings quickly and chose caring actions again and again.';
+    badge = 'Heart Master';
+    desc = 'You read emotions well, protect dignity, and respond with thoughtful kindness.';
+  } else if(percent >= 75){
+    icon = '🌟';
+    title = 'Amazing Work!';
+    sub = 'You showed strong empathy across many different situations.';
+    badge = 'Empathy Hero';
+    desc = 'You are building a powerful habit of noticing, understanding, and helping.';
+  } else if(percent >= 55){
+    icon = '😊';
+    title = 'Great Growth!';
+    sub = 'You are learning how feelings hide inside ordinary moments.';
+    badge = 'Empathy Star';
+    desc = 'You already show real care. Keep practicing calm noticing and kind action.';
+  } else {
+    icon = '🌱';
+    title = 'Good Start!';
+    sub = 'Empathy grows with practice, and every mission helps.';
+    badge = 'Kindness Seed';
+    desc = 'You are beginning to read emotions more clearly. Keep observing clues and choosing gentle responses.';
+  }
+
+  document.getElementById('resultIcon').textContent = icon;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultSub').textContent = sub;
+  document.getElementById('badgeEmoji').textContent = icon;
+  document.getElementById('badgeName').textContent = badge;
+  document.getElementById('badgeDesc').textContent = desc;
+
+  const uniqueLessons = [...new Set(collectedLessons)];
+  const shown = shuffle(uniqueLessons).slice(0, 6);
+  const lessonList = document.getElementById('lessonList');
+  lessonList.innerHTML = shown.map(item => `<div class="lesson-item">💡 ${item}</div>`).join('');
+
+  confettiBurst();
+}
+
+function spawnPopup(text){
+  const pop = document.createElement('div');
+  pop.className = 'score-pop';
+  pop.textContent = text;
+  pop.style.left = (18 + Math.random()*60) + '%';
+  pop.style.top = (36 + Math.random()*12) + '%';
+  document.body.appendChild(pop);
+  setTimeout(()=>pop.remove(), 1000);
+}
+
+function confettiBurst(){
+  const colors = ['#8b5cf6','#ec4899','#06b6d4','#f59e0b','#10b981','#3b82f6'];
+  for(let i=0;i<90;i++){
+    setTimeout(()=>{
+      const c = document.createElement('div');
+      c.style.position = 'fixed';
+      c.style.left = Math.random()*100 + '%';
+      c.style.top = '-10px';
+      c.style.width = (6 + Math.random()*8) + 'px';
+      c.style.height = (8 + Math.random()*10) + 'px';
+      c.style.background = colors[i % colors.length];
+      c.style.borderRadius = Math.random() > .5 ? '50%' : '2px';
+      c.style.zIndex = '90';
+      c.style.pointerEvents = 'none';
+      c.style.opacity = '.95';
+      c.style.transform = `rotate(${Math.random()*360}deg)`;
+      c.animate(
+        [
+          { transform:`translateY(0) rotate(0deg)`, opacity:1 },
+          { transform:`translate(${(Math.random()*240)-120}px, ${window.innerHeight + 40}px) rotate(${360 + Math.random()*500}deg)`, opacity:0 }
+        ],
+        { duration: 1600 + Math.random()*1200, easing:'cubic-bezier(.2,.7,.2,1)' }
+      );
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(), 3000);
+    }, i*16);
+  }
+}
+
+buildBg();
+</script>
+</body>
+</html>

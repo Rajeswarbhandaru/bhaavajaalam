@@ -583,5 +583,9 @@ async function submitGame(){
 const srObs=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('visible');srObs.unobserve(e.target);} }); },{threshold:0.12});
 document.querySelectorAll('.sr').forEach(el=>srObs.observe(el));
 </script>
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Gamespark";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Visual Difference Detector</title>
+<style>
+:root{
+  --bg1:#071826;
+  --bg2:#0d2740;
+  --panel:rgba(255,255,255,.10);
+  --panel2:rgba(255,255,255,.16);
+  --text:#ecf8ff;
+  --muted:#b8d5ea;
+  --accent:#82f7d6;
+  --accent2:#ffd36e;
+  --danger:#ff7b7b;
+  --good:#8dff9d;
+  --shadow:0 20px 50px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(circle at top,#11385b 0%,#071826 56%,#04101a 100%);color:var(--text);overflow:hidden}
+body::before, body::after{content:"";position:fixed;inset:auto;pointer-events:none;border-radius:50%;filter:blur(70px);opacity:.35;animation:drift 16s ease-in-out infinite}
+body::before{width:420px;height:420px;left:-120px;top:-80px;background:#43d6ff}
+body::after{width:360px;height:360px;right:-100px;bottom:-60px;background:#51ffb9;animation-delay:-6s}
+@keyframes drift{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(20px) scale(1.08)}}
+#app{position:relative;height:100%;display:flex;align-items:center;justify-content:center;padding:0}
+.particles{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.particles span{position:absolute;border-radius:50%;background:rgba(255,255,255,.18);animation:floatUp linear infinite}
+@keyframes floatUp{from{transform:translateY(0) scale(1);opacity:0}10%{opacity:.9}to{transform:translateY(-120vh) scale(1.8);opacity:0}}
+.shell{width:100%;height:100vh;border-radius:0;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.05));backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.14);border-radius:28px;box-shadow:var(--shadow);overflow:hidden;position:relative}
+.topbar{display:flex;gap:14px;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02))}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:54px;height:54px;border-radius:16px;background:conic-gradient(from 180deg,#75f2ff,#86ffd0,#ffd36e,#75f2ff);display:grid;place-items:center;color:#092132;font-weight:900;box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.brand h1{margin:0;font-size:1.2rem;letter-spacing:.2px}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:.92rem}
+.stats{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+.pill{padding:10px 14px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);border-radius:999px;color:#f6fbff;font-size:.95rem;min-width:110px;text-align:center}
+.main{display:grid;grid-template-columns:280px 1fr;gap:18px;padding:18px;height:calc(100vh - 91px);overflow:hidden}
+.sidebar{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:16px}
+.card h2,.card h3{margin:0 0 10px}
+.muted{color:var(--muted)}
+.btns{display:grid;grid-template-columns:1fr;gap:10px}
+button{border:0;border-radius:16px;padding:14px 16px;font:inherit;font-weight:700;cursor:pointer;transition:transform .15s ease,box-shadow .2s ease,background .25s ease;color:#092132}
+button:hover{transform:translateY(-1px)}
+button:active{transform:translateY(1px)}
+.primary{background:linear-gradient(135deg,var(--accent),#7cd2ff);box-shadow:0 12px 22px rgba(93,229,211,.28)}
+.secondary{background:rgba(255,255,255,.12);color:var(--text);border:1px solid rgba(255,255,255,.12)}
+.ghost{background:rgba(255,255,255,.07);color:var(--text);border:1px solid rgba(255,255,255,.08)}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.level{padding:12px 8px;border-radius:14px;background:rgba(255,255,255,.09);color:var(--text);border:1px solid transparent;font-weight:700}
+.level.active{border-color:rgba(130,247,214,.8);background:rgba(130,247,214,.14)}
+.sceneWrap{display:grid;grid-template-rows:auto 1fr auto;gap:12px;min-width:0;height:100%;overflow:hidden}
+.sceneHead{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 2px}
+.legend{display:flex;gap:10px;flex-wrap:wrap}
+.tag{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);font-size:.92rem}
+.board{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;min-height:0;overflow:hidden}
+.sceneCard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:12px;display:flex;flex-direction:column;min-width:0;min-height:0;height:100%;overflow:hidden}
+.sceneLabel{display:flex;justify-content:space-between;align-items:center;padding:4px 6px 10px 6px;color:#d6efff;font-weight:700}
+.scene{position:relative;flex:1;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#10273e,#0a1e31);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);min-height:0}
+.scene::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.10),transparent 35%),radial-gradient(circle at 80% 12%,rgba(255,255,255,.06),transparent 24%);pointer-events:none}
+.themeTitle{font-size:.88rem;color:var(--muted)}
+.obj{position:absolute;transform-origin:center center;filter:drop-shadow(0 8px 14px rgba(0,0,0,.18));transition:transform .2s ease, filter .2s ease, opacity .2s ease}
+.obj svg{width:100%;height:100%;overflow:visible}
+.obj.found{animation:foundPulse .8s ease}
+@keyframes foundPulse{0%{transform:scale(1)}30%{transform:scale(1.12)}100%{transform:scale(1)}}
+.hit{position:absolute;border-radius:20px;background:transparent;border:0;z-index:10}
+.hit:hover{box-shadow:0 0 0 2px rgba(255,255,255,.14) inset}
+.ring{position:absolute;border:3px solid rgba(130,247,214,.9);border-radius:20px;box-shadow:0 0 0 6px rgba(130,247,214,.18);pointer-events:none;animation:ring .9s ease}
+@keyframes ring{0%{transform:scale(.65);opacity:0}35%{opacity:1}100%{transform:scale(1);opacity:1}}
+.toast{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);background:rgba(4,16,26,.82);border:1px solid rgba(255,255,255,.14);color:#ecfbff;padding:12px 16px;border-radius:14px;backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .25s ease, transform .25s ease}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
+.bottom{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.progress{flex:1;height:14px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .35s ease}
+.overlay{position:absolute;inset:0;background:radial-gradient(circle at top,rgba(17,53,86,.95),rgba(6,18,31,.96));display:flex;align-items:center;justify-content:center;padding:24px;z-index:40}
+.panel{width:min(820px,100%);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:26px;box-shadow:var(--shadow)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:center}
+.hero h2{font-size:2.2rem;line-height:1.03;margin:.15rem 0 .6rem}
+.hero p{font-size:1rem;color:#d4ebfa;line-height:1.6}
+.heroArt{min-height:280px;border-radius:24px;background:linear-gradient(135deg,rgba(130,247,214,.22),rgba(125,210,255,.18));border:1px solid rgba(255,255,255,.10);position:relative;overflow:hidden}
+.heroArt .bubble{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.85),rgba(255,255,255,.12));animation:driftBubble linear infinite}
+@keyframes driftBubble{from{transform:translateY(20px) scale(.9)}50%{transform:translateY(-16px) scale(1.04)}to{transform:translateY(10px) scale(.95)}}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.feature{padding:12px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)}
+.feature strong{display:block;margin-bottom:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.kbd{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;padding:0 8px;border-radius:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14);font-weight:800;color:#fff}
+.resultScore{font-size:3.2rem;font-weight:900;line-height:1;margin:10px 0}
+.sparkles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.spark{position:absolute;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle,#fff,var(--accent));animation:confetti .9s linear forwards}
+@keyframes confetti{to{transform:translate(var(--dx),var(--dy)) rotate(360deg) scale(.1);opacity:0}}
+.penalty{animation:shake .25s linear}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.small{font-size:.88rem}
+.hide{display:none!important}
+@media (max-width:1100px){
+  .main{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .sidebar{order:2}
+  .sceneWrap{order:1}
+}
+@media (max-width:900px){
+  .board,.hero,.features,.grid2{grid-template-columns:1fr}
+  .shell{height:100vh;border-radius:0;width:100%}
+  .topbar{padding:14px}
+  .main{padding:12px}
+  .stats{gap:8px}
+  .pill{min-width:auto}
+}
+</style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+<div id="app">
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">VD</div>
+        <div>
+          <h1>Visual Difference Detector</h1>
+          <p>Spot subtle changes • calm focus • fresh every play</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="pill">Round <span id="roundNow">0</span>/<span id="roundMax">6</span></div>
+        <div class="pill">Found <span id="foundNow">0</span>/<span id="foundMax">0</span></div>
+        <div class="pill">Score <span id="scoreNow">0</span></div>
+        <div class="pill">Best <span id="bestScore">0</span></div>
+      </div>
+    </div>
+    <div class="main">
+      <aside class="sidebar">
+        <div class="card">
+          <h2>Play</h2>
+          <div class="muted">Find all differences by tapping either image. Missing a click costs a little time.</div>
+          <div class="btns" style="margin-top:12px">
+            <button class="primary" id="startBtn">Start Session</button>
+            <button class="secondary" id="nextBtn">Next Round</button>
+            <button class="ghost" id="restartBtn">Fresh Session</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Difficulty</h3>
+          <div class="levels">
+            <button class="level active" data-level="gentle">Gentle</button>
+            <button class="level" data-level="steady">Steady</button>
+            <button class="level" data-level="expert">Expert</button>
+          </div>
+          <div class="muted small" id="levelText" style="margin-top:10px">3 differences, larger hints, slower pace.</div>
+        </div>
+        <div class="card">
+          <h3>Focus meter</h3>
+          <div class="progress"><div class="bar" id="focusBar"></div></div>
+          <div class="muted small" style="margin-top:10px">Smooth spotting builds streak and bonus points.</div>
+        </div>
+        <div class="card">
+          <h3>Why it feels fresh</h3>
+          <div class="muted small">Each round uses a new seed, shuffled themes, new object layouts, fresh difference types, and a session history lock so the same scene pattern does not repeat during the session.</div>
+        </div>
+      </aside>
+      <section class="sceneWrap">
+        <div class="sceneHead">
+          <div>
+            <div class="themeTitle" id="themeTitle">Theme: —</div>
+            <div class="muted">Tap subtle changes before the timer fades.</div>
+          </div>
+          <div class="legend">
+            <div class="tag">Time: <span id="timerNow">60</span>s</div>
+            <div class="tag">Streak: <span id="streakNow">0</span></div>
+            <div class="tag">Misses: <span id="missNow">0</span></div>
+          </div>
+        </div>
+        <div class="board">
+          <div class="sceneCard">
+            <div class="sceneLabel"><span>Original</span><span class="muted small">Memorize details</span></div>
+            <div class="scene" id="sceneLeft"></div>
+          </div>
+          <div class="sceneCard">
+            <div class="sceneLabel"><span>Changed</span><span class="muted small">Tap the differences</span></div>
+            <div class="scene" id="sceneRight"></div>
+          </div>
+        </div>
+        <div class="bottom">
+          <div class="progress"><div class="bar" id="roundBar"></div></div>
+          <div class="muted small" id="statusLine">Choose a difficulty, then start.</div>
+        </div>
+      </section>
+    </div>
+    <div class="overlay" id="introOverlay">
+      <div class="panel">
+        <div class="hero">
+          <div>
+            <div class="tag" style="display:inline-flex;margin-bottom:10px">Observation • Calm Focus • Detail Awareness</div>
+            <h2>Train the eye with animated, never-boring difference hunts.</h2>
+            <p>Visual Difference Detector creates a fresh puzzle every round with gentle motion, polished themes, and shuffled change patterns. It is designed to feel relaxing, smart, and replayable.</p>
+            <div class="features">
+              <div class="feature"><strong>Unique session</strong><span class="muted small">No repeated scene signature in the same run.</span></div>
+              <div class="feature"><strong>Subtle changes</strong><span class="muted small">Color, size, position, rotation, missing items, and style tweaks.</span></div>
+              <div class="feature"><strong>User friendly</strong><span class="muted small">Works on touch and mouse with clear highlights.</span></div>
+            </div>
+            <div class="grid2">
+              <button class="primary" id="introStart">Begin Calm Play</button>
+              <button class="secondary" id="howBtn">How to Play</button>
+            </div>
+          </div>
+          <div class="heroArt" id="heroArt"></div>
+        </div>
+      </div>
+    </div>
+    <div class="overlay hide" id="helpOverlay">
+      <div class="panel">
+        <h2 style="margin-top:0">How to play</h2>
+        <p class="muted">Compare the two scenes. Tap the changed spots in either image. Find them all before time runs out.</p>
+        <div class="features">
+          <div class="feature"><strong>Calm focus</strong><span class="muted small">Wrong taps reduce time slightly, so accuracy matters more than rushing.</span></div>
+          <div class="feature"><strong>Combo bonus</strong><span class="muted small">Consecutive correct finds increase your streak and score.</span></div>
+          <div class="feature"><strong>Fresh rounds</strong><span class="muted small">Themes, object shapes, palettes, and difference rules are reshuffled every round.</span></div>
+        </div>
+        <p class="muted small">Quick keys: <span class="kbd">N</span> next round, <span class="kbd">R</span> restart, <span class="kbd">Esc</span> close popup.</p>
+        <div class="grid2">
+          <button class="primary" id="closeHelp">Got it</button>
+          <button class="ghost" id="helpStart">Start Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="overlay hide" id="resultOverlay">
+      <div class="panel" style="text-align:center;position:relative;overflow:hidden">
+        <div class="sparkles" id="sparkles"></div>
+        <div class="tag" id="resultTag" style="display:inline-flex">Session complete</div>
+        <div class="resultScore" id="finalScore">0</div>
+        <p class="muted" id="resultText">Great noticing.</p>
+        <div class="features" style="margin-top:18px">
+          <div class="feature"><strong>Accuracy</strong><span id="accText" class="muted small">0%</span></div>
+          <div class="feature"><strong>Best streak</strong><span id="bestStreakText" class="muted small">0</span></div>
+          <div class="feature"><strong>Rounds cleared</strong><span id="roundsText" class="muted small">0</span></div>
+        </div>
+        <div class="grid2">
+          <button class="primary" id="playAgainBtn">Play a New Unique Set</button>
+          <button class="secondary" id="closeResultBtn">Back to Board</button>
+        </div>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+  </div>
+</div>
+<script>
+const app = {
+  level:'gentle',
+  timer:60,
+  round:0,
+  roundsTotal:6,
+  score:0,
+  streak:0,
+  bestStreak:0,
+  misses:0,
+  found:0,
+  totalDiffs:0,
+  totalFoundClicks:0,
+  totalWrongClicks:0,
+  usedSceneKeys:new Set(),
+  themeQueue:[],
+  active:null,
+  playing:false,
+  tick:null,
+  sessionSeed:0,
+  best:Number(localStorage.getItem('vdd_best')||0)
+};
+
+const cfg = {
+  gentle:{time:70,diffs:3,objects:[8,10],penalty:3,rounds:6},
+  steady:{time:60,diffs:4,objects:[10,13],penalty:4,rounds:7},
+  expert:{time:52,diffs:5,objects:[12,15],penalty:5,rounds:8}
+};
+
+const themes = [
+  {name:'Zen Garden', sky:['#9fe6d9','#467e8f'], ground:['#d9c7a1','#9b7d58'], deco:'stones'},
+  {name:'Moon Rooftop', sky:['#0d1f4a','#1f4e79'], ground:['#2b3446','#3d4b62'], deco:'lights'},
+  {name:'Coral Reef', sky:['#3cc3d6','#0d4d73'], ground:['#efb978','#c8776e'], deco:'bubbles'},
+  {name:'Dream Forest', sky:['#7fd3aa','#315f68'], ground:['#4e8465','#2f573d'], deco:'fireflies'},
+  {name:'Cloud Studio', sky:['#a4c7ff','#6986d1'], ground:['#f4d8b3','#cba57a'], deco:'paper'},
+  {name:'Candy Comet', sky:['#9d6bff','#35225d'], ground:['#ffc6de','#f59cc6'], deco:'stars'},
+  {name:'Aurora Lake', sky:['#11204a','#1e9da6'], ground:['#5ea1a8','#294f5e'], deco:'glow'},
+  {name:'Sunset Balcony', sky:['#ffbf8b','#e87f8f'], ground:['#8b4b64','#4e3042'], deco:'petals'}
+];
+
+const objectTypes = ['flower','lantern','kite','fish','star','book','cup','tree','planet','butterfly','shell','gem','leaf','cloud','mountain','mushroom'];
+const diffModes = ['move','color','size','rotate','missing','style'];
+const paletteSets = [
+  ['#ffd36e','#ff8ca8','#7ce8ff','#82f7d6'],
+  ['#f6a66b','#e96d71','#6dd7e8','#f2d0a4'],
+  ['#d2a7ff','#7cc8ff','#8cf0d7','#ffe39f'],
+  ['#fca5a5','#f9d76e','#84e1bc','#93c5fd'],
+  ['#ffd1eb','#b9f3ff','#f9e2ae','#b5ffd9']
+];
+
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const leftScene = $('#sceneLeft');
+const rightScene = $('#sceneRight');
+const introOverlay = $('#introOverlay');
+const helpOverlay = $('#helpOverlay');
+const resultOverlay = $('#resultOverlay');
+
+function rng(seed){
+  let a = seed >>> 0;
+  return function(){
+    a += 0x6D2B79F5;
+    let t = a;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function randInt(r, min, max){return Math.floor(r()*(max-min+1))+min}
+function pick(r, arr){return arr[Math.floor(r()*arr.length)]}
+function shuffle(r, arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+function cryptoSeed(){const a = new Uint32Array(2); crypto.getRandomValues(a); return Number(a[0]) ^ Number(a[1]) ^ Date.now();}
+function hsl(h,s,l){return `hsl(${h} ${s}% ${l}%)`}
+function showToast(msg, good=true){const t=$('#toast');t.textContent=msg;t.style.borderColor=good?'rgba(130,247,214,.45)':'rgba(255,123,123,.45)';t.classList.add('show');clearTimeout(showToast._id);showToast._id=setTimeout(()=>t.classList.remove('show'),1100)}
+function updateHUD(){
+  $('#roundNow').textContent = app.round;
+  $('#roundMax').textContent = app.roundsTotal;
+  $('#foundNow').textContent = app.found;
+  $('#foundMax').textContent = app.totalDiffs;
+  $('#scoreNow').textContent = app.score;
+  $('#bestScore').textContent = app.best;
+  $('#timerNow').textContent = Math.max(0,Math.ceil(app.timer));
+  $('#streakNow').textContent = app.streak;
+  $('#missNow').textContent = app.misses;
+  $('#focusBar').style.width = `${clamp((app.streak*14) + (app.found/(app.totalDiffs||1))*30,0,100)}%`;
+  $('#roundBar').style.width = `${clamp((app.found/(app.totalDiffs||1))*100,0,100)}%`;
+}
+function setStatus(txt){$('#statusLine').textContent = txt}
+
+function buildParticles(){
+  const box = $('#particles'); box.innerHTML='';
+  for(let i=0;i<26;i++){
+    const s=document.createElement('span');
+    const size = Math.random()*8+4;
+    s.style.width=s.style.height=`${size}px`;
+    s.style.left=`${Math.random()*100}%`;
+    s.style.bottom=`${-20 - Math.random()*100}px`;
+    s.style.animationDuration=`${12 + Math.random()*18}s`;
+    s.style.animationDelay=`${-Math.random()*20}s`;
+    box.appendChild(s);
+  }
+}
+function buildHeroArt(){
+  const art=$('#heroArt'); art.innerHTML='';
+  for(let i=0;i<18;i++){
+    const b=document.createElement('div');
+    b.className='bubble';
+    const size=40+Math.random()*88;
+    b.style.width=b.style.height=size+'px';
+    b.style.left=Math.random()*90+'%';
+    b.style.top=Math.random()*85+'%';
+    b.style.animationDuration=(5+Math.random()*8)+'s';
+    b.style.animationDelay=(-Math.random()*6)+'s';
+    art.appendChild(b);
+  }
+}
+
+function svgFor(type, c1, c2, c3, variant){
+  const v = variant;
+  if(type==='flower') return `<svg viewBox="0 0 100 100"><g><rect x="47" y="42" width="6" height="42" rx="3" fill="#2d7f53"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(0 50 34)" fill="${c1}"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(72 50 34)" fill="${c2}"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(144 50 34)" fill="${c1}"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(216 50 34)" fill="${c2}"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(288 50 34)" fill="${c1}"/><circle cx="50" cy="34" r="12" fill="${c3}"/></g></svg>`;
+  if(type==='lantern') return `<svg viewBox="0 0 100 100"><g><line x1="50" y1="8" x2="50" y2="24" stroke="#d6eef8" stroke-width="4"/><rect x="28" y="24" width="44" height="44" rx="10" fill="${c1}"/><rect x="35" y="31" width="30" height="30" rx="6" fill="${c2}" opacity=".9"/><path d="M35 68 Q50 ${76+v} 65 68" stroke="${c3}" stroke-width="6" fill="none" stroke-linecap="round"/></g></svg>`;
+  if(type==='kite') return `<svg viewBox="0 0 100 100"><g><path d="M50 10 L80 40 L50 86 L20 40 Z" fill="${c1}"/><path d="M50 10 L50 86" stroke="${c3}" stroke-width="4"/><path d="M20 40 L80 40" stroke="${c2}" stroke-width="4"/><path d="M50 86 Q${48-v} 93 ${56+v} 100" stroke="#f7f2ff" stroke-width="3" fill="none"/></g></svg>`;
+  if(type==='fish') return `<svg viewBox="0 0 100 100"><g><ellipse cx="48" cy="50" rx="26" ry="18" fill="${c1}"/><polygon points="70,50 92,34 92,66" fill="${c2}"/><circle cx="38" cy="46" r="3.8" fill="#12202f"/><path d="M36 58 Q48 ${62+v} 58 58" stroke="${c3}" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg>`;
+  if(type==='star') return `<svg viewBox="0 0 100 100"><polygon points="50,8 61,36 92,38 67,56 75,88 50,70 25,88 33,56 8,38 39,36" fill="${c1}" stroke="${c3}" stroke-width="4"/></svg>`;
+  if(type==='book') return `<svg viewBox="0 0 100 100"><g><path d="M18 22 h28 q10 0 14 6 v48 h-28 q-9 0 -14 5z" fill="${c1}"/><path d="M82 22 h-28 q-10 0 -14 6 v48 h28 q9 0 14 5z" fill="${c2}"/><line x1="50" y1="28" x2="50" y2="80" stroke="#ffffff" opacity=".45" stroke-width="3"/></g></svg>`;
+  if(type==='cup') return `<svg viewBox="0 0 100 100"><g><path d="M26 24 h40 v28 q0 20 -20 20 q-20 0 -20 -20z" fill="${c1}"/><path d="M66 32 h10 q12 0 12 10 q0 10 -12 10 h-10" fill="none" stroke="${c2}" stroke-width="8" stroke-linecap="round"/><path d="M22 78 h50" stroke="${c3}" stroke-width="7" stroke-linecap="round"/></g></svg>`;
+  if(type==='tree') return `<svg viewBox="0 0 100 100"><g><rect x="45" y="52" width="10" height="30" rx="4" fill="#704d35"/><circle cx="50" cy="46" r="22" fill="${c1}"/><circle cx="34" cy="50" r="14" fill="${c2}" opacity=".9"/><circle cx="66" cy="50" r="14" fill="${c2}" opacity=".9"/></g></svg>`;
+  if(type==='planet') return `<svg viewBox="0 0 100 100"><g><circle cx="50" cy="50" r="22" fill="${c1}"/><ellipse cx="50" cy="52" rx="36" ry="12" fill="none" stroke="${c2}" stroke-width="8" transform="rotate(${20+v} 50 52)"/><circle cx="38" cy="42" r="5" fill="${c3}" opacity=".7"/></g></svg>`;
+  if(type==='butterfly') return `<svg viewBox="0 0 100 100"><g><ellipse cx="34" cy="42" rx="16" ry="20" fill="${c1}" transform="rotate(${14+v} 34 42)"/><ellipse cx="66" cy="42" rx="16" ry="20" fill="${c2}" transform="rotate(${-14-v} 66 42)"/><ellipse cx="34" cy="64" rx="12" ry="16" fill="${c2}" transform="rotate(${8+v} 34 64)"/><ellipse cx="66" cy="64" rx="12" ry="16" fill="${c1}" transform="rotate(${-8-v} 66 64)"/><rect x="47" y="28" width="6" height="42" rx="4" fill="#23384a"/></g></svg>`;
+  if(type==='shell') return `<svg viewBox="0 0 100 100"><g><path d="M20 72 q30 -50 60 0" fill="${c1}"/><path d="M30 70 q20 -36 40 0" fill="${c2}"/><path d="M20 72 h60" stroke="${c3}" stroke-width="4"/></g></svg>`;
+  if(type==='gem') return `<svg viewBox="0 0 100 100"><polygon points="24,38 40,20 60,20 76,38 50,82" fill="${c1}"/><polyline points="24,38 40,38 50,82 60,38 76,38" fill="none" stroke="${c3}" stroke-width="4"/></svg>`;
+  if(type==='leaf') return `<svg viewBox="0 0 100 100"><path d="M22 66 q0 -42 48 -46 q10 28 -6 50 q-16 22 -42 -4z" fill="${c1}"/><path d="M30 64 q26 -18 40 -36" stroke="${c2}" stroke-width="5" fill="none" stroke-linecap="round"/></svg>`;
+  if(type==='cloud') return `<svg viewBox="0 0 100 100"><g><circle cx="36" cy="54" r="16" fill="${c1}"/><circle cx="54" cy="46" r="20" fill="${c1}"/><circle cx="70" cy="54" r="14" fill="${c2}"/><rect x="24" y="54" width="52" height="14" rx="7" fill="${c1}"/></g></svg>`;
+  if(type==='mountain') return `<svg viewBox="0 0 100 100"><g><polygon points="14,80 40,28 66,80" fill="${c1}"/><polygon points="44,80 68,38 90,80" fill="${c2}"/><polygon points="34,40 40,28 46,40" fill="#fff" opacity=".75"/></g></svg>`;
+  return `<svg viewBox="0 0 100 100"><g><path d="M50 16 q18 0 18 18 q0 10 -8 16 q12 4 16 16 q0 18 -26 18 q-26 0 -26 -18 q4 -12 16 -16 q-8 -6 -8 -16 q0 -18 18 -18z" fill="${c1}"/><rect x="47" y="10" width="6" height="12" rx="3" fill="${c3}"/></g></svg>`;
+}
+
+function bgFor(theme, r){
+  const [s1,s2] = theme.sky; const [g1,g2] = theme.ground;
+  let deco='';
+  if(theme.deco==='bubbles'){
+    for(let i=0;i<10;i++) deco += `<span style="position:absolute;left:${5+i*9}%;top:${15+((i*13)%45)}%;width:${8+(i%4)*5}px;height:${8+(i%4)*5}px;border:2px solid rgba(255,255,255,.22);border-radius:50%;opacity:.55"></span>`;
+  }
+  if(theme.deco==='fireflies'){
+    for(let i=0;i<14;i++) deco += `<span style="position:absolute;left:${randInt(r,3,95)}%;top:${randInt(r,8,68)}%;width:6px;height:6px;background:rgba(255,250,180,.8);border-radius:50%;box-shadow:0 0 12px rgba(255,250,180,.9)"></span>`;
+  }
+  if(theme.deco==='stars'){
+    for(let i=0;i<16;i++) deco += `<span style="position:absolute;left:${randInt(r,4,95)}%;top:${randInt(r,6,50)}%;width:${3+randInt(r,0,4)}px;height:${3+randInt(r,0,4)}px;background:rgba(255,255,255,.9);border-radius:50%;box-shadow:0 0 10px rgba(255,255,255,.8)"></span>`;
+  }
+  if(theme.deco==='petals'||theme.deco==='paper'||theme.deco==='lights'||theme.deco==='glow'||theme.deco==='stones'){
+    for(let i=0;i<10;i++) deco += `<span style="position:absolute;left:${randInt(r,4,95)}%;top:${randInt(r,12,78)}%;width:${10+randInt(r,0,12)}px;height:${6+randInt(r,0,8)}px;background:rgba(255,255,255,.12);border-radius:12px;transform:rotate(${randInt(r,0,180)}deg)"></span>`;
+  }
+  return {
+    background:`linear-gradient(180deg,${s1},${s2} 58%,${g1} 58%,${g2})`,
+    deco
+  };
+}
+
+function uniqueScene(level){
+  const c = cfg[level];
+  for(let tries=0;tries<80;tries++){
+    const seed = cryptoSeed() + tries + app.sessionSeed + app.round*101;
+    const r = rng(seed);
+    if(app.themeQueue.length===0) app.themeQueue = shuffle(r, themes.map((_,i)=>i));
+    const themeIndex = app.themeQueue.shift();
+    const theme = themes[themeIndex];
+    const objCount = randInt(r, c.objects[0], c.objects[1]);
+    const diffCount = c.diffs;
+    const types = shuffle(r, objectTypes).slice(0, objCount);
+    const sig = `${theme.name}|${types.slice(0,6).join('-')}|${diffCount}|${Math.floor(seed%97)}`;
+    if(app.usedSceneKeys.has(sig)) continue;
+    app.usedSceneKeys.add(sig);
+    return {seed, r, theme, objCount, diffCount, sig};
+  }
+  app.usedSceneKeys.clear();
+  return uniqueScene(level);
+}
+
+function generateRound(){
+  const meta = uniqueScene(app.level);
+  const r = meta.r;
+  const palette = pick(r, paletteSets);
+  const objects = [];
+  const placed = [];
+  const w = leftScene.clientWidth || 580;
+  const h = leftScene.clientHeight || 500;
+  for(let i=0;i<meta.objCount;i++){
+    const type = objectTypes[(i + randInt(r,0,objectTypes.length-1)) % objectTypes.length];
+    let ow = randInt(r,52,104), oh = ow + randInt(r,-14,16);
+    let x=0,y=0,safe=false;
+    for(let attempts=0;attempts<80 && !safe;attempts++){
+      x = randInt(r,18,w-ow-18);
+      y = randInt(r,36,h-oh-18);
+      safe = placed.every(p => Math.abs((x+ow/2)-(p.x+p.w/2)) > (ow+p.w)*0.38 || Math.abs((y+oh/2)-(p.y+p.h/2)) > (oh+p.h)*0.42);
+    }
+    placed.push({x,y,w:ow,h:oh});
+    const colors = shuffle(r, palette).slice(0,3);
+    objects.push({
+      id:'o'+i,
+      type,
+      x,y,w:ow,h:oh,
+      colors,
+      rot:randInt(r,-18,18),
+      scale:1,
+      variant:randInt(r,0,10),
+      anim:5 + r()*8,
+      delay:-r()*4,
+      opacity:.98,
+      styleTag:pick(r,['soft','glow','plain'])
+    });
+  }
+  const diffIds = shuffle(r, objects.map(o=>o.id)).slice(0, meta.diffCount);
+  const diffs=[];
+  const rightObjects = objects.map(o=>JSON.parse(JSON.stringify(o)));
+  diffIds.forEach((id, idx)=>{
+    const obj = rightObjects.find(o=>o.id===id);
+    let mode = shuffle(r, diffModes)[0];
+    if(idx===0 && app.level==='gentle') mode = pick(r,['color','size','move']);
+    if(obj.type==='cloud' && mode==='missing' && app.level==='gentle') mode='move';
+    const before = JSON.parse(JSON.stringify(obj));
+    if(mode==='move'){
+      obj.x = clamp(obj.x + randInt(r,-28,28),12,w-obj.w-12);
+      obj.y = clamp(obj.y + randInt(r,-26,26),12,h-obj.h-12);
+    } else if(mode==='color'){
+      const hue = randInt(r,0,359);
+      obj.colors = [hsl(hue,86,72),hsl((hue+70)%360,78,66),hsl((hue+130)%360,84,78)];
+    } else if(mode==='size'){
+      const factor = 1 + (r()>.5?1:-1)*(app.level==='expert'?0.22:0.16);
+      obj.w = clamp(Math.round(obj.w*factor),40,122);
+      obj.h = clamp(Math.round(obj.h*factor),38,126);
+      obj.x = clamp(obj.x - Math.round((obj.w-before.w)/2),10,w-obj.w-10);
+      obj.y = clamp(obj.y - Math.round((obj.h-before.h)/2),10,h-obj.h-10);
+    } else if(mode==='rotate'){
+      obj.rot += randInt(r,26,54) * (r()>.5?1:-1);
+    } else if(mode==='missing'){
+      obj.opacity = 0;
+    } else if(mode==='style'){
+      obj.variant += randInt(r,2,6);
+      obj.styleTag = obj.styleTag==='glow'?'soft':'glow';
+    }
+    diffs.push({id, mode, left:{x:before.x,y:before.y,w:before.w,h:before.h}, right:{x:obj.x,y:obj.y,w:obj.w,h:obj.h}, found:false});
+  });
+  return {theme:meta.theme, palette, objects, rightObjects, diffs, seed:meta.seed};
+}
+
+function renderScene(container, theme, objects){
+  container.innerHTML='';
+  const bg = bgFor(theme, rng((theme.name.length*31 + objects.length*71)));
+  container.style.background = bg.background;
+  const deco = document.createElement('div');
+  deco.style.position='absolute'; deco.style.inset='0'; deco.style.pointerEvents='none';
+  deco.innerHTML = bg.deco;
+  container.appendChild(deco);
+  objects.forEach((o, i)=>{
+    const el = document.createElement('div');
+    el.className='obj';
+    el.dataset.id=o.id;
+    el.style.left=o.x+'px';
+    el.style.top=o.y+'px';
+    el.style.width=o.w+'px';
+    el.style.height=o.h+'px';
+    el.style.transform = `rotate(${o.rot}deg) scale(${o.scale})`;
+    el.style.opacity = o.opacity;
+    el.style.animation = `drift ${o.anim}s ease-in-out ${o.delay}s infinite`;
+    if(o.styleTag==='glow') el.style.filter='drop-shadow(0 0 12px rgba(255,255,255,.25)) drop-shadow(0 10px 16px rgba(0,0,0,.22))';
+    el.innerHTML = svgFor(o.type, o.colors[0], o.colors[1], o.colors[2], o.variant);
+    container.appendChild(el);
+  });
+}
+
+function addHitboxes(){
+  [...leftScene.querySelectorAll('.hit,.ring'), ...rightScene.querySelectorAll('.hit,.ring')].forEach(n=>n.remove());
+  app.active.diffs.forEach((d, idx)=>{
+    ['left','right'].forEach(side=>{
+      const box = d[side];
+      const hit = document.createElement('button');
+      hit.className='hit';
+      hit.style.left = (box.x-8)+'px';
+      hit.style.top = (box.y-8)+'px';
+      hit.style.width = (box.w+16)+'px';
+      hit.style.height = (box.h+16)+'px';
+      hit.setAttribute('aria-label','difference '+(idx+1));
+      hit.addEventListener('click', e=>{e.stopPropagation(); handleCorrect(d.id)});
+      (side==='left'?leftScene:rightScene).appendChild(hit);
+    });
+  });
+}
+
+function highlightDiff(diff){
+  ['left','right'].forEach(side=>{
+    const box = diff[side];
+    const ring = document.createElement('div');
+    ring.className='ring';
+    ring.style.left=(box.x-8)+'px'; ring.style.top=(box.y-8)+'px';
+    ring.style.width=(box.w+16)+'px'; ring.style.height=(box.h+16)+'px';
+    (side==='left'?leftScene:rightScene).appendChild(ring);
+    setTimeout(()=>ring.remove(),1100);
+    const target = (side==='left'?leftScene:rightScene).querySelector(`.obj[data-id="${diff.id}"]`);
+    if(target) target.classList.add('found');
+  });
+}
+
+function handleCorrect(id){
+  if(!app.playing) return;
+  const diff = app.active.diffs.find(d=>d.id===id);
+  if(!diff || diff.found) return;
+  diff.found = true;
+  app.found++;
+  app.totalFoundClicks++;
+  app.streak++;
+  app.bestStreak = Math.max(app.bestStreak, app.streak);
+  const bonus = 90 + app.streak*15 + Math.max(0, Math.floor(app.timer));
+  app.score += bonus;
+  highlightDiff(diff);
+  showToast(`Found! +${bonus}`, true);
+  setStatus(`${app.found} of ${app.totalDiffs} differences found in ${app.active.theme.name}.`);
+  updateHUD();
+  if(app.found >= app.totalDiffs){
+    endRound(true);
+  }
+}
+
+function wrongTap(){
+  if(!app.playing) return;
+  app.totalWrongClicks++;
+  app.misses++;
+  app.streak = 0;
+  app.timer = Math.max(0, app.timer - cfg[app.level].penalty);
+  rightScene.classList.add('penalty'); leftScene.classList.add('penalty');
+  setTimeout(()=>{rightScene.classList.remove('penalty');leftScene.classList.remove('penalty')},260);
+  showToast(`Missed! -${cfg[app.level].penalty}s`, false);
+  updateHUD();
+  if(app.timer<=0) endRound(false);
+}
+
+function bindMissAreas(){
+  [leftScene,rightScene].forEach(scene=>{
+    scene.onclick = e => { if(e.target===scene || e.target===scene.firstChild || e.target.classList.contains('obj')) wrongTap(); };
+  });
+}
+
+function startSession(){
+  clearInterval(app.tick);
+  app.sessionSeed = cryptoSeed();
+  app.round = 0;
+  app.score = 0;
+  app.streak = 0;
+  app.bestStreak = 0;
+  app.misses = 0;
+  app.totalFoundClicks = 0;
+  app.totalWrongClicks = 0;
+  app.usedSceneKeys.clear();
+  app.themeQueue = [];
+  app.roundsTotal = cfg[app.level].rounds;
+  $('#roundMax').textContent = app.roundsTotal;
+  nextRound(true);
+}
+
+function nextRound(fromStart=false){
+  clearInterval(app.tick);
+  app.round++;
+  if(app.round > app.roundsTotal){
+    finishSession();
+    return;
+  }
+  app.streak = 0;
+  app.found = 0;
+  app.timer = cfg[app.level].time;
+  app.active = generateRound();
+  app.totalDiffs = app.active.diffs.length;
+  app.misses = 0;
+  $('#themeTitle').textContent = `Theme: ${app.active.theme.name}`;
+  renderScene(leftScene, app.active.theme, app.active.objects);
+  renderScene(rightScene, app.active.theme, app.active.rightObjects);
+  addHitboxes();
+  bindMissAreas();
+  app.playing = true;
+  setStatus(fromStart?`Session started. ${app.totalDiffs} differences are hiding.`:`Round ${app.round} is ready. Stay calm and scan edges, colors, size, and position.`);
+  updateHUD();
+  app.tick = setInterval(()=>{
+    if(!app.playing) return;
+    app.timer -= 0.2;
+    updateHUD();
+    if(app.timer<=0) endRound(false);
+  },200);
+}
+
+function endRound(cleared){
+  app.playing = false;
+  clearInterval(app.tick);
+  if(cleared){
+    app.score += 120;
+    setStatus(`Round ${app.round} cleared. Tap Next Round.`);
+    showToast('Round cleared! +120', true);
+  } else {
+    setStatus(`Time faded on round ${app.round}. You can continue to the next unique puzzle.`);
+    showToast('Time up', false);
+  }
+  updateHUD();
+}
+
+function finishSession(){
+  clearInterval(app.tick);
+  app.playing = false;
+  app.best = Math.max(app.best, app.score);
+  localStorage.setItem('vdd_best', app.best);
+  updateHUD();
+  const attempts = app.totalFoundClicks + app.totalWrongClicks;
+  const acc = attempts ? Math.round(app.totalFoundClicks/attempts*100) : 100;
+  $('#finalScore').textContent = app.score;
+  $('#accText').textContent = acc + '%';
+  $('#bestStreakText').textContent = app.bestStreak;
+  $('#roundsText').textContent = app.roundsTotal;
+  let tag='Calm Observer';
+  let txt='You noticed fine details with steady attention.';
+  if(app.score > 2600){tag='Precision Master';txt='Excellent control. You spotted subtle shifts quickly and cleanly.'}
+  else if(app.score > 1700){tag='Sharp Scanner';txt='Strong visual awareness. Your pattern spotting stayed reliable.'}
+  $('#resultTag').textContent = tag;
+  $('#resultText').textContent = txt;
+  resultOverlay.classList.remove('hide');
+  burstSparkles();
+}
+
+function burstSparkles(){
+  const s = $('#sparkles'); s.innerHTML='';
+  for(let i=0;i<46;i++){
+    const p=document.createElement('span');
+    p.className='spark';
+    p.style.left='50%'; p.style.top='42%';
+    p.style.setProperty('--dx', `${(Math.random()*520-260)}px`);
+    p.style.setProperty('--dy', `${(Math.random()*340-170)}px`);
+    p.style.animationDelay = (Math.random()*0.25)+'s';
+    p.style.background = `radial-gradient(circle, #fff, ${pick(Math.random, ['#82f7d6','#ffd36e','#7ce8ff','#ff9cc2'])})`;
+    s.appendChild(p);
+  }
+}
+
+$$('.level').forEach(btn=>btn.addEventListener('click',()=>{
+  $$('.level').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  app.level = btn.dataset.level;
+  const text = {
+    gentle:'3 differences, larger hints, slower pace.',
+    steady:'4 differences, balanced subtlety, moderate timer.',
+    expert:'5 differences, finer changes, faster pressure.'
+  };
+  $('#levelText').textContent = text[app.level];
+}));
+
+$('#startBtn').onclick = startSession;
+$('#introStart').onclick = ()=>{introOverlay.classList.add('hide'); startSession();};
+$('#helpStart').onclick = ()=>{helpOverlay.classList.add('hide'); introOverlay.classList.add('hide'); startSession();};
+$('#nextBtn').onclick = ()=> nextRound();
+$('#restartBtn').onclick = ()=> startSession();
+$('#playAgainBtn').onclick = ()=>{resultOverlay.classList.add('hide'); startSession();};
+$('#closeResultBtn').onclick = ()=> resultOverlay.classList.add('hide');
+$('#howBtn').onclick = ()=> helpOverlay.classList.remove('hide');
+$('#closeHelp').onclick = ()=> helpOverlay.classList.add('hide');
+window.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){helpOverlay.classList.add('hide');resultOverlay.classList.add('hide')}
+  if(e.key.toLowerCase()==='r') startSession();
+  if(e.key.toLowerCase()==='n') nextRound();
+});
+
+buildParticles();
+buildHeroArt();
+updateHUD();
+setStatus('Choose a difficulty, then start.');
+</script>
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Visual Difference Detector V2";</script>
+  <script src="bhava-session.js"></script>
+</body>
+</html>

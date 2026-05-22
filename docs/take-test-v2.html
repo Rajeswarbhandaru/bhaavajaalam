@@ -500,6 +500,7 @@ function showXP(txt){
 }
 
 function showResults(){
+  BhavaSession.end(Math.round((document.querySelectorAll(".ans-btn.correct").length / Math.max(1, document.querySelectorAll(".ans-btn").length)) * 100)); // Bhava auto-tracked
   show("sResult");
   launchConfetti();
   const iq=scores.iq,eq=scores.eq,sq=scores.sq;
@@ -594,5 +595,9 @@ function restartTest(){
   </script>
   <!-- End Bhava Game Menu -->
 
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Take Test V2";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

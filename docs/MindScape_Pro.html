@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧠 MindScape Pro — Imagination & Analytical Intelligence</title>
+<title>MindSpark IQ</title>
 <style>
 :root {
   --bg:#07071a; --card:#10102a; --border:#1e1e40;
@@ -786,6 +786,7 @@ function nextRound(){
 }
 
 function endGame(){
+  BhavaSession.end(score); // Bhava auto-tracked
   clearInterval(timerInt);sfxEnd();
   const cfg=DIFF_CFG[currentDiff];
   const maxPts=cfg.totalRounds*28*cfg.ptMul;
@@ -831,5 +832,9 @@ window.onload=function(){
   showScreen('home-screen');
 };
 </script>
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Mindscape Pro";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

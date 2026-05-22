@@ -2,237 +2,247 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day Hero &#11088;</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Day Hero</title>
+<link href="https://api.fontshare.com/v2/css?f[]=chillax@400,500,600,700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Nunito',sans-serif;overflow-x:hidden;min-height:100vh;background:#1a1a2e}
+:root{
+  --yellow:#ffd200;--orange:#f7971e;--green:#38ef7d;--blue:#4ecdc4;--purple:#c850c0;
+  --red:#ff6b6b;--dark:#1a1a2e;--white:#fff;
+  --radius-card:28px;--radius-btn:50px;
+  --font:'Chillax',system-ui,sans-serif;
+}
+html,body{height:100%;overflow-x:hidden}
+body{font-family:var(--font);background:var(--dark);color:#fff;min-height:100vh}
 
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-@keyframes bounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-20px)}60%{transform:translateY(-8px)}}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-9px)}75%{transform:translateX(9px)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideRight{from{opacity:0;transform:translateX(-50px)}to{opacity:1;transform:translateX(0)}}
-@keyframes popIn{0%{transform:scale(0) rotate(-10deg);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
-@keyframes confettiFall{0%{top:-14px;transform:rotate(0deg)}100%{top:110vh;transform:rotate(720deg)}}
-@keyframes starFloat{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-90px) scale(.3);opacity:0}}
-@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+/* ===== KEYFRAMES ===== */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-22px)}60%{transform:translateY(-8px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{0%{transform:scale(0) rotate(-15deg);opacity:0}70%{transform:scale(1.18)}100%{transform:scale(1);opacity:1}}
+@keyframes confettiFall{0%{top:-20px;transform:rotate(0deg);opacity:1}90%{opacity:1}100%{top:110vh;transform:rotate(720deg);opacity:0}}
+@keyframes starFloat{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-100px) scale(0);opacity:0}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
 @keyframes shimmer{0%,100%{opacity:1}50%{opacity:.6}}
-@keyframes walkIn{from{transform:translateX(-80px);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes dayFill{from{width:0}to{width:var(--fill)}}
+@keyframes ringPop{0%{transform:scale(0);opacity:1}100%{transform:scale(3);opacity:0}}
+@keyframes scoreUp{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-60px);opacity:0}}
+@keyframes wiggle{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(255,210,0,.5)}50%{box-shadow:0 0 24px 8px rgba(255,210,0,.3)}}
+@keyframes coinSpin{0%{transform:scaleX(1)}50%{transform:scaleX(0.1)}100%{transform:scaleX(1)}}
+@keyframes heartbeat{0%,100%{transform:scale(1)}14%{transform:scale(1.3)}28%{transform:scale(1)}}
+@keyframes bvFadeIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 
-.screen{display:none;min-height:100vh;width:100%;align-items:center;justify-content:center;flex-direction:column;padding:20px;text-align:center}
+/* ===== SCREENS ===== */
+.screen{display:none;min-height:100vh;width:100%;align-items:center;justify-content:center;flex-direction:column;padding:20px;text-align:center;position:relative;overflow:hidden}
 .screen.active{display:flex;animation:fadeUp .5s ease forwards}
 
 /* ===== INTRO ===== */
-#intro{background:linear-gradient(145deg,#f7971e 0%,#ffd200 60%,#f7971e 100%);position:relative;overflow:hidden}
-.sun{position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.4),transparent);border-radius:50%;animation:shimmer 3s ease-in-out infinite}
-.ground{position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(180deg,#7ec850,#5a9e3a);border-radius:60% 60% 0 0 / 30px}
-.intro-mascot{font-size:88px;animation:float 2.5s ease-in-out infinite;filter:drop-shadow(0 8px 18px rgba(0,0,0,.2));margin-bottom:12px;position:relative;z-index:2}
-.intro-title{font-size:clamp(38px,8vw,66px);font-weight:900;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.25);line-height:1.05;margin-bottom:8px;position:relative;z-index:2}
-.intro-sub{font-size:clamp(14px,3vw,19px);color:rgba(255,255,255,.9);margin-bottom:32px;max-width:420px;line-height:1.6;position:relative;z-index:2}
-.badges{display:flex;gap:12px;color:rgba(255,255,255,.9);font-size:13px;font-weight:700;margin-top:24px;flex-wrap:wrap;justify-content:center;position:relative;z-index:2}
-.badge{background:rgba(255,255,255,.25);padding:6px 16px;border-radius:30px;backdrop-filter:blur(4px)}
+#intro{background:linear-gradient(145deg,#f7971e 0%,#ffd200 55%,#f7971e 100%)}
+.i-sun{position:absolute;top:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.45),transparent);border-radius:50%;animation:shimmer 3s ease-in-out infinite}
+.i-ground{position:absolute;bottom:0;left:0;right:0;height:90px;background:linear-gradient(180deg,#7ec850,#5a9e3a);border-radius:60% 60% 0 0 / 30px}
+.i-cloud{position:absolute;background:rgba(255,255,255,.5);border-radius:50px}
+.i-cloud1{width:90px;height:36px;top:18%;left:8%}
+.i-cloud2{width:120px;height:44px;top:28%;right:6%}
+.i-mascot{font-size:100px;animation:float 2.5s ease-in-out infinite;filter:drop-shadow(0 10px 22px rgba(0,0,0,.22));margin-bottom:8px;position:relative;z-index:2}
+.i-title{font-size:clamp(44px,10vw,72px);font-weight:700;color:#fff;text-shadow:0 4px 22px rgba(0,0,0,.25);line-height:1;margin-bottom:6px;position:relative;z-index:2}
+.i-badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px;position:relative;z-index:2}
+.i-badge{background:rgba(255,255,255,.28);padding:8px 18px;border-radius:30px;font-size:14px;font-weight:600;backdrop-filter:blur(4px);color:rgba(255,255,255,.95);display:flex;align-items:center;gap:5px}
 .fstars{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
 .fstar{position:absolute;bottom:-20px;animation:starFloat linear infinite}
 
-.btn-play{background:#fff;color:#f7971e;font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;padding:15px 52px;border:none;border-radius:50px;cursor:pointer;box-shadow:0 8px 28px rgba(0,0,0,.2);transition:transform .2s,box-shadow .2s;position:relative;z-index:2}
-.btn-play:hover{transform:scale(1.06) translateY(-2px);box-shadow:0 14px 36px rgba(0,0,0,.28)}
-.btn-play:active{transform:scale(.97)}
+.btn-play{background:#fff;color:#f7971e;font-family:var(--font);font-size:24px;font-weight:700;padding:18px 60px;border:none;border-radius:50px;cursor:pointer;box-shadow:0 10px 32px rgba(0,0,0,.22);transition:transform .2s,box-shadow .2s;position:relative;z-index:2;margin-top:20px;animation:glow 2s ease-in-out infinite}
+.btn-play:hover{transform:scale(1.07) translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.btn-play:active{transform:scale(.96)}
 
 /* ===== HUD ===== */
-#hud{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(0,0,0,.38);backdrop-filter:blur(14px);padding:10px 18px;display:none;align-items:center;justify-content:space-between;gap:10px}
-.h-left{display:flex;flex-direction:column;gap:3px}
-.h-lbl{font-size:10px;font-weight:800;color:rgba(255,255,255,.5);letter-spacing:1.2px;text-transform:uppercase}
-.h-dots{display:flex;gap:7px;align-items:center}
-.hdot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.22);transition:all .35s}
-.hdot.done{background:#ffd200}
-.hdot.now{background:#fff;width:25px;border-radius:5px;animation:pulse 1s infinite}
-.h-right{display:flex;align-items:center;gap:12px}
-.h-bar-wrap{width:80px;height:8px;background:rgba(255,255,255,.18);border-radius:4px;overflow:hidden}
-.h-bar{height:100%;background:linear-gradient(90deg,#f7971e,#ffd200);border-radius:4px;transition:width .6s ease}
-.h-score{color:#ffd200;font-weight:900;font-size:18px;text-shadow:0 2px 6px rgba(0,0,0,.3)}
+#hud{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(0,0,0,.42);backdrop-filter:blur(16px);padding:10px 16px;display:none;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid rgba(255,255,255,.08)}
+.hud-prog{display:flex;gap:8px;align-items:center}
+.hdot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.2);transition:all .4s}
+.hdot.done{background:var(--yellow);box-shadow:0 0 8px var(--yellow)}
+.hdot.now{background:#fff;width:28px;border-radius:6px;animation:pulse 1s infinite}
+.hud-right{display:flex;align-items:center;gap:14px}
+.h-stars{display:flex;align-items:center;gap:5px;font-size:22px;font-weight:700;color:var(--yellow);text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.h-stars span{font-size:13px;color:rgba(255,255,255,.6);font-weight:600}
+
+/* streak badge */
+.streak-badge{background:linear-gradient(135deg,#ff6b6b,#ffd200);border-radius:30px;padding:4px 12px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px}
 
 /* ===== GAME ===== */
-#game{justify-content:flex-start;padding-top:74px}
-#wrap{max-width:600px;width:100%;padding:0 16px 50px}
+#game{justify-content:flex-start;padding-top:76px}
+#wrap{max-width:600px;width:100%;padding:0 14px 60px}
 
 /* ===== CARD ===== */
-.card{background:#fff;border-radius:28px;padding:26px 22px;box-shadow:0 18px 54px rgba(0,0,0,.3);animation:fadeUp .45s ease}
-.clabel{font-size:11px;font-weight:800;letter-spacing:1.6px;color:rgba(255,255,255,.5);margin-bottom:12px;text-align:center;text-transform:uppercase}
+.card{background:#fff;border-radius:var(--radius-card);padding:22px 18px 24px;box-shadow:0 20px 60px rgba(0,0,0,.35);animation:fadeUp .4s ease;color:#222}
+.phase-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:30px;padding:6px 16px;font-size:12px;font-weight:600;letter-spacing:.5px;margin-bottom:10px;backdrop-filter:blur(4px)}
 
-/* scene visual */
-.scene-stage{border-radius:18px;padding:18px 16px;margin-bottom:14px;display:flex;align-items:flex-end;justify-content:center;gap:14px;flex-wrap:wrap;min-height:120px;position:relative;overflow:hidden}
-.cblk{display:flex;flex-direction:column;align-items:center;gap:7px}
-.cemoji{font-size:clamp(48px,11vw,64px);animation:float 3s ease-in-out infinite;filter:drop-shadow(0 4px 10px rgba(0,0,0,.15))}
-.cemoji2{animation-delay:-1.6s}
-.cname{background:rgba(255,255,255,.9);border-radius:20px;padding:3px 12px;font-size:12px;font-weight:800;color:#444}
-.time-tag{position:absolute;top:10px;right:12px;background:rgba(0,0,0,.25);color:#fff;font-size:12px;font-weight:800;padding:4px 12px;border-radius:20px;backdrop-filter:blur(4px)}
-.sit{font-size:16px;font-weight:700;color:#222;margin-bottom:14px;line-height:1.55}
-.stitle{font-size:19px;font-weight:900;color:#222;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.info-box{border-radius:14px;padding:13px 16px;margin-bottom:14px}
-.ib-lbl{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
-.ib-txt{font-size:14px;font-weight:600;color:#333;line-height:1.6}
+/* scene */
+.scene-stage{border-radius:18px;padding:16px;margin-bottom:14px;display:flex;align-items:flex-end;justify-content:center;gap:18px;flex-wrap:wrap;min-height:130px;position:relative;overflow:hidden}
+.cblk{display:flex;flex-direction:column;align-items:center;gap:6px}
+.cemoji{font-size:clamp(50px,12vw,68px);animation:float 3s ease-in-out infinite;filter:drop-shadow(0 5px 12px rgba(0,0,0,.18))}
+.cemoji2{animation-delay:-1.5s}
+.cname{background:rgba(255,255,255,.9);border-radius:20px;padding:3px 13px;font-size:11px;font-weight:700;color:#333}
+.time-tag{position:absolute;top:10px;left:12px;background:rgba(0,0,0,.28);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;backdrop-filter:blur(4px)}
+.sit-text{font-size:15px;font-weight:600;color:#333;margin-bottom:12px;line-height:1.55}
 
-/* responsibility detect */
-.rq{font-size:clamp(16px,3.8vw,20px);font-weight:900;color:#222;margin-bottom:18px;line-height:1.35}
-.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.rbtn{background:#f8f8f8;border:3px solid #eee;border-radius:18px;padding:14px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .2s;font-family:'Nunito',sans-serif}
-.rbtn:hover{border-color:#f7971e;transform:scale(1.04);box-shadow:0 5px 16px rgba(247,151,30,.22)}
-.rbtn .re{font-size:36px}
-.rbtn .rl{font-size:13px;font-weight:800;color:#555;text-align:center;line-height:1.3}
-.rbtn.correct{border-color:#00c853 !important;background:#e8f5e9;animation:bounce .55s}
-.rbtn.wrong{border-color:#ff1744 !important;background:#ffebee;animation:shake .45s}
+/* Reduced info box — icon + short text only */
+.mini-info{display:flex;align-items:center;gap:10px;border-radius:14px;padding:12px 14px;margin-bottom:14px}
+.mi-ico{font-size:30px;flex-shrink:0}
+.mi-txt{font-size:13px;font-weight:600;color:#444;line-height:1.5}
 
-/* reveal */
-.reveal-box{border-radius:14px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;animation:slideRight .5s ease}
-.rev-lbl{font-size:11px;opacity:.75;font-weight:700;text-transform:uppercase;letter-spacing:1px}
-.rev-txt{font-size:15px;font-weight:800}
+/* ===== RESPONSIBILITY GRID ===== */
+.rq-label{font-size:16px;font-weight:700;color:#222;margin-bottom:14px;text-align:center}
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:12px}
+.rbtn{background:#f7f7f7;border:3px solid #eee;border-radius:20px;padding:18px 10px 14px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;transition:all .22s;font-family:var(--font);position:relative;overflow:hidden}
+.rbtn:hover{border-color:var(--orange);transform:scale(1.05);box-shadow:0 6px 18px rgba(247,151,30,.25)}
+.rbtn:active{transform:scale(.96)}
+.rbtn .re{font-size:42px;display:block}
+.rbtn .rl{font-size:12px;font-weight:700;color:#555;text-align:center;line-height:1.3}
+.rbtn.correct{border-color:#00c853!important;background:#e8f5e9!important;animation:bounce .55s}
+.rbtn.wrong{border-color:#ff1744!important;background:#ffebee!important;animation:shake .45s}
+.rbtn.glow-correct{animation:glow .6s ease}
 
-/* choice */
-.cq{font-size:clamp(15px,3.5vw,19px);font-weight:900;color:#222;margin-bottom:16px;line-height:1.35}
+/* ===== CHOICE BUTTONS ===== */
 .choices{display:flex;flex-direction:column;gap:10px}
-.chbtn{background:#f8f8f8;border:3px solid #eee;border-radius:16px;padding:15px 18px;cursor:pointer;display:flex;align-items:flex-start;gap:14px;text-align:left;transition:all .2s;font-family:'Nunito',sans-serif;width:100%}
-.chbtn:hover{border-color:#f7971e;transform:translateX(5px);box-shadow:0 5px 16px rgba(247,151,30,.2)}
-.ci{font-size:26px;min-width:34px;margin-top:2px}
-.ct{font-size:14px;font-weight:800;color:#333;line-height:1.4}
+.chbtn{background:#f7f7f7;border:3px solid #eee;border-radius:18px;padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:14px;text-align:left;transition:all .22s;font-family:var(--font);width:100%}
+.chbtn:hover{border-color:var(--orange);transform:translateX(6px);box-shadow:0 5px 16px rgba(247,151,30,.22)}
+.chbtn:active{transform:translateX(2px)}
+.ci{font-size:30px;min-width:36px}
+.ct{font-size:13px;font-weight:700;color:#333;line-height:1.4}
+.chbtn.ch-good{border-color:#00c853!important;background:#e8f5e9!important;animation:bounce .5s}
+.chbtn.ch-bad{border-color:#ff1744!important;background:#ffebee!important;animation:shake .4s}
 
-/* result */
-.rvis{border-radius:18px;padding:20px;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:14px;min-height:100px}
-.rfrom{font-size:50px}
-.rarrow{font-size:26px;font-weight:900}
-.rto{font-size:50px;animation:popIn .6s ease forwards}
-.rmsg{font-size:15px;font-weight:700;color:#333;margin-bottom:14px;line-height:1.55}
-.lesson-box{border-radius:16px;padding:18px;margin-bottom:14px;color:#fff}
-.lb-lbl{font-size:10px;opacity:.75;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:5px}
-.lb-txt{font-size:14px;font-weight:700;line-height:1.55}
-.star-row{display:flex;align-items:center;justify-content:center;gap:8px;font-size:22px;margin-bottom:16px}
+/* ===== MATCH ACTIVITY ===== */
+.match-title{font-size:15px;font-weight:700;color:#222;margin-bottom:14px;text-align:center}
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match-left,.match-right{display:flex;flex-direction:column;gap:8px}
+.match-item{border-radius:14px;padding:12px 10px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;line-height:1.3;transition:all .22s;user-select:none}
+.match-scenario{background:#f0f4ff;border:2px solid #c7d4ff;color:#333;font-size:13px}
+.match-resp{background:#fff7e0;border:2px solid #ffe082;color:#333}
+.match-item:hover{transform:scale(1.03);box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.match-item.selected{border-color:var(--orange);background:#fff3e0;transform:scale(1.04)}
+.match-item.matched{border-color:#00c853;background:#e8f5e9;pointer-events:none}
+.match-item.wrong-flash{animation:shake .4s;border-color:#ff1744;background:#ffebee}
+.match-emoji{font-size:24px;flex-shrink:0}
 
-.btn-next{color:#fff;font-family:'Nunito',sans-serif;font-size:18px;font-weight:900;padding:14px 38px;border:none;border-radius:50px;cursor:pointer;transition:transform .2s;width:100%}
-.btn-next:hover{transform:scale(1.04)}
+/* ===== SORT ACTIVITY ===== */
+.sort-instr{font-size:13px;font-weight:600;color:#888;margin-bottom:12px;text-align:center}
+.sort-list{display:flex;flex-direction:column;gap:8px}
+.sort-item{background:#f7f7f7;border:2px solid #eee;border-radius:14px;padding:12px 14px;cursor:grab;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:#333;transition:all .2s;user-select:none}
+.sort-item:active{cursor:grabbing;transform:scale(1.03);background:#fff9e0;border-color:var(--orange)}
+.sort-item.drag-over{border-color:var(--blue);background:#e3f6f8}
+.sort-item .sort-e{font-size:28px}
+.sort-item .sort-rank{width:26px;height:26px;background:var(--orange);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
 
-/* feedback */
-.fb{border-radius:14px;padding:13px 16px;text-align:center;margin-top:12px}
-.fb.good{background:#e8f5e9}
-.fb.bad{background:#fff3e0}
-.fb-ico{font-size:26px;margin-bottom:5px}
-.fb-hd{font-size:14px;font-weight:900}
-.fb-sub{font-size:12px;color:#666;margin-top:3px;line-height:1.4}
+/* ===== RESULT ===== */
+.rvis{border-radius:18px;padding:18px;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:16px;min-height:110px}
+.rfrom{font-size:54px}
+.rarrow{font-size:28px;font-weight:900;animation:pulse 1s infinite}
+.rto{font-size:54px;animation:popIn .6s ease forwards}
+.rmsg{font-size:14px;font-weight:600;color:#444;margin-bottom:14px;line-height:1.6}
+.lesson-card{border-radius:16px;padding:16px;margin-bottom:14px;color:#fff;display:flex;gap:12px;align-items:flex-start}
+.lesson-ico{font-size:32px;flex-shrink:0}
+.lesson-txt{font-size:13px;font-weight:600;line-height:1.6}
+.star-row{display:flex;align-items:center;justify-content:center;gap:8px;font-size:28px;margin-bottom:14px}
+
+/* ===== FEEDBACK BUBBLE ===== */
+.fb{border-radius:14px;padding:12px 16px;text-align:center;margin-top:10px;animation:fadeUp .4s ease}
+.fb.good{background:#e8f5e9;border:2px solid #a5d6a7}
+.fb.bad{background:#fff3e0;border:2px solid #ffcc80}
+.fb-ico{font-size:32px;margin-bottom:4px}
+.fb-hd{font-size:15px;font-weight:800}
 .fb.good .fb-hd{color:#2e7d32}
 .fb.bad .fb-hd{color:#e65100}
+.fb-sub{font-size:12px;color:#666;margin-top:3px}
+
+/* Score pop */
+.score-pop{position:fixed;font-size:28px;font-weight:900;color:var(--yellow);text-shadow:0 2px 8px rgba(0,0,0,.3);pointer-events:none;z-index:9999;animation:scoreUp 1.2s ease forwards}
+
+/* Ring pop */
+.ring-pop{position:fixed;width:80px;height:80px;border:4px solid var(--yellow);border-radius:50%;pointer-events:none;z-index:9998;animation:ringPop .8s ease forwards}
+
+/* ===== BTN NEXT ===== */
+.btn-next{color:#fff;font-family:var(--font);font-size:18px;font-weight:700;padding:15px 38px;border:none;border-radius:50px;cursor:pointer;transition:transform .2s,box-shadow .2s;width:100%}
+.btn-next:hover{transform:scale(1.04);box-shadow:0 8px 22px rgba(0,0,0,.22)}
+.btn-next:active{transform:scale(.97)}
 
 /* ===== END ===== */
-#end{background:linear-gradient(145deg,#f7971e 0%,#ffd200 60%,#f7971e 100%);position:relative;overflow:hidden}
-.end-sun{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:260px;height:260px;background:radial-gradient(circle,rgba(255,255,255,.35),transparent);border-radius:50%;pointer-events:none}
-.cert{background:#fff;border-radius:30px;padding:34px 26px;max-width:480px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);position:relative;z-index:2}
-.c-emoji{font-size:72px;animation:bounce 1.2s ease infinite;margin-bottom:10px}
-.c-title{font-size:15px;font-weight:700;color:#aaa;margin-bottom:3px}
-.c-rank{font-size:clamp(20px,5.5vw,28px);font-weight:900;color:#f7971e;margin-bottom:6px;line-height:1.2}
-.c-stars{font-size:28px;margin-bottom:8px}
-.c-score{font-size:17px;font-weight:800;color:#444;margin-bottom:16px}
+#end{background:linear-gradient(145deg,#f7971e 0%,#ffd200 55%,#f7971e 100%)}
+.end-sun{position:absolute;top:-90px;left:50%;transform:translateX(-50%);width:280px;height:280px;background:radial-gradient(circle,rgba(255,255,255,.38),transparent);border-radius:50%;pointer-events:none}
+.cert{background:#fff;border-radius:30px;padding:30px 22px;max-width:480px;width:100%;box-shadow:0 22px 64px rgba(0,0,0,.28);position:relative;z-index:2}
+.c-emoji{font-size:78px;animation:bounce 1.2s ease infinite;margin-bottom:8px}
+.c-rank{font-size:clamp(22px,5.5vw,30px);font-weight:700;color:var(--orange);margin-bottom:4px}
+.c-stars-row{font-size:30px;margin-bottom:6px}
+.c-score{font-size:16px;font-weight:700;color:#555;margin-bottom:16px}
 .c-bar-wrap{background:#eee;border-radius:8px;height:14px;margin-bottom:18px;overflow:hidden}
 .c-bar{height:100%;background:linear-gradient(90deg,#f7971e,#ffd200);border-radius:8px;transition:width 1.5s ease}
-.resp-list{background:rgba(247,151,30,.08);border:2px solid rgba(247,151,30,.2);border-radius:16px;padding:16px;margin-bottom:16px;text-align:left}
-.resp-list h3{font-size:14px;font-weight:900;color:#e65100;margin-bottom:10px}
-.resp-item{font-size:13px;color:#444;line-height:1.6;margin-bottom:6px}
-.c-msg{font-size:14px;color:#666;line-height:1.6;margin-bottom:20px}
-.btn-replay{font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;padding:13px 28px;border:none;border-radius:50px;cursor:pointer;transition:transform .2s;width:100%;color:#fff;background:linear-gradient(135deg,#f7971e,#ffd200)}
+.resp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;text-align:left}
+.resp-card{background:#fff9ee;border-radius:14px;padding:12px;border:2px solid rgba(247,151,30,.2)}
+.rc-ico{font-size:28px;margin-bottom:4px}
+.rc-name{font-size:12px;font-weight:800;color:#e65100}
+.rc-tip{font-size:11px;color:#666;line-height:1.4;margin-top:2px}
+.c-msg{font-size:13px;color:#666;line-height:1.6;margin-bottom:18px}
+.btn-replay{font-family:var(--font);font-size:16px;font-weight:700;padding:14px 28px;border:none;border-radius:50px;cursor:pointer;transition:transform .2s;width:100%;color:#fff;background:linear-gradient(135deg,#f7971e,#ffd200);box-shadow:0 6px 20px rgba(0,0,0,.2)}
 .btn-replay:hover{transform:scale(1.05)}
 
 /* confetti */
-.cp{position:fixed;top:-14px;pointer-events:none;z-index:999;animation:confettiFall linear forwards}
+.cp{position:fixed;top:-20px;pointer-events:none;z-index:9990;animation:confettiFall linear forwards;border-radius:3px}
 
-/* scene backgrounds — time of day */
+/* ===== SCENE BGs ===== */
 .bg-morning{background:linear-gradient(135deg,#ffecd2,#fcb69f)}
 .bg-school{background:linear-gradient(135deg,#a1c4fd,#c2e9fb)}
 .bg-afternoon{background:linear-gradient(135deg,#d4fc79,#96e6a1)}
 .bg-evening{background:linear-gradient(135deg,#fbc2eb,#a6c1ee)}
 .bg-night{background:linear-gradient(135deg,#2c3e50,#4a6fa5)}
+.gbg1{background:linear-gradient(145deg,#7f4a00,#c47a1e,#e8a020)!important}
+.gbg2{background:linear-gradient(145deg,#0d2b5e,#1a4080,#1565c0)!important}
+.gbg3{background:linear-gradient(145deg,#1a3a0d,#2d6b1a,#388e3c)!important}
+.gbg4{background:linear-gradient(145deg,#3a0d4a,#6b1a7a,#8e1fa2)!important}
+.gbg5{background:linear-gradient(145deg,#0a0e1a,#141c33,#1a2550)!important}
+.gbg6{background:linear-gradient(145deg,#1a0d2e,#2d1a50,#3d2470)!important}
+.gbg7{background:linear-gradient(145deg,#0d2e1a,#1a5030,#1e6b3c)!important}
 
-/* game screen bg per scenario */
-.gbg1{background:linear-gradient(145deg,#7f4a00,#c47a1e,#e8a020) !important}
-.gbg2{background:linear-gradient(145deg,#0d2b5e,#1a4080,#1565c0) !important}
-.gbg3{background:linear-gradient(145deg,#1a3a0d,#2d6b1a,#388e3c) !important}
-.gbg4{background:linear-gradient(145deg,#3a0d4a,#6b1a7a,#8e1fa2) !important}
-.gbg5{background:linear-gradient(145deg,#0a0e1a,#141c33,#1a2550) !important}
+/* Bhava menu */
+.bv-menu-btn{position:fixed;top:14px;right:16px;z-index:9999;background:#3b5bdb;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.bv-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:10000;justify-content:center;align-items:center}
+.bv-overlay.active{display:flex}
+.bv-box{background:#fff;border-radius:14px;padding:24px;width:270px;box-shadow:0 8px 32px rgba(0,0,0,.25);animation:bvFadeIn .2s ease}
+.bv-box h3{text-align:center;margin:0 0 16px;color:#333;font-size:18px}
+.bv-box a{display:block;padding:13px 0;border-bottom:1px solid #eee;color:#333;text-decoration:none;font-size:16px;cursor:pointer}
+.bv-box a:last-child{border-bottom:none;color:#e53}
+.bv-box a:hover{color:#3b5bdb}
 
-@media(max-width:400px){.rgrid{grid-template-columns:1fr 1fr}.cemoji{font-size:44px!important}}
+@media(max-width:380px){.rgrid{grid-template-columns:1fr 1fr}.cemoji{font-size:44px!important}.rbtn .re{font-size:34px}}
 </style>
-
-  <!-- Bhava Game Menu - Auto Injected -->
-  <style>
-    .bv-menu-btn {
-      position: fixed; top: 14px; right: 16px; z-index: 9999;
-      background: #3b5bdb; color: white; border: none;
-      border-radius: 8px; padding: 8px 14px;
-      font-size: 20px; cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-    .bv-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.45); z-index: 10000;
-      justify-content: center; align-items: center;
-    }
-    .bv-overlay.active { display: flex; }
-    .bv-box {
-      background: white; border-radius: 14px;
-      padding: 24px; width: 270px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-      animation: bvFadeIn 0.2s ease;
-    }
-    @keyframes bvFadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-    .bv-box h3 {
-      text-align: center; margin: 0 0 16px;
-      color: #333; font-size: 18px;
-    }
-    .bv-box a {
-      display: block; padding: 13px 0;
-      border-bottom: 1px solid #eee;
-      color: #333; text-decoration: none; font-size: 16px;
-      cursor: pointer;
-    }
-    .bv-box a:last-child { border-bottom: none; color: #e53; }
-    .bv-box a:hover { color: #3b5bdb; }
-  </style>
-  <!-- End Bhava Game Menu CSS -->
-
 </head>
 <body>
 
 <!-- INTRO -->
 <div class="screen active" id="intro">
-  <div class="sun"></div>
-  <div class="ground"></div>
+  <div class="i-sun"></div>
+  <div class="i-ground"></div>
+  <div class="i-cloud i-cloud1"></div>
+  <div class="i-cloud i-cloud2"></div>
   <div class="fstars" id="fstars"></div>
-  <div class="intro-mascot">&#129464;</div>
-  <h1 class="intro-title">Day Hero!</h1>
-  <p class="intro-sub">Level up your real life! Tackle daily challenges, own your responsibilities, and become the hero of your own story. &#11088;</p>
-  <button class="btn-play" id="playBtn">&#9654;&nbsp; Let's Go!</button>
-  <div class="badges">
-    <span class="badge">&#127971; Ages 7&ndash;14</span>
-    <span class="badge">&#9728;&#65039; Full Day Journey</span>
-    <span class="badge">&#11088; Earn Stars</span>
-    <span class="badge">&#127942; Win Your Badge</span>
+  <div class="i-mascot">🦸</div>
+  <div class="i-title">Day Hero!</div>
+  <div class="i-badges">
+    <div class="i-badge">🏫 Ages 7–14</div>
+    <div class="i-badge">☀️ Full Day</div>
+    <div class="i-badge">⭐ Earn Stars</div>
+    <div class="i-badge">🏆 Win Badge</div>
   </div>
+  <button class="btn-play" id="playBtn">▶ Let's Go!</button>
 </div>
 
 <!-- HUD -->
 <div id="hud">
-  <div class="h-left">
-    <div class="h-lbl">Your Day</div>
-    <div class="h-dots" id="hdots"></div>
-  </div>
-  <div class="h-right">
-    <div>
-      <div class="h-lbl">Responsibility</div>
-      <div class="h-bar-wrap"><div class="h-bar" id="hbar" style="width:0%"></div></div>
-    </div>
-    <div class="h-score" id="hscore">&#11088; 0</div>
+  <div class="hud-prog" id="hdots"></div>
+  <div class="hud-right">
+    <div class="streak-badge" id="streakBadge" style="display:none">🔥 <span id="streakNum">0</span></div>
+    <div class="h-stars">⭐ <span id="hscore">0</span></div>
   </div>
 </div>
 
@@ -247,457 +257,742 @@ body{font-family:'Nunito',sans-serif;overflow-x:hidden;min-height:100vh;backgrou
   <div class="cert" id="cert"></div>
 </div>
 
+<!-- Bhava Menu -->
+<button class="bv-menu-btn" onclick="bvOpenMenu()">☰</button>
+<div class="bv-overlay" id="bvOverlay" onclick="bvCloseMenu()">
+  <div class="bv-box" onclick="event.stopPropagation()">
+    <h3>☰ Menu</h3>
+    <a href="/index.html">🏠 Home</a>
+    <a href="/about.html">ℹ️ About</a>
+    <a href="/feedback.html">📝 Feedback</a>
+    <a onclick="history.back()">← Go Back</a>
+    <a onclick="bvCloseMenu()">✕ Close</a>
+  </div>
+</div>
+
 <script>
+// ============ SOUND ENGINE ============
+var AudioCtx = window.AudioContext || window.webkitAudioContext;
+var actx = null;
+function ensureAudio() {
+  if (!actx) { try { actx = new AudioCtx(); } catch(e) {} }
+  if (actx && actx.state === 'suspended') actx.resume();
+}
+function playTone(type, freq, dur, vol, delay) {
+  ensureAudio(); if (!actx) return;
+  try {
+    var o = actx.createOscillator();
+    var g = actx.createGain();
+    o.connect(g); g.connect(actx.destination);
+    o.type = type; o.frequency.value = freq;
+    var t = actx.currentTime + (delay || 0);
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(vol || 0.18, t + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.start(t); o.stop(t + dur + 0.05);
+  } catch(e) {}
+}
+function playSuccess() {
+  playTone('triangle',523,.12,.2,0); playTone('triangle',659,.12,.2,.1);
+  playTone('triangle',784,.18,.2,.2); playTone('triangle',1047,.3,.22,.32);
+}
+function playWrong() {
+  playTone('sawtooth',200,.08,.15,0); playTone('sawtooth',150,.15,.15,.09);
+}
+function playClick() {
+  playTone('sine',880,.06,.12,0);
+}
+function playStar() {
+  [0,.07,.14,.21].forEach(function(d,i){
+    playTone('sine',[1047,1175,1319,1568][i],.1,.18,d);
+  });
+}
+function playWin() {
+  var notes=[523,659,784,659,784,1047,784,1047,1319];
+  notes.forEach(function(n,i){ playTone('triangle',n,.18,.2,i*.09); });
+}
+function playMatchPop() {
+  playTone('sine',880,.08,.15,0); playTone('sine',1108,.1,.15,.06);
+}
+function playTick() { playTone('sine',660,.04,.1,0); }
+function playDrag() { playTone('triangle',440,.05,.08,0); }
+
+// ============ DATA ============
 var SC = [
+  // 1. MORNING RUSH
   {
     bg:"bg-morning", gbg:"gbg1",
-    timeTag:"&#127751; 7:00 AM",
-    icon:"&#9728;&#65039;",
-    title:"Rise and Shine",
-    sit:"Your alarm goes off. You stayed up late last night. You have 40 minutes before school. Every second counts.",
-    char:"&#128104;&#8205;&#127979;", charName:"You",
-    env:"&#127968;", envName:"Bedroom",
-    sceneDetail:"Alarm is ringing. Bed is warm. Room is messy. Breakfast has not been made. School bag is not packed.",
-    rq:"Which responsibility is being tested here?",
+    timeTag:"🌅 7:00 AM",
+    icon:"☀️", title:"Rise & Shine",
+    sit:"Alarm rings! 40 minutes to school. Bed is warm. Bag not packed!",
+    char:"🧑‍🎓", charName:"You", env:"🏠", envName:"Bedroom",
+    sceneDetail:"⏰ Alarm ringing · 🛏️ Bed warm · 🎒 Bag not packed · 🍳 No breakfast",
+    type:"detect",
+    rq:"Which responsibility? 🤔",
     correct:2,
-    resps:[
-      {e:"&#128193;",l:"Keeping things organized"},
-      {e:"&#128131;",l:"Being kind to others"},
-      {e:"&#8987;",l:"Managing your own time"},
-      {e:"&#128218;",l:"Completing schoolwork"}
-    ],
-    revealTxt:"This tests TIME MANAGEMENT &#8987; — how you use your own time is your own responsibility.",
-    infoTxt:"Nobody else can manage your morning for you. How you start your day shapes everything that follows.",
-    cq:"Your alarm is ringing. What do you do?",
+    resps:[{e:"📁",l:"Organising"},{e:"💞",l:"Being Kind"},{e:"⏳",l:"Time Mgmt"},{e:"📚",l:"Homework"}],
+    revealTxt:"TIME MANAGEMENT ⏳",
+    infoTxt:"Your morning = your responsibility!",
+    type2:"choice",
+    cq:"Alarm is ringing! What do you do? 🔔",
     choices:[
-      {e:"&#128564;",t:"Hit snooze 3 more times. Someone will wake me eventually.",good:false},
-      {e:"&#127775;",t:"Get up immediately, make the bed, pack bag, eat breakfast and leave on time.",good:true},
-      {e:"&#128169;",t:"Rush out without eating or packing properly — at least I showed up.",good:false}
+      {e:"😴",t:"Snooze 3 more times…",good:false},
+      {e:"🌟",t:"Get up! Pack bag, eat, leave on time!",good:true},
+      {e:"💩",t:"Rush out without breakfast or bag.",good:false}
     ],
-    rgood:{f:"&#128564;",t:"&#129321;",m:"You arrive at school on time, energized, and fully prepared. Your teacher notices. Your day starts with confidence!"},
-    rbad: {f:"&#128564;",t:"&#128542;",m:"Late to school, no breakfast, forgot your homework. The day feels off from the very start."},
-    lesson:"Managing your own time is one of the most powerful skills you will ever build. Your morning routine is YOUR responsibility, no one else's.",
+    rgood:{f:"😴",t:"🤩",m:"On time, energised, fully prepared! Teacher notices. Day starts great! 🎉"},
+    rbad:{f:"😴",t:"😢",m:"Late, no breakfast, forgot homework. Day starts badly! 😞"},
+    lesson:"Own your morning — own your day! ⏳",
     accent:"#f7971e"
   },
+  // 2. BORROWED BOOK
   {
     bg:"bg-school", gbg:"gbg2",
-    timeTag:"&#127979; 10:30 AM",
-    icon:"&#127979;",
-    title:"The Borrowed Book",
-    sit:"Three weeks ago you borrowed your friend Sam's favourite book. Today Sam asks for it back. You have no idea where it is.",
-    char:"&#128104;&#8205;&#127979;", charName:"You",
-    env:"&#128102;", envName:"Sam",
-    sceneDetail:"Sam needs the book for a project due today. They look hopeful. The book is somewhere at home, maybe.",
-    rq:"Which responsibility is being challenged here?",
-    correct:0,
-    resps:[
-      {e:"&#129309;",l:"Being accountable for others' things"},
-      {e:"&#8987;",l:"Managing your time"},
-      {e:"&#127968;",l:"Keeping your space clean"},
-      {e:"&#128131;",l:"Being nice to friends"}
+    timeTag:"🏫 10:30 AM",
+    icon:"🏫", title:"Borrowed Book",
+    sit:"Sam wants the book back. You lost it! 😬",
+    char:"🧑‍🎓", charName:"You", env:"👦", envName:"Sam",
+    sceneDetail:"📖 Sam needs it today · 😟 You lost it · 🕐 Due now",
+    type:"match",
+    matchPairs:[
+      {scenario:{e:"📖",t:"Lost borrowed book"},resp:{e:"🤝",t:"Accountability"}},
+      {scenario:{e:"🏠",t:"Messy bedroom"},resp:{e:"🧹",t:"Own Your Space"}},
+      {scenario:{e:"⏰",t:"Missed alarm"},resp:{e:"⏳",t:"Time Mgmt"}},
+      {scenario:{e:"🐕",t:"Forgot pet food"},resp:{e:"❗",t:"Reliability"}}
     ],
-    revealTxt:"This is about ACCOUNTABILITY &#129309; — taking care of things that belong to others.",
-    infoTxt:"When we borrow something, we accept responsibility for it. Losing it and staying silent damages trust far more than an honest mistake ever could.",
-    cq:"Sam is looking at you, waiting. What do you say?",
+    revealTxt:"ACCOUNTABILITY 🤝",
+    infoTxt:"Own mistakes right away!",
+    type2:"choice",
+    cq:"Sam is waiting… What do you say? 👀",
     choices:[
-      {e:"&#129335;",t:"Pretend you forgot all about it and change the subject.",good:false},
-      {e:"&#129505;",t:"Tell Sam the truth immediately, apologize sincerely and offer to replace it.",good:true},
-      {e:"&#128556;",t:"Say you left it at home and promise to bring it tomorrow, hoping you find it.",good:false}
+      {e:"🙈",t:"Pretend I forgot all about it.",good:false},
+      {e:"💖",t:"Tell the truth, apologise, offer to replace it.",good:true},
+      {e:"😬",t:"Say I'll bring it tomorrow and hope I find it.",good:false}
     ],
-    rgood:{f:"&#128561;",t:"&#129309;",m:"Sam appreciates your honesty more than you expected. You find the book that evening and return it. Sam trusts you more than before!"},
-    rbad: {f:"&#128561;",t:"&#128532;",m:"Sam figures out the truth later. The lie hurt more than losing the book. Trust takes a long time to rebuild."},
-    lesson:"Owning your mistakes immediately is one of the bravest and most respected things you can do. Accountability is the foundation of every good friendship.",
+    rgood:{f:"😱",t:"🤝",m:"Sam appreciates your honesty! You find the book. Trust grows! 💪"},
+    rbad:{f:"😱",t:"😔",m:"Sam finds out the truth later. Trust breaks. 💔"},
+    lesson:"Honesty always wins! 🤝",
     accent:"#1565c0"
   },
+  // 3. MESSY ROOM
   {
     bg:"bg-afternoon", gbg:"gbg3",
-    timeTag:"&#127968; 4:00 PM",
-    icon:"&#127968;",
-    title:"The Messy Deal",
-    sit:"You want to go to your friend's house to play. Dad says: Sure, but clean your room first. Your room looks like a tornado hit it.",
-    char:"&#128104;&#8205;&#127979;", charName:"You",
-    env:"&#128104;", envName:"Dad",
-    sceneDetail:"Clothes on the floor. Books everywhere. Plates from yesterday still on the desk. Friends are waiting.",
-    rq:"What kind of responsibility is this about?",
-    correct:3,
-    resps:[
-      {e:"&#128131;",l:"Being kind at home"},
-      {e:"&#8987;",l:"Being on time"},
-      {e:"&#128218;",l:"Doing schoolwork first"},
-      {e:"&#129309;",l:"Keeping your word and your space"}
+    timeTag:"🏠 4:00 PM",
+    icon:"🏠", title:"Messy Deal",
+    sit:"Dad: clean your room first, THEN go play! But friends are waiting… 😅",
+    char:"🧑‍🎓", charName:"You", env:"👨", envName:"Dad",
+    sceneDetail:"👕 Clothes everywhere · 📚 Books on floor · 🍽️ Yesterday's plates · 🤝 You promised Dad",
+    type:"sort",
+    sortItems:[
+      {e:"🤝",t:"Keep your promise to Dad",order:1},
+      {e:"🧹",t:"Clean the room properly",order:2},
+      {e:"✅",t:"Get Dad's permission",order:3},
+      {e:"🎮",t:"Go play with friends!",order:4}
     ],
-    revealTxt:"This is about KEEPING YOUR WORD &#129309; and taking responsibility for your own space.",
-    infoTxt:"When you agree to a condition, you are making a promise. A responsible person does the hard thing first, even when fun is waiting.",
-    cq:"Friends are calling. Room is a mess. What do you do?",
+    revealTxt:"KEEPING YOUR WORD 🤝",
+    infoTxt:"Do the hard thing first, then enjoy the fun!",
+    type2:"choice",
+    cq:"Room messy, friends calling. What do you do? 🎮",
     choices:[
-      {e:"&#128169;",t:"Shove everything under the bed and in the cupboard. It looks clean enough!",good:false},
-      {e:"&#127775;",t:"Properly clean the room first, then go with full permission and a clear conscience.",good:true},
-      {e:"&#127939;",t:"Sneak out anyway and deal with the consequences later.",good:false}
+      {e:"🙈",t:"Shove everything under the bed — looks clean!",good:false},
+      {e:"🌟",t:"Properly clean first, then go with full permission.",good:true},
+      {e:"🏃",t:"Sneak out and deal with it later.",good:false}
     ],
-    rgood:{f:"&#128542;",t:"&#128516;",m:"You clean the room properly, go out with full permission and enjoy your time completely guilt-free. Dad is proud and trusts you more!"},
-    rbad: {f:"&#128542;",t:"&#128545;",m:"Dad finds out. No going out for a whole week. The shortcut cost far more than the effort of just cleaning up properly."},
-    lesson:"Doing what you agreed to — even when it is inconvenient — is what separates responsible people from unreliable ones. Shortcuts always cost more in the end.",
+    rgood:{f:"😅",t:"😄",m:"Room clean, you go out guilt-free! Dad is proud! 🏆"},
+    rbad:{f:"😅",t:"😠",m:"Dad finds out. No going out for a week! 😢"},
+    lesson:"Shortcuts always cost more! 🤝",
     accent:"#388e3c"
   },
+  // 4. HUNGRY PET
   {
     bg:"bg-evening", gbg:"gbg4",
-    timeTag:"&#127763; 6:00 PM",
-    icon:"&#128021;",
-    title:"The Hungry Pet",
-    sit:"You promised your family you would feed the dog every day. You just realised you forgot for the past two days. The dog is whining by its empty bowl.",
-    char:"&#128104;&#8205;&#127979;", charName:"You",
-    env:"&#128021;", envName:"Bruno",
-    sceneDetail:"The dog bowl is empty. Bruno keeps looking at it, then at you. You feel a knot in your stomach.",
-    rq:"What core responsibility did you fail here?",
+    timeTag:"🌙 6:00 PM",
+    icon:"🐕", title:"Hungry Bruno",
+    sit:"You forgot to feed Bruno for 2 days! 😰 He's whining at his empty bowl.",
+    char:"🧑‍🎓", charName:"You", env:"🐕", envName:"Bruno",
+    sceneDetail:"🍜 Bowl empty · 🥺 Bruno whining · 😰 You feel guilty",
+    type:"detect",
+    rq:"What did you fail? 🤔",
     correct:1,
-    resps:[
-      {e:"&#128193;",l:"Keeping things tidy"},
-      {e:"&#10071;",l:"Being reliable and keeping promises"},
-      {e:"&#128218;",l:"Finishing homework"},
-      {e:"&#8987;",l:"Waking up on time"}
-    ],
-    revealTxt:"This is about RELIABILITY &#10071; — being someone others (and pets!) can genuinely count on.",
-    infoTxt:"Promises to living beings matter the most. Bruno cannot remind you, make food himself or tell anyone he is hungry. He depends entirely on you.",
-    cq:"Bruno is hungry and looking at you. What do you do RIGHT NOW?",
+    resps:[{e:"📁",l:"Tidiness"},{e:"❗",l:"Reliability"},{e:"📚",l:"Homework"},{e:"⏰",l:"Wake Up"}],
+    revealTxt:"RELIABILITY ❗",
+    infoTxt:"Bruno can't remind you — he trusts you completely!",
+    type2:"choice",
+    cq:"Bruno is hungry and looking at you. What now? 🐕",
     choices:[
-      {e:"&#128064;",t:"Wait for Mum or Dad to notice and feed him themselves.",good:false},
-      {e:"&#127775;",t:"Feed Bruno immediately, apologize to the family, set a daily phone reminder so it never happens again.",good:true},
-      {e:"&#129335;",t:"Feed him now but tell no one about the missed days.",good:false}
+      {e:"👁️",t:"Wait for Mum/Dad to notice.",good:false},
+      {e:"🌟",t:"Feed Bruno NOW, apologise, set daily reminder!",good:true},
+      {e:"🤫",t:"Feed him quietly — don't tell anyone.",good:false}
     ],
-    rgood:{f:"&#128557;",t:"&#128522;",m:"Bruno eats happily and wags his tail. Your honesty with the family earns their respect. The reminder you set means it never happens again!"},
-    rbad: {f:"&#128557;",t:"&#128532;",m:"Bruno stays hungry longer. Your family loses trust in your ability to handle responsibilities. The pet care duty is taken away from you."},
-    lesson:"Reliability means showing up even when no one is watching. The people and animals who depend on you deserve someone who keeps their word, every single day.",
+    rgood:{f:"😰",t:"😊",m:"Bruno eats happily! Family trusts you more! 🐾"},
+    rbad:{f:"😰",t:"😔",m:"Bruno stays hungry longer. Duty taken away. 💔"},
+    lesson:"Be reliable — show up even when no one watches! ❗",
     accent:"#8e1fa2"
   },
+  // 5. GROUP PROJECT
   {
     bg:"bg-night", gbg:"gbg5",
-    timeTag:"&#127764; 9:00 PM",
-    icon:"&#128203;",
-    title:"Group Project Crisis",
-    sit:"Your group project is due tomorrow. Your three teammates finished their parts weeks ago. You have not started yours. The whole group's grade depends on everyone contributing.",
-    char:"&#128104;&#8205;&#127979;", charName:"You",
-    env:"&#128101;", envName:"Your Group",
-    sceneDetail:"It is 9 PM. Teammates are texting asking if your part is ready. You stare at a blank page.",
-    rq:"What responsibility principle does this test?",
-    correct:2,
-    resps:[
-      {e:"&#128218;",l:"Studying harder for tests"},
-      {e:"&#128131;",l:"Being kind to classmates"},
-      {e:"&#128101;",l:"Being reliable for people who depend on you"},
-      {e:"&#8987;",l:"Waking up early tomorrow"}
+    timeTag:"🌃 9:00 PM",
+    icon:"📋", title:"Group Crisis",
+    sit:"Project due tomorrow 8AM! Team finished weeks ago. You haven't started. 😱",
+    char:"🧑‍🎓", charName:"You", env:"👥", envName:"Team",
+    sceneDetail:"📱 Teammates texting · 📄 Blank page · ⏰ 9 PM now",
+    type:"match",
+    matchPairs:[
+      {scenario:{e:"👥",t:"Team waiting on you"},resp:{e:"👥",t:"Team Responsibility"}},
+      {scenario:{e:"⏰",t:"Running out of time"},resp:{e:"⏳",t:"Time Management"}},
+      {scenario:{e:"📖",t:"Borrowed and lost"},resp:{e:"🤝",t:"Accountability"}},
+      {scenario:{e:"🐕",t:"Empty pet bowl"},resp:{e:"❗",t:"Reliability"}}
     ],
-    revealTxt:"This is about TEAM RESPONSIBILITY &#128101; — when others depend on you, letting them down has real consequences.",
-    infoTxt:"In a team, your responsibility is not just to yourself. Three people trusted you. Their grade, effort and time are directly connected to what you do tonight.",
-    cq:"It is 9 PM. The project is due at 8 AM tomorrow. What do you do?",
+    revealTxt:"TEAM RESPONSIBILITY 👥",
+    infoTxt:"Your delay affects 3 real people!",
+    type2:"choice",
+    cq:"9 PM. Due at 8 AM. What do you do? ⏰",
     choices:[
-      {e:"&#128565;",t:"Panic, copy something from the internet and say you did your best.",good:false},
-      {e:"&#127775;",t:"Stay up and complete your section properly, then message the team an honest apology for the delay.",good:true},
-      {e:"&#129298;",t:"Pretend to be sick tomorrow so the deadline gets extended for the whole group.",good:false}
+      {e:"😱",t:"Panic and copy something — say I tried.",good:false},
+      {e:"🌟",t:"Stay up, finish properly, apologise to team.",good:true},
+      {e:"🤒",t:"Pretend to be sick to delay the whole group.",good:false}
     ],
-    rgood:{f:"&#128565;",t:"&#128170;",m:"You finish your part, send it over and apologize to your teammates. They appreciate the honesty. The project gets submitted and everyone passes!"},
-    rbad: {f:"&#128565;",t:"&#128545;",m:"The group misses marks because of your section. Teammates feel let down. Your teacher speaks to you privately. The damage to trust takes weeks to repair."},
-    lesson:"Being part of a team means your actions have real effects on real people. Owning your share, even when it is hard, is what makes you someone worth counting on.",
+    rgood:{f:"😱",t:"💪",m:"You finish it! Team submits on time! Everyone passes! 🎉"},
+    rbad:{f:"😱",t:"😞",m:"Group loses marks. Trust broken. Teacher talks to you. 😞"},
+    lesson:"Your actions affect real people — own your share! 👥",
+    accent:"#1a2550"
+  },
+  // 6. LUNCH BULLY
+  {
+    bg:"bg-school", gbg:"gbg2",
+    timeTag:"🍱 12:30 PM",
+    icon:"🍱", title:"Lunch Trouble",
+    sit:"A bigger kid takes Arjun's lunch box! Everyone is watching you. 😨",
+    char:"🧑‍🎓", charName:"You", env:"👦", envName:"Arjun",
+    sceneDetail:"😨 Arjun is upset · 👀 Everyone watching · 👊 Bully walking away",
+    type:"detect",
+    rq:"What matters most here? 🤔",
+    correct:0,
+    resps:[{e:"💞",l:"Empathy"},{e:"📁",l:"Tidiness"},{e:"⏳",l:"Time Mgmt"},{e:"📚",l:"Homework"}],
+    revealTxt:"EMPATHY & COURAGE 💞",
+    infoTxt:"Standing up for others takes heart!",
+    type2:"choice",
+    cq:"Arjun looks upset. What do you do? 🍱",
+    choices:[
+      {e:"🙈",t:"Look away and eat your own lunch.",good:false},
+      {e:"🌟",t:"Tell a teacher immediately and comfort Arjun.",good:true},
+      {e:"😬",t:"Laugh along so the bully doesn't pick on you.",good:false}
+    ],
+    rgood:{f:"😨",t:"💪",m:"Teacher helps! Arjun gets his lunch back. You're a true hero! 🦸"},
+    rbad:{f:"😨",t:"😔",m:"Arjun stays hungry and alone. Bullying continues. 💔"},
+    lesson:"Kindness is the bravest thing! 💞",
     accent:"#1565c0"
+  },
+  // 7. SCREEN TIME
+  {
+    bg:"bg-afternoon", gbg:"gbg3",
+    timeTag:"📱 5:00 PM",
+    icon:"📱", title:"Screen Time",
+    sit:"Mum said 1 hour of screen time. It's been 3 hours. Homework = zero! 😬",
+    char:"🧑‍🎓", charName:"You", env:"📱", envName:"Screen",
+    sceneDetail:"📺 3 hrs gone · 📚 Homework not started · 😴 Feeling lazy · 🕐 Dinner in 1 hr",
+    type:"sort",
+    sortItems:[
+      {e:"📱",t:"Put phone away voluntarily",order:1},
+      {e:"📚",t:"Finish all homework first",order:2},
+      {e:"🍽️",t:"Join family for dinner",order:3},
+      {e:"🌟",t:"Earn screen time as reward!",order:4}
+    ],
+    revealTxt:"SELF-DISCIPLINE 📱",
+    infoTxt:"Controlling yourself is the hardest — and coolest — skill!",
+    type2:"choice",
+    cq:"3 hours gone, homework zero! What now? 📱",
+    choices:[
+      {e:"🙈",t:"Keep watching — finish homework at midnight.",good:false},
+      {e:"🌟",t:"Put it down now, finish homework, then earn more screen time.",good:true},
+      {e:"😬",t:"Tell Mum the homework was easy so you're done already.",good:false}
+    ],
+    rgood:{f:"📱",t:"🌟",m:"Homework done! Mum lets you have extra screen time as a reward! 🎉"},
+    rbad:{f:"📱",t:"😟",m:"Homework incomplete, Mum takes the phone. Trust drops. 📵"},
+    lesson:"Control your screen — control your life! 📱",
+    accent:"#388e3c"
+  },
+  // 8. BROKEN VASE
+  {
+    bg:"bg-morning", gbg:"gbg1",
+    timeTag:"🏡 11:00 AM",
+    icon:"🏺", title:"Broken Vase",
+    sit:"You were playing indoors and knocked Granny's favourite vase! 😱 It broke.",
+    char:"🧑‍🎓", charName:"You", env:"👵", envName:"Granny",
+    sceneDetail:"🏺 Vase broken · 👵 Granny not home yet · 😰 You feel scared",
+    type:"detect",
+    rq:"Which value is tested here? 🤔",
+    correct:3,
+    resps:[{e:"⏳",l:"Time Mgmt"},{e:"❗",l:"Reliability"},{e:"📁",l:"Tidiness"},{e:"🎯",l:"Honesty"}],
+    revealTxt:"HONESTY 🎯",
+    infoTxt:"Telling the truth is always the right move!",
+    type2:"choice",
+    cq:"Granny is about to come home. What do you do? 🏺",
+    choices:[
+      {e:"🙈",t:"Hide the pieces and say I don't know what happened.",good:false},
+      {e:"😬",t:"Blame the cat.",good:false},
+      {e:"🌟",t:"Tell Granny right away, say sorry, offer to help fix it.",good:true}
+    ],
+    rgood:{f:"😱",t:"🤗",m:"Granny hugs you! She loves your honesty more than the vase! 💖"},
+    rbad:{f:"😱",t:"😢",m:"Granny finds out you lied. She feels hurt and betrayed. 💔"},
+    lesson:"One honest sentence is worth more than a thousand lies! 🎯",
+    accent:"#f7971e"
+  },
+  // 9. SICK FRIEND
+  {
+    bg:"bg-school", gbg:"gbg2",
+    timeTag:"🏫 9:00 AM",
+    icon:"🤒", title:"Sick Friend",
+    sit:"Priya is sick and missed 3 days of school. She'll fail the test tomorrow! 😟",
+    char:"🧑‍🎓", charName:"You", env:"🤒", envName:"Priya",
+    sceneDetail:"📓 Priya missed notes · 🧪 Test tomorrow · 📱 She texted you",
+    type:"match",
+    matchPairs:[
+      {scenario:{e:"🤒",t:"Friend missed class"},resp:{e:"💞",t:"Empathy"}},
+      {scenario:{e:"📓",t:"Share your notes"},resp:{e:"🤝",t:"Generosity"}},
+      {scenario:{e:"👥",t:"Study together"},resp:{e:"👥",t:"Teamwork"}},
+      {scenario:{e:"🎯",t:"Tell the teacher"},resp:{e:"🎯",t:"Responsibility"}}
+    ],
+    revealTxt:"EMPATHY & TEAMWORK 💞",
+    infoTxt:"A friend in need is a chance to grow!",
+    type2:"choice",
+    cq:"Priya texted asking for help. What do you do? 📱",
+    choices:[
+      {e:"🙈",t:"Ignore it — she should have come to school.",good:false},
+      {e:"🌟",t:"Share notes, call her, study together over video call!",good:true},
+      {e:"😬",t:"Send one page and say you're busy.",good:false}
+    ],
+    rgood:{f:"😟",t:"💖",m:"Priya passes! She calls you her best friend. Teamwork wins! 🌟"},
+    rbad:{f:"😟",t:"😔",m:"Priya fails. She feels alone. A good friendship missed. 💔"},
+    lesson:"Help others shine — your light doesn't dim! 💞",
+    accent:"#1565c0"
+  },
+  // 10. POCKET MONEY
+  {
+    bg:"bg-afternoon", gbg:"gbg4",
+    timeTag:"💰 Saturday",
+    icon:"💰", title:"Pocket Money",
+    sit:"You got ₹200 pocket money! Candy stall calling. But you wanted to save for a book. 🍬📖",
+    char:"🧑‍🎓", charName:"You", env:"🏪", envName:"Shop",
+    sceneDetail:"🍬 Candy stall ahead · 📖 Book costs ₹180 · 💰 You have ₹200 · 🎯 Only 2 days to buy",
+    type:"sort",
+    sortItems:[
+      {e:"🎯",t:"Remember your saving goal",order:1},
+      {e:"💭",t:"Think before you spend",order:2},
+      {e:"📖",t:"Buy the book you saved for",order:3},
+      {e:"🍬",t:"Spend leftover ₹20 on a small treat",order:4}
+    ],
+    revealTxt:"SMART MONEY CHOICES 💰",
+    infoTxt:"Small choices today = big results tomorrow!",
+    type2:"choice",
+    cq:"Candy stall looks SO good. What do you do? 🍬",
+    choices:[
+      {e:"🍬",t:"Spend all ₹200 on candy right now!",good:false},
+      {e:"🌟",t:"Walk past, buy the book, enjoy ₹20 treat!",good:true},
+      {e:"😬",t:"Buy ₹100 candy now and hope to get more money.",good:false}
+    ],
+    rgood:{f:"🍬",t:"📖",m:"You bought the book! Mum is super proud of your self-control! 💪"},
+    rbad:{f:"🍬",t:"😔",m:"Candy is gone in 5 minutes. No book. You feel empty. 💔"},
+    lesson:"Think before you spend — your future self will thank you! 💰",
+    accent:"#8e1fa2"
+  },
+  // 11. NEW KID
+  {
+    bg:"bg-school", gbg:"gbg2",
+    timeTag:"🏫 8:30 AM",
+    icon:"🆕", title:"New Kid",
+    sit:"A new student joins your class today. She looks scared and sits alone. 😟",
+    char:"🧑‍🎓", charName:"You", env:"🆕", envName:"New Girl",
+    sceneDetail:"😟 She's alone · 👀 No friends yet · 🏫 New school · 💬 Nobody talking to her",
+    type:"detect",
+    rq:"What's the most responsible thing? 🤔",
+    correct:1,
+    resps:[{e:"📚",l:"Study More"},{e:"💞",l:"Include Her"},{e:"⏳",l:"Go Fast"},{e:"📁",l:"Organise"}],
+    revealTxt:"INCLUSION & KINDNESS 💞",
+    infoTxt:"Everyone deserves to feel welcome!",
+    type2:"choice",
+    cq:"New girl is sitting alone. What do you do? 💬",
+    choices:[
+      {e:"🙈",t:"She'll find friends on her own — not my problem.",good:false},
+      {e:"😬",t:"Stare at her but say nothing.",good:false},
+      {e:"🌟",t:"Walk over, smile, say hi, invite her to sit with your group!",good:true}
+    ],
+    rgood:{f:"😟",t:"😄",m:"She smiles so big! You made her first day amazing! 🌟 New best friend!"},
+    rbad:{f:"😟",t:"😔",m:"She spends the whole day alone. You feel guilty seeing her sad face. 💔"},
+    lesson:"One hello can change someone's whole day! 💞",
+    accent:"#1565c0"
+  },
+  // 12. ENVIRONMENT
+  {
+    bg:"bg-afternoon", gbg:"gbg3",
+    timeTag:"🌳 3:30 PM",
+    icon:"🌍", title:"Earth Hero",
+    sit:"You see a classmate throwing a plastic bottle in the park. 😤 Dustbin is 5 steps away!",
+    char:"🧑‍🎓", charName:"You", env:"🌳", envName:"Park",
+    sceneDetail:"🗑️ Dustbin 5 steps away · 🍾 Bottle on ground · 🌳 Beautiful park · 😤 You feel it's wrong",
+    type:"match",
+    matchPairs:[
+      {scenario:{e:"🍾",t:"Littering in park"},resp:{e:"🌍",t:"Env. Responsibility"}},
+      {scenario:{e:"💡",t:"Leaving lights on"},resp:{e:"⚡",t:"Save Energy"}},
+      {scenario:{e:"🚰",t:"Wasting water"},resp:{e:"💧",t:"Save Water"}},
+      {scenario:{e:"📦",t:"Single-use plastic"},resp:{e:"♻️",t:"Reduce & Reuse"}}
+    ],
+    revealTxt:"ENVIRONMENTAL RESPONSIBILITY 🌍",
+    infoTxt:"The Earth is everyone's home to protect!",
+    type2:"choice",
+    cq:"Classmate littered. Dustbin is right there! What do you do? 🌍",
+    choices:[
+      {e:"🙈",t:"None of my business — walk past.",good:false},
+      {e:"🌟",t:"Pick it up yourself, put it in the bin, politely tell classmate why.",good:true},
+      {e:"😬",t:"Scold them loudly and walk away.",good:false}
+    ],
+    rgood:{f:"😤",t:"🌟",m:"Classmate feels embarrassed and learns! Park stays beautiful! 🌍💚"},
+    rbad:{f:"😤",t:"😔",m:"Litter stays. You feel powerless. The park gets dirtier. 😞"},
+    lesson:"Be the change — one action keeps the Earth clean! 🌍",
+    accent:"#388e3c"
   }
 ];
 
-var idx = 0, score = 0, MAX = SC.length * 5;
+var idx=0, score=0, streak=0, MAX=SC.length*5;
+var correctStreak=0;
 
-document.getElementById("playBtn").addEventListener("click", startGame);
-initStars();
-
-function initStars() {
-  var c = document.getElementById("fstars");
-  var em = ["&#11088;","&#10024;","&#127775;","&#127381;","&#128171;","&#128150;"];
-  for (var i = 0; i < 20; i++) {
-    var d = document.createElement("div");
-    d.className = "fstar";
-    d.innerHTML = em[i % em.length];
-    d.style.left = (Math.random() * 95) + "%";
-    d.style.fontSize = (12 + Math.random() * 18) + "px";
-    d.style.animationDuration = (3 + Math.random() * 6) + "s";
-    d.style.animationDelay = (Math.random() * 7) + "s";
-    c.appendChild(d);
-  }
-}
-
-function show(id) {
-  ["intro","game","end"].forEach(function(s) {
-    document.getElementById(s).classList.remove("active");
-  });
+// ============ UTILS ============
+function show(id){
+  ["intro","game","end"].forEach(function(s){document.getElementById(s).classList.remove("active")});
   document.getElementById(id).classList.add("active");
 }
-
-function updateHud() {
-  document.getElementById("hud").style.display = "flex";
-  var dots = document.getElementById("hdots");
-  dots.innerHTML = "";
-  for (var i = 0; i < SC.length; i++) {
-    var d = document.createElement("div");
-    d.className = "hdot" + (i < idx ? " done" : i === idx ? " now" : "");
-    dots.appendChild(d);
-  }
-  document.getElementById("hscore").innerHTML = "&#11088; " + score;
-  document.getElementById("hbar").style.width = Math.round((score / MAX) * 100) + "%";
+function gc(html){document.getElementById("gc").innerHTML=html;window.scrollTo({top:0,behavior:"smooth"})}
+function updateHud(){
+  document.getElementById("hud").style.display="flex";
+  var dots=document.getElementById("hdots");dots.innerHTML="";
+  for(var i=0;i<SC.length;i++){var d=document.createElement("div");d.className="hdot"+(i<idx?" done":i===idx?" now":"");dots.appendChild(d);}
+  document.getElementById("hscore").textContent=score;
+  var sb=document.getElementById("streakBadge");
+  if(correctStreak>=2){sb.style.display="flex";document.getElementById("streakNum").textContent=correctStreak;}
+  else{sb.style.display="none";}
 }
 
-function gc(html) {
-  document.getElementById("gc").innerHTML = html;
-  window.scrollTo({top:0, behavior:"smooth"});
+function spawnScorePop(pts, x, y){
+  var el=document.createElement("div");
+  el.className="score-pop";
+  el.textContent="+"+pts+" ⭐";
+  el.style.left=(x-20)+"px";el.style.top=(y-20)+"px";
+  document.body.appendChild(el);
+  setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},1300);
+  var ring=document.createElement("div");
+  ring.className="ring-pop";
+  ring.style.left=(x-40)+"px";ring.style.top=(y-40)+"px";
+  document.body.appendChild(ring);
+  setTimeout(function(){if(ring.parentNode)ring.parentNode.removeChild(ring);},900);
 }
 
-function startGame() {
-  idx = 0; score = 0;
-  show("game");
-  document.getElementById("game").style.background = SC[0].gbg.replace("!important","");
-  updateHud();
-  renderScene();
-}
-
-function renderScene() {
-  var s = SC[idx];
-  var timeIcons = ["&#9728;&#65039;","&#127979;","&#127968;","&#127763;","&#127764;"];
-  gc(`
-    <div class="clabel">${s.icon} Challenge ${idx+1} of ${SC.length}</div>
-    <div class="card">
-      <div class="stitle">${s.icon} ${s.title}</div>
-      <div class="scene-stage ${s.bg}">
-        <div class="time-tag">${s.timeTag}</div>
-        <div class="cblk"><div class="cemoji">${s.char}</div><div class="cname">${s.charName}</div></div>
-        <div style="font-size:22px">&#128172;</div>
-        <div class="cblk"><div class="cemoji cemoji2">${s.env}</div><div class="cname">${s.envName}</div></div>
-      </div>
-      <div class="sit">${s.sit}</div>
-      <div class="info-box" style="background:${s.accent}18;border:2px solid ${s.accent}30">
-        <div class="ib-lbl" style="color:${s.accent}">&#128065;&#65039; What is happening</div>
-        <div class="ib-txt">${s.sceneDetail}</div>
-      </div>
-      <button class="btn-next" style="background:linear-gradient(135deg,${s.accent},${s.accent}aa)" onclick="renderDetect()">
-        &#129300; Which responsibility is this?
-      </button>
-    </div>
-  `);
-}
-
-function renderDetect() {
-  var s = SC[idx];
-  var btns = s.resps.map(function(r, i) {
-    return `<button class="rbtn" id="rb${i}" onclick="pickResp(${i})"><span class="re">${r.e}</span><span class="rl">${r.l}</span></button>`;
-  }).join("");
-  gc(`
-    <div class="clabel">&#128269; Spot the Responsibility</div>
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:16px;">
-        <div style="font-size:54px;animation:float 3s ease-in-out infinite">${s.char}</div>
-        <div style="text-align:left">
-          <div style="font-size:12px;color:#aaa;font-weight:700">Challenge ${idx+1}</div>
-          <div style="font-size:16px;font-weight:900;color:#222">What type of responsibility is this?</div>
-        </div>
-      </div>
-      <div class="rq">${s.rq}</div>
-      <div class="rgrid">${btns}</div>
-      <div id="rfb"></div>
-    </div>
-  `);
-}
-
-function pickResp(i) {
-  var s = SC[idx];
-  var ok = (i === s.correct);
-  var btns = document.querySelectorAll(".rbtn");
-  for (var j = 0; j < btns.length; j++) {
-    btns[j].setAttribute("onclick","");
-    btns[j].style.pointerEvents = "none";
-    if (j === s.correct) btns[j].classList.add("correct");
-    else if (j === i && !ok) btns[j].classList.add("wrong");
-  }
-  if (ok) { score += 2; updateHud(); }
-  var fb = document.getElementById("rfb");
-  fb.className = "fb " + (ok ? "good" : "bad");
-  fb.innerHTML = ok
-    ? `<div class="fb-ico">&#127919;</div><div class="fb-hd">Spot on! +2 &#11088;</div><div class="fb-sub">You identified the right responsibility!</div>`
-    : `<div class="fb-ico">&#128173;</div><div class="fb-hd">Good thinking though!</div><div class="fb-sub">Correct answer: ${s.resps[s.correct].e} ${s.resps[s.correct].l}</div>`;
-  setTimeout(renderChoice, 1900);
-}
-
-function renderChoice() {
-  var s = SC[idx];
-  var choiceBtns = s.choices.map(function(c, i) {
-    return `<button class="chbtn" onclick="pickChoice(${i})"><span class="ci">${c.e}</span><span class="ct">${c.t}</span></button>`;
-  }).join("");
-  gc(`
-    <div class="clabel">&#9889; Make Your Move</div>
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px;">
-        <div style="font-size:48px">${s.char}</div>
-        <div style="font-size:18px;color:#bbb">&#10132;</div>
-        <div style="font-size:48px">${s.env}</div>
-      </div>
-      <div class="reveal-box" style="background:linear-gradient(135deg,${s.accent},${s.accent}bb);color:#fff">
-        <div style="font-size:32px">${s.resps[s.correct].e}</div>
-        <div>
-          <div class="rev-lbl">Responsibility detected</div>
-          <div class="rev-txt">${s.revealTxt}</div>
-        </div>
-      </div>
-      <div class="info-box" style="background:${s.accent}12;border:2px solid ${s.accent}28">
-        <div class="ib-lbl" style="color:${s.accent}">&#128161; Why this matters</div>
-        <div class="ib-txt">${s.infoTxt}</div>
-      </div>
-      <div class="cq">${s.cq}</div>
-      <div class="choices">${choiceBtns}</div>
-    </div>
-  `);
-}
-
-function pickChoice(i) {
-  var s = SC[idx];
-  var good = s.choices[i].good;
-  if (good) { score += 3; updateHud(); spawnConfetti(26); }
-  renderResult(good);
-}
-
-function renderResult(good) {
-  var s = SC[idx];
-  var r = good ? s.rgood : s.rbad;
-  var arrowCol = good ? "#00c853" : "#ff5722";
-  var topLabel = good ? "&#127775; Responsible Choice!" : "&#128161; Learning Moment";
-  var starRow = good
-    ? `<span>Stars earned</span><span>&#11088;&#11088;&#11088;</span>`
-    : `<span>Stars earned</span><span>&#11088;</span>`;
-  var nextTxt = (idx + 1 < SC.length) ? "&#10145;&#65038; Next Challenge" : "&#127942; See My Results!";
-  gc(`
-    <div class="clabel">${topLabel}</div>
-    <div class="card">
-      <div class="rvis ${s.bg}">
-        <span class="rfrom">${r.f}</span>
-        <span class="rarrow" style="color:${arrowCol}">&#10132;</span>
-        <span class="rto">${r.t}</span>
-      </div>
-      <div class="rmsg">${r.m}</div>
-      <div class="lesson-box" style="background:linear-gradient(135deg,${s.accent},${s.accent}aa)">
-        <div class="lb-lbl">&#128161; Responsibility Lesson</div>
-        <div class="lb-txt">${s.lesson}</div>
-      </div>
-      <div class="star-row">${starRow}<span style="font-size:13px;color:#999">&nbsp;keep going!</span></div>
-      <button class="btn-next" style="background:linear-gradient(135deg,${s.accent},${s.accent}aa)" onclick="nextChallenge()">${nextTxt}</button>
-    </div>
-  `);
-}
-
-function nextChallenge() {
-  idx++;
-  if (idx >= SC.length) { endGame(); return; }
-  var gbgMap = ["#b56a00","#1565c0","#2e7d32","#7b1fa2","#0d1b3e"];
-  document.getElementById("game").style.background = SC[idx].gbg.replace(" !important","");
-  updateHud();
-  renderScene();
-}
-
-function endGame() {
-  document.getElementById("hud").style.display = "none";
-  show("end");
-  var pct = score / MAX;
-  var rank, emoji, msg;
-  if (pct >= 0.8) {
-    rank = "Responsibility Hero! &#127942;"; emoji = "&#129464;";
-    msg = "You crushed every challenge! You understand that real strength is showing up, keeping your word and owning your mistakes. You are ready for anything life throws at you!";
-  } else if (pct >= 0.5) {
-    rank = "Rising Hero! &#127775;"; emoji = "&#128170;";
-    msg = "You are building some serious life skills! A few challenges tripped you up but you are clearly on the right path. Keep practising these habits every day.";
-  } else {
-    rank = "Hero in Training! &#127808;"; emoji = "&#127807;";
-    msg = "Every hero starts somewhere. The fact that you played shows you care about growing. Review the lessons below and try again. You have got this!";
-  }
-  var stars = "";
-  var sc = Math.max(1, Math.round(pct * 5));
-  for (var i = 0; i < sc; i++) stars += "&#11088;";
-
-  var respItems = [
-    {e:"&#8987;",t:"Time Management","d":"Your time is YOUR responsibility — own your morning and own your day"},
-    {e:"&#129309;",t:"Accountability","d":"Own your mistakes immediately — honesty costs less than deception"},
-    {e:"&#10071;",t:"Keeping Your Word","d":"A promise made is a promise that must be kept, no matter how inconvenient"},
-    {e:"&#128101;",t:"Team Reliability","d":"When others depend on you, their trust is your responsibility to protect"},
-    {e:"&#127968;",t:"Owning Your Space","d":"Responsible people take care of the spaces and things they control"}
-  ];
-  var rList = respItems.map(function(r) {
-    return `<div class="resp-item">${r.e} <strong>${r.t}:</strong> ${r.d}</div>`;
-  }).join("");
-
-  document.getElementById("cert").innerHTML = `
-    <div class="c-emoji">${emoji}</div>
-    <div class="c-title">You are a</div>
-    <div class="c-rank">${rank}</div>
-    <div class="c-stars">${stars}</div>
-    <div class="c-score">Responsibility Score: ${score} / ${MAX} &#11088;</div>
-    <div class="c-bar-wrap"><div class="c-bar" id="cbar" style="width:0%"></div></div>
-    <div class="resp-list">
-      <h3>&#127775; Your 5 Life Responsibilities:</h3>
-      ${rList}
-    </div>
-    <div class="c-msg">${msg}</div>
-    <button class="btn-replay" onclick="startGame()">&#128260; Play Again</button>
-  `;
-  setTimeout(function() {
-    var b = document.getElementById("cbar");
-    if (b) b.style.width = Math.round(pct * 100) + "%";
-  }, 400);
-  spawnConfetti(55);
-}
-
-function spawnConfetti(n) {
-  var cols = ["#ffd200","#f7971e","#38ef7d","#ff6b6b","#4ecdc4","#c850c0","#a1c4fd"];
-  for (var i = 0; i < n; i++) {
-    (function(delay) {
-      setTimeout(function() {
-        var p = document.createElement("div");
-        p.className = "cp";
-        p.style.left = Math.random() * 100 + "vw";
-        p.style.width = (7 + Math.random() * 9) + "px";
-        p.style.height = (7 + Math.random() * 9) + "px";
-        p.style.background = cols[Math.floor(Math.random() * cols.length)];
-        p.style.borderRadius = Math.random() > 0.5 ? "50%" : "3px";
-        p.style.animationDuration = (2 + Math.random() * 3) + "s";
+function spawnConfetti(n){
+  var cols=["#ffd200","#f7971e","#38ef7d","#ff6b6b","#4ecdc4","#c850c0","#a1c4fd"];
+  for(var i=0;i<n;i++){
+    (function(delay){
+      setTimeout(function(){
+        var p=document.createElement("div");p.className="cp";
+        p.style.left=Math.random()*100+"vw";
+        p.style.width=(6+Math.random()*10)+"px";p.style.height=(6+Math.random()*10)+"px";
+        p.style.background=cols[Math.floor(Math.random()*cols.length)];
+        p.style.borderRadius=Math.random()>.5?"50%":"3px";
+        p.style.animationDuration=(2+Math.random()*3)+"s";
         document.body.appendChild(p);
-        setTimeout(function() { if (p.parentNode) p.parentNode.removeChild(p); }, 5500);
-      }, delay);
-    })(i * 55);
+        setTimeout(function(){if(p.parentNode)p.parentNode.removeChild(p);},5500);
+      },delay);
+    })(i*50);
   }
 }
+
+// ============ GAME FLOW ============
+document.getElementById("playBtn").addEventListener("click",function(){ensureAudio();playClick();startGame();});
+initStars();
+
+function initStars(){
+  var c=document.getElementById("fstars");
+  var em=["⭐","✨","🌟","🎀","💧","💖"];
+  for(var i=0;i<22;i++){var d=document.createElement("div");d.className="fstar";d.textContent=em[i%em.length];d.style.left=(Math.random()*95)+"%";d.style.fontSize=(11+Math.random()*16)+"px";d.style.animationDuration=(3+Math.random()*6)+"s";d.style.animationDelay=(Math.random()*7)+"s";c.appendChild(d);}
+}
+
+function startGame(){idx=0;score=0;correctStreak=0;show("game");document.getElementById("game").style.background=getGbgColor(0);updateHud();renderScene();}
+
+function getGbgColor(i){var s=SC[i];return s?s.gbg.replace("!important",""):"linear-gradient(145deg,#1a1a2e,#2a2a4e)";}
+
+function renderScene(){
+  var s=SC[idx];
+  gc('<div class="phase-pill">'+s.icon+' Challenge '+(idx+1)+' of '+SC.length+'</div>'+
+  '<div class="card">'+
+  '<div class="scene-stage '+s.bg+'">'+
+  '<div class="time-tag">'+s.timeTag+'</div>'+
+  '<div class="cblk"><div class="cemoji">'+s.char+'</div><div class="cname">'+s.charName+'</div></div>'+
+  '<div style="font-size:20px">💬</div>'+
+  '<div class="cblk"><div class="cemoji cemoji2">'+s.env+'</div><div class="cname">'+s.envName+'</div></div>'+
+  '</div>'+
+  '<div class="sit-text">'+s.sit+'</div>'+
+  '<div class="mini-info" style="background:'+s.accent+'18;border:2px solid '+s.accent+'30">'+
+  '<div class="mi-ico">👁️</div><div class="mi-txt">'+s.sceneDetail+'</div></div>'+
+  '<button class="btn-next" style="background:linear-gradient(135deg,'+s.accent+','+s.accent+'bb)" onclick="startActivity()">'+
+  '🎯 Let\'s Play!</button></div>');
+}
+
+function startActivity(){
+  playClick();
+  var s=SC[idx];
+  if(s.type==="detect") renderDetect();
+  else if(s.type==="match") renderMatch();
+  else if(s.type==="sort") renderSort();
+}
+
+// ====== DETECT ACTIVITY ======
+function renderDetect(){
+  var s=SC[idx];
+  var btns=s.resps.map(function(r,i){return '<button class="rbtn" id="rb'+i+'" onclick="pickResp('+i+',event)"><span class="re">'+r.e+'</span><span class="rl">'+r.l+'</span></button>';}).join("");
+  gc('<div class="phase-pill">🔍 Spot It!</div>'+
+  '<div class="card">'+
+  '<div style="font-size:52px;text-align:center;margin-bottom:12px;animation:float 3s ease-in-out infinite">'+s.char+'</div>'+
+  '<div class="rq-label">'+s.rq+'</div>'+
+  '<div class="rgrid">'+btns+'</div>'+
+  '<div id="rfb"></div></div>');
+}
+
+function pickResp(i,e){
+  playTick();
+  var s=SC[idx];var ok=(i===s.correct);
+  var btns=document.querySelectorAll(".rbtn");
+  for(var j=0;j<btns.length;j++){btns[j].setAttribute("onclick","");btns[j].style.pointerEvents="none";if(j===s.correct)btns[j].classList.add("correct");else if(j===i&&!ok)btns[j].classList.add("wrong");}
+  if(ok){score+=2;correctStreak++;playStar();spawnScorePop(2,e.clientX,e.clientY);updateHud();}
+  else{playWrong();correctStreak=0;updateHud();}
+  var fb=document.getElementById("rfb");
+  fb.className="fb "+(ok?"good":"bad");
+  fb.innerHTML=ok?'<div class="fb-ico">🎯</div><div class="fb-hd">Spot on! +2 ⭐</div><div class="fb-sub">'+s.revealTxt+'</div>':'<div class="fb-ico">💭</div><div class="fb-hd">Nearly!</div><div class="fb-sub">Answer: '+(s.resps?s.resps[s.correct].e+' '+s.resps[s.correct].l:'See above')+'</div>';
+  setTimeout(function(){renderChoice();},1800);
+}
+
+// ====== MATCH ACTIVITY ======
+function renderMatch(){
+  var s=SC[idx];
+  var shuffled=s.matchPairs.slice().sort(function(){return Math.random()-.5;});
+  var scenarios=shuffled.map(function(p,i){return'<div class="match-item match-scenario" data-idx="'+i+'" onclick="selectScenario('+i+')"><span class="match-emoji">'+p.scenario.e+'</span>'+p.scenario.t+'</div>';}).join("");
+  var resps=shuffled.map(function(p,i){return'<div class="match-item match-resp" data-idx="'+i+'" onclick="selectResp('+i+')"><span class="match-emoji">'+p.resp.e+'</span>'+p.resp.t+'</div>';}).join("");
+  // store shuffled order
+  window._matchData={pairs:shuffled,selectedS:-1,selectedR:-1,matched:0};
+  gc('<div class="phase-pill">🔗 Match It!</div>'+
+  '<div class="card">'+
+  '<div class="match-title">Match each scene with its responsibility!</div>'+
+  '<div class="match-wrap"><div class="match-left" id="mLeft">'+scenarios+'</div><div class="match-right" id="mRight">'+resps+'</div></div>'+
+  '<div id="mfb" style="margin-top:10px"></div></div>');
+}
+
+function selectScenario(i){
+  playTick();
+  var d=window._matchData;
+  if(d.pairs[i]._matched) return;
+  d.selectedS=i;
+  document.querySelectorAll(".match-scenario").forEach(function(el,j){el.classList.toggle("selected",j===i);});
+  if(d.selectedR>=0) doMatch();
+}
+function selectResp(i){
+  playTick();
+  var d=window._matchData;
+  if(d.pairs[i]._matched) return;
+  d.selectedR=i;
+  document.querySelectorAll(".match-resp").forEach(function(el,j){el.classList.toggle("selected",j===i);});
+  if(d.selectedS>=0) doMatch();
+}
+function doMatch(){
+  var d=window._matchData;
+  var si=d.selectedS,ri=d.selectedR;
+  var correct=(si===ri); // same index means same pair in shuffled array
+  var sEl=document.querySelectorAll(".match-scenario")[si];
+  var rEl=document.querySelectorAll(".match-resp")[ri];
+  if(correct){
+    playMatchPop();score+=1;correctStreak++;updateHud();
+    sEl.classList.remove("selected");rEl.classList.remove("selected");
+    sEl.classList.add("matched");rEl.classList.add("matched");
+    d.pairs[si]._matched=true;d.matched++;
+    if(d.matched===d.pairs.length){
+      score+=1;updateHud();playStar();spawnConfetti(20);
+      setTimeout(function(){renderChoice();},1200);
+    }
+  } else {
+    playWrong();correctStreak=0;updateHud();
+    sEl.classList.remove("selected");rEl.classList.remove("selected");
+    sEl.classList.add("wrong-flash");rEl.classList.add("wrong-flash");
+    setTimeout(function(){sEl.classList.remove("wrong-flash");rEl.classList.remove("wrong-flash");},600);
+  }
+  d.selectedS=-1;d.selectedR=-1;
+  document.querySelectorAll(".match-scenario,.match-resp").forEach(function(el){el.classList.remove("selected");});
+}
+
+// ====== SORT ACTIVITY ======
+function renderSort(){
+  var s=SC[idx];
+  var items=s.sortItems.slice().sort(function(){return Math.random()-.5;});
+  window._sortData={items:items,correct:s.sortItems,dragIdx:-1};
+  var html=items.map(function(it,i){
+    return '<div class="sort-item" draggable="true" data-i="'+i+'" ondragstart="sortDragStart('+i+')" ondragover="sortDragOver(event,'+i+')" ondrop="sortDrop('+i+')" ondragend="sortDragEnd()"><span class="sort-e">'+it.e+'</span>'+it.t+'</div>';
+  }).join("");
+  gc('<div class="phase-pill">📋 Put In Order!</div>'+
+  '<div class="card">'+
+  '<div class="match-title">Drag to put steps in the right order! 🔢</div>'+
+  '<div class="sort-instr">What should you do first?</div>'+
+  '<div class="sort-list" id="sortList">'+html+'</div>'+
+  '<div id="sfb" style="margin-top:12px"></div>'+
+  '<button class="btn-next" style="background:linear-gradient(135deg,'+s.accent+','+s.accent+'bb);margin-top:14px" onclick="checkSort()">✅ Check Order!</button></div>');
+}
+function sortDragStart(i){playDrag();window._sortData.dragIdx=i;document.querySelectorAll(".sort-item")[i].style.opacity=".5";}
+function sortDragOver(e,i){e.preventDefault();document.querySelectorAll(".sort-item").forEach(function(el){el.classList.remove("drag-over");});document.querySelectorAll(".sort-item")[i].classList.add("drag-over");}
+function sortDrop(i){
+  var d=window._sortData;var from=d.dragIdx;if(from===i)return;
+  var tmp=d.items[from];d.items[from]=d.items[i];d.items[i]=tmp;
+  var list=document.getElementById("sortList");
+  var els=list.querySelectorAll(".sort-item");
+  d.items.forEach(function(it,j){
+    els[j].querySelector(".sort-e").textContent=it.e;
+    els[j].childNodes[1].textContent=it.t;
+    els[j].setAttribute("data-i",j);
+    els[j].setAttribute("ondragstart","sortDragStart("+j+")");
+    els[j].setAttribute("ondragover","sortDragOver(event,"+j+")");
+    els[j].setAttribute("ondrop","sortDrop("+j+")");
+  });
+}
+function sortDragEnd(){window._sortData.dragIdx=-1;document.querySelectorAll(".sort-item").forEach(function(el){el.style.opacity="1";el.classList.remove("drag-over");});}
+function checkSort(){
+  playTick();
+  var d=window._sortData;var s=SC[idx];
+  var correct=true;
+  for(var i=0;i<d.items.length;i++){if(d.items[i].order!==s.sortItems[i].order){correct=false;break;}}
+  // Show order numbers
+  document.querySelectorAll(".sort-item").forEach(function(el,i){
+    var num=document.createElement("div");num.className="sort-rank";num.textContent=(i+1);
+    el.insertBefore(num,el.firstChild);
+    el.draggable=false;el.style.cursor="default";
+    el.setAttribute("ondragstart","");el.setAttribute("ondragover","");el.setAttribute("ondrop","");
+  });
+  var fb=document.getElementById("sfb");
+  if(correct){
+    score+=3;correctStreak++;playStar();spawnConfetti(22);updateHud();
+    fb.className="fb good";fb.innerHTML='<div class="fb-ico">🏆</div><div class="fb-hd">Perfect Order! +3 ⭐</div>';
+  } else {
+    var pts=1;score+=pts;correctStreak=0;playSuccess();updateHud();
+    fb.className="fb bad";fb.innerHTML='<div class="fb-ico">💡</div><div class="fb-hd">Good try! +1 ⭐ — Right order shown above!</div>';
+    // show correct
+    var correctOrder=s.sortItems.slice().sort(function(a,b){return a.order-b.order;});
+    document.querySelectorAll(".sort-item").forEach(function(el,i){
+      el.querySelector(".sort-e").textContent=correctOrder[i].e;
+      el.childNodes[el.childNodes.length-1].textContent=correctOrder[i].t;
+    });
+  }
+  // Disable check button
+  document.querySelector(".btn-next[onclick='checkSort()']").style.display="none";
+  var nextBtn=document.createElement("button");
+  nextBtn.className="btn-next";nextBtn.style.cssText="background:linear-gradient(135deg,"+s.accent+","+s.accent+"bb);margin-top:12px";
+  nextBtn.textContent="➡️ Next!";nextBtn.onclick=function(){renderChoice();};
+  document.getElementById("sfb").after(nextBtn);
+}
+
+// ====== CHOICE ======
+function renderChoice(){
+  var s=SC[idx];
+  var choiceBtns=s.choices.map(function(c,i){return'<button class="chbtn" onclick="pickChoice('+i+',event)"><span class="ci">'+c.e+'</span><span class="ct">'+c.t+'</span></button>';}).join("");
+  gc('<div class="phase-pill">⚡ Your Move!</div>'+
+  '<div class="card">'+
+  '<div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px">'+
+  '<span style="font-size:52px">'+s.char+'</span>'+
+  '<span style="font-size:22px;color:#ccc">→</span>'+
+  '<span style="font-size:52px">'+s.env+'</span></div>'+
+  '<div class="mini-info" style="background:'+s.accent+'15;border:2px solid '+s.accent+'25">'+
+  '<div class="mi-ico">'+(s.resps?s.resps[s.correct].e:'💡')+'</div>'+
+  '<div class="mi-txt"><strong>'+s.revealTxt+'</strong><br>'+s.infoTxt+'</div></div>'+
+  '<div style="font-size:15px;font-weight:700;color:#222;margin-bottom:12px">'+s.cq+'</div>'+
+  '<div class="choices">'+choiceBtns+'</div></div>');
+}
+
+function pickChoice(i,e){
+  var s=SC[idx];var good=s.choices[i].good;
+  var btns=document.querySelectorAll(".chbtn");
+  btns.forEach(function(b){b.setAttribute("onclick","");b.style.pointerEvents="none";});
+  btns[i].classList.add(good?"ch-good":"ch-bad");
+  if(good){score+=3;correctStreak++;playStar();spawnConfetti(28);spawnScorePop(3,e.clientX,e.clientY);}
+  else{score=Math.max(0,score);correctStreak=0;playWrong();}
+  updateHud();
+  setTimeout(function(){renderResult(good);},1600);
+}
+
+function renderResult(good){
+  var s=SC[idx];var r=good?s.rgood:s.rbad;
+  var arrowCol=good?"#00c853":"#ff5722";
+  var starsHtml=good?"⭐⭐⭐":"⭐";
+  var nextTxt=(idx+1<SC.length)?"➡️ Next Challenge":"🏆 My Results!";
+  gc('<div class="phase-pill">'+(good?"🌟 Great Choice!":"💡 Learning Moment")+'</div>'+
+  '<div class="card">'+
+  '<div class="rvis '+s.bg+'">'+
+  '<span class="rfrom">'+r.f+'</span>'+
+  '<span class="rarrow" style="color:'+arrowCol+'">→</span>'+
+  '<span class="rto">'+r.t+'</span></div>'+
+  '<div class="rmsg">'+r.m+'</div>'+
+  '<div class="lesson-card" style="background:linear-gradient(135deg,'+s.accent+','+s.accent+'aa)">'+
+  '<div class="lesson-ico">💡</div>'+
+  '<div class="lesson-txt">'+s.lesson+'</div></div>'+
+  '<div class="star-row">'+starsHtml+'</div>'+
+  '<button class="btn-next" style="background:linear-gradient(135deg,'+s.accent+','+s.accent+'aa)" onclick="nextChallenge()">'+nextTxt+'</button></div>');
+  if(good){playWin();}else{playSuccess();}
+}
+
+function nextChallenge(){
+  playClick();idx++;
+  if(idx>=SC.length){endGame();return;}
+  document.getElementById("game").style.background=getGbgColor(idx);
+  updateHud();renderScene();
+}
+
+function endGame(){
+  BhavaSession.end(score); // Bhava auto-tracked
+  document.getElementById("hud").style.display="none";
+  show("end");spawnConfetti(70);playWin();
+  var pct=score/MAX;var rank,emoji,msg;
+  if(pct>=.8){rank="Responsibility Hero! 🏆";emoji="🦸";msg="You crushed every challenge! You're ready for anything life throws at you! 💪";}
+  else if(pct>=.5){rank="Rising Hero! 🌟";emoji="💪";msg="Building serious life skills! Keep practising every day — you're on the right path!";}
+  else{rank="Hero in Training! 🌱";emoji="🌱";msg="Every hero starts somewhere. Try again — you've got this! 🔥";}
+  var sc=Math.max(1,Math.round(pct*5));var stars="";for(var i=0;i<sc;i++)stars+="⭐";
+
+  var cards=[
+    {e:"⏳",n:"Time Mgmt",t:"Own your morning!"},
+    {e:"🤝",n:"Accountability",t:"Be honest always!"},
+    {e:"❗",n:"Reliability",t:"Keep every promise!"},
+    {e:"👥",n:"Teamwork",t:"Others count on you!"},
+    {e:"🏠",n:"Own Your Space",t:"Tidy = responsible!"}
+  ];
+  var rcards=cards.map(function(c){return'<div class="resp-card"><div class="rc-ico">'+c.e+'</div><div class="rc-name">'+c.n+'</div><div class="rc-tip">'+c.t+'</div></div>';}).join("");
+
+  document.getElementById("cert").innerHTML='<div class="c-emoji">'+emoji+'</div>'+
+  '<div class="c-rank">'+rank+'</div>'+
+  '<div class="c-stars-row">'+stars+'</div>'+
+  '<div class="c-score">⭐ '+score+' / '+MAX+' Stars</div>'+
+  '<div class="c-bar-wrap"><div class="c-bar" id="cbar" style="width:0%"></div></div>'+
+  '<div class="resp-grid">'+rcards+'</div>'+
+  '<div class="c-msg">'+msg+'</div>'+
+  '<button class="btn-replay" onclick="startGame()">🔄 Play Again!</button>';
+
+  setTimeout(function(){var b=document.getElementById("cbar");if(b)b.style.width=Math.round(pct*100)+"%";},400);
+}
+
+// Bhava Menu
+function bvOpenMenu(){document.getElementById("bvOverlay").classList.add("active");}
+function bvCloseMenu(){document.getElementById("bvOverlay").classList.remove("active");}
+document.addEventListener("DOMContentLoaded",function(){
+  if(window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.App){
+    Capacitor.Plugins.App.addListener("backButton",function(e){
+      if(window.history.length>1)window.history.back();
+      else Capacitor.Plugins.App.exitApp();
+    });
+  }
+});
 </script>
 
-  <!-- Bhava Game Menu - Auto Injected -->
-  <button class="bv-menu-btn" onclick="bvOpenMenu()">☰</button>
-
-  <div class="bv-overlay" id="bvOverlay" onclick="bvCloseMenu()">
-    <div class="bv-box" onclick="event.stopPropagation()">
-      <h3>☰ Menu</h3>
-      <a href="/index.html">🏠 Home</a>
-      <a href="/about.html">ℹ️ About</a>
-      <a href="/feedback.html">📝 Feedback</a>
-      <a onclick="history.back()">← Go Back</a>
-      <a onclick="bvCloseMenu()">✕ Close</a>
-    </div>
-  </div>
-
-  <script>
-    function bvOpenMenu()  { document.getElementById('bvOverlay').classList.add('active'); }
-    function bvCloseMenu() { document.getElementById('bvOverlay').classList.remove('active'); }
-
-    // Back button fix for Capacitor Android
-    document.addEventListener('DOMContentLoaded', function () {
-      if (window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.App) {
-        Capacitor.Plugins.App.addListener('backButton', function (e) {
-          if (window.history.length > 1) {
-            window.history.back();
-          } else {
-            Capacitor.Plugins.App.exitApp();
-          }
-        });
-      }
-    });
-  </script>
-  <!-- End Bhava Game Menu -->
-
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Dayhero Game";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

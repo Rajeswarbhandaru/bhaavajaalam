@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day Hero 15</title>
+<title>Day Super Hero</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -182,7 +182,8 @@ function renderResult(good){var s=T[idx];var r=good?s.rgood:s.rbad;var arrowCol=
 <div class="clabel">${good?'&#127775; Great':'&#128161; Learn'}</div>
 <div class="card"><div class="res-stage ${s.bg}"><span class="res-from">${r.f}</span><span class="res-arr" style="color:${arrowCol}">&#10132;</span><span class="res-to">${r.t}</span></div><div class="res-msg">${r.msg}</div><div class="lesson-strip" style="background:linear-gradient(135deg,${s.accent},${s.accent}cc)"><div class="les-ico">${s.lesIco}</div><div class="les-txt">${s.lesson}</div></div><div class="star-row">${good?'&#11088;&#11088;&#11088;':'&#11088;'}</div><button class="btn-next" style="background:linear-gradient(135deg,${s.accent},${s.accent}cc)" onclick="nextChallenge()">${nextTxt}</button></div>`);}
 function nextChallenge(){idx++;if(idx>=T.length){endGame();return;}document.getElementById('game').style.background=T[idx].gbg;updateHud();renderScene();}
-function endGame(){document.getElementById('hud').style.display='none';show('end');var pct=score/MAX;var rank,badge,msg;if(pct>=.8){rank='RESPONSIBILITY HERO! &#127942;';badge='&#129464;';msg='Amazing!';}else if(pct>=.5){rank='RISING HERO! &#127775;';badge='&#128170;';msg='Great progress!';}else{rank='HERO IN TRAINING! &#127807;';badge='&#127807;';msg='Try again!';}var stars='';for(var i=0;i<Math.max(1,Math.round(pct*5));i++)stars+='&#11088;';var skills=[['&#9200;','TIME'],['&#129309;','HONEST'],['&#129529;','CLEAN'],['&#10084;','CARE'],['&#128101;','TEAM']];var skillCards=skills.map(function(sk){return `<div class="skill-card"><div class="sk-ico">${sk[0]}</div><div class="sk-lbl">${sk[1]}</div></div>`}).join('');document.getElementById('cert').innerHTML=`
+function endGame(){
+  BhavaSession.end(score); // Bhava auto-trackeddocument.getElementById('hud').style.display='none';show('end');var pct=score/MAX;var rank,badge,msg;if(pct>=.8){rank='RESPONSIBILITY HERO! &#127942;';badge='&#129464;';msg='Amazing!';}else if(pct>=.5){rank='RISING HERO! &#127775;';badge='&#128170;';msg='Great progress!';}else{rank='HERO IN TRAINING! &#127807;';badge='&#127807;';msg='Try again!';}var stars='';for(var i=0;i<Math.max(1,Math.round(pct*5));i++)stars+='&#11088;';var skills=[['&#9200;','TIME'],['&#129309;','HONEST'],['&#129529;','CLEAN'],['&#10084;','CARE'],['&#128101;','TEAM']];var skillCards=skills.map(function(sk){return `<div class="skill-card"><div class="sk-ico">${sk[0]}</div><div class="sk-lbl">${sk[1]}</div></div>`}).join('');document.getElementById('cert').innerHTML=`
 <div class="c-badge">${badge}</div><div class="c-sub">You are a</div><div class="c-rank">${rank}</div><div class="c-stars">${stars}</div><div class="c-score">&#11088; ${score} / ${MAX}</div><div class="c-bar-bg"><div class="c-bar" id="cbar" style="width:0%"></div></div><div class="skills-row">${skillCards}</div><div class="c-msg">${msg}</div><button class="btn-replay" onclick="startGame()">&#128260; Play Again</button>`;setTimeout(function(){var b=document.getElementById('cbar');if(b)b.style.width=Math.round(pct*100)+'%';},300);spawnConfetti(44);}
 function spawnConfetti(n){var cols=['#ffd200','#f7971e','#38ef7d','#ff6b6b','#4ecdc4','#c850c0','#a1c4fd','#fff'];for(var i=0;i<n;i++){(function(delay){setTimeout(function(){var p=document.createElement('div');p.className='cp';p.style.left=Math.random()*100+'vw';p.style.width=(7+Math.random()*9)+'px';p.style.height=(7+Math.random()*9)+'px';p.style.background=cols[Math.floor(Math.random()*cols.length)];p.style.borderRadius=Math.random()>.5?'50%':'3px';p.style.animationDuration=(2+Math.random()*3)+'s';document.body.appendChild(p);setTimeout(function(){if(p.parentNode)p.parentNode.removeChild(p);},5500);},delay);})(i*45);}}
 </script>
@@ -221,5 +222,9 @@ function spawnConfetti(n){var cols=['#ffd200','#f7971e','#38ef7d','#ff6b6b','#4e
   </script>
   <!-- End Bhava Game Menu -->
 
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Dayhero 15 Auto";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

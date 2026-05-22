@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Percent Quest</title>
+<title>Percentile</title>
 <link href="https://api.fontshare.com/v2/css?f[]=chillax@400,500,600,700&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -620,6 +620,7 @@ function showFB(ok,msg,q){
 }
 function nextQ(){G.qi++;if(G.qi>=G.total)endGame();else loadQ();}
 function endGame(){
+  BhavaSession.end(score); // Bhava auto-tracked
   stopTimer();showScreen('screen-results');
   var acc=Math.round(G.correct/G.total*100);
   var grade,icon,title,sub;
@@ -676,5 +677,9 @@ function endGame(){
   </script>
   <!-- End Bhava Game Menu -->
 
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Percentile Game";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

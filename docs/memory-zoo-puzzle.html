@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Memory Zoo Puzzle</title>
+  <title>Memory Zoo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
@@ -603,6 +603,7 @@ function startGame() {
   canFlip      = true;
 
   clearInterval(timerID);
+      BhavaSession.end(100); // Bhava Tech auto-tracked
   document.getElementById('moveCount').textContent = '0';
   document.getElementById('timerVal').textContent  = '0:00';
   document.getElementById('pairsVal').textContent  = `0/${totalPairs}`;
@@ -836,5 +837,9 @@ document.addEventListener('click', initAudio, { once: true });
   </script>
   <!-- End Bhava Game Menu -->
 
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Memory Zoo";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

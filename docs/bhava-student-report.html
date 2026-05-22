@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Report — Bhāva Tech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Design Tokens ───────────────────────────────────────────── */
+    :root, [data-theme="light"] {
+      --color-bg:             #f5f6fa;
+      --color-surface:        #ffffff;
+      --color-surface-2:      #f0f2f8;
+      --color-surface-offset: #e8ebf5;
+      --color-divider:        #dde0f0;
+      --color-border:         #cdd1e8;
+      --color-text:           #1a1d2e;
+      --color-text-muted:     #5a607a;
+      --color-text-faint:     #9aa0bb;
+      --color-text-inverse:   #ffffff;
+
+      --color-primary:        #4a6cf7;
+      --color-primary-hover:  #3558e8;
+      --color-primary-light:  #eef1fe;
+      --color-primary-border: #c5d0fc;
+
+      --color-iq:             #7c5cbf;
+      --color-iq-light:       #f2eeff;
+      --color-iq-border:      #d5c8f5;
+
+      --color-eq:             #e84f7e;
+      --color-eq-light:       #fff0f5;
+      --color-eq-border:      #f8c5d8;
+
+      --color-sq:             #22b07d;
+      --color-sq-light:       #edfaf5;
+      --color-sq-border:      #b8eddb;
+
+      --color-gold:           #f5a623;
+      --color-gold-light:     #fff8ec;
+      --color-success:        #22b07d;
+      --color-warning:        #f5a623;
+      --color-error:          #e84f7e;
+
+      --shadow-sm: 0 1px 3px rgba(26,29,46,0.08);
+      --shadow-md: 0 4px 16px rgba(26,29,46,0.10);
+      --shadow-lg: 0 8px 32px rgba(26,29,46,0.13);
+
+      --radius-sm:   0.375rem;
+      --radius-md:   0.625rem;
+      --radius-lg:   1rem;
+      --radius-xl:   1.25rem;
+      --radius-full: 9999px;
+
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+
+      --text-xs:   0.75rem;
+      --text-sm:   0.875rem;
+      --text-base: 1rem;
+      --text-lg:   1.125rem;
+      --text-xl:   1.375rem;
+      --text-2xl:  1.75rem;
+
+      --font-display: 'Nunito', sans-serif;
+      --font-body:    'Nunito Sans', sans-serif;
+      --transition:   180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] {
+      --color-bg:             #0f1117;
+      --color-surface:        #161b27;
+      --color-surface-2:      #1c2235;
+      --color-surface-offset: #222943;
+      --color-divider:        #2a3250;
+      --color-border:         #323d5e;
+      --color-text:           #e4e7f5;
+      --color-text-muted:     #7f8aab;
+      --color-text-faint:     #4a5270;
+      --color-text-inverse:   #0f1117;
+
+      --color-primary:        #6b87fa;
+      --color-primary-hover:  #8fa0fb;
+      --color-primary-light:  #1b2140;
+      --color-primary-border: #2d3d7a;
+
+      --color-iq:             #a080e0;
+      --color-iq-light:       #1f1535;
+      --color-iq-border:      #3d2a6a;
+
+      --color-eq:             #f07098;
+      --color-eq-light:       #2a1020;
+      --color-eq-border:      #5e1f38;
+
+      --color-sq:             #38d499;
+      --color-sq-light:       #0c2620;
+      --color-sq-border:      #1a4f3c;
+
+      --color-gold:           #f5c842;
+      --color-gold-light:     #2a2010;
+      --color-success:        #38d499;
+      --color-warning:        #f5c842;
+      --color-error:          #f07098;
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.25);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.35);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.45);
+    }
+
+    /* ── Base Reset ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--color-text);
+      background: var(--color-bg);
+      min-height: 100vh;
+      line-height: 1.6;
+      transition: background var(--transition), color var(--transition);
+    }
+    button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Layout Shell ────────────────────────────────────────────── */
+    .app-shell { display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* ── Top Bar ─────────────────────────────────────────────────── */
+    .topbar {
+      height: 56px;
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-divider);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-6);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      gap: var(--space-4);
+    }
+    .topbar-logo {
+      display: flex; align-items: center; gap: var(--space-2);
+      font-family: var(--font-display); font-weight: 800;
+      font-size: var(--text-lg); color: var(--color-primary);
+    }
+    .topbar-logo svg { flex-shrink: 0; }
+    .topbar-center {
+      flex: 1; max-width: 420px;
+      display: flex; align-items: center; gap: var(--space-2);
+    }
+    .search-wrap { position: relative; flex: 1; }
+    .search-wrap svg {
+      position: absolute; left: var(--space-3); top: 50%;
+      transform: translateY(-50%); color: var(--color-text-faint);
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%; height: 36px;
+      background: var(--color-surface-2); border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: 0 var(--space-4) 0 var(--space-8);
+      font-size: var(--text-sm); color: var(--color-text);
+      outline: none;
+      transition: border-color var(--transition), background var(--transition);
+    }
+    .search-input::placeholder { color: var(--color-text-faint); }
+    .search-input:focus { border-color: var(--color-primary); background: var(--color-surface); }
+    .topbar-actions { display: flex; align-items: center; gap: var(--space-2); }
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-text-muted);
+      transition: background var(--transition), color var(--transition);
+    }
+    .icon-btn:hover { background: var(--color-surface-2); color: var(--color-text); }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      height: 36px; padding: 0 var(--space-4);
+      background: var(--color-primary); color: var(--color-text-inverse);
+      border-radius: var(--radius-md); font-size: var(--text-sm); font-weight: 600;
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+    .btn-primary:hover { background: var(--color-primary-hover); box-shadow: var(--shadow-md); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      height: 36px; padding: 0 var(--space-4);
+      border: 1px solid var(--color-border); border-radius: var(--radius-md);
+      font-size: var(--text-sm); font-weight: 600; color: var(--color-text-muted);
+      transition: background var(--transition), border-color var(--transition), color var(--transition);
+    }
+    .btn-ghost:hover { background: var(--color-surface-2); color: var(--color-text); border-color: var(--color-text-muted); }
+
+    /* ── Main Content ────────────────────────────────────────────── */
+    .main { flex: 1; overflow-y: auto; padding: var(--space-6); }
+    .page-container { max-width: 1100px; margin: 0 auto; }
+
+    /* ── Page Header ─────────────────────────────────────────────── */
+    .page-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: var(--space-4); margin-bottom: var(--space-6); flex-wrap: wrap;
+    }
+    .page-title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 800; color: var(--color-text); }
+    .page-subtitle { font-size: var(--text-sm); color: var(--color-text-muted); margin-top: var(--space-1); }
+
+    /* ── Student Info Card ───────────────────────────────────────── */
+    .student-card {
+      background: var(--color-surface); border-radius: var(--radius-xl);
+      padding: var(--space-6); box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-divider);
+      display: flex; align-items: center; gap: var(--space-6);
+      margin-bottom: var(--space-6); flex-wrap: wrap;
+    }
+    .student-avatar {
+      width: 72px; height: 72px; border-radius: var(--radius-full);
+      background: var(--color-primary-light); border: 3px solid var(--color-primary-border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-weight: 800;
+      font-size: var(--text-xl); color: var(--color-primary);
+      flex-shrink: 0;
+    }
+    .student-info { flex: 1; min-width: 180px; }
+    .student-name { font-family: var(--font-display); font-weight: 800; font-size: var(--text-xl); color: var(--color-text); line-height: 1.2; }
+    .student-meta { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-2); }
+    .meta-chip {
+      display: inline-flex; align-items: center; gap: var(--space-1);
+      background: var(--color-surface-2); border: 1px solid var(--color-border);
+      border-radius: var(--radius-full); padding: 2px var(--space-3);
+      font-size: var(--text-xs); color: var(--color-text-muted); font-weight: 500;
+    }
+    .meta-chip svg { color: var(--color-text-faint); }
+    .student-scores-row { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-left: auto; }
+    .mini-score {
+      display: flex; flex-direction: column; align-items: center; gap: var(--space-1);
+      padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg);
+      border: 1px solid var(--color-divider); background: var(--color-surface-2);
+      min-width: 72px;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .mini-score:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .mini-score-label { font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; }
+    .mini-score-value { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 800; line-height: 1; }
+    .mini-score-sub { font-size: var(--text-xs); color: var(--color-text-faint); }
+    .mini-score.iq { background: var(--color-iq-light); border-color: var(--color-iq-border); }
+    .mini-score.iq .mini-score-label,
+    .mini-score.iq .mini-score-value { color: var(--color-iq); }
+    .mini-score.eq { background: var(--color-eq-light); border-color: var(--color-eq-border); }
+    .mini-score.eq .mini-score-label,
+    .mini-score.eq .mini-score-value { color: var(--color-eq); }
+    .mini-score.sq { background: var(--color-sq-light); border-color: var(--color-sq-border); }
+    .mini-score.sq .mini-score-label,
+    .mini-score.sq .mini-score-value { color: var(--color-sq); }
+
+    /* ── Tabs ────────────────────────────────────────────────────── */
+    .tabs-bar {
+      display: flex; gap: var(--space-1);
+      background: var(--color-surface-2); border-radius: var(--radius-lg);
+      padding: 4px; margin-bottom: var(--space-6); width: fit-content;
+    }
+    .tab-btn {
+      padding: var(--space-2) var(--space-5);
+      border-radius: calc(var(--radius-lg) - 4px);
+      font-size: var(--text-sm); font-weight: 600; color: var(--color-text-muted);
+      transition: background var(--transition), color var(--transition), box-shadow var(--transition);
+    }
+    .tab-btn.active { background: var(--color-surface); color: var(--color-text); box-shadow: var(--shadow-sm); }
+    .tab-btn:hover:not(.active) { color: var(--color-text); }
+
+    /* ── Score Sections ──────────────────────────────────────────── */
+    .sections-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); margin-bottom: var(--space-5); }
+    .section-full { grid-column: 1 / -1; }
+    .score-section {
+      background: var(--color-surface); border-radius: var(--radius-xl);
+      border: 1px solid var(--color-divider); box-shadow: var(--shadow-sm); overflow: hidden;
+    }
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-divider);
+    }
+    .section-title-wrap { display: flex; align-items: center; gap: var(--space-3); }
+    .section-icon {
+      width: 36px; height: 36px; border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .section-icon.iq  { background: var(--color-iq-light);      color: var(--color-iq); }
+    .section-icon.eq  { background: var(--color-eq-light);      color: var(--color-eq); }
+    .section-icon.sq  { background: var(--color-sq-light);      color: var(--color-sq); }
+    .section-icon.games { background: var(--color-primary-light); color: var(--color-primary); }
+    .section-title { font-family: var(--font-display); font-weight: 700; font-size: var(--text-base); color: var(--color-text); }
+    .section-desc  { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: 1px; }
+    .section-badge {
+      font-size: var(--text-xs); font-weight: 700;
+      padding: 3px var(--space-3); border-radius: var(--radius-full);
+    }
+    .section-badge.iq  { background: var(--color-iq-light);  color: var(--color-iq);  border: 1px solid var(--color-iq-border); }
+    .section-badge.eq  { background: var(--color-eq-light);  color: var(--color-eq);  border: 1px solid var(--color-eq-border); }
+    .section-badge.sq  { background: var(--color-sq-light);  color: var(--color-sq);  border: 1px solid var(--color-sq-border); }
+    .section-body { padding: var(--space-5) var(--space-6); }
+
+    /* ── Score Rows ──────────────────────────────────────────────── */
+    .score-row {
+      display: flex; align-items: center; gap: var(--space-4);
+      padding: var(--space-3) 0; border-bottom: 1px solid var(--color-divider);
+    }
+    .score-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .score-row:first-child { padding-top: 0; }
+    .score-name { width: 140px; font-size: var(--text-sm); font-weight: 600; color: var(--color-text); flex-shrink: 0; }
+    .score-bar-wrap { flex: 1; position: relative; }
+    .score-bar-bg {
+      height: 8px; background: var(--color-surface-2);
+      border-radius: var(--radius-full); overflow: hidden; border: 1px solid var(--color-border);
+    }
+    .score-bar-fill {
+      height: 100%; border-radius: var(--radius-full);
+      transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .score-bar-fill.iq { background: linear-gradient(90deg, #a080e0, #7c5cbf); }
+    .score-bar-fill.eq { background: linear-gradient(90deg, #f07098, #e84f7e); }
+    .score-bar-fill.sq { background: linear-gradient(90deg, #38d499, #22b07d); }
+    .score-value-chip { width: 40px; text-align: right; font-family: var(--font-display); font-size: var(--text-sm); font-weight: 800; flex-shrink: 0; }
+    .score-value-chip.iq { color: var(--color-iq); }
+    .score-value-chip.eq { color: var(--color-eq); }
+    .score-value-chip.sq { color: var(--color-sq); }
+
+    /* ── Gauge ───────────────────────────────────────────────────── */
+    .gauge-row { display: flex; align-items: center; justify-content: center; gap: var(--space-6); padding: var(--space-4) 0; flex-wrap: wrap; }
+    .gauge-item { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); }
+    .gauge-circle { position: relative; width: 80px; height: 80px; }
+    .gauge-circle svg { transform: rotate(-90deg); }
+    .gauge-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .gauge-num { font-family: var(--font-display); font-weight: 800; font-size: var(--text-base); line-height: 1; }
+    .gauge-sub { font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 1px; }
+    .gauge-name { font-size: var(--text-xs); font-weight: 600; color: var(--color-text-muted); }
+
+    /* ── Game Sessions Table ─────────────────────────────────────── */
+    .games-table-wrap { overflow-x: auto; }
+    .games-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+    .games-table th {
+      text-align: left; padding: var(--space-2) var(--space-4);
+      font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--color-text-faint);
+      border-bottom: 1px solid var(--color-divider); background: var(--color-surface-2);
+    }
+    .games-table td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--color-divider);
+      color: var(--color-text); vertical-align: middle;
+    }
+    .games-table tr:last-child td { border-bottom: none; }
+    .games-table tr:hover td { background: var(--color-surface-2); }
+    .game-name-cell { font-weight: 600; display: flex; align-items: center; gap: var(--space-2); }
+    .game-dot { width: 8px; height: 8px; border-radius: var(--radius-full); flex-shrink: 0; background: var(--color-primary); }
+    .raw-score-bar { display: flex; align-items: center; gap: var(--space-2); }
+    .raw-bar-bg { flex: 1; max-width: 100px; height: 6px; background: var(--color-surface-offset); border-radius: var(--radius-full); overflow: hidden; }
+    .raw-bar-fill { height: 100%; background: var(--color-primary); border-radius: var(--radius-full); }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: var(--text-xs); font-weight: 700;
+      padding: 2px var(--space-2); border-radius: var(--radius-full);
+    }
+    .status-badge.done    { background: var(--color-sq-light);   color: var(--color-sq);   border: 1px solid var(--color-sq-border); }
+    .status-badge.pending { background: var(--color-gold-light); color: var(--color-gold); border: 1px solid rgba(245,166,35,0.3); }
+
+    /* ── Overall / Overview Tab ──────────────────────────────────── */
+    .overall-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); margin-bottom: var(--space-5); }
+    .kpi-card {
+      background: var(--color-surface); border-radius: var(--radius-xl);
+      border: 1px solid var(--color-divider); box-shadow: var(--shadow-sm);
+      padding: var(--space-5) var(--space-6);
+      display: flex; flex-direction: column; gap: var(--space-2);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .kpi-label { font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; }
+    .kpi-value { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 800; line-height: 1.1; }
+    .kpi-desc  { font-size: var(--text-xs); color: var(--color-text-muted); }
+    .kpi-card.iq .kpi-label,
+    .kpi-card.iq .kpi-value { color: var(--color-iq); }
+    .kpi-card.iq { border-top: 3px solid var(--color-iq); }
+    .kpi-card.eq .kpi-label,
+    .kpi-card.eq .kpi-value { color: var(--color-eq); }
+    .kpi-card.eq { border-top: 3px solid var(--color-eq); }
+    .kpi-card.sq .kpi-label,
+    .kpi-card.sq .kpi-value { color: var(--color-sq); }
+    .kpi-card.sq { border-top: 3px solid var(--color-sq); }
+
+    /* ── Insights ────────────────────────────────────────────────── */
+    .insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+    .insight-card {
+      background: var(--color-surface); border-radius: var(--radius-xl);
+      border: 1px solid var(--color-divider); box-shadow: var(--shadow-sm);
+      padding: var(--space-5) var(--space-6);
+    }
+    .insight-title {
+      font-family: var(--font-display); font-size: var(--text-base); font-weight: 700;
+      margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-2);
+    }
+    .insight-item {
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: var(--space-2) 0; border-bottom: 1px solid var(--color-divider);
+    }
+    .insight-item:last-child { border-bottom: none; }
+    .insight-dot { width: 10px; height: 10px; border-radius: var(--radius-full); flex-shrink: 0; }
+    .insight-text { font-size: var(--text-sm); font-weight: 500; flex: 1; }
+    .insight-score { font-size: var(--text-sm); font-weight: 700; font-family: var(--font-display); }
+
+    /* ── Tab Panels ──────────────────────────────────────────────── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Export Bar ──────────────────────────────────────────────── */
+    .export-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-3) var(--space-6);
+      background: var(--color-surface); border-radius: var(--radius-xl);
+      border: 1px solid var(--color-divider); box-shadow: var(--shadow-sm);
+      margin-bottom: var(--space-6); flex-wrap: wrap; gap: var(--space-3);
+    }
+    .export-info  { font-size: var(--text-sm); color: var(--color-text-muted); }
+    .export-info strong { color: var(--color-text); }
+    .export-actions { display: flex; gap: var(--space-2); }
+
+    /* ── Empty State ─────────────────────────────────────────────── */
+    .empty-state { text-align: center; padding: var(--space-12) var(--space-8); color: var(--color-text-muted); }
+    .empty-state svg  { margin: 0 auto var(--space-4); color: var(--color-text-faint); }
+    .empty-state p    { font-size: var(--text-sm); max-width: 32ch; margin: 0 auto; }
+
+    /* ── LOGIN SCREEN ────────────────────────────────────────────── */
+    #login-screen {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; background: var(--color-bg);
+    }
+    .login-card {
+      background: var(--color-surface); border-radius: var(--radius-xl);
+      border: 1px solid var(--color-divider); box-shadow: var(--shadow-lg);
+      padding: var(--space-10) var(--space-8);
+      width: 100%; max-width: 380px;
+    }
+    .login-logo {
+      display: flex; align-items: center; justify-content: center; gap: var(--space-2);
+      font-family: var(--font-display); font-weight: 800;
+      font-size: var(--text-xl); color: var(--color-primary); margin-bottom: var(--space-2);
+    }
+    .login-subtitle {
+      text-align: center; font-size: var(--text-sm);
+      color: var(--color-text-muted); margin-bottom: var(--space-8);
+    }
+    .form-group { margin-bottom: var(--space-5); }
+    .form-label { display: block; font-size: var(--text-sm); font-weight: 600; color: var(--color-text); margin-bottom: var(--space-2); }
+    .form-input {
+      width: 100%; height: 44px;
+      background: var(--color-surface-2); border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-md); padding: 0 var(--space-4);
+      font-size: var(--text-base); color: var(--color-text); outline: none;
+      transition: border-color var(--transition);
+    }
+    .form-input:focus  { border-color: var(--color-primary); }
+    .form-input::placeholder { color: var(--color-text-faint); }
+    .btn-submit {
+      width: 100%; height: 44px;
+      background: var(--color-primary); color: var(--color-text-inverse);
+      border-radius: var(--radius-md);
+      font-family: var(--font-display); font-size: var(--text-base); font-weight: 700;
+      transition: background var(--transition), box-shadow var(--transition);
+      margin-top: var(--space-2);
+    }
+    .btn-submit:hover { background: var(--color-primary-hover); box-shadow: var(--shadow-md); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .form-error { font-size: var(--text-xs); color: var(--color-error); margin-top: var(--space-2); display: none; }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 760px) {
+      .sections-grid  { grid-template-columns: 1fr; }
+      .student-card   { flex-direction: column; }
+      .student-scores-row { margin-left: 0; }
+    }
+    @media (max-width: 600px) {
+      .overall-grid   { grid-template-columns: 1fr; }
+      .insights-grid  { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .topbar-center  { display: none; }
+      .main           { padding: var(--space-4); }
+    }
+
+    /* ── Animations ──────────────────────────────────────────────── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in { animation: fadeIn 0.35s ease forwards; }
+
+    @keyframes countUp {
+      from { opacity: 0; transform: scale(0.85); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .kpi-value { animation: countUp 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     LOGIN SCREEN
+     ══════════════════════════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card animate-in">
+
+    <!-- Logo -->
+    <div class="login-logo">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-label="Bhāva logo">
+        <rect width="32" height="32" rx="8" fill="var(--color-primary)"/>
+        <circle cx="16" cy="14" r="7" stroke="white" stroke-width="2" fill="none"/>
+        <path d="M10 14 Q13 10 16 14 Q19 18 22 14" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <line x1="16" y1="21" x2="16" y2="25" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <line x1="12" y1="25" x2="20" y2="25" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      Bhāva Jālam
+    </div>
+
+    <p class="login-subtitle">Student Report Portal — Enter your credentials</p>
+
+    <div class="form-group">
+      <label class="form-label" for="roll-input">Roll Number</label>
+      <input type="text" id="roll-input" class="form-input" placeholder="e.g. 1001" autocomplete="off">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="class-input">Class</label>
+      <input type="text" id="class-input" class="form-input" placeholder="e.g. 5A" autocomplete="off">
+    </div>
+
+    <div id="login-error" class="form-error">Invalid roll number or class. Please try again.</div>
+
+    <button class="btn-submit" id="login-btn" onclick="window.doLogin()">View My Report →</button>
+
+    <p style="text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-6);">
+      Enter your roll number and class exactly as registered
+    </p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     REPORT APP (hidden until login)
+     ══════════════════════════════════════════════════════════════ -->
+<div id="report-app" class="app-shell" style="display:none;">
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <a class="topbar-logo" href="#">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-label="Bhāva logo">
+        <rect width="32" height="32" rx="8" fill="var(--color-primary)"/>
+        <circle cx="16" cy="14" r="7" stroke="white" stroke-width="2" fill="none"/>
+        <path d="M10 14 Q13 10 16 14 Q19 18 22 14" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <line x1="16" y1="21" x2="16" y2="25" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <line x1="12" y1="25" x2="20" y2="25" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      Bhāva Jālam
+    </a>
+
+    <div class="topbar-center">
+      <div class="search-wrap">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" class="search-input" placeholder="Search games or scores…">
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <button class="btn-ghost" onclick="window.location.href='index.html'" title="Go to Home">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Home
+      </button>
+      <button class="btn-ghost" onclick="history.back()" title="Go back">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Back
+      </button>
+      <button class="icon-btn" data-theme-toggle aria-label="Toggle dark mode" title="Toggle theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+      </button>
+      <button class="btn-ghost" onclick="window.doLogout()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="page-container">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Student Performance Report</h1>
+          <p class="page-subtitle" id="report-date">Generated on —</p>
+        </div>
+      </div>
+
+      <!-- Export Bar -->
+      <div class="export-bar">
+        <div class="export-info">
+          Showing full report for <strong id="export-name">—</strong>
+        </div>
+        <div class="export-actions">
+          <button class="btn-ghost" onclick="window.print()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 6 2 18 2 18 9"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+            Print
+          </button>
+        </div>
+      </div>
+
+      <!-- Student Info Card -->
+      <div class="student-card animate-in" id="student-card">
+        <div class="student-avatar" id="student-avatar"></div>
+        <div class="student-info">
+          <div class="student-name" id="student-name"></div>
+          <div class="student-meta">
+            <span class="meta-chip">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              Roll&nbsp;<strong id="student-roll"></strong>
+            </span>
+            <span class="meta-chip">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
+              Class&nbsp;<strong id="student-class"></strong>
+            </span>
+            <span class="meta-chip">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              <strong id="student-school"></strong>
+            </span>
+          </div>
+        </div>
+        <div class="student-scores-row">
+          <div class="mini-score iq">
+            <span class="mini-score-label">IQ</span>
+            <span class="mini-score-value" id="mini-iq">—</span>
+            <span class="mini-score-sub">Cognitive</span>
+          </div>
+          <div class="mini-score eq">
+            <span class="mini-score-label">EQ</span>
+            <span class="mini-score-value" id="mini-eq">—</span>
+            <span class="mini-score-sub">Emotional</span>
+          </div>
+          <div class="mini-score sq">
+            <span class="mini-score-label">SQ</span>
+            <span class="mini-score-value" id="mini-sq">—</span>
+            <span class="mini-score-sub">Social</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs-bar">
+        <button class="tab-btn active" data-tab="overview" onclick="window.switchTab(this,'overview')">Overview</button>
+        <button class="tab-btn" data-tab="iq"       onclick="window.switchTab(this,'iq')">IQ Scores</button>
+        <button class="tab-btn" data-tab="eq"       onclick="window.switchTab(this,'eq')">EQ Scores</button>
+        <button class="tab-btn" data-tab="sq"       onclick="window.switchTab(this,'sq')">SQ Scores</button>
+        <button class="tab-btn" data-tab="games"    onclick="window.switchTab(this,'games')">Game Sessions</button>
+      </div>
+
+      <!-- ── OVERVIEW TAB ─────────────────────────────────────────── -->
+      <div class="tab-panel active" id="panel-overview">
+        <div class="overall-grid" id="kpi-grid"></div>
+        <div class="insights-grid">
+          <div class="insight-card animate-in">
+            <div class="insight-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="2">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                <polyline points="17 6 23 6 23 12"/>
+              </svg>
+              Top Strengths
+            </div>
+            <div id="strengths-list"></div>
+          </div>
+          <div class="insight-card animate-in">
+            <div class="insight-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-warning)" stroke-width="2">
+                <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/>
+                <polyline points="17 18 23 18 23 12"/>
+              </svg>
+              Areas to Improve
+            </div>
+            <div id="weaknesses-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── IQ TAB ────────────────────────────────────────────────── -->
+      <div class="tab-panel" id="panel-iq">
+        <div class="sections-grid">
+          <div class="score-section">
+            <div class="section-header">
+              <div class="section-title-wrap">
+                <div class="section-icon iq">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 8v4l3 3"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="section-title">IQ — Cognitive Intelligence</div>
+                  <div class="section-desc">Logic, Memory, Attention &amp; Speed</div>
+                </div>
+              </div>
+              <span class="section-badge iq" id="iq-avg-badge">Avg —</span>
+            </div>
+            <div class="section-body">
+              <div id="iq-score-rows"></div>
+            </div>
+          </div>
+          <div class="score-section">
+            <div class="section-header">
+              <div class="section-title-wrap">
+                <div class="section-icon iq">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="2"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="10" opacity=".3"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="section-title">IQ Sub-score Breakdown</div>
+                  <div class="section-desc">Visual gauge of each component</div>
+                </div>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="gauge-row" id="iq-gauges"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EQ TAB ────────────────────────────────────────────────── -->
+      <div class="tab-panel" id="panel-eq">
+        <div class="sections-grid">
+          <div class="score-section">
+            <div class="section-header">
+              <div class="section-title-wrap">
+                <div class="section-icon eq">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="section-title">EQ — Emotional Intelligence</div>
+                  <div class="section-desc">Empathy, Communication &amp; Balance</div>
+                </div>
+              </div>
+              <span class="section-badge eq" id="eq-avg-badge">Avg —</span>
+            </div>
+            <div class="section-body">
+              <div id="eq-score-rows"></div>
+            </div>
+          </div>
+          <div class="score-section">
+            <div class="section-header">
+              <div class="section-title-wrap">
+                <div class="section-icon eq">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="2"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="10" opacity=".3"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="section-title">EQ Sub-score Breakdown</div>
+                  <div class="section-desc">Visual gauge of each component</div>
+                </div>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="gauge-row" id="eq-gauges"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SQ TAB ────────────────────────────────────────────────── -->
+      <div class="tab-panel" id="panel-sq">
+        <div class="sections-grid">
+          <div class="score-section">
+            <div class="section-header">
+              <div class="section-title-wrap">
+                <div class="section-icon sq">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="section-title">SQ — Social Intelligence</div>
+                  <div class="section-desc">Cooperation, Leadership &amp; Awareness</div>
+                </div>
+              </div>
+              <span class="section-badge sq" id="sq-avg-badge">Avg —</span>
+            </div>
+            <div class="section-body">
+              <div id="sq-score-rows"></div>
+            </div>
+          </div>
+          <div class="score-section">
+            <div class="section-header">
+              <div class="section-title-wrap">
+                <div class="section-icon sq">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="2"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="10" opacity=".3"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="section-title">SQ Sub-score Breakdown</div>
+                  <div class="section-desc">Visual gauge of each component</div>
+                </div>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="gauge-row" id="sq-gauges"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── GAMES TAB ─────────────────────────────────────────────── -->
+      <div class="tab-panel" id="panel-games">
+        <div class="score-section section-full">
+          <div class="section-header">
+            <div class="section-title-wrap">
+              <div class="section-icon games">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="6" width="20" height="12" rx="2"/>
+                  <path d="M12 12h.01M7 12h.01"/>
+                  <path d="M17 10v4M15 12h4"/>
+                </svg>
+              </div>
+              <div>
+                <div class="section-title">Game Sessions</div>
+                <div class="section-desc">Raw scores from all played games</div>
+              </div>
+            </div>
+            <span class="section-badge iq" id="games-count-badge">0 Sessions</span>
+          </div>
+          <div class="section-body" style="padding:0;">
+            <div class="games-table-wrap">
+              <table class="games-table">
+                <thead>
+                  <tr>
+                    <th>Game</th>
+                    <th>Raw Score</th>
+                    <th>Scaled</th>
+                    <th>Status</th>
+                    <th>Session ID</th>
+                  </tr>
+                </thead>
+                <tbody id="games-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-container -->
+  </main>
+</div><!-- /report-app -->
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+'use strict';
+
+// ── Mock data (used only when window.bhava is unavailable) ──────────────────
+const MOCK_DB = {
+  students: [
+    { id: 1, roll_no: '101', class: '5', section: 'A', name: 'Arjun Reddy',  school_id: 1, is_active: 1 },
+    { id: 2, roll_no: '102', class: '5', section: 'A', name: 'Priya Sharma', school_id: 1, is_active: 1 },
+    { id: 3, roll_no: '201', class: '6', section: 'B', name: 'Kavya Nair',   school_id: 1, is_active: 1 }
+  ],
+  schools: [
+    { id: 1, name: 'Sri Vidya School', city: 'Vijayawada', state: 'AP' }
+  ],
+  iq_scores: [
+    { id: 1, student_id: 1, logic: 82, memory: 78, attention: 90, processing_speed: 85 }
+  ],
+  eq_scores: [
+    { id: 1, student_id: 1, empathy: 88, communication: 75, emotional_balance: 82, confidence: 90, self_awareness: 77 }
+  ],
+  sq_scores: [
+    { id: 1, student_id: 1, cooperation: 85, leadership_basics: 72, social_awareness: 88, conflict_resolution: 80 }
+  ],
+  game_sessions: [
+    { id: 1, student_id: 1, game_name: 'Logic Puzzle',   raw_score: 82, completed: 1 },
+    { id: 2, student_id: 1, game_name: 'Memory Match',   raw_score: 78, completed: 1 },
+    { id: 3, student_id: 1, game_name: 'Attention Grid', raw_score: 90, completed: 1 },
+    { id: 4, student_id: 1, game_name: 'Speed Sort',     raw_score: 85, completed: 0 },
+    { id: 5, student_id: 1, game_name: 'Emotion Cards',  raw_score: 88, completed: 1 }
+  ]
+};
+
+// ── Electron detection (function — not const, to avoid timing issues) ───────
+function isElectron() {
+  return typeof window.bhava !== 'undefined' &&
+         typeof window.bhava.login === 'function';
+}
+
+// ── Bhāva API layer ─────────────────────────────────────────────────────────
+// All calls go through window.bhava.* in Electron, or MOCK_DB in browser.
+const api = {
+
+  async login(rollNo, cls) {
+    if (isElectron()) {
+      return await window.bhava.login(String(rollNo).trim(), String(cls).trim());
+    }
+    return MOCK_DB.students.find(
+      s => String(s.roll_no) === String(rollNo).trim() &&
+           String(s.class)   === String(cls).trim()
+    ) ?? null;
+  },
+
+  async getSchool(schoolId) {
+    if (isElectron()) {
+      return await window.bhava.getSchool(schoolId);
+    }
+    return MOCK_DB.schools.find(s => s.id == schoolId) ??
+           { id: schoolId, name: 'Unknown School', city: '', state: '' };
+  },
+
+  async getIQScores(studentId) {
+    if (isElectron()) {
+      return await window.bhava.getIQScores(studentId);
+    }
+    return MOCK_DB.iq_scores.find(r => r.student_id == studentId) ?? null;
+  },
+
+  async getEQScores(studentId) {
+    if (isElectron()) {
+      return await window.bhava.getEQScores(studentId);
+    }
+    return MOCK_DB.eq_scores.find(r => r.student_id == studentId) ?? null;
+  },
+
+  async getSQScores(studentId) {
+    if (isElectron()) {
+      return await window.bhava.getSQScores(studentId);
+    }
+    return MOCK_DB.sq_scores.find(r => r.student_id == studentId) ?? null;
+  },
+
+  async getGameSessions(studentId) {
+    if (isElectron()) {
+      return await window.bhava.getGameSessions(studentId);
+    }
+    return MOCK_DB.game_sessions.filter(r => r.student_id == studentId);
+  }
+};
+
+function scaledScore(raw) {
+  const n = Number(raw);
+  if (!Number.isFinite(n)) return '—';
+  return Math.min(160, Math.max(60, Math.round(60 + (n / 100) * 100)));
+}
+
+function avg(obj, keys) {
+  if (!obj) return null;
+  const vals = keys.map(k => Number(obj[k])).filter(v => Number.isFinite(v) && v > 0);
+  if (!vals.length) return null;
+  return Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
+}
+
+function fmtKey(k) {
+  return k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+// ── State ───────────────────────────────────────────────────────────────────
+let currentStudent = null;
+
+// ── Login ───────────────────────────────────────────────────────────────────
+window.doLogin = async function () {
+  const roll    = document.getElementById('roll-input').value.trim();
+  const cls     = document.getElementById('class-input').value.trim();
+  const errEl   = document.getElementById('login-error');
+  const btn     = document.getElementById('login-btn');
+
+  errEl.style.display = 'none';
+
+  if (!roll || !cls) {
+    errEl.textContent = 'Please enter both Roll Number and Class.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Loading…';
+
+  try {
+    const student = await api.login(roll, cls);
+
+    if (!student) {
+      errEl.textContent = 'No student found. Check roll number and class.';
+      errEl.style.display = 'block';
+      document.getElementById('roll-input').focus();
+      return;
+    }
+
+    currentStudent = student;
+    await renderReport(student);
+
+    document.getElementById('login-screen').style.display  = 'none';
+    document.getElementById('report-app').style.display    = 'flex';
+
+  } catch (err) {
+    console.error('[doLogin] error:', err);
+    errEl.textContent = 'An error occurred. Please try again.';
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'View My Report →';
+  }
+};
+
+// ── Logout ──────────────────────────────────────────────────────────────────
+window.doLogout = function () {
+  currentStudent = null;
+  document.getElementById('login-screen').style.display  = 'flex';
+  document.getElementById('report-app').style.display    = 'none';
+  document.getElementById('roll-input').value  = '';
+  document.getElementById('class-input').value = '';
+  document.getElementById('login-error').style.display = 'none';
+};
+
+// ── Tab Switching ────────────────────────────────────────────────────────────
+window.switchTab = function (btn, tabId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + tabId).classList.add('active');
+};
+
+// ── Render Full Report ───────────────────────────────────────────────────────
+async function renderReport(student) {
+  const [school, iq, eq, sq, sessions] = await Promise.all([
+    api.getSchool(student.school_id),
+    api.getIQScores(student.id),
+    api.getEQScores(student.id),
+    api.getSQScores(student.id),
+    api.getGameSessions(student.id)
+  ]);
+
+  // ── Header / meta
+  const today = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+  document.getElementById('report-date').textContent   = 'Generated on ' + today;
+  document.getElementById('export-name').textContent   = student.name;
+
+  // ── Student card
+  const initials = (student.name || 'ST')
+    .split(' ')
+    .map(w => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+  document.getElementById('student-avatar').textContent = initials;
+  document.getElementById('student-name').textContent   = student.name || '—';
+  document.getElementById('student-roll').textContent   = student.roll_no;
+  document.getElementById('student-class').textContent  = student.class + (student.section ? ' ' + student.section : '');
+  document.getElementById('student-school').textContent = school ? school.name : '—';
+
+  // ── Key definitions
+  const IQ_KEYS = ['logic', 'memory', 'attention', 'processing_speed'];
+  const EQ_KEYS = ['empathy', 'communication', 'emotional_balance', 'confidence', 'self_awareness'];
+  const SQ_KEYS = ['cooperation', 'leadership_basics', 'social_awareness', 'conflict_resolution'];
+
+  const iqAvg = avg(iq, IQ_KEYS);
+  const eqAvg = avg(eq, EQ_KEYS);
+  const sqAvg = avg(sq, SQ_KEYS);
+
+  // ── Mini scores
+  document.getElementById('mini-iq').textContent = iqAvg !== null ? scaledScore(iqAvg) : '—';
+  document.getElementById('mini-eq').textContent = eqAvg !== null ? scaledScore(eqAvg) : '—';
+  document.getElementById('mini-sq').textContent = sqAvg !== null ? scaledScore(sqAvg) : '—';
+
+  // ── KPI Cards
+  const kpiData = [
+    { label: 'IQ Score', value: iqAvg !== null ? scaledScore(iqAvg) : null, desc: 'Cognitive Intelligence', cls: 'iq' },
+    { label: 'EQ Score', value: eqAvg !== null ? scaledScore(eqAvg) : null, desc: 'Emotional Intelligence', cls: 'eq' },
+    { label: 'SQ Score', value: sqAvg !== null ? scaledScore(sqAvg) : null, desc: 'Social Intelligence',    cls: 'sq' }
+  ];
+  document.getElementById('kpi-grid').innerHTML = kpiData.map(k => `
+    <div class="kpi-card ${k.cls}">
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value">${k.value !== null ? k.value : '—'}</div>
+      <div class="kpi-desc">${k.desc} · Scale 60–160</div>
+    </div>
+  `).join('');
+
+  // ── Strengths / Weaknesses
+  const COLOR_MAP = { iq: 'var(--color-iq)', eq: 'var(--color-eq)', sq: 'var(--color-sq)' };
+  const allSub = [];
+  if (iq) IQ_KEYS.forEach(k => allSub.push({ name: fmtKey(k), val: iq[k],  type: 'iq' }));
+  if (eq) EQ_KEYS.forEach(k => allSub.push({ name: fmtKey(k), val: eq[k],  type: 'eq' }));
+  if (sq) SQ_KEYS.forEach(k => allSub.push({ name: fmtKey(k), val: sq[k],  type: 'sq' }));
+  allSub.sort((a, b) => b.val - a.val);
+
+  const mkInsight = (s) => `
+    <div class="insight-item">
+      <span class="insight-dot" style="background:${COLOR_MAP[s.type]}"></span>
+      <span class="insight-text">${s.name}</span>
+      <span class="insight-score" style="color:${COLOR_MAP[s.type]}">${scaledScore(s.val)}</span>
+    </div>`;
+
+  const noData = `<div class="empty-state"><p>No data yet</p></div>`;
+  document.getElementById('strengths-list').innerHTML  = allSub.length ? allSub.slice(0, 4).map(mkInsight).join('') : noData;
+  document.getElementById('weaknesses-list').innerHTML = allSub.length ? [...allSub].reverse().slice(0, 4).map(mkInsight).join('') : noData;
+
+  // ── IQ Tab
+  renderScoreRows('iq-score-rows', iq, IQ_KEYS, 'iq');
+  renderGauges('iq-gauges', iq, IQ_KEYS, 'iq', '#7c5cbf');
+  document.getElementById('iq-avg-badge').textContent = iqAvg !== null ? 'Avg ' + scaledScore(iqAvg) : 'No data';
+
+  // ── EQ Tab
+  renderScoreRows('eq-score-rows', eq, EQ_KEYS, 'eq');
+  renderGauges('eq-gauges', eq, EQ_KEYS, 'eq', '#e84f7e');
+  document.getElementById('eq-avg-badge').textContent = eqAvg !== null ? 'Avg ' + scaledScore(eqAvg) : 'No data';
+
+  // ── SQ Tab
+  renderScoreRows('sq-score-rows', sq, SQ_KEYS, 'sq');
+  renderGauges('sq-gauges', sq, SQ_KEYS, 'sq', '#22b07d');
+  document.getElementById('sq-avg-badge').textContent = sqAvg !== null ? 'Avg ' + scaledScore(sqAvg) : 'No data';
+
+  // ── Games Tab
+  renderGameSessions(sessions || []);
+}
+
+// ── Score Rows ───────────────────────────────────────────────────────────────
+function renderScoreRows(containerId, data, keys, type) {
+  const el = document.getElementById(containerId);
+  if (!data) {
+    el.innerHTML = `<div class="empty-state"><p>No ${type.toUpperCase()} data recorded yet.</p></div>`;
+    return;
+  }
+  el.innerHTML = keys.map(k => {
+    const raw = Number(data[k]) || 0;
+    return `
+      <div class="score-row">
+        <div class="score-name">${fmtKey(k)}</div>
+        <div class="score-bar-wrap">
+          <div class="score-bar-bg">
+            <div class="score-bar-fill ${type}" style="width:${raw}%"></div>
+          </div>
+        </div>
+        <div class="score-value-chip ${type}">${scaledScore(raw)}</div>
+      </div>`;
+  }).join('');
+}
+
+// ── Gauge Circles ────────────────────────────────────────────────────────────
+function renderGauges(containerId, data, keys, type, color) {
+  const el = document.getElementById(containerId);
+  if (!data) { el.innerHTML = ''; return; }
+
+  const r = 32, cx = 40, circ = 2 * Math.PI * r;
+  el.innerHTML = keys.map(k => {
+    const val  = Number(data[k]) || 0;
+    const dash = (circ * val / 100).toFixed(2);
+    const gap  = (circ - dash).toFixed(2);
+    return `
+      <div class="gauge-item">
+        <div class="gauge-circle">
+          <svg width="80" height="80" viewBox="0 0 80 80">
+            <circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="var(--color-surface-offset)" stroke-width="8"/>
+            <circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="${color}" stroke-width="8"
+              stroke-dasharray="${dash} ${gap}" stroke-linecap="round"
+              style="transition:stroke-dasharray 0.9s cubic-bezier(0.16,1,0.3,1);transform:rotate(-90deg);transform-origin:50% 50%"/>
+          </svg>
+          <div class="gauge-label">
+            <span class="gauge-num"  style="color:${color}">${scaledScore(val)}</span>
+            <span class="gauge-sub"  style="color:${color}">${Math.round(val)}</span>
+          </div>
+        </div>
+        <div class="gauge-name">${fmtKey(k)}</div>
+      </div>`;
+  }).join('');
+}
+
+// ── Game Sessions Table ───────────────────────────────────────────────────────
+function renderGameSessions(sessions) {
+  const tbody  = document.getElementById('games-tbody');
+  const badge  = document.getElementById('games-count-badge');
+  const count  = sessions.length;
+  badge.textContent = count + ' Session' + (count !== 1 ? 's' : '');
+
+  if (!count) {
+    tbody.innerHTML = `
+      <tr><td colspan="5">
+        <div class="empty-state">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="6" width="20" height="12" rx="2"/>
+            <path d="M12 12h.01M7 12h.01"/><path d="M17 10v4M15 12h4"/>
+          </svg>
+          <p>No game sessions recorded yet.</p>
+        </div>
+      </td></tr>`;
+    return;
+  }
+
+  const DOT_COLORS = ['#4a6cf7','#7c5cbf','#e84f7e','#22b07d','#f5a623','#5591c7'];
+  tbody.innerHTML = sessions.map((s, i) => {
+    const dc = DOT_COLORS[i % DOT_COLORS.length];
+    const rawNum = Number(s.raw_score) || 0;
+    return `
+      <tr>
+        <td>
+          <div class="game-name-cell">
+            <span class="game-dot" style="background:${dc}"></span>
+            ${s.game_name || '—'}
+          </div>
+        </td>
+        <td>
+          <div class="raw-score-bar">
+            <div class="raw-bar-bg">
+              <div class="raw-bar-fill" style="width:${rawNum}%;background:${dc}"></div>
+            </div>
+            <span style="font-weight:700;font-size:var(--text-sm)">${rawNum}</span>
+          </div>
+        </td>
+        <td><strong style="font-family:var(--font-display);font-size:var(--text-base)">${scaledScore(rawNum)}</strong></td>
+        <td>
+          <span class="status-badge ${s.completed ? 'done' : 'pending'}">
+            ${s.completed
+              ? '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Done'
+              : 'Pending'}
+          </span>
+        </td>
+        <td style="color:var(--color-text-faint);font-size:var(--text-xs)">${s.id}</td>
+      </tr>`;
+  }).join('');
+}
+
+// ── Dark Mode Toggle ─────────────────────────────────────────────────────────
+(function () {
+  const root = document.documentElement;
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  let theme = systemDark ? 'dark' : 'light';
+  root.setAttribute('data-theme', theme);
+
+  function applyToggleIcon(btn, currentTheme) {
+    btn.innerHTML = currentTheme === 'dark'
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    btn.setAttribute('aria-label', 'Switch to ' + (currentTheme === 'dark' ? 'light' : 'dark') + ' mode');
+  }
+
+  document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
+    applyToggleIcon(btn, theme);
+    btn.addEventListener('click', () => {
+      theme = theme === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', theme);
+      document.querySelectorAll('[data-theme-toggle]').forEach(b => applyToggleIcon(b, theme));
+    });
+  });
+})();
+
+// ── Enter key triggers login ──────────────────────────────────────────────────
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && document.getElementById('report-app').style.display !== 'flex') {
+    window.doLogin();
+  }
+});
+})();
+</script>
+</body>
+</html>

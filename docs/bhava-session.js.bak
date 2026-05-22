@@ -1,0 +1,161 @@
+// ── Bhāva Tech — Session Tracker ─────────────────────────────────────────────
+// Drop this ONE script tag into any game HTML to enable auto score saving:
+//   <script src="bhava-session.js"></script>
+//
+// Then call from your game's score-save logic:
+//   BhavaSession.end(myScore);   // score: 0–100
+//
+// The student must have logged in first via the login overlay (auto-shown).
+
+(function () {
+  'use strict';
+
+  const SCHOOL_ID  = 'BHAVA-SVN-001';
+  const GAME_NAME  = document.title || 'Unknown Game';  // override per game if needed
+
+  let currentStudent = null;
+  let currentSessionId = null;
+
+  // ── Detect if running inside Electron ──────────────────────────────────────
+  const isElectron = typeof window.bhava !== 'undefined';
+
+  // ── Restore logged-in student from sessionStorage ──────────────────────────
+  function restoreStudent() {
+    try {
+      const saved = sessionStorage.getItem('bhava_student');
+      if (saved) currentStudent = JSON.parse(saved);
+    } catch (e) {}
+  }
+
+  // ── Save student to sessionStorage ────────────────────────────────────────
+  function saveStudent(student) {
+    try { sessionStorage.setItem('bhava_student', JSON.stringify(student)); } catch(e) {}
+    currentStudent = student;
+  }
+
+  // ── Build login overlay ────────────────────────────────────────────────────
+  function showLoginOverlay() {
+    if (!isElectron) return;               // skip in browser preview
+    if (currentStudent) { startSession(); return; }
+
+    const overlay = document.createElement('div');
+    overlay.id = 'bhava-login-overlay';
+    overlay.innerHTML = `
+      <div style="
+        position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:99999;
+        display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;">
+        <div style="
+          background:#fff;border-radius:16px;padding:2.5rem 2rem;width:320px;
+          box-shadow:0 8px 32px rgba(1,105,111,0.2);text-align:center;">
+          <svg width="44" height="44" viewBox="0 0 48 48" style="margin-bottom:8px">
+            <circle cx="24" cy="24" r="22" fill="#01696f"/>
+            <text x="24" y="30" text-anchor="middle" fill="white"
+                  font-size="18" font-weight="bold" font-family="sans-serif">भ</text>
+          </svg>
+          <h2 style="margin:0 0 4px;color:#01696f;font-size:1.4rem">Bhāva Tech</h2>
+          <p style="color:#888;font-size:0.85rem;margin:0 0 20px">Sign in to track your progress</p>
+          <label style="display:block;text-align:left;font-size:0.82rem;font-weight:600;color:#333;margin-bottom:4px">Roll Number</label>
+          <input id="bt-roll" type="number" placeholder="e.g. 1001"
+            style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;
+                   font-size:1rem;margin-bottom:12px;box-sizing:border-box;outline:none"/>
+          <label style="display:block;text-align:left;font-size:0.82rem;font-weight:600;color:#333;margin-bottom:4px">Class</label>
+          <select id="bt-class"
+            style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;
+                   font-size:0.95rem;margin-bottom:16px;box-sizing:border-box;background:#fff;outline:none">
+            <option value="">Select class</option>
+            ${[1,2,3,4,5,6,7,8,9,10,11,12].map(c=>`<option value="${c}">Class ${c}</option>`).join('')}
+          </select>
+          <div id="bt-error" style="color:#a12c7b;font-size:0.82rem;margin-bottom:8px;min-height:18px"></div>
+          <button id="bt-login-btn"
+            style="width:100%;padding:12px;background:#01696f;color:#fff;border:none;
+                   border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer">
+            ▶ Start Playing
+          </button>
+          <p style="font-size:0.72rem;color:#bbb;margin:12px 0 0">
+            No password needed · Ask your teacher for your Roll No
+          </p>
+        </div>
+      </div>`;
+
+    document.body.appendChild(overlay);
+
+    document.getElementById('bt-login-btn').addEventListener('click', async () => {
+      const rollNo = parseInt(document.getElementById('bt-roll').value, 10);
+      const cls    = document.getElementById('bt-class').value;
+      const errEl  = document.getElementById('bt-error');
+
+      if (!rollNo || !cls) { errEl.textContent = 'Please enter Roll No and Class.'; return; }
+
+      errEl.textContent = '';
+      const btn = document.getElementById('bt-login-btn');
+      btn.textContent = 'Checking...';
+      btn.disabled = true;
+
+      const student = await window.bhava.login(rollNo, cls);
+      if (!student) {
+        errEl.textContent = 'Not found. Check Roll No and Class.';
+        btn.textContent = '▶ Start Playing';
+        btn.disabled = false;
+        return;
+      }
+
+      saveStudent(student);
+      overlay.remove();
+      startSession();
+    });
+
+    // Allow Enter key
+    document.getElementById('bt-roll').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('bt-login-btn').click();
+    });
+  }
+
+  // ── Start session after login ──────────────────────────────────────────────
+  async function startSession() {
+    if (!isElectron || !currentStudent) return;
+    try {
+      currentSessionId = await window.bhava.startSession(
+        currentStudent.id,
+        currentStudent.school_id || SCHOOL_ID,
+        GAME_NAME
+      );
+      console.log('[BhavaSession] started:', currentSessionId, 'game:', GAME_NAME);
+    } catch (e) {
+      console.error('[BhavaSession] startSession failed:', e);
+    }
+  }
+
+  // ── Public API ─────────────────────────────────────────────────────────────
+  window.BhavaSession = {
+    // Call this when game ends with final score (0–100)
+    end: async function (rawScore) {
+      if (!isElectron) { console.log('[BhavaSession] browser mode, score:', rawScore); return; }
+      if (!currentSessionId) { console.warn('[BhavaSession] No active session'); return; }
+      try {
+        const result = await window.bhava.endSession(currentSessionId, rawScore);
+        console.log('[BhavaSession] saved. Scaled score:', result?.scaled);
+        currentSessionId = null;
+      } catch (e) {
+        console.error('[BhavaSession] endSession failed:', e);
+      }
+    },
+
+    // Get current logged-in student info
+    getStudent: () => currentStudent,
+
+    // Manually show login (if needed)
+    showLogin: showLoginOverlay,
+  };
+
+  // ── Auto-init on page load ─────────────────────────────────────────────────
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      restoreStudent();
+      showLoginOverlay();
+    });
+  } else {
+    restoreStudent();
+    showLoginOverlay();
+  }
+
+})();

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Memory Match!</title>
+  <title>Memory Match</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -509,6 +509,7 @@ function startGame(diff) {
 
 function restartGame() {
   stopTimer();
+      BhavaSession.end(G.score); // Bhava Tech auto-tracked
   const diff = DIFFICULTIES[G.difficulty];
   const picked = shuffle([...EMOJIS]).slice(0, diff.pairs);
   const cardData = shuffle([...picked, ...picked]);
@@ -677,5 +678,9 @@ document.addEventListener('click', () => { try { getACtx(); } catch(e) {} }, { o
   </script>
   <!-- End Bhava Game Menu -->
 
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Memory Match";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

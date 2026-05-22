@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Habits</title>
+<title>Good Habits</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
@@ -450,6 +450,7 @@ function playWinFanfare(){
 
 // END GAME
 function endGame(){
+  BhavaSession.end(score); // Bhava auto-tracked
   hideFeedback();
   document.getElementById('final-score').textContent=score;
   const maxScore=questions.length*10;
@@ -482,5 +483,9 @@ window.render_game_to_text=()=>JSON.stringify({
 });
 window.advanceTime=()=>{};
 </script>
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Good Habits";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

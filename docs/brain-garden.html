@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bhaava Brain Garden</title>
+  <title>Brain Garden</title>
   <meta name="description" content="Bhāva Tech Phase 1 · Five playful brain training games for children: memory, focus, patterns, counting, and rhymes." />
   <link rel="preconnect" href="https://api.fontshare.com" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -815,6 +815,7 @@
     }
 
     function reward(game, stars, message) {
+  BhavaSession.end(Math.round((stars / 3) * 100)); // Bhava auto-tracked
       state.stars += stars;
       state.completed[game] = true;
       document.getElementById('gardenMessage').textContent = message;
@@ -1211,5 +1212,9 @@
     function bvOpenMenu()  { document.getElementById('bvOverlay').classList.add('active'); }
     function bvCloseMenu() { document.getElementById('bvOverlay').classList.remove('active'); }
   </script>
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Brain Garden";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

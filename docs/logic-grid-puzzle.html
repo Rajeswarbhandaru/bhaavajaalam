@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Logic Grid — Identity Builders</title>
+<title>Logic Grid</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -1296,6 +1296,7 @@ function togglePause() {
 
 // === RESULT ===
 function showResult(won) {
+  BhavaSession.end(score); // Bhava auto-tracked
   clearInterval(state.timerInterval);
   const m = Math.floor(state.timer / 60).toString().padStart(2,'0');
   const s = (state.timer % 60).toString().padStart(2,'0');
@@ -1430,5 +1431,9 @@ window.advanceTime = (ms) => {
   state.timer += steps;
 };
 </script>
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Logic Grid Puzzle";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

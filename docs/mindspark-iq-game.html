@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bhāva Tech – IQ Training</title>
+<title>MindSpark IQ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -702,6 +702,7 @@ function nextQuestion(){
 
 // ── RESULTS ──────────────────────────────────────────────────────
 function showResults(){
+  BhavaSession.end(gs.score); // Bhava auto-tracked
   stopTimer();
   gs.phase='result';
   sfxComplete();
@@ -809,5 +810,9 @@ document.addEventListener('click',()=>{initAudio();},{once:true});
   </script>
   <!-- End Bhava Game Menu -->
 
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "MindSpark IQ";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

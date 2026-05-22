@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grammar Quest - English Learning Game</title>
+    <title>Daily English</title>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"></script>
     <style>
@@ -917,6 +917,7 @@
         }
 
         function showResults() {
+  BhavaSession.end(finalScore); // Bhava auto-tracked
             const percentage = Math.round((state.score / (state.questions.length * 10)) * 100);
             document.getElementById('finalScore').textContent = percentage;
             document.getElementById('correctCount').textContent = state.score / 10;
@@ -1207,5 +1208,9 @@
   </script>
   <!-- End Bhava Game Menu -->
 
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Grammar Pro";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>

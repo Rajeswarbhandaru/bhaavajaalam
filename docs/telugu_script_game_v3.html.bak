@@ -456,7 +456,7 @@
       <label>📂 Consonant Series:</label>
       <select class="filter-select" id="matraGroupSel" onchange="applyMatraFilter()">
         <option value="all">All Consonants (390 items)</option>
-        <option value="ka">ka series (13 items)</option><option value="kha">kha series (13 items)</option><option value="ga">ga series (13 items)</option><option value="gha">gha series (13 items)</option><option value="ca">ca series (13 items)</option><option value="cha">cha series (13 items)</option><option value="ja">ja series (13 items)</option><option value="jha">jha series (13 items)</option><option value="ṭa">ṭa series (13 items)</option><option value="ḍa">ḍa series (13 items)</option><option value="ṇa">ṇa series (13 items)</option><option value="ta">ta series (13 items)</option><option value="tha">tha series (13 items)</option><option value="da">da series (13 items)</option><option value="dha">dha series (13 items)</option><option value="na">na series (13 items)</option><option value="pa">pa series (13 items)</option><option value="pha">pha series (13 items)</option><option value="ba">ba series (13 items)</option><option value="bha">bha series (13 items)</option><option value="ma">ma series (13 items)</option><option value="ya">ya series (13 items)</option><option value="ra">ra series (13 items)</option><option value="la">la series (13 items)</option><option value="va">va series (13 items)</option><option value="śa">śa series (13 items)</option><option value="ṣa">ṣa series (13 items)</option><option value="sa">sa series (13 items)</option><option value="ha">ha series (13 items)</option><option value="ḷa">ḷa series (13 items)</option>
+        <option value="ka">ka series (13 items)</option><option value="kha">kha series (13 items)</option><option value="ga">ga series (13 items)</option><option value="gha">gha series (13 items)</option><option value="ca">ca series (13 items)</option><option value="cha">cha series (13 items)</option><option value="ja">ja series (13 items)</option><option value="jha">jha series (13 items)</option><option value="ṭa">ṭa series (13 items)</option><option value="ṭha">ṭha series (13 items)</option><option value="ḍa">ḍa series (13 items)</option><option value="ḍha">ḍha series (13 items)</option><option value="ṇa">ṇa series (13 items)</option><option value="ta">ta series (13 items)</option><option value="tha">tha series (13 items)</option><option value="da">da series (13 items)</option><option value="dha">dha series (13 items)</option><option value="na">na series (13 items)</option><option value="pa">pa series (13 items)</option><option value="pha">pha series (13 items)</option><option value="ba">ba series (13 items)</option><option value="bha">bha series (13 items)</option><option value="ma">ma series (13 items)</option><option value="ya">ya series (13 items)</option><option value="ra">ra series (13 items)</option><option value="la">la series (13 items)</option><option value="va">va series (13 items)</option><option value="śa">śa series (13 items)</option><option value="ṣa">ṣa series (13 items)</option><option value="sa">sa series (13 items)</option><option value="ha">ha series (13 items)</option><option value="ḷa">ḷa series (13 items)</option>
       </select>
       <span class="filter-badge" id="matraCountBadge">390</span>
     </div>
@@ -744,7 +744,7 @@ DATA._activeLevelData = null;
 
 
 const LEVELS_CONFIG = [
-  {id:'vowels',title:'అచ్చులు — Vowels',subtitle:'16 Vowels + Anusvara & Visarga',icon:'🔤',grad1:'#7C3AED',grad2:'#EC4899',data:DATA.vowels,xpNeeded:0},
+  {id:'vowels',title:'అచ్చులు — Vowels',subtitle:'18 Vowels + Anusvara & Visarga',icon:'🔤',grad1:'#7C3AED',grad2:'#EC4899',data:DATA.vowels,xpNeeded:0},
   {id:'consonants',title:'హల్లులు — Consonants',subtitle:'36 Consonants in 7 groups',icon:'📝',grad1:'#0EA5E9',grad2:'#10B981',data:DATA.consonants,xpNeeded:0},
   {id:'matras',title:'గుణింతాలు — Matras',subtitle:'Vowel Signs on Consonants',icon:'🔗',grad1:'#F59E0B',grad2:'#EF4444',data:DATA.matras,xpNeeded:0},
   {id:'words',title:'పదాలు — Words',subtitle:'104 words across 10 categories',icon:'📖',grad1:'#10B981',grad2:'#059669',data:DATA.words,xpNeeded:0},
@@ -831,7 +831,7 @@ function goHome() {
   showNav('home');
 }
 
-function openLevel(id) {
+function openLevel(id) { playSound('soundStart');
   DATA._activeLevelData = null; // reset filter
   if(document.getElementById('matraGroupSel')) document.getElementById('matraGroupSel').value='all';
   if(document.getElementById('wordCatSel'))   document.getElementById('wordCatSel').value='all';
@@ -1093,7 +1093,7 @@ function selectMatch(el) {
     a.classList.add('matched'); b.classList.add('matched');
     state.matchMatched++;
     document.getElementById('matchCount').textContent = state.matchMatched;
-    addXP(8); state.streak++; updateStats(); showToast('+8 XP 🔗');
+    playSound('soundCorrect'); addXP(8); state.streak++; updateStats(); showToast('+8 XP 🔗');
     if(state.matchMatched === state.matchData.length) {
       setTimeout(()=>{
         document.querySelector('.match-area').insertAdjacentHTML('beforeend',
@@ -1103,7 +1103,7 @@ function selectMatch(el) {
       }, 400);
     }
   } else {
-    a.classList.add('wrong-match'); b.classList.add('wrong-match');
+    playSound('soundWrong'); a.classList.add('wrong'); b.classList.add('wrong');
     setTimeout(()=>{ a.classList.remove('wrong-match'); b.classList.remove('wrong-match'); }, 600);
   }
   state.matchSel = null;
@@ -1116,11 +1116,13 @@ function selectMatch(el) {
 // ============================================================
 function initWord() {
   state.wordIndex = 0;
+  // Shuffle word order on every init
+  DATA._shuffledWords = [...DATA.words].sort(()=>Math.random()-0.5);
   renderWord();
 }
 
 function renderWord() {
-  const words = DATA.words;
+const words = DATA._shuffledWords || DATA.words;
   if(state.wordIndex >= words.length) { state.wordIndex = 0; }
   const word = words[state.wordIndex];
   // Split into characters for Telugu word
@@ -1129,7 +1131,11 @@ function renderWord() {
   state.wordCorrect = chars;
   // Shuffle chars + add 2 decoys
   const lv = LEVELS_CONFIG.find(l=>l.id==='vowels');
-  const decoys = ['అ','ఇ','క','మ','ర','న'].filter(c=>!chars.includes(c)).slice(0,2);
+  const allChars = DATA.words.map(w=>[...w.char]).flat();
+const decoys = allChars.filter(c=>!chars.includes(c))
+  .sort(()=>Math.random()-0.5)
+  .filter((v,i,a)=>a.indexOf(v)===i)
+  .slice(0,3);
   const opts = [...chars, ...decoys].sort(()=>Math.random()-0.5);
   document.getElementById('wordTarget').textContent = '';
   document.getElementById('wordEnglish').textContent = '🇬🇧 ' + word.meaning + ' | Transliteration: ' + word.roman;
@@ -1170,12 +1176,12 @@ function checkWord() {
   if(answer === word.char) {
     fb.innerHTML = `<span style="color:#6ee7b7">✅ Correct! "${word.char}" means "${word.meaning}"</span>`;
     document.querySelector('.word-display').querySelector('.word-meaning').textContent = word.char;
-    addXP(15); state.streak++; updateStats(); showToast('+15 XP 🔤');
+    playSound('soundCorrect'); addXP(15); state.streak++; updateStats(); showToast('+15 XP 🔤');
     state.moduleProgress.words = Math.min(100, (state.moduleProgress.words||0)+7);
     checkBadges();
     setTimeout(()=>{ state.wordIndex++; renderWord(); }, 2000);
   } else {
-    fb.innerHTML = `<span style="color:#fca5a5">❌ Not quite! Try again.</span>`;
+    playSound('soundWrong'); fb.innerHTML = `<span style="color:#fca5a5">❌ Not quite! Try again.</span>`;
     state.streak = Math.max(0, state.streak-1);
     updateStats();
   }
@@ -1261,13 +1267,14 @@ function checkSentence() {
   const fb = document.getElementById('sentenceFeedback');
   if(answer === correct) {
     fb.innerHTML = `<span style="color:#6ee7b7">✅ Excellent! <span class="telugu">"${sent.full}"</span></span>`;
-    addXP(20); state.streak++; updateStats(); showToast('+20 XP ✍️');
+    playSound('soundCorrect'); addXP(20); state.streak++; updateStats(); showToast('+20 XP 🎯');
+	
     state.moduleProgress.sentences = Math.min(100, Math.round((state.sentIndex+1) / DATA.sentences.length * 100));
     checkBadges();
     setTimeout(()=>nextSentence(), 2000);
   } else {
     fb.innerHTML = `<span style="color:#fca5a5">❌ Not quite! Try rearranging the words.</span>`;
-    state.streak = Math.max(0,state.streak-1); updateStats();
+    playSound('soundWrong'); state.streak = Math.max(0, state.streak - 1);
   }
 }
 
@@ -1429,6 +1436,38 @@ init();
       <a onclick="bvCloseMenu()">✕ Close</a>
     </div>
   </div>
+  <script>
+// ============================================================
+// SOUND ENGINE
+// ============================================================
+function playSound(id) {
+  try {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.currentTime = 0;
+    const p = el.play();
+    if (p && p.catch) p.catch(() => {});
+  } catch(e) {}
+}
+</script>
+    <!-- Sounds -->
+    <audio id="soundCorrect"
+       src="sounds/mixkit-game-level-completed-2059.wav"
+       preload="auto"></audio>
+<audio id="soundStart"
+       src="sounds/mixkit-video-game-win-2016.wav"
+       preload="auto"></audio>
+<audio id="soundWrong"
+       src="sounds/mixkit-wrong-answer-fail-notification-946.wav"
+       preload="auto"></audio>
+
+<audio id="soundClick"
+       src="sounds/mixkit-video-game-treasure-2066.wav"
+       preload="auto"></audio>
+
+<audio id="soundLevelUp"
+       src="sounds/mixkit-game-experience-level-increased-2062.wav"
+       preload="auto"></audio>
 
   <script>
     function bvOpenMenu()  { document.getElementById('bvOverlay').classList.add('active'); }

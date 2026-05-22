@@ -689,6 +689,7 @@
      COMPLETE
   ========================================================= */
   function showComplete() {
+      BhavaSession.end(Math.round((score / questions.length) * 100)); // Bhava Tech auto-tracked
     elOverlay.classList.add("show");
     var total = questions.length;
     elOvScore.textContent = score + " / " + total + " \u2b50";
@@ -746,5 +747,9 @@
 
 }());
 </script>
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Number Garden Quest";</script>
+  <script src="bhava-session.js"></script>
 </body>
 </html>
