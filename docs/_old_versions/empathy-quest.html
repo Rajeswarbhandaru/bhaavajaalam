@@ -1399,14 +1399,12 @@ function nextScenario(){
 }
 
 function showResults(){
-  
+  try { if (window.BhavaSession && typeof BhavaSession.end === 'function') { BhavaSession.end(finalScore); } } catch(e) { console.warn('BhavaSession.end:', e.message); } // Bhava auto-tracked
   showScreen('results');
   document.getElementById('progressFill').style.width = '100%';
 
   const maxScore = deck.length * 5;
   const percent = Math.round((score / maxScore) * 100);
-  // ✅ BhavaSession.end — correct percentage (0–100)
-  try { if (window.BhavaSession && typeof BhavaSession.end === 'function') { BhavaSession.end(percent); } } catch(e) { console.warn('BhavaSession.end:', e.message); }
 
   document.getElementById('finalScore').textContent = score;
   document.getElementById('finalPercent').textContent = percent + '%';

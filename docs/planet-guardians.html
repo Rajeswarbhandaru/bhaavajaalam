@@ -198,7 +198,28 @@ body{font-family:'Nunito','Arial Rounded MT Bold',Arial,sans-serif;min-height:10
   .orbit-animal:nth-child(3){transform:translate(-50%,-50%) rotate(180deg) translateY(-110px);}
   .orbit-animal:nth-child(4){transform:translate(-50%,-50%) rotate(270deg) translateY(-110px);}
 }
-</style>
+
+        /* ===== Bhava Layout Fix v2 ===================================
+           Prevents game buttons/options from being clipped at bottom.
+           ============================================================ */
+        body {
+            align-items: flex-start !important;
+            overflow-y: auto !important;
+            padding: 16px !important;
+        }
+        #iq-app, #app, #game-app, #quiz-app, #game-container,
+        #main-container, #container, #game-wrapper,
+        [id$="-app"], [id$="-game"], [id$="-container"] {
+            max-height: none !important;
+            overflow: visible !important;
+            overflow-y: visible !important;
+        }
+        .options, .choices, .answer-grid, .btn-grid,
+        .option-container, #option-container {
+            overflow: visible !important;
+        }
+        /* ============================================================ */
+        </style>
 
   <!-- Bhava Game Menu - Auto Injected -->
   <style>
@@ -653,7 +674,7 @@ function nextLevel(){
 }
 
 function showResults(){
-  BhavaSession.end(finalScore); // Bhava auto-tracked
+  try { if (window.BhavaSession && typeof BhavaSession.end === 'function') { BhavaSession.end(finalScore); } } catch(e) { console.warn('BhavaSession.end:', e.message); } // Bhava auto-tracked
   const p=Math.round(Math.max(0,Math.min(100,health)));
   document.getElementById("resSub").textContent="Earth Health: "+p+"% · Score: "+score+" pts";
   let planet,title,msg,bg;

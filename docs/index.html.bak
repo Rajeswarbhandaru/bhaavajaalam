@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+﻿  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -29,6 +29,12 @@
   <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
   <style>
     /* ---- INLINE ADDITIONS ---- */
+  /* NAV Z-INDEX FIX */
+  #main-nav { position: relative; z-index: 1000; }
+  #main-nav .hamburger { position: relative; z-index: 1001; }
+  #bv-canvas { pointer-events: none; z-index: 0 !important; }
+  .orb { pointer-events: none; z-index: 0 !important; }
+
     .online-badge {
       display:inline-block; background:#22c55e; color:#fff;
       font-size:0.7rem; font-weight:700; padding:2px 8px;
@@ -257,7 +263,7 @@
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#brain-gym">What is Brain Gym?</a></li>
-      <li><a href="Bhaava-Tech-Form-1-Integrated-v2.html">Enroll Now</a></li>
+      <li><a href="bhaava-tech-form-v2.html">Enroll Now</a></li>
       <li><a href="#games">Games</a></li>
       <li><a href="#pricing">Pricing</a></li>
 	  <li><a href="#collaborate">Collaborate</a></li>
@@ -829,7 +835,7 @@ body {
     </div>
 
     <div class="sr up d4" style="margin-top:2rem;">
-      <a href="take-test-v2.html"
+      <a href="take-test.html"
          style="display:inline-block;padding:14px 38px;
                 background:linear-gradient(135deg,#00c6ff,#7b5ea7);
                 color:#fff;font-weight:700;font-size:1.05rem;
@@ -1344,7 +1350,7 @@ body {
           <strong>Children aged 6–15</strong> — in three developmental tiers:<br>
           🌱 Ages 6–9 · Imagination &amp; sensory play · Foundational memory<br>
           🧩 Ages 10–12 · Logic puzzles · Emotional games · Memory training<br>
-          🚀 Ages 13–15 · Advanced IQ · EQ leadership · SQ purpose-clarity<br><br>
+          🚀 Ages 13–17 · Advanced IQ · EQ leadership · SQ purpose-clarity<br><br>
           <strong>Adults</strong> — Stress relief, mindfulness, and cognitive refreshment at our Cognitive Lab.
         </div></div>
       </div>
@@ -2028,25 +2034,25 @@ function bgtMode(mode){
 
   <div class="g-grid">
 
-    <a href="Bhaava-Brain-Quest.html" class="g-card iq" target="_blank" data-cat="iq">
+    <a href="bhaava-brain-quest.html" class="g-card iq" data-cat="iq">
       <span class="g-icon">🧠</span>
       <h4>Brain Quest</h4>
-      <span class="g-tag">Ages 7–15</span>
+      <span class="g-tag">Ages 7–17</span>
     </a>
 
-    <a href="DayHero_Game.html" class="g-card emotion" target="_blank" data-cat="emotion">
+    <a href="day-hero-game.html" class="g-card emotion" data-cat="emotion">
       <span class="g-icon">🦸</span>
       <h4>Day Hero</h4>
       <span class="g-tag">Responsibility & Emotions</span>
     </a>
 
-    <a href="MathBlitz_Game.html" class="g-card math" target="_blank" data-cat="math">
+    <a href="math-blitz.html" class="g-card math" data-cat="math">
       <span class="g-icon">➕</span>
       <h4>Math Blitz</h4>
       <span class="g-tag">Mathematics</span>
     </a>
 
-     <a href="number-garden-quest.html" class="g-card math" target="_blank" data-cat="math">
+     <a href="number-garden-quest.html" class="g-card math" data-cat="math">
       <span class="g-icon">➕</span>
       <h4>Number Garden Quest</h4>
       <span class="g-tag">Mathematics</span>
@@ -2054,150 +2060,185 @@ function bgtMode(mode){
 
 
 
-    <a href="empathy-quest.html" class="g-card kindness" target="_blank" data-cat="kindness">
+    <a href="empathy-quest.html" class="g-card kindness" data-cat="kindness">
       <span class="g-icon">❤️</span>
       <h4>Empathy Quest</h4>
       <span class="g-tag">Emotional Intelligence</span>
     </a>
 
-    <a href="IQ_Test_Level_3.html" class="g-card iq" target="_blank" data-cat="iq">
+    <a href="iq-test-level-3.html" class="g-card iq" data-cat="iq">
       <span class="g-icon">🧩</span>
       <h4>IQ Test</h4>
       <span class="g-tag">IQ Assessment</span>
     </a>
 
-    <a href="DayHero_15_Auto.html" class="g-card emotion" target="_blank" data-cat="emotion">
+    <a href="day-super-hero.html" class="g-card emotion" data-cat="emotion">
       <span class="g-icon">🦸‍♂️</span>
       <h4>Day Super Hero</h4>
       <span class="g-tag">Responsibility & Emotions</span>
     </a>
 
-    <a href="brain-garden.html" class="g-card memory" target="_blank" data-cat="memory">
+    <a href="brain-garden.html" class="g-card memory" data-cat="memory">
       <span class="g-icon">🌱</span>
       <h4>Brain Garden</h4>
       <span class="g-tag">Memory Training</span>
     </a>
 
-    <a href="logic.html" class="g-card logic" target="_blank" data-cat="logic">
+    <a href="logic-game.html" class="g-card logic" data-cat="logic">
       <span class="g-icon">👑</span>
       <h4>Logical King</h4>
       <span class="g-tag">Logical Training</span>
     </a>
-	<a href="logic-grid-puzzle.html" class="g-card logic" target="_blank" data-cat="logic">
+	<a href="logic-grid-puzzle.html" class="g-card logic" data-cat="logic">
       <span class="g-icon">👑</span>
       <h4>Logical Puzzle</h4>
       <span class="g-tag">Logical Puzzle</span>
     </a>
 	
-	<a href="mental-rotation-game.html" class="g-card logic" target="_blank" data-cat="logic">
+	<a href="mental-rotation-game.html" class="g-card logic" data-cat="logic">
       <span class="g-icon">👑</span>
       <h4>Mind Rotation</h4>
       <span class="g-tag">Mind Rotation</span>
     </a>
 
-    <a href="GrammarGalaxy.html" class="g-card language" target="_blank" data-cat="language">
+    <a href="grammar-galaxy.html" class="g-card language" data-cat="language">
       <span class="g-icon">📝</span>
       <h4>English Grammar</h4>
       <span class="g-tag">Grammar with Space</span>
     </a>
 
-    <a href="grammar_pro.html" class="g-card language" target="_blank" data-cat="language">
+    <a href="grammar-pro.html" class="g-card language" data-cat="language">
       <span class="g-icon">💬</span>
       <h4>Daily English</h4>
       <span class="g-tag">English Grammar</span>
     </a>
 
-    <a href="telugu_script_game_v3.html" class="g-card language" target="_blank" data-cat="language">
+    <a href="telugu-script-game.html" class="g-card language" data-cat="language">
       <span class="g-icon">అ</span>
       <h4>Telugu Script Game</h4>
       <span class="g-tag">Language Learning</span>
     </a>
 
-    <a href="devanagari-game/index.html" class="g-card language" target="_blank" data-cat="language">
-      <span class="g-icon">अ</span>
-      <h4>Devanagari Game</h4>
-      <span class="g-tag">Sanskrit Script</span>
-    </a>
+<a href="devanagari-game/" class="g-card language" data-cat="language">
+  <span class="g-icon">अ</span>
+  <h4>Devanagari Game</h4>
+  <span class="g-tag">Sanskrit Script</span>
+</a>
 
-    <a href="memory-match-puzzle.html" class="g-card memory" target="_blank" data-cat="memory">
+    <a href="memory-match-puzzle.html" class="g-card memory" data-cat="memory">
       <span class="g-icon">🃏</span>
       <h4>Memory Match</h4>
       <span class="g-tag">Memory Training</span>
     </a>
 
-<a href="memory_match_ultimate.html" class="g-card memory" target="_blank" data-cat="memory">
+<a href="memory-match-ultimate.html" class="g-card memory" data-cat="memory">
       <span class="g-icon">🃏</span>
       <h4>Memory Match</h4>
       <span class="g-tag">Ultimate Training</span>
     </a>
 
-    <a href="memory-zoo-puzzle.html" class="g-card memory" target="_blank" data-cat="memory">
+    <a href="memory-zoo-puzzle.html" class="g-card memory" data-cat="memory">
       <span class="g-icon">🦁</span>
       <h4>Memory Zoo</h4>
       <span class="g-tag">Animal Memory Puzzle</span>
     </a>
 
-    <a href="mindspark-iq-game.html" class="g-card iq" target="_blank" data-cat="iq">
+    <a href="mindspark-iq.html" class="g-card iq" data-cat="iq">
       <span class="g-new">NEW</span>
       <span class="g-icon">⚡</span>
       <h4>MindSpark IQ</h4>
       <span class="g-tag">IQ & Logic Challenge</span>
     </a>
-<a href="neuroflash-memory-game.html" class="g-card iq" target="_blank" data-cat="iq">
+<a href="neuroflash-memory.html" class="g-card iq" data-cat="iq">
       <span class="g-new">NEW</span>
       <span class="g-icon">🧬</span>
       <h4>Neuro Flash Memory</h4>
       <span class="g-tag">Brain Level Up</span>
     </a>
-    <a href="neuro-ascend-iq.html" class="g-card iq" target="_blank" data-cat="iq">
+    <a href="neuro-ascend-iq.html" class="g-card iq" data-cat="iq">
       <span class="g-new">NEW</span>
       <span class="g-icon">🧬</span>
       <h4>Neuro Ascend IQ</h4>
       <span class="g-tag">Brain Level Up</span>
     </a>
 	
-	 <a href="focus_under_distraction_v2.html" class="g-card iq" target="_blank" data-cat="iq">
+	 <a href="focus-under-distraction.html" class="g-card iq" data-cat="iq">
       <span class="g-new">NEW</span>
       <span class="g-icon">🧬</span>
       <h4>Focus Master</h4>
-      <span class="g-tag">Brain Level Up</span>
+      <span class="g-tag">Focus Master</span>
     </a>
-  <a href="MindScape_Pro.html" class="g-card iq" target="_blank" data-cat="iq">
+  <a href="mindscape-pro.html" class="g-card iq" data-cat="iq">
       <span class="g-new">NEW</span>
-      <span class="g-icon">🧬</span>
-      <h4>Neuro Ascend IQ</h4>
-      <span class="g-tag">Brain Level Up</span>
+      <span class="g-icon">🧠</span>
+      <h4>MindScape Pro</h4>
+      <span class="g-tag">Advanced Brain Training</span>
     </a>
 
-    <a href="Percentile_Game.html" class="g-card math" target="_blank" data-cat="math">
+    <a href="percentile-game.html" class="g-card math" data-cat="math">
       <span class="g-icon">📊</span>
       <h4>Percentile</h4>
       <span class="g-tag">Maths & Percentages</span>
     </a>
 
-    <a href="know-maths/index.html" class="g-card math" target="_blank" data-cat="math">
+    <a href="know-maths/index.html" class="g-card math" data-cat="math">
       <span class="g-icon">📊</span>
       <h4>KNOW MATHS</h4>
       <span class="g-tag">Basics of Maths with English</span>
     </a>
 
 
-    <a href="planet-guardians.html" class="g-card science" target="_blank" data-cat="science">
+    <a href="planet-guardians.html" class="g-card science" data-cat="science">
       <span class="g-icon">🌍</span>
       <h4>Planet Guardians</h4>
       <span class="g-tag">Environment & Science</span>
     </a>
 
-    <a href="heart-heroes.html" class="g-card kindness" target="_blank" data-cat="kindness">
+    <a href="heart-heroes.html" class="g-card kindness" data-cat="kindness">
       <span class="g-icon">💖</span>
       <h4>Heart Heroes</h4>
       <span class="g-tag">Kindness & Empathy</span>
     </a>
 	
-	<a href="Good Habits.html" class="g-card kindness" target="_blank" data-cat="kindness">
+	<a href="good-habits.html" class="g-card kindness" data-cat="kindness">
       <span class="g-icon">💖</span>
       <h4>Good Habits</h4>
       <span class="g-tag">Responsibility Checker</span>
+    </a>
+
+    <a href="imaginia-quest.html" class="g-card iq" data-cat="iq">
+      <span class="g-new">NEW</span>
+      <span class="g-icon">🎨</span>
+      <h4>Imaginia Quest</h4>
+      <span class="g-tag">Creativity & Imagination</span>
+    </a>
+
+    <a href="neurospark.html" class="g-card iq" data-cat="iq">
+      <span class="g-new">NEW</span>
+      <span class="g-icon">⚡</span>
+      <h4>NeuroSpark</h4>
+      <span class="g-tag">Brain Speed Challenge</span>
+    </a>
+
+    <a href="visual-difference-detector.html" class="g-card logic" data-cat="logic">
+      <span class="g-new">NEW</span>
+      <span class="g-icon">🔍</span>
+      <h4>Visual Difference</h4>
+      <span class="g-tag">Spot the Difference</span>
+    </a>
+
+    <a href="calm-zone.html" class="g-card kindness" data-cat="kindness">
+      <span class="g-new">NEW</span>
+      <span class="g-icon">🧘</span>
+      <h4>Calm Zone</h4>
+      <span class="g-tag">Mindfulness & Relaxation</span>
+    </a>
+
+    <a href="empathy-conversation.html" class="g-card emotion" data-cat="emotion">
+      <span class="g-new">NEW</span>
+      <span class="g-icon">💬</span>
+      <h4>Empathy Conversation</h4>
+      <span class="g-tag">Emotional Dialogue</span>
     </a>
 
   </div><!-- ← end g-grid -->
@@ -2259,7 +2300,7 @@ function bgtMode(mode){
         </div>
 
         <!-- CTA Button -->
-        <a href="gamespark.html" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;font-weight:800;font-size:1rem;padding:14px 32px;border-radius:50px;text-decoration:none;box-shadow:0 6px 24px rgba(124,58,237,.45);transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+        <a href="gamespark.html" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;font-weight:800;font-size:1rem;padding:14px 32px;border-radius:50px;text-decoration:none;box-shadow:0 6px 24px rgba(124,58,237,.45);transition:transform .2s,box-shadow .2s;" onmouseover="if(this){this.style.transform='translateY(-3px)'" onmouseout="if(this){this.style.transform='translateY(0)'">
           🚀 Register Now &amp; View Details
         </a>
       </div>
@@ -2876,7 +2917,7 @@ function bgtMode(mode){
     });
 
     // Footer year
-    document.getElementById('footer-year').textContent = new Date().getFullYear();
+    const fyEl = document.getElementById('footer-year'); if (fyEl) fyEl.textContent = new Date().getFullYear();
 
     // Payment method toggle
     function showPayMethod(method) {
@@ -2890,26 +2931,27 @@ function bgtMode(mode){
     // Scroll progress
    window.addEventListener('scroll', function () {
   if (window.innerWidth <= 768) {
-    if (window.scrollY > 300)
-      backToTopBtn.style.display = 'block';
-    else
-      backToTopBtn.style.display = 'none';
+    if (window.scrollY > 300) {
+      if (backToTopBtn) backToTopBtn.style.display = 'block';
+    } else {
+      if (backToTopBtn) backToTopBtn.style.display = 'none';
+    }
   } else {
-    backToTopBtn.style.display = 'none';
+    if (backToTopBtn) backToTopBtn.style.display = 'none';
   }
 });
 
     // Back to top
     const btt = document.getElementById('back-to-top');
     if(btt) {
-      window.addEventListener('scroll', () => { btt.style.display = window.scrollY > 400 ? 'block' : 'none'; });
+      window.addEventListener('scroll', () => { if (btt) btt.style.display = window.scrollY > 400 ? 'block' : 'none'; });
       btt.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
     }
 
     // Hamburger menu
     const ham = document.querySelector('.hamburger');
-    const navLinks = document.querySelector('.nav-links');
-    if(ham) ham.addEventListener('click', () => navLinks.classList.toggle('open'));
+    const _navLinks1 = document.querySelector('.nav-links');
+    if(ham) ham.addEventListener('click', () => _navLinks1.classList.toggle('open'));
   </script>
 
 <script>
@@ -2918,9 +2960,9 @@ function bgtMode(mode){
 
   window.addEventListener('scroll', function () {
     if (window.scrollY > 300) {
-      backToTopBtn.style.display = 'block';
+      if (backToTopBtn) backToTopBtn.style.display = 'block';
     } else {
-      backToTopBtn.style.display = 'none';
+      if (backToTopBtn) backToTopBtn.style.display = 'none';
     }
   });
 </script>
@@ -3304,12 +3346,12 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
           <ul>
             <li><a href="feedback.html">📝 Share Feedback</a>
             <li><a href="#about">About Us</a></li>
-            <li><a href="Bhaava-Tech-Form-1-Integrated">Enroll Now</a></li>
+            <li><a href="bhaava-tech-form-v2.html">Enroll Now</a></li>
             <li><a href="#pricing">Pricing</a></li>
 			<li><a href="collaborate.html">Partner With Us</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#contact">Contact &amp; Book</a></li>
-            <li><a href="assets/sample-report.pdf" download>Sample Report (PDF)</a></li>
+            <li><a href="assets/sample-report.pdf" download></a></li>
           </ul>
         </div>
         <div class="footer-contact">
@@ -3335,8 +3377,8 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
      box-shadow: 0 4px 14px rgba(108,71,255,0.4);
      transition: transform 0.2s;
    "
-   onmouseover="this.style.transform='scale(1.05)'"
-   onmouseout="this.style.transform='scale(1.0)'"
+   onmouseover="if(this){this.style.transform='scale(1.05)'"
+   onmouseout="if(this){this.style.transform='scale(1.0)'"
 >
   💻 Download for Windows
 </a>
@@ -3442,7 +3484,7 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
           if(codes[code]){
             document.getElementById('btrwChipText').textContent = '✓ '+code+' — referred by '+codes[code];
             chip.classList.add('show');
-            input.style.display='none'; btn.style.display='none';
+            if(input){input.style.display='none'; if(btn){btn.style.display='none';
             sessionStorage.setItem('referral_code', code);
             sessionStorage.setItem('referral_by', codes[code]);
             sessionStorage.setItem('referral_discount', '10');
@@ -3465,7 +3507,7 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
 
         // Pre-warm cache
         if(BTRW_SHEETS_URL) _btrwFetchCodes();
-        <\/script>
+        </script>
       </div>
       <!-- ═══ END REFERRAL WIDGET ═══ -->
 
@@ -3494,8 +3536,8 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
      box-shadow: 0 3px 12px rgba(37,211,102,.5);
      text-decoration: none;
    "
-   onmouseover="this.style.transform='scale(1.1)'"
-   onmouseout="this.style.transform='scale(1.0)'">
+   onmouseover="if(this){this.style.transform='scale(1.1)'"
+   onmouseout="if(this){this.style.transform='scale(1.0)'">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="white">
     <path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.17 1.6 5.99L0 24l6.18-1.57A11.93 11.93 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.21-1.25-6.22-3.48-8.52zM12 22c-1.85 0-3.66-.5-5.24-1.44l-.37-.22-3.87.99 1.02-3.76-.24-.38A9.94 9.94 0 0 1 2 12C2 6.48 6.48 2 12 2c2.67 0 5.18 1.04 7.07 2.93A9.93 9.93 0 0 1 22 12c0 5.52-4.48 10-10 10zm5.47-7.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.87 1.21 3.07c.15.2 2.09 3.19 5.06 4.47.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.28-.2-.58-.35z"/>
   </svg>
@@ -3531,7 +3573,7 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
 
 <script>
   const hamburger = document.getElementById('hamburger');
-  const navLinks = document.querySelector('.nav-links');
+  let navLinks = document.querySelector('.nav-links');
 
   hamburger.addEventListener('click', () => {
     const open = navLinks.classList.toggle('open');
@@ -3563,13 +3605,13 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
   <a href="https://github.com/Rajeswarbhandaru/bhaavajaalam/releases/download/v1.0.0/BhavaTech_Setup.exe"
      title="Download for Windows"
      style="display:flex; align-items:center; gap:7px; background:linear-gradient(135deg,#6c47ff,#a259ff); color:#fff; padding:7px 13px; border-radius:22px; text-decoration:none; font-size:11px; font-weight:700; font-family:sans-serif; box-shadow:0 2px 10px rgba(108,71,255,0.45); white-space:nowrap;"
-     onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+     onmouseover="if(this){this.style.opacity='.85'" onmouseout="if(this){this.style.opacity='1'">
     💻 Windows App
   </a>
   <a href="/assets/app-debug.apk" download="BhaavaJaalam.apk"
      title="Download for Android"
      style="display:flex; align-items:center; gap:7px; background:linear-gradient(135deg,#00b09b,#12c25b); color:#fff; padding:7px 13px; border-radius:22px; text-decoration:none; font-size:11px; font-weight:700; font-family:sans-serif; box-shadow:0 2px 10px rgba(0,176,155,0.45); white-space:nowrap;"
-     onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+     onmouseover="if(this){this.style.opacity='.85'" onmouseout="if(this){this.style.opacity='1'">
     🤖 Android App
   </a>
 </div>
@@ -3595,7 +3637,7 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
       <div class="gs-prize"><span>🥉</span>₹5,000</div>
     </div>
     <p style="font-size:0.8rem;margin-bottom:20px;">
-      📅 25 Apr – 25 May 2026 &nbsp;·&nbsp; Ages 16–20 &nbsp;·&nbsp; All India &nbsp;·&nbsp; ₹100 Entry
+      📅 25 Apr – 25 May 2026 &nbsp;·&nbsp; &nbsp;·&nbsp; All India &nbsp;·&nbsp; ₹100 Entry
     </p>
     <a href="gamespark.html" class="gs-btn">🚀 Register Now &amp; Learn More</a>
     <button class="gs-skip" onclick="closeGSPopup()">Maybe later, close this</button>

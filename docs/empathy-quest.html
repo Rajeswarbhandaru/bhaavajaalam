@@ -6,6 +6,22 @@
 <title>Empathy Quest</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+
+  /* ══ Bhava Full-Page Scroll Fix ══ */
+  html { overflow-y: scroll; scroll-behavior: smooth; }
+  body {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: auto !important;
+    min-height: 100vh;
+  }
+  /* Styled scrollbar — matches purple game theme */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.6); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.9); }
+  * { scrollbar-width: thin; scrollbar-color: rgba(139,92,246,0.6) transparent; }
+
 :root{
   --bg1:#0b1026;
   --bg2:#170f39;
@@ -25,7 +41,7 @@
   --shadow:0 24px 70px rgba(0,0,0,.45);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
+html,body{min-height:100%;height:auto;}
 body{
   font-family:var(--font);
   color:var(--text);
@@ -34,7 +50,7 @@ body{
     radial-gradient(circle at top right, rgba(236,72,153,.18), transparent 24%),
     radial-gradient(circle at bottom center, rgba(6,182,212,.18), transparent 28%),
     linear-gradient(160deg, var(--bg1), var(--bg2));
-  overflow:hidden;
+  overflow:visible;
 }
 button{font-family:var(--font)}
 .hidden{display:none!important}
@@ -60,7 +76,8 @@ button{font-family:var(--font)}
 .app{
   position:relative;z-index:1;
   width:min(920px,100%);
-  height:100dvh;
+  min-height:100dvh;
+  height:auto;
   margin:auto;
   display:flex;
   align-items:stretch;
@@ -68,12 +85,13 @@ button{font-family:var(--font)}
 }
 .shell{
   width:100%;
-  height:100%;
+  height:auto;
+  min-height:100%;
   background:rgba(10,13,33,.68);
   backdrop-filter:blur(16px);
   border:1px solid rgba(255,255,255,.08);
   box-shadow:var(--shadow);
-  overflow:hidden;
+  overflow:visible;
   display:flex;
   flex-direction:column;
 }
@@ -81,8 +99,8 @@ button{font-family:var(--font)}
   .shell{margin:14px;border-radius:32px;height:calc(100dvh - 28px)}
 }
 
-.screen{display:none;flex:1;min-height:0}
-.screen.active{display:flex}
+.screen{display:none;}
+.screen.active{display:block;}
 
 #welcome{
   align-items:center;
@@ -226,7 +244,7 @@ button{font-family:var(--font)}
   margin-bottom:8px;font-size:12px;font-weight:800;color:#d9def8
 }
 .progress-bar{
-  width:100%;height:10px;border-radius:999px;overflow:hidden;
+  width:100%;height:10px;border-radius:999px;overflow:visible;
   background:rgba(255,255,255,.08);
 }
 .progress-fill{
@@ -241,14 +259,13 @@ button{font-family:var(--font)}
   grid-template-columns:1.02fr .98fr;
   gap:14px;
   padding:12px 16px 18px;
-  min-height:0;
-  flex:1;
+  flex:none;
 }
 .panel{
   background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.045));
   border:1px solid var(--line);
   border-radius:28px;
-  overflow:hidden;
+  overflow:visible;
   min-height:0;
 }
 .story{
@@ -354,7 +371,7 @@ button{font-family:var(--font)}
 }
 
 .quiz{
-  display:flex;flex-direction:column;min-height:0;
+  display:flex;flex-direction:column;
   padding:18px;
   gap:14px;
 }
@@ -379,19 +396,20 @@ button{font-family:var(--font)}
   color:#dff8ff;font-size:13px;font-weight:700;
 }
 .choices{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:12px;
+  display:flex;flex-direction:column;
+  gap:10px;
 }
 .choice{
   border:none;cursor:pointer;text-align:left;
   display:flex;align-items:center;gap:12px;
-  padding:14px;border-radius:22px;
+  padding:12px 16px;border-radius:18px;
   background:rgba(255,255,255,.06);
   border:2px solid rgba(255,255,255,.08);
   color:#f8faff;
   transition:.2s ease;
   position:relative;
-  min-height:88px;
+  min-height:0;
+  width:100%;
 }
 .choice:hover{
   transform:translateY(-3px);
@@ -405,8 +423,8 @@ button{font-family:var(--font)}
   border-radius:12px;display:grid;place-items:center;
   background:rgba(255,255,255,.1);font-weight:900
 }
-.opt-emoji{font-size:28px;flex-shrink:0}
-.opt-text{font-size:14px;font-weight:800;line-height:1.45;color:#ecf1ff}
+.opt-emoji{font-size:24px;flex-shrink:0;width:32px;text-align:center;}
+.opt-text{font-size:14px;font-weight:700;line-height:1.5;color:#ecf1ff;flex:1;}
 .choice.correct{border-color:#22c55e;background:rgba(34,197,94,.14)}
 .choice.wrong{border-color:#ef4444;background:rgba(239,68,68,.14);animation:shake .35s ease}
 .choice.best{border-color:#22c55e;background:rgba(34,197,94,.14)}
@@ -542,13 +560,128 @@ button{font-family:var(--font)}
   .main{grid-template-columns:1fr}
 }
 @media (max-width:640px){
-  .choices{grid-template-columns:1fr}
+  /* choices already single-column */
   .score-grid{grid-template-columns:repeat(2,1fr)}
   .lesson-list{grid-template-columns:1fr}
   .story-title{font-size:21px}
   .question{font-size:19px}
 }
-</style>
+
+        /* ===== Bhava Layout Fix v2 ===================================
+           Prevents game buttons/options from being clipped at bottom.
+           ============================================================ */
+        body {
+            align-items: flex-start !important;
+            overflow-y: auto !important;
+            padding: 16px !important;
+        }
+        #iq-app, #app, #game-app, #quiz-app, #game-container,
+        #main-container, #container, #game-wrapper,
+        [id$="-app"], [id$="-game"], [id$="-container"] {
+            max-height: none !important;
+            overflow: visible !important;
+            overflow-y: visible !important;
+        }
+        .options, .choices, .answer-grid, .btn-grid,
+        .option-container, #option-container {
+            overflow: visible !important;
+        }
+        /* ============================================================ */
+        </style>
+
+<script>
+// ══════════════════════════════════════════════
+//  Bhava Sound Engine — Web Audio API (no files)
+// ══════════════════════════════════════════════
+const BhavaSound = (() => {
+  let ctx = null;
+  let muted = false;
+
+  function getCtx() {
+    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+
+  // Core tone generator
+  function tone(freq, type, gain, start, duration, rampTo = 0.001) {
+    const c = getCtx();
+    const osc = c.createOscillator();
+    const g = c.createGain();
+    osc.connect(g); g.connect(c.destination);
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, c.currentTime + start);
+    g.gain.setValueAtTime(gain, c.currentTime + start);
+    g.gain.exponentialRampToValueAtTime(rampTo, c.currentTime + start + duration);
+    osc.start(c.currentTime + start);
+    osc.stop(c.currentTime + start + duration + 0.05);
+  }
+
+  function chord(freqs, type, gain, duration) {
+    freqs.forEach((f, i) => tone(f, type, gain, i * 0.04, duration));
+  }
+
+  return {
+    // Correct emotion identified — bright rising chime
+    correct() {
+      if (muted) return;
+      tone(660, 'sine', 0.22, 0,    0.12);
+      tone(880, 'sine', 0.18, 0.10, 0.16);
+      tone(1100,'sine', 0.14, 0.20, 0.20);
+    },
+    // Wrong — soft dull thud
+    wrong() {
+      if (muted) return;
+      tone(180, 'triangle', 0.20, 0, 0.18);
+      tone(140, 'triangle', 0.14, 0.10, 0.22);
+    },
+    // Best action — warm reward chord
+    best() {
+      if (muted) return;
+      chord([523, 659, 784, 1047], 'sine', 0.16, 0.4);
+    },
+    // Good action — gentle positive blip
+    good() {
+      if (muted) return;
+      tone(523, 'sine', 0.15, 0,    0.12);
+      tone(659, 'sine', 0.12, 0.10, 0.18);
+    },
+    // Neutral — subtle soft click
+    neutral() {
+      if (muted) return;
+      tone(350, 'triangle', 0.10, 0, 0.10);
+    },
+    // Bad action — descending tone
+    bad() {
+      if (muted) return;
+      tone(330, 'sawtooth', 0.10, 0,    0.10);
+      tone(220, 'sawtooth', 0.08, 0.08, 0.18);
+    },
+    // Next mission transition — soft blip
+    next() {
+      if (muted) return;
+      tone(440, 'sine', 0.12, 0,    0.08);
+      tone(550, 'sine', 0.10, 0.07, 0.12);
+    },
+    // Game complete fanfare
+    fanfare() {
+      if (muted) return;
+      [[523,0],[659,.12],[784,.24],[1047,.38],[1319,.52]].forEach(([f,t]) =>
+        tone(f,'sine',0.18,t,0.35));
+    },
+    // Button click — tiny tick
+    click() {
+      if (muted) return;
+      tone(600, 'sine', 0.08, 0, 0.06);
+    },
+    toggleMute() {
+      muted = !muted;
+      return muted;
+    },
+    isMuted() { return muted; }
+  };
+})();
+</script>
 </head>
 <body>
 <div class="bg-layer" id="bgLayer"></div>
@@ -586,7 +719,7 @@ button{font-family:var(--font)}
           <div class="hero-box"><span class="i">💡</span><span class="t">Kindness Lessons</span></div>
         </div>
 
-        <button class="start-btn" onclick="startGame()">🚀 Start Mission</button>
+        <button class="start-btn" onclick="BhavaSound.click();startGame()">🚀 Start Mission</button>
         <div class="note">Ages 7–15 • Fast rounds • Mobile friendly</div>
       </div>
     </section>
@@ -858,10 +991,10 @@ const SCENARIOS = [
     lesson:"When something breaks, gentle help matters more than easy words."
   },
   {
-    id:8, char:"Kabir", avatar:"👦", place:"⚽ Playground", title:"Left Out", theme:"theme-sport", deco:"🧍", avatarBg:"#22c55e",
-    scene:"Teams are chosen quickly for football. Kabir is picked last and then told there is no space this round.",
+    id:8, char:"Rohit", avatar:"👦", place:"⚽ Playground", title:"Left Out", theme:"theme-sport", deco:"🧍", avatarBg:"#22c55e",
+    scene:"Teams are chosen quickly for football. Rohit is picked last and then told there is no space this round.",
     clues:["Picked last", "No space", "Standing aside"],
-    eq:"How might Kabir feel?",
+    eq:"How might Rohit feel?",
     emotions:[
       {i:"😞", t:"Rejected and left out", c:true, fb:"Correct. Exclusion can sting even when no one says much."},
       {i:"😄", t:"Relieved he can rest", c:false, fb:"The context suggests disappointment, not relief."},
@@ -870,7 +1003,7 @@ const SCENARIOS = [
     ],
     aq:"What is the best move?",
     actions:[
-      {i:"🙋", t:"Ask if teams can rotate so Kabir gets a turn", e:3, type:"best", fb:"Excellent. You advocate for fairness and inclusion."},
+      {i:"🙋", t:"Ask if teams can rotate so Rohit gets a turn", e:3, type:"best", fb:"Excellent. You advocate for fairness and inclusion."},
       {i:"😂", t:"Joke that he was too slow anyway", e:-1, type:"bad", fb:"That adds shame to exclusion."},
       {i:"👀", t:"Watch quietly and say nothing", e:0, type:"neutral", fb:"Silence can make exclusion feel normal."},
       {i:"🙂", t:"Stand near him for a moment", e:1, type:"good", fb:"Kind, though helping him be included would be stronger."}
@@ -938,10 +1071,10 @@ const SCENARIOS = [
     lesson:"Empathy can help another person borrow calm from you."
   },
   {
-    id:12, char:"Omar", avatar:"👦", place:"🏡 Home", title:"Lost Pet", theme:"theme-home", deco:"🐶", avatarBg:"#f59e0b",
-    scene:"Omar's pet dog has gone missing. He keeps checking the gate and looking close to tears.",
+    id:12, char:"Arjun", avatar:"👦", place:"🏡 Home", title:"Lost Pet", theme:"theme-home", deco:"🐶", avatarBg:"#f59e0b",
+    scene:"Arjun's pet dog has gone missing. He keeps checking the gate and looking close to tears.",
     clues:["Missing pet", "Checking gate", "Near tears"],
-    eq:"What is Omar feeling?",
+    eq:"What is Arjun feeling?",
     emotions:[
       {i:"😢", t:"Worried and heartbroken", c:true, fb:"Yes. Losing a pet can feel like losing family."},
       {i:"😄", t:"Excited for an adventure", c:false, fb:"The near tears show distress, not excitement."},
@@ -1058,10 +1191,10 @@ const SCENARIOS = [
     lesson:"Something small to you may be emotionally huge to someone else."
   },
   {
-    id:18, char:"Manu", avatar:"👦", place:"💬 Group Chat", title:"Left on Read", theme:"theme-social", deco:"📱", avatarBg:"#06b6d4",
-    scene:"Manu shares his drawing in the class group. Messages continue, but nobody responds to his post.",
+    id:18, char:"Virat ", avatar:"👦", place:"💬 Group Chat", title:"Left on Read", theme:"theme-social", deco:"📱", avatarBg:"#06b6d4",
+    scene:"Virat  shares his drawing in the class group. Messages continue, but nobody responds to his post.",
     clues:["Shared effort", "No reply", "Chat moves on"],
-    eq:"How could Manu feel?",
+    eq:"How could Virat  feel?",
     emotions:[
       {i:"😕", t:"Ignored and unsure", c:true, fb:"Yes. Silence after sharing something personal can sting."},
       {i:"😄", t:"Proud because everyone saw it", c:false, fb:"Without response, the feeling is more likely uncertainty."},
@@ -1272,6 +1405,7 @@ function handleChoice(idx){
     });
 
     if(picked.c){
+      BhavaSound.correct();
       score += 2;
       streak += 1;
       bestStreak = Math.max(bestStreak, streak);
@@ -1286,6 +1420,7 @@ function handleChoice(idx){
         showActionPhase
       );
     }else{
+      BhavaSound.wrong();
       lives = Math.max(0, lives - 1);
       streak = 0;
       updateHUD();
@@ -1304,6 +1439,7 @@ function handleChoice(idx){
       btn.classList.add(type === 'best' ? 'best' : type === 'good' ? 'good' : type === 'neutral' ? 'neutral' : 'bad');
     });
 
+    if(picked.e>=3) BhavaSound.best(); else if(picked.e>=2) BhavaSound.good(); else if(picked.e>=1) BhavaSound.neutral(); else BhavaSound.bad();
     const pts = Math.max(0, picked.e);
     score += pts;
     if(picked.e >= 2){
@@ -1369,6 +1505,7 @@ function continueGame(){
 }
 
 function nextScenario(){
+  BhavaSound.next();
   currentIndex += 1;
   if(currentIndex >= deck.length){
     showResults();
@@ -1378,12 +1515,14 @@ function nextScenario(){
 }
 
 function showResults(){
-  BhavaSession.end(finalScore); // Bhava auto-tracked
+  BhavaSound.fanfare();
   showScreen('results');
   document.getElementById('progressFill').style.width = '100%';
 
   const maxScore = deck.length * 5;
   const percent = Math.round((score / maxScore) * 100);
+  // ✅ BhavaSession.end — correct percentage (0–100)
+  try { if (window.BhavaSession && typeof BhavaSession.end === 'function') { BhavaSession.end(percent); } } catch(e) { console.warn('BhavaSession.end:', e.message); }
 
   document.getElementById('finalScore').textContent = score;
   document.getElementById('finalPercent').textContent = percent + '%';
@@ -1439,6 +1578,11 @@ function spawnPopup(text){
   pop.style.top = (36 + Math.random()*12) + '%';
   document.body.appendChild(pop);
   setTimeout(()=>pop.remove(), 1000);
+}
+
+function toggleMute(){
+  const m = BhavaSound.toggleMute();
+  document.getElementById('muteBtn').textContent = m ? '🔇' : '🔊';
 }
 
 function confettiBurst(){

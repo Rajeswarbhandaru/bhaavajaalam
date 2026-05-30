@@ -189,7 +189,28 @@ header{display:flex;align-items:center;justify-content:space-between;padding:var
 .explanation strong{color:var(--text)}
 .next-btn{display:flex;align-items:center;justify-content:center;gap:var(--space-2);background:var(--accent);color:#fff;padding:var(--space-3) var(--space-6);border-radius:var(--radius-full);font-weight:600;font-size:var(--text-sm);margin:var(--space-5) auto 0;transition:all var(--transition);width:fit-content}
 .next-btn:hover{background:var(--accent-hover);transform:translateY(-1px)}
-</style>
+
+        /* ===== Bhava Layout Fix v2 ===================================
+           Prevents game buttons/options from being clipped at bottom.
+           ============================================================ */
+        body {
+            align-items: flex-start !important;
+            overflow-y: auto !important;
+            padding: 16px !important;
+        }
+        #iq-app, #app, #game-app, #quiz-app, #game-container,
+        #main-container, #container, #game-wrapper,
+        [id$="-app"], [id$="-game"], [id$="-container"] {
+            max-height: none !important;
+            overflow: visible !important;
+            overflow-y: visible !important;
+        }
+        .options, .choices, .answer-grid, .btn-grid,
+        .option-container, #option-container {
+            overflow: visible !important;
+        }
+        /* ============================================================ */
+        </style>
 
   <!-- Bhava Game Menu - Auto Injected -->
   <style>
@@ -962,7 +983,7 @@ function nextQuestion() {
 }
 
 function endGame() {
-  BhavaSession.end(score); // Bhava auto-tracked
+  try { if (window.BhavaSession && typeof BhavaSession.end === 'function') { BhavaSession.end(score); } } catch(e) { console.warn('BhavaSession.end:', e.message); } // Bhava auto-tracked
   clearInterval(timerInterval);
   const accuracy = Math.round((correctCount / questions.length) * 100);
   const iqDelta = Math.round((accuracy - 50) / 5);

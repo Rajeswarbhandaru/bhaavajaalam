@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day Super Hero</title>
+<style>
+/* Nunito loaded async — system fonts as instant fallback so game never breaks */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap');
+</style>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito','Segoe UI','Arial Rounded MT Bold',Arial,sans-serif;overflow-x:hidden;min-height:100vh;background:#1a1a2e}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-22px)}60%{transform:translateY(-8px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{0%{transform:scale(0) rotate(-12deg);opacity:0}70%{transform:scale(1.18)}100%{transform:scale(1);opacity:1}}
+@keyframes confettiFall{0%{top:-14px;transform:rotate(0deg)}100%{top:110vh;transform:rotate(720deg)}}
+@keyframes starRise{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-90px) scale(.2);opacity:0}}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes arrowPulse{0%,100%{transform:scale(1) translateX(0)}50%{transform:scale(1.2) translateX(4px)}}
+.screen{display:none;min-height:100vh;width:100%;align-items:center;justify-content:center;flex-direction:column;padding:16px}
+.screen.active{display:flex;animation:fadeUp .5s ease forwards}
+#intro{background:linear-gradient(145deg,#f7971e,#ffd200);position:relative;overflow:hidden;text-align:center}
+.sun{position:absolute;top:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.35),transparent);border-radius:50%;pointer-events:none}
+.grass{position:absolute;bottom:0;left:0;right:0;height:90px;background:linear-gradient(#7ec850,#5a9e3a);border-radius:60% 60% 0 0/30px}
+.fstars{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.fstar{position:absolute;bottom:-20px;animation:starRise linear infinite}
+.mascot{font-size:96px;animation:float 2.8s ease-in-out infinite;filter:drop-shadow(0 8px 18px rgba(0,0,0,.2));position:relative;z-index:2;margin-bottom:10px}
+.i-title{font-size:clamp(42px,10vw,72px);font-weight:900;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.2);line-height:1;margin-bottom:8px;position:relative;z-index:2}
+.i-sub{font-size:clamp(14px,3.5vw,20px);color:rgba(255,255,255,.92);margin-bottom:30px;position:relative;z-index:2;max-width:360px;font-weight:700}
+.i-badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:22px;position:relative;z-index:2}
+.i-badge{background:rgba(255,255,255,.25);color:#fff;font-size:13px;font-weight:800;padding:6px 14px;border-radius:30px;backdrop-filter:blur(4px)}
+.btn-play{background:#fff;color:#f7971e;font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;padding:16px 54px;border:none;border-radius:50px;cursor:pointer;box-shadow:0 8px 28px rgba(0,0,0,.2);transition:transform .2s,box-shadow .2s;position:relative;z-index:2}
+.btn-play:hover{transform:scale(1.07) translateY(-3px);box-shadow:0 14px 36px rgba(0,0,0,.28)}
+.btn-play:active{transform:scale(.97)}
+#hud{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(0,0,0,.42);backdrop-filter:blur(14px);padding:10px 18px;display:none;align-items:center;justify-content:space-between;gap:8px}
+.h-lbl{font-size:10px;font-weight:800;color:rgba(255,255,255,.45);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:3px}
+.h-dots{display:flex;gap:7px;align-items:center;flex-wrap:wrap;max-width:180px}
+.hdot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);transition:all .35s}
+.hdot.done{background:#ffd200}
+.hdot.now{background:#fff;width:26px;border-radius:5px;animation:pulse 1s infinite}
+.h-right{display:flex;align-items:center;gap:10px}
+.h-bar-bg{width:80px;height:8px;background:rgba(255,255,255,.18);border-radius:4px;overflow:hidden}
+.h-bar{height:100%;background:linear-gradient(90deg,#f7971e,#ffd200);border-radius:4px;transition:width .6s ease}
+.h-score{color:#ffd200;font-weight:900;font-size:20px;text-shadow:0 2px 6px rgba(0,0,0,.3)}
+#game{justify-content:flex-start;padding-top:72px}
+#wrap{max-width:560px;width:100%;padding:0 14px 50px}
+.clabel{font-size:11px;font-weight:800;letter-spacing:1.6px;color:rgba(255,255,255,.45);margin-bottom:11px;text-align:center;text-transform:uppercase}
+.card{background:#fff;border-radius:28px;padding:22px 18px;box-shadow:0 18px 54px rgba(0,0,0,.3);animation:fadeUp .4s ease}
+.scene-title{font-size:20px;font-weight:900;color:#222;margin-bottom:14px;display:flex;align-items:center;gap:8px;justify-content:center}
+.comic{display:flex;align-items:center;justify-content:center;gap:8px;padding:18px 14px;border-radius:20px;margin-bottom:16px;flex-wrap:wrap}
+.panel{background:rgba(255,255,255,.9);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 4px 14px rgba(0,0,0,.12);min-width:64px;backdrop-filter:blur(4px);animation:float 3s ease-in-out infinite}
+.panel:nth-child(3){animation-delay:-.8s}
+.panel:nth-child(5){animation-delay:-1.6s}
+.panel:nth-child(7){animation-delay:-2.4s}
+.pe{font-size:44px;line-height:1}.ps{font-size:20px;line-height:1}.c-arrow{font-size:24px;color:rgba(255,255,255,.85);font-weight:900;animation:arrowPulse 1.5s ease-in-out infinite}
+.detect-q{font-size:clamp(17px,4vw,22px);font-weight:900;color:#222;margin-bottom:18px;text-align:center}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dbtn{background:#f8f8f8;border:3px solid #eee;border-radius:20px;padding:18px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;transition:all .2s;font-family:'Nunito',sans-serif}
+.dbtn:hover{transform:scale(1.05);box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.dbtn .de{font-size:44px}.dbtn .dl{font-size:16px;font-weight:900;color:#444;letter-spacing:.5px}
+.dbtn.correct{border-color:#00c853 !important;background:#e8f5e9;animation:bounce .55s}
+.dbtn.wrong{border-color:#ff1744 !important;background:#ffebee;animation:shake .45s}
+.cq{font-size:clamp(17px,4vw,22px);font-weight:900;color:#222;margin-bottom:16px;text-align:center}
+.ch-grid{display:flex;flex-direction:column;gap:12px}
+.chbtn{background:#f8f8f8;border:3px solid #eee;border-radius:20px;padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:16px;text-align:left;transition:all .2s;font-family:'Nunito',sans-serif;width:100%}
+.chbtn:hover{transform:translateX(5px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.ch-emoji{font-size:50px;min-width:58px;text-align:center;filter:drop-shadow(0 3px 6px rgba(0,0,0,.1))}
+.ch-label{font-size:17px;font-weight:900;color:#333;line-height:1.3}
+.res-stage{border-radius:20px;padding:24px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:16px;min-height:110px}
+.res-from{font-size:60px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.15))}
+.res-arr{font-size:30px;font-weight:900}.res-to{font-size:60px;animation:popIn .65s ease forwards;filter:drop-shadow(0 4px 8px rgba(0,0,0,.15))}
+.res-msg{font-size:16px;font-weight:800;color:#333;margin-bottom:14px;line-height:1.5;text-align:center}
+.lesson-strip{border-radius:16px;padding:16px 18px;margin-bottom:14px;color:#fff;display:flex;align-items:center;gap:12px}
+.les-ico{font-size:34px;min-width:40px}.les-txt{font-size:15px;font-weight:900;line-height:1.45}
+.star-row{display:flex;align-items:center;justify-content:center;gap:8px;font-size:28px;margin-bottom:16px;animation:slideUp .5s ease}
+.btn-next{color:#fff;font-family:'Nunito',sans-serif;font-size:18px;font-weight:900;padding:14px 34px;border:none;border-radius:50px;cursor:pointer;transition:transform .2s;width:100%}
+.btn-next:hover{transform:scale(1.04)}
+.fb{border-radius:14px;padding:12px 14px;text-align:center;margin-top:12px;animation:slideUp .4s ease}
+.fb.good{background:#e8f5e9}.fb.bad{background:#fff3e0}.fb-ico{font-size:28px;margin-bottom:5px}.fb-hd{font-size:15px;font-weight:900}.fb.good .fb-hd{color:#2e7d32}.fb.bad .fb-hd{color:#e65100}.fb-sub{font-size:12px;color:#666;margin-top:3px}
+#end{background:linear-gradient(145deg,#f7971e,#ffd200);overflow:hidden;position:relative}
+.e-sun{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:280px;height:280px;background:radial-gradient(circle,rgba(255,255,255,.3),transparent);border-radius:50%;pointer-events:none}
+.cert{background:#fff;border-radius:30px;padding:30px 24px;max-width:500px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.22);position:relative;z-index:2;text-align:center}
+.c-badge{font-size:76px;animation:bounce 1.2s ease infinite;margin-bottom:10px}.c-sub{font-size:14px;font-weight:700;color:#aaa;margin-bottom:3px}.c-rank{font-size:clamp(20px,5.5vw,28px);font-weight:900;color:#f7971e;margin-bottom:6px;line-height:1.2}.c-stars{font-size:32px;margin-bottom:8px;animation:pulse 1.6s ease-in-out infinite}.c-score{font-size:17px;font-weight:800;color:#555;margin-bottom:14px}.c-bar-bg{background:#eee;border-radius:8px;height:14px;margin-bottom:20px;overflow:hidden}.c-bar{height:100%;background:linear-gradient(90deg,#f7971e,#ffd200);border-radius:8px;transition:width 1.5s ease}
+.skills-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}.skill-card{background:rgba(247,151,30,.1);border:2px solid rgba(247,151,30,.25);border-radius:16px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:68px}.sk-ico{font-size:30px}.sk-lbl{font-size:11px;font-weight:800;color:#e65100;text-transform:uppercase;letter-spacing:.5px}
+.c-msg{font-size:14px;color:#666;line-height:1.6;margin-bottom:20px}.btn-replay{font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;padding:13px 28px;border:none;border-radius:50px;cursor:pointer;transition:transform .2s;width:100%;color:#fff;background:linear-gradient(135deg,#f7971e,#ffd200)}.btn-replay:hover{transform:scale(1.05)}
+.cp{position:fixed;top:-14px;pointer-events:none;z-index:999;animation:confettiFall linear forwards}.bg1{background:linear-gradient(135deg,#ffecd2,#fcb69f)}.bg2{background:linear-gradient(135deg,#a1c4fd,#c2e9fb)}.bg3{background:linear-gradient(135deg,#d4fc79,#96e6a1)}.bg4{background:linear-gradient(135deg,#fbc2eb,#a6c1ee)}.bg5{background:linear-gradient(135deg,#30cfd0,#667eea)}
+@media(max-width:400px){.dgrid{grid-template-columns:1fr 1fr}.panel{min-width:54px}.pe{font-size:36px}.ch-emoji{font-size:40px}.h-dots{max-width:140px}}
+
+        /* ===== Bhava Layout Fix v2 ===================================
+           Prevents game buttons/options from being clipped at bottom.
+           ============================================================ */
+        body {
+            align-items: flex-start !important;
+            overflow-y: auto !important;
+            padding: 16px !important;
+        }
+        #iq-app, #app, #game-app, #quiz-app, #game-container,
+        #main-container, #container, #game-wrapper,
+        [id$="-app"], [id$="-game"], [id$="-container"] {
+            max-height: none !important;
+            overflow: visible !important;
+            overflow-y: visible !important;
+        }
+        .options, .choices, .answer-grid, .btn-grid,
+        .option-container, #option-container {
+            overflow: visible !important;
+        }
+        /* ============================================================ */
+        </style>
+
+  <!-- Bhava Game Menu - Auto Injected -->
+  <style>
+    .bv-menu-btn {
+      position: fixed; top: 14px; right: 16px; z-index: 9999;
+      background: #3b5bdb; color: white; border: none;
+      border-radius: 8px; padding: 8px 14px;
+      font-size: 20px; cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .bv-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45); z-index: 10000;
+      justify-content: center; align-items: center;
+    }
+    .bv-overlay.active { display: flex; }
+    .bv-box {
+      background: white; border-radius: 14px;
+      padding: 24px; width: 270px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      animation: bvFadeIn 0.2s ease;
+    }
+    @keyframes bvFadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .bv-box h3 {
+      text-align: center; margin: 0 0 16px;
+      color: #333; font-size: 18px;
+    }
+    .bv-box a {
+      display: block; padding: 13px 0;
+      border-bottom: 1px solid #eee;
+      color: #333; text-decoration: none; font-size: 16px;
+      cursor: pointer;
+    }
+    .bv-box a:last-child { border-bottom: none; color: #e53; }
+    .bv-box a:hover { color: #3b5bdb; }
+  </style>
+  <!-- End Bhava Game Menu CSS -->
+
+</head>
+<body>
+<div class="screen active" id="intro"><div class="sun"></div><div class="grass"></div><div class="fstars" id="fstars"></div><div class="mascot">&#129464;</div><h1 class="i-title">Day Hero 15</h1><p class="i-sub">&#128161; 15 short visual challenges. No long reading.</p><button class="btn-play" id="playBtn">&#9654;&nbsp; Play!</button><div class="i-badges"><span class="i-badge">&#127971; 7&ndash;14</span><span class="i-badge">&#128248; 15 Challenges</span><span class="i-badge">&#11088; Auto Next</span><span class="i-badge">&#127942; Badge</span></div></div>
+<div id="hud"><div><div class="h-lbl">Today</div><div class="h-dots" id="hdots"></div></div><div class="h-right"><div><div class="h-lbl">Power</div><div class="h-bar-bg"><div class="h-bar" id="hbar" style="width:0%"></div></div></div><div class="h-score" id="hscore">&#11088; 0</div><button onclick="soundOn=!soundOn;this.textContent=soundOn?'🔊':'🔇';" title="Toggle sound" style="background:rgba(255,255,255,0.18);border:none;color:#fff;font-size:17px;cursor:pointer;padding:3px 9px;border-radius:8px;margin-left:6px;">🔊</button></div></div>
+<div class="screen" id="game"><div id="wrap"><div id="gc"></div></div></div>
+<div class="screen" id="end"><div class="e-sun"></div><div class="cert" id="cert"></div></div>
+<script>
+/* ── Sound System ─────────────────────────────────── */
+var soundOn = true;
+function beep(freq, dur, type, vol) {
+  if (!soundOn) return;
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.value = freq || 440;
+    gain.gain.value = vol || 0.06;
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime + (dur || 0.15));
+    osc.onended = function() { ctx.close(); };
+  } catch(e2) {}
+}
+function playCorrect() { beep(600,0.12,'triangle',0.07); setTimeout(function(){beep(800,0.10,'triangle',0.05);},130); }
+function playWrong()   { beep(200,0.18,'sawtooth',0.07); }
+function playNext()    { beep(440,0.08,'sine',0.05); }
+function playStart()   { beep(523,0.1,'triangle',0.06); setTimeout(function(){beep(659,0.1,'triangle',0.06);},110); setTimeout(function(){beep(784,0.15,'triangle',0.07);},220); }
+function playWin()     { [523,659,784,1047].forEach(function(f,i){ setTimeout(function(){beep(f,0.15,'triangle',0.08);}, i*130); }); }
+function playLose()    { beep(330,0.2,'sawtooth',0.07); setTimeout(function(){beep(220,0.25,'sawtooth',0.06);},200); }
+
+/* ── Activity Data ────────────────────────────────── */
+var T = [
+  {gbg:"linear-gradient(145deg,#7f4a00,#c47a1e,#e8a020)",bg:"bg1",accent:"#f7971e",icon:"⏰",timeTag:"7:00 AM",title:"Wake Up Time",
+   comic:[{e:"⏰",s:"Alarm!"},{e:"😴",s:"So sleepy…"},{e:"🏫",s:"School soon!"}],
+   correct:0,detects:[{e:"⏰",l:"TIME"},{e:"🤝",l:"PROMISE"},{e:"❤️",l:"CARE"},{e:"👥",l:"TEAM"}],
+   revealEmoji:"⏰",revealWord:"Time",cq:"What do you do?",
+   choices:[{e:"😴",l:"Sleep more",good:false},{e:"🦸",l:"Get up now!",good:true},{e:"😬",l:"Stay in bed",good:false}],
+   rgood:{f:"⏰",t:"✅",msg:"On time! Great start! 🌟"},rbad:{f:"⏰",t:"😓",msg:"Late… tough morning."},
+   lesIco:"⏰",lesson:"My time is my power!"},
+
+  {gbg:"linear-gradient(145deg,#0d2b5e,#1a4080,#1565c0)",bg:"bg2",accent:"#1565c0",icon:"🧸",timeTag:"10:30 AM",title:"Oops! I Broke It",
+   comic:[{e:"🧸",s:"Friend's toy"},{e:"💥",s:"It broke!"},{e:"😰",s:"What now?"}],
+   correct:1,detects:[{e:"⏰",l:"TIME"},{e:"🤝",l:"HONESTY"},{e:"❤️",l:"CARE"},{e:"👥",l:"TEAM"}],
+   revealEmoji:"🤝",revealWord:"Honesty",cq:"What do you do?",
+   choices:[{e:"🙈",l:"Hide it",good:false},{e:"🙏",l:"Say sorry & fix it",good:true},{e:"🤥",l:"Make an excuse",good:false}],
+   rgood:{f:"🧸",t:"✅",msg:"Truth told! Friendship stronger! 🌟"},rbad:{f:"🧸",t:"💔",msg:"Trust broken."},
+   lesIco:"🤝",lesson:"Honesty = real friendship!"},
+
+  {gbg:"linear-gradient(145deg,#1a3a0d,#2d6b1a,#388e3c)",bg:"bg3",accent:"#388e3c",icon:"🛏️",timeTag:"1:00 PM",title:"Messy Room",
+   comic:[{e:"🛏️",s:"Big mess!"},{e:"🧹",s:"Clean it?"},{e:"😅",s:"Mum is coming…"}],
+   correct:2,detects:[{e:"⏰",l:"TIME"},{e:"❤️",l:"CARE"},{e:"🤝",l:"PROMISE"},{e:"👥",l:"TEAM"}],
+   revealEmoji:"🤝",revealWord:"Promise",cq:"What do you do?",
+   choices:[{e:"🙈",l:"Hide the mess",good:false},{e:"🧹",l:"Clean up now!",good:true},{e:"🏃",l:"Sneak out",good:false}],
+   rgood:{f:"😅",t:"✅",msg:"Done right! 🌟"},rbad:{f:"😅",t:"😬",msg:"Caught! That was worse."},
+   lesIco:"🤝",lesson:"Keep your word — clean up!"},
+
+  {gbg:"linear-gradient(145deg,#3a0d4a,#6b1a7a,#8e1fa2)",bg:"bg4",accent:"#8e1fa2",icon:"🐶",timeTag:"3:00 PM",title:"Hungry Pet",
+   comic:[{e:"🐶",s:"Bruno is hungry"},{e:"🍚",s:"Empty bowl!"},{e:"😢",s:"Waiting…"}],
+   correct:3,detects:[{e:"⏰",l:"TIME"},{e:"🤝",l:"HONESTY"},{e:"📚",l:"STUDY"},{e:"❤️",l:"CARE"}],
+   revealEmoji:"❤️",revealWord:"Care",cq:"What do you do?",
+   choices:[{e:"📺",l:"Watch TV first",good:false},{e:"🍚",l:"Feed Bruno now!",good:true},{e:"😐",l:"Wait for someone else",good:false}],
+   rgood:{f:"🐶",t:"😊",msg:"Bruno is happy! 🌟"},rbad:{f:"🐶",t:"😢",msg:"Bruno stays hungry."},
+   lesIco:"❤️",lesson:"They can't speak. You must act!"},
+
+  {gbg:"linear-gradient(145deg,#0a0e1a,#141c33,#1a2550)",bg:"bg5",accent:"#667eea",icon:"👥",timeTag:"4:30 PM",title:"Team Project",
+   comic:[{e:"👥",s:"Group work"},{e:"⏰",s:"Due tomorrow!"},{e:"😬",s:"Part not done…"}],
+   correct:0,detects:[{e:"👥",l:"TEAM"},{e:"⏰",l:"TIME"},{e:"❤️",l:"CARE"},{e:"🤝",l:"PROMISE"}],
+   revealEmoji:"👥",revealWord:"Team",cq:"What do you do?",
+   choices:[{e:"💪",l:"Do my part tonight!",good:true},{e:"📋",l:"Copy someone else",good:false},{e:"🤒",l:"Pretend to be sick",good:false}],
+   rgood:{f:"📁",t:"💪",msg:"Finished! Team wins! 🌟"},rbad:{f:"📁",t:"😓",msg:"Team fails because of you."},
+   lesIco:"👥",lesson:"Your team counts on YOU!"},
+
+  {gbg:"linear-gradient(145deg,#2d1515,#5c2a1a,#8b4513)",bg:"bg1",accent:"#c47a1e",icon:"🍎",timeTag:"5:30 PM",title:"Snack Time",
+   comic:[{e:"🍎",s:"Mum's note"},{e:"📝",s:"Eat this first"},{e:"🍫",s:"Chocolate is there…"}],
+   correct:1,detects:[{e:"❤️",l:"CARE"},{e:"🤝",l:"PROMISE"},{e:"⏰",l:"TIME"},{e:"👥",l:"TEAM"}],
+   revealEmoji:"📝",revealWord:"Plan",cq:"What do you do?",
+   choices:[{e:"🍫",l:"Eat chocolate",good:false},{e:"🍎",l:"Follow Mum's plan",good:true},{e:"🤷",l:"Ask later",good:false}],
+   rgood:{f:"📝",t:"🍎",msg:"Healthy snack done! 🌟"},rbad:{f:"📝",t:"😬",msg:"Oops. Not what Mum wanted."},
+   lesIco:"📝",lesson:"Follow the plan!"},
+
+  {gbg:"linear-gradient(145deg,#1b2838,#2d4f73,#3f6ea8)",bg:"bg2",accent:"#3f6ea8",icon:"📚",timeTag:"6:00 PM",title:"Homework Time",
+   comic:[{e:"📚",s:"Homework open"},{e:"📱",s:"Game notification!"},{e:"😬",s:"Play or study?"}],
+   correct:2,detects:[{e:"⏰",l:"TIME"},{e:"🤝",l:"PROMISE"},{e:"📚",l:"STUDY"},{e:"❤️",l:"CARE"}],
+   revealEmoji:"📚",revealWord:"Study",cq:"What do you do?",
+   choices:[{e:"📱",l:"Play first",good:false},{e:"📚",l:"Finish homework!",good:true},{e:"📋",l:"Copy from friend",good:false}],
+   rgood:{f:"📱",t:"📚",msg:"Homework done! Ready for class! 🌟"},rbad:{f:"📱",t:"😟",msg:"Trouble tomorrow."},
+   lesIco:"📚",lesson:"Study first — then play!"},
+
+  {gbg:"linear-gradient(145deg,#16324f,#245b8c,#3c85c6)",bg:"bg3",accent:"#245b8c",icon:"🏃",timeTag:"7:00 PM",title:"Practice Day",
+   comic:[{e:"🏃",s:"Practice time"},{e:"😓",s:"Tired today"},{e:"🏆",s:"Match next week!"}],
+   correct:0,detects:[{e:"👥",l:"TEAM"},{e:"⏰",l:"TIME"},{e:"❤️",l:"CARE"},{e:"🤝",l:"PROMISE"}],
+   revealEmoji:"🏃",revealWord:"Practice",cq:"What do you do?",
+   choices:[{e:"💪",l:"Practice now!",good:true},{e:"📺",l:"Skip today",good:false},{e:"🤔",l:"Try tomorrow",good:false}],
+   rgood:{f:"😓",t:"🏆",msg:"You improved! 🌟"},rbad:{f:"😓",t:"📉",msg:"No progress. Match is close!"},
+   lesIco:"🏃",lesson:"Practice makes you strong!"},
+
+  {gbg:"linear-gradient(145deg,#411c52,#783f8f,#ab6bd6)",bg:"bg4",accent:"#783f8f",icon:"🎨",timeTag:"8:00 PM",title:"Art Corner Mess",
+   comic:[{e:"🎨",s:"Art done!"},{e:"🖍️",s:"Supplies everywhere"},{e:"😬",s:"Leave or clean?"}],
+   correct:1,detects:[{e:"🤝",l:"PROMISE"},{e:"❤️",l:"CARE"},{e:"⏰",l:"TIME"},{e:"👥",l:"TEAM"}],
+   revealEmoji:"🗂️",revealWord:"Organise",cq:"What do you do?",
+   choices:[{e:"🙈",l:"Leave the mess",good:false},{e:"🗂️",l:"Put things back!",good:true},{e:"😐",l:"Watch others",good:false}],
+   rgood:{f:"🎨",t:"✅",msg:"Tidy desk! 🌟"},rbad:{f:"🎨",t:"📈",msg:"Mess grows bigger."},
+   lesIco:"🗂️",lesson:"Put things back always!"},
+
+  {gbg:"linear-gradient(145deg,#182c4f,#234a7a,#2d6fb0)",bg:"bg5",accent:"#2d6fb0",icon:"📱",timeTag:"8:30 PM",title:"Dead Battery",
+   comic:[{e:"📱",s:"Battery 5%!"},{e:"🔋",s:"Charger nearby"},{e:"⚠️",s:"Important call coming"}],
+   correct:1,detects:[{e:"⏰",l:"TIME"},{e:"❤️",l:"CARE"},{e:"🤝",l:"HONESTY"},{e:"👥",l:"TEAM"}],
+   revealEmoji:"🔋",revealWord:"Care",cq:"What do you do?",
+   choices:[{e:"📱",l:"Keep using it",good:false},{e:"🔋",l:"Charge it now!",good:true},{e:"🤷",l:"Leave it dead",good:false}],
+   rgood:{f:"🔋",t:"✅",msg:"Charged and ready! 🌟"},rbad:{f:"🔋",t:"😓",msg:"Missed the call."},
+   lesIco:"🔋",lesson:"Take care of your tools!"},
+
+  {gbg:"linear-gradient(145deg,#114e60,#1e6f81,#2b8fa0)",bg:"bg1",accent:"#1e6f81",icon:"🧼",timeTag:"9:00 PM",title:"Wash Before Eating",
+   comic:[{e:"🍽️",s:"Dinner ready!"},{e:"🙌",s:"Dirty hands"},{e:"🧼",s:"Wash?"}],
+   correct:2,detects:[{e:"❤️",l:"CARE"},{e:"⏰",l:"TIME"},{e:"🧼",l:"CLEAN"},{e:"👥",l:"TEAM"}],
+   revealEmoji:"🧼",revealWord:"Clean",cq:"What do you do?",
+   choices:[{e:"🍽️",l:"Eat straightaway",good:false},{e:"🤷",l:"Someone else will",good:false},{e:"🧼",l:"Wash hands first!",good:true}],
+   rgood:{f:"🧼",t:"✅",msg:"Fresh and healthy! 🌟"},rbad:{f:"🧼",t:"🤒",msg:"Germs at dinner!"},
+   lesIco:"🧼",lesson:"Clean hands — every meal!"},
+
+  {gbg:"linear-gradient(145deg,#274046,#3a6073,#5b86e5)",bg:"bg2",accent:"#3a6073",icon:"📞",timeTag:"10:00 PM",title:"Missed Call",
+   comic:[{e:"📞",s:"Missed call!"},{e:"😬",s:"Mum called"},{e:"⏰",s:"It's late…"}],
+   correct:1,detects:[{e:"⏰",l:"TIME"},{e:"❤️",l:"CARE"},{e:"👥",l:"TEAM"},{e:"🤝",l:"PROMISE"}],
+   revealEmoji:"📞",revealWord:"Check-in",cq:"What do you do?",
+   choices:[{e:"🙈",l:"Ignore it",good:false},{e:"📞",l:"Call back now!",good:true},{e:"📱",l:"Message later",good:false}],
+   rgood:{f:"📞",t:"😊",msg:"Mum is relieved! 🌟"},rbad:{f:"📞",t:"😟",msg:"Worry grows at home."},
+   lesIco:"📞",lesson:"Reply when someone calls!"},
+
+  {gbg:"linear-gradient(145deg,#2d0b4e,#561d72,#7d3f98)",bg:"bg4",accent:"#561d72",icon:"🏅",timeTag:"11:00 AM",title:"Try Again!",
+   comic:[{e:"❌",s:"Got it wrong"},{e:"😔",s:"Feeling sad"},{e:"🏅",s:"Try once more?"}],
+   correct:2,detects:[{e:"❤️",l:"CARE"},{e:"⏰",l:"TIME"},{e:"💪",l:"PRACTICE"},{e:"🤝",l:"PROMISE"}],
+   revealEmoji:"💪",revealWord:"Try Again",cq:"What do you do?",
+   choices:[{e:"😢",l:"Give up",good:false},{e:"💪",l:"Try again!",good:true},{e:"😠",l:"Blame others",good:false}],
+   rgood:{f:"😔",t:"🏅",msg:"You improved! 🌟"},rbad:{f:"😔",t:"📉",msg:"No growth without trying."},
+   lesIco:"💪",lesson:"Keep trying — that's how you grow!"},
+
+  {gbg:"linear-gradient(145deg,#16324f,#1c4f7a,#20688f)",bg:"bg5",accent:"#20688f",icon:"📖",timeTag:"12:00 PM",title:"Reading Time",
+   comic:[{e:"📖",s:"Free time now"},{e:"📱",s:"Phone nearby"},{e:"🤔",s:"What to do?"}],
+   correct:0,detects:[{e:"📚",l:"READ"},{e:"⏰",l:"TIME"},{e:"❤️",l:"CARE"},{e:"👥",l:"TEAM"}],
+   revealEmoji:"📖",revealWord:"Read",cq:"What do you do?",
+   choices:[{e:"📖",l:"Read a book!",good:true},{e:"📱",l:"Scroll phone",good:false},{e:"🙈",l:"Pretend to read",good:false}],
+   rgood:{f:"📖",t:"🌟",msg:"Great choice — reading is power! 🌟"},rbad:{f:"📖",t:"😐",msg:"Nothing new learned."},
+   lesIco:"📖",lesson:"Reading builds a big brain!"},
+
+  {gbg:"linear-gradient(145deg,#2f1b5f,#4b2d8a,#7c4dff)",bg:"bg3",accent:"#4b2d8a",icon:"🎮",timeTag:"1:30 PM",title:"Game On!",
+   comic:[{e:"🎮",s:"Game is fun!"},{e:"⏰",s:"1 hour done"},{e:"😬",s:"Keep going?"}],
+   correct:1,detects:[{e:"⏰",l:"TIME"},{e:"🤝",l:"RULE"},{e:"❤️",l:"CARE"},{e:"👥",l:"TEAM"}],
+   revealEmoji:"⏰",revealWord:"Time",cq:"What do you do?",
+   choices:[{e:"🎮",l:"Play forever",good:false},{e:"✅",l:"Stop on time!",good:true},{e:"🙈",l:"Hide the device",good:false}],
+   rgood:{f:"🎮",t:"✅",msg:"Balanced! Eyes and brain say thanks! 🌟"},rbad:{f:"🎮",t:"😵",msg:"Too much screen time."},
+   lesIco:"⏰",lesson:"Use screen time wisely!"}
+];
+
+/* ── Game State ───────────────────────────────────── */
+var idx = 0, score = 0, MAX = T.length * 5;
+
+/* ── Init ─────────────────────────────────────────── */
+document.getElementById('playBtn').addEventListener('click', startGame);
+initStars();
+
+function initStars() {
+  var c = document.getElementById('fstars');
+  var em = ['⭐','✨','🌟','💫'];
+  for (var i = 0; i < 24; i++) {
+    var d = document.createElement('div');
+    d.className = 'fstar';
+    d.innerHTML = em[i % em.length];
+    d.style.left = Math.random() * 94 + '%';
+    d.style.fontSize = (12 + Math.random() * 20) + 'px';
+    d.style.animationDuration = (3 + Math.random() * 6) + 's';
+    d.style.animationDelay = Math.random() * 7 + 's';
+    c.appendChild(d);
+  }
+}
+
+function show(id) {
+  ['intro','game','end'].forEach(function(s) {
+    document.getElementById(s).classList.remove('active');
+  });
+  document.getElementById(id).classList.add('active');
+}
+
+function updateHud() {
+  document.getElementById('hud').style.display = 'flex';
+  var dots = document.getElementById('hdots');
+  dots.innerHTML = '';
+  for (var i = 0; i < T.length; i++) {
+    var d = document.createElement('div');
+    d.className = 'hdot' + (i < idx ? ' done' : i === idx ? ' now' : '');
+    dots.appendChild(d);
+  }
+  document.getElementById('hscore').innerHTML = '⭐ ' + score;
+  document.getElementById('hbar').style.width = Math.round(score / MAX * 100) + '%';
+}
+
+function gc(html) {
+  document.getElementById('gc').innerHTML = html;
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function startGame() {
+  idx = 0; score = 0;
+  playStart();
+  show('game');
+  document.getElementById('game').style.background = T[0].gbg;
+  updateHud();
+  renderScene();
+}
+
+/* ── Render Scene (comic panels) ─────────────────── */
+function renderScene() {
+  var s = T[idx];
+  var comic = '';
+  for (var i = 0; i < s.comic.length; i++) {
+    comic += '<div class="panel"><div class="pe">' + s.comic[i].e + '</div><div class="ps">' + s.comic[i].s + '</div></div>';
+    if (i < s.comic.length - 1) comic += '<div class="c-arrow">›</div>';
+  }
+  gc(
+    '<div class="clabel">' + s.icon + ' ' + s.timeTag + ' &nbsp;&#9679;&nbsp; ' + (idx+1) + ' / ' + T.length + '</div>' +
+    '<div class="card">' +
+      '<div class="scene-title">' + s.icon + ' ' + s.title + '</div>' +
+      '<div class="comic ' + s.bg + '">' + comic + '</div>' +
+      '<button class="btn-next" style="background:linear-gradient(135deg,' + s.accent + ',' + s.accent + 'cc)" onclick="renderDetect()">&#128269; What is this about?</button>' +
+    '</div>'
+  );
+}
+
+/* ── Render Detect ────────────────────────────────── */
+function renderDetect() {
+  var s = T[idx];
+  var db = '';
+  for (var i = 0; i < s.detects.length; i++) {
+    db += '<button class="dbtn" id="db' + i + '" onclick="pickDetect(' + i + ')">' +
+            '<span class="de">' + s.detects[i].e + '</span>' +
+            '<span class="dl">' + s.detects[i].l + '</span>' +
+          '</button>';
+  }
+  gc(
+    '<div class="clabel">&#128269; Spot the skill &nbsp;&#9679;&nbsp; ' + (idx+1) + ' / ' + T.length + '</div>' +
+    '<div class="card">' +
+      '<div class="detect-q">&#128161; &#128269; ?</div>' +
+      '<div class="dgrid">' + db + '</div>' +
+      '<div id="dfb"></div>' +
+    '</div>'
+  );
+}
+
+function pickDetect(i) {
+  var s = T[idx];
+  var ok = (i === s.correct);
+  var btns = document.querySelectorAll('.dbtn');
+  for (var j = 0; j < btns.length; j++) {
+    btns[j].setAttribute('onclick','');
+    btns[j].style.pointerEvents = 'none';
+    if (j === s.correct) btns[j].classList.add('correct');
+    else if (j === i && !ok) btns[j].classList.add('wrong');
+  }
+  if (ok) { score += 2; playCorrect(); updateHud(); }
+  var fb = document.getElementById('dfb');
+  fb.className = 'fb ' + (ok ? 'good' : 'bad');
+  fb.innerHTML = ok
+    ? '<div class="fb-ico">&#127919;</div><div class="fb-hd">2 ⭐</div>'
+    : '<div class="fb-ico">&#128173;</div><div class="fb-hd">' + s.detects[s.correct].e + ' ' + s.revealWord + '</div>';
+  setTimeout(renderChoice, 1200);
+}
+
+/* ── Render Choice ────────────────────────────────── */
+function renderChoice() {
+  var s = T[idx];
+  var cb = '';
+  for (var i = 0; i < s.choices.length; i++) {
+    cb += '<button class="chbtn" onclick="pickChoice(' + i + ')">' +
+            '<span class="ch-emoji">' + s.choices[i].e + '</span>' +
+            '<span class="ch-label">' + s.choices[i].l + '</span>' +
+          '</button>';
+  }
+  gc(
+    '<div class="clabel">&#9889; Your move &nbsp;&#9679;&nbsp; ' + (idx+1) + ' / ' + T.length + '</div>' +
+    '<div class="card">' +
+      '<div style="text-align:center;font-size:52px;margin-bottom:10px;animation:float 3s ease-in-out infinite">' + s.icon + '</div>' +
+      '<div style="background:linear-gradient(135deg,' + s.accent + ',' + s.accent + 'cc);color:#fff;border-radius:14px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px">' +
+        '<div style="font-size:30px">' + s.revealEmoji + '</div>' +
+        '<div style="font-size:15px;font-weight:900">' + s.revealWord + '</div>' +
+      '</div>' +
+      '<div class="cq">&#129300;</div>' +
+      '<div class="ch-grid">' + cb + '</div>' +
+    '</div>'
+  );
+}
+
+function pickChoice(i) {
+  var s = T[idx];
+  var good = s.choices[i].good;
+  if (good) { score += 3; playCorrect(); updateHud(); spawnConfetti(24); }
+  renderResult(good);
+}
+
+/* ── Render Result ────────────────────────────────── */
+function renderResult(good) {
+  if (!good) { playWrong(); }
+  var s = T[idx];
+  var r = good ? s.rgood : s.rbad;
+  var arrowCol = good ? '#00c853' : '#ff5722';
+  var nextTxt = (idx + 1 < T.length) ? '&#10145;&#65038; Next' : '&#127942; My Results!';
+  gc(
+    '<div class="clabel">' + (good ? '&#127775; Great' : '&#128161; Learn') + '</div>' +
+    '<div class="card">' +
+      '<div class="res-stage ' + s.bg + '">' +
+        '<span class="res-from">' + r.f + '</span>' +
+        '<span class="res-arr" style="color:' + arrowCol + '">&#10132;</span>' +
+        '<span class="res-to">' + r.t + '</span>' +
+      '</div>' +
+      '<div class="res-msg">' + r.msg + '</div>' +
+      '<div class="lesson-strip" style="background:linear-gradient(135deg,' + s.accent + ',' + s.accent + 'cc)">' +
+        '<div class="les-ico">' + s.lesIco + '</div>' +
+        '<div class="les-txt">' + s.lesson + '</div>' +
+      '</div>' +
+      '<div class="star-row">' + (good ? '⭐⭐⭐' : '⭐') + '</div>' +
+      '<button class="btn-next" style="background:linear-gradient(135deg,' + s.accent + ',' + s.accent + 'cc)" onclick="nextChallenge()">' + nextTxt + '</button>' +
+    '</div>'
+  );
+}
+
+function nextChallenge() {
+  playNext();
+  idx++;
+  if (idx >= T.length) { endGame(); return; }
+  document.getElementById('game').style.background = T[idx].gbg;
+  updateHud();
+  renderScene();
+}
+
+/* ── End Game ─────────────────────────────────────── */
+function endGame() {
+  try {
+    if (window.BhavaSession && typeof BhavaSession.end === 'function') {
+      BhavaSession.end(Math.round((score / MAX) * 100));
+    }
+  } catch(e) { console.warn('BhavaSession.end:', e.message); }
+
+  document.getElementById('hud').style.display = 'none';
+  show('end');
+
+  if (score / MAX >= 0.5) { playWin(); } else { playLose(); }
+
+  var pct = score / MAX;
+  var rank, badge, msg;
+  if (pct >= 0.8) {
+    rank = 'RESPONSIBILITY HERO! &#127942;'; badge = '&#129464;'; msg = 'Amazing!';
+  } else if (pct >= 0.5) {
+    rank = 'RISING HERO! &#127775;'; badge = '&#128170;'; msg = 'Great progress!';
+  } else {
+    rank = 'HERO IN TRAINING! &#127807;'; badge = '&#127807;'; msg = 'Try again!';
+  }
+
+  var stars = '';
+  for (var i = 0; i < Math.max(1, Math.round(pct * 5)); i++) stars += '⭐';
+
+  var skills = [['&#9200;','TIME'],['&#129309;','HONEST'],['&#129529;','CLEAN'],['&#10084;','CARE'],['&#128101;','TEAM']];
+  var skillCards = skills.map(function(sk) {
+    return '<div class="skill-card"><div class="sk-ico">' + sk[0] + '</div><div class="sk-lbl">' + sk[1] + '</div></div>';
+  }).join('');
+
+  document.getElementById('cert').innerHTML =
+    '<div class="c-badge">' + badge + '</div>' +
+    '<div class="c-sub">You are a</div>' +
+    '<div class="c-rank">' + rank + '</div>' +
+    '<div class="c-stars">' + stars + '</div>' +
+    '<div class="c-score">⭐ ' + score + ' / ' + MAX + '</div>' +
+    '<div class="c-bar-bg"><div class="c-bar" id="cbar" style="width:0%"></div></div>' +
+    '<div class="skills-row">' + skillCards + '</div>' +
+    '<div class="c-msg">' + msg + '</div>' +
+    '<button class="btn-replay" onclick="startGame()">&#128260; Play Again</button>';
+
+  setTimeout(function() {
+    var b = document.getElementById('cbar');
+    if (b) b.style.width = Math.round(pct * 100) + '%';
+  }, 300);
+  spawnConfetti(44);
+}
+
+/* ── Confetti ─────────────────────────────────────── */
+function spawnConfetti(n) {
+  var cols = ['#ffd200','#f7971e','#38ef7d','#ff6b6b','#4ecdc4','#c850c0','#a1c4fd','#fff'];
+  for (var i = 0; i < n; i++) {
+    (function(delay) {
+      setTimeout(function() {
+        var p = document.createElement('div');
+        p.className = 'cp';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.width = (7 + Math.random() * 9) + 'px';
+        p.style.height = (7 + Math.random() * 9) + 'px';
+        p.style.background = cols[Math.floor(Math.random() * cols.length)];
+        p.style.borderRadius = Math.random() > 0.5 ? '50%' : '3px';
+        p.style.animationDuration = (2 + Math.random() * 3) + 's';
+        document.body.appendChild(p);
+        setTimeout(function() { if (p.parentNode) p.parentNode.removeChild(p); }, 5500);
+      }, delay);
+    })(i * 45);
+  }
+}
+</script>
+
+
+  <!-- Bhava Game Menu - Auto Injected -->
+  <button class="bv-menu-btn" onclick="bvOpenMenu()">☰</button>
+
+  <div class="bv-overlay" id="bvOverlay" onclick="bvCloseMenu()">
+    <div class="bv-box" onclick="event.stopPropagation()">
+      <h3>☰ Menu</h3>
+      <a href="/index.html">🏠 Home</a>
+      <a href="/about.html">ℹ️ About</a>
+      <a href="/feedback.html">📝 Feedback</a>
+      <a onclick="history.back()">← Go Back</a>
+      <a onclick="bvCloseMenu()">✕ Close</a>
+    </div>
+  </div>
+
+  <script>
+    function bvOpenMenu()  { document.getElementById('bvOverlay').classList.add('active'); }
+    function bvCloseMenu() { document.getElementById('bvOverlay').classList.remove('active'); }
+
+    // Back button fix for Capacitor Android
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.App) {
+        Capacitor.Plugins.App.addListener('backButton', function (e) {
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            Capacitor.Plugins.App.exitApp();
+          }
+        });
+      }
+    });
+  </script>
+  <!-- End Bhava Game Menu -->
+
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Dayhero 15 Auto";</script>
+  
+
+<!-- Bhava Session Tracker — inlined for standalone file:// use -->
+<script>
+// BhavaSession stub: used when bhava-session.js cannot load (local/file:// testing)
+// On the live server, bhava-session.js loads AFTER this and overwrites window.BhavaSession
+if (!window.BhavaSession) {
+  window.BhavaSession = {
+    end: function(pct) {
+      console.log('[BhavaSession-stub] Score sent (local mode):', pct + '%');
+    }
+  };
+}
+</script>
+<!-- Bhava Tech All — inlined stub for standalone use -->
+<script>
+// bhava-tech-all stub: provides menu helpers when external file cannot load
+(function() {
+  function bvOpenMenu()  { var o=document.getElementById('bvOverlay'); if(o) o.classList.add('active'); }
+  function bvCloseMenu() { var o=document.getElementById('bvOverlay'); if(o) o.classList.remove('active'); }
+  window.bvOpenMenu  = window.bvOpenMenu  || bvOpenMenu;
+  window.bvCloseMenu = window.bvCloseMenu || bvCloseMenu;
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.App) {
+      Capacitor.Plugins.App.addListener('backButton', function(e) {
+        if (window.history.length > 1) { window.history.back(); }
+        else { Capacitor.Plugins.App.exitApp(); }
+      });
+    }
+  });
+})();
+</script>
+
+
+<script>
+// Safe navigation: if opened as file://, disable server-relative links
+(function(){
+  if(location.protocol === 'file:'){
+    document.querySelectorAll('a[href^="/"]').forEach(function(a){
+      a.removeAttribute('href');
+      a.style.opacity='0.4';
+      a.title='Available on the website only';
+      a.onclick=function(e){
+        e.preventDefault();
+        alert('Open this page on the Bhaavajaalam website to use navigation links.');
+      };
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

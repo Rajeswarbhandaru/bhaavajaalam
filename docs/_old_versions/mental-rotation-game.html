@@ -378,20 +378,17 @@ canvas{display:block;border-radius:var(--radius-md)}
 
   <!-- Question Area -->
   <div class="question-area">
-    <p class="question-label">Mentally rotate the original shape — then pick the matching option</p>
+    <p class="question-label">Which option matches after rotation?</p>
 
     <div class="shapes-row">
       <div class="shape-card target">
         <span class="shape-label">Original</span>
         <canvas id="targetCanvas" width="140" height="140"></canvas>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-3);align-self:center;">
-        <div style="font-size:var(--text-xl);color:var(--color-text-muted);">→</div>
-        <div style="background:var(--color-surface-2);border:2px solid var(--color-primary);border-radius:var(--radius-lg);padding:var(--space-5) var(--space-8);text-align:center;box-shadow:0 0 28px var(--color-primary-glow);min-width:140px;">
-          <div style="font-family:var(--font-display);font-size:var(--text-xs);letter-spacing:0.14em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:var(--space-2);">Rotate by</div>
-          <div id="rotationAngle" style="font-family:var(--font-display);font-size:var(--text-2xl);font-weight:900;color:var(--color-primary);line-height:1.1;">45°</div>
-          <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2);opacity:0.75;">Visualise mentally</div>
-        </div>
+      <div class="divider-arrow">→</div>
+      <div class="shape-card" style="border-color:var(--color-primary);box-shadow:0 0 24px var(--color-primary-glow)">
+        <span class="shape-label">Rotated by <span id="rotationAngle">45</span>°</span>
+        <canvas id="rotatedCanvas" width="140" height="140"></canvas>
       </div>
     </div>
 
@@ -835,10 +832,12 @@ function renderRound() {
   // Target canvas
   renderToCanvas(document.getElementById('targetCanvas'), shapeDef, targetAngle);
 
-  // Rotated preview removed — player must rotate mentally and pick from A/B/C/D
+  // Rotated canvas (the question)
+  const rotRad = rotationAngle * Math.PI / 180;
+  renderToCanvas(document.getElementById('rotatedCanvas'), shapeDef, targetAngle + rotRad);
 
   // Update rotation label
-  document.getElementById('rotationAngle').textContent = rotationAngle + '°';
+  document.getElementById('rotationAngle').textContent = rotationAngle;
 
   // Build answer buttons
   const grid = document.getElementById('answersGrid');
@@ -995,10 +994,10 @@ function startGame() {
 //  SHOW RESULTS
 // ═══════════════════════════════════════════
 function showResults() {
+  try { if (window.BhavaSession && typeof BhavaSession.end === 'function') { BhavaSession.end(finalScore); } } catch(e) { console.warn('BhavaSession.end:', e.message); } // Bhava auto-tracked
   clearInterval(state.timerInterval);
 
   const accuracy = Math.round((state.correctCount / TOTAL_ROUNDS) * 100);
-  try { if (window.BhavaSession && typeof BhavaSession.end === 'function') { BhavaSession.end(accuracy); } } catch(e) { console.warn('BhavaSession.end:', e.message); } // Bhava auto-tracked
 
   // Grade
   let grade, msg;

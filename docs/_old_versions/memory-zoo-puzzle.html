@@ -624,6 +624,7 @@ function startGame() {
   canFlip      = true;
 
   clearInterval(timerID);
+      try { if (window.BhavaSession && typeof BhavaSession.end === 'function') { BhavaSession.end(100); } } catch(e) { console.warn('BhavaSession.end:', e.message); } // Bhava Tech auto-tracked
   document.getElementById('moveCount').textContent = '0';
   document.getElementById('timerVal').textContent  = '0:00';
   document.getElementById('pairsVal').textContent  = `0/${totalPairs}`;
@@ -772,8 +773,6 @@ function triggerWin() {
   const starNum = ratio <= 1.4 ? 3 : ratio <= 2 ? 2 : 1;
   document.getElementById('starsRow').textContent   = '⭐'.repeat(starNum);
   document.getElementById('finalStars').textContent = starNum;
-
-  try { if (window.BhavaSession && typeof BhavaSession.end === 'function') { const _bvPct = starNum === 3 ? 100 : starNum === 2 ? 67 : 33; BhavaSession.end(_bvPct); } } catch(e) { console.warn('BhavaSession.end:', e.message); } // Bhava auto-tracked
 
   showScreen('winScreen');
   launchConfetti();

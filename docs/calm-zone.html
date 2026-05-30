@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calm Zone 🌊</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:#0a0a2e;min-height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+
+/* ── STARS ── */
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.star{position:absolute;border-radius:50%;background:white;animation:twinkle var(--d) ease-in-out infinite alternate;}
+@keyframes twinkle{from{opacity:.1;transform:scale(1);}to{opacity:.9;transform:scale(1.6);}}
+
+/* ── SCREENS ── */
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .7s,transform .7s;z-index:10;overflow-y:auto;padding:1rem 0;}
+.screen.hidden{opacity:0;pointer-events:none;transform:scale(.95);}
+
+/* ══ HOME ══ */
+#home{background:radial-gradient(ellipse at center,#1a1a4e,#0a0a2e);}
+.logo{font-size:clamp(2.2rem,5vw,4rem);font-weight:900;background:linear-gradient(135deg,#7ee8fa,#80ff72,#eec0c6,#ffd580);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:float 3s ease-in-out infinite;text-align:center;}
+.tagline{font-size:clamp(.85rem,2vw,1.2rem);color:#aac4ff;margin:.7rem 0 1.8rem;letter-spacing:.07em;text-align:center;}
+.game-cards{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;padding:0 1rem;}
+.card{background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.18);border-radius:22px;padding:1.6rem 1.1rem;width:clamp(130px,26vw,168px);text-align:center;cursor:pointer;transition:transform .3s,background .3s,box-shadow .3s;backdrop-filter:blur(12px);}
+.card:hover{transform:translateY(-10px) scale(1.06);box-shadow:0 16px 48px rgba(126,232,250,.35);}
+.card .icon{font-size:2.6rem;display:block;margin-bottom:.45rem;animation:icon-bob 2.5s ease-in-out infinite;}
+.card:nth-child(2) .icon{animation-delay:.4s;}
+.card:nth-child(3) .icon{animation-delay:.8s;}
+@keyframes icon-bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+.card .label{color:#e8f4ff;font-size:.95rem;font-weight:700;}
+.card .sub{color:#7eaaff;font-size:.72rem;margin-top:.2rem;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+/* ── COMMON ── */
+.back-btn{position:absolute;top:.9rem;left:.9rem;background:rgba(255,255,255,.1);border:none;border-radius:50px;color:#aac4ff;font-size:.9rem;font-family:'Nunito',sans-serif;padding:.42rem 1rem;cursor:pointer;transition:background .2s;z-index:20;}
+.back-btn:hover{background:rgba(255,255,255,.22);}
+.game-title{font-size:clamp(1.3rem,3.5vw,2rem);font-weight:900;text-align:center;margin-bottom:.15rem;}
+.game-sub{font-size:.85rem;text-align:center;margin-bottom:.9rem;opacity:.65;}
+.start-btn{padding:.7rem 2rem;background:linear-gradient(135deg,#7ee8fa,#4a9eff);border:none;border-radius:50px;font-size:.95rem;font-weight:700;font-family:'Nunito',sans-serif;color:#0a1a3e;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(126,232,250,.4);}
+.start-btn:hover{transform:scale(1.07);}
+
+/* ══ BREATHING ══ */
+#breath-screen{background:radial-gradient(ellipse at center,#0d2b4e,#050d1a);}
+.breath-title{color:#7ee8fa;}
+.breath-sub{color:#aac4ff;}
+.breath-container{position:relative;width:200px;height:200px;display:flex;align-items:center;justify-content:center;}
+.breath-ring{position:absolute;border-radius:50%;border:2px solid transparent;}
+.ring1{width:200px;height:200px;border-color:rgba(126,232,250,.15);animation:rr 8s linear infinite;border-top-color:rgba(126,232,250,.6);}
+.ring2{width:166px;height:166px;border-color:rgba(128,255,114,.1);animation:rr 6s linear infinite reverse;border-top-color:rgba(128,255,114,.5);}
+.ring3{width:134px;height:134px;border-color:rgba(238,192,198,.08);animation:rr 4s linear infinite;border-top-color:rgba(238,192,198,.4);}
+@keyframes rr{to{transform:rotate(360deg);}}
+.breath-circle{width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,#7ee8fa,#4a9eff);box-shadow:0 0 40px rgba(126,232,250,.6);display:flex;align-items:center;justify-content:center;z-index:2;}
+.breath-circle.inhale{animation:b-in 4s ease-in-out forwards;}
+.breath-circle.hold{animation:b-hold 4s ease-in-out forwards;}
+.breath-circle.exhale{animation:b-out 6s ease-in-out forwards;}
+@keyframes b-in{from{transform:scale(1);}to{transform:scale(1.85);box-shadow:0 0 80px rgba(126,232,250,.9);}}
+@keyframes b-hold{from{transform:scale(1.85);}to{transform:scale(1.85);}}
+@keyframes b-out{from{transform:scale(1.85);}to{transform:scale(1);box-shadow:0 0 20px rgba(126,232,250,.3);}}
+.breath-label{font-size:clamp(1rem,2.5vw,1.5rem);font-weight:900;color:#fff;letter-spacing:.12em;text-transform:uppercase;min-height:2rem;text-align:center;}
+.breath-prog{width:210px;height:7px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;margin:.3rem 0;}
+.breath-bar{height:100%;width:0%;background:linear-gradient(90deg,#7ee8fa,#80ff72,#ffd580);border-radius:10px;transition:width .4s;}
+.breath-count{color:#aac4ff;font-size:.85rem;margin-bottom:.25rem;}
+.star-reward{display:flex;gap:.35rem;margin:.2rem 0;}
+.star-box{font-size:1.3rem;filter:grayscale(1);opacity:.3;transition:all .5s;}
+.star-box.lit{filter:none;opacity:1;animation:star-pop .6s cubic-bezier(.36,.07,.19,.97);}
+@keyframes star-pop{0%{transform:scale(0) rotate(-30deg);}60%{transform:scale(1.5) rotate(10deg);}100%{transform:scale(1) rotate(0);}}
+.breath-rt-row{display:flex;align-items:center;gap:.6rem;margin:.15rem 0;}
+.breath-rt-label{color:#7ee8fa;font-size:.76rem;}
+.breath-rt-val{color:#fff;font-size:.88rem;font-weight:700;}
+
+/* ══ BUBBLE ══ */
+#bubble-screen{background:radial-gradient(ellipse at center,#1a0d3e,#06040f);}
+.bubble-title{color:#eec0c6;}
+.bubble-sub{color:#b89ec4;}
+#bubble-canvas{border-radius:16px;cursor:pointer;touch-action:none;display:block;}
+.bubble-hud{display:flex;gap:1.1rem;align-items:center;margin:.5rem 0;flex-wrap:wrap;justify-content:center;}
+.bubble-score{color:#eec0c6;font-size:.98rem;font-weight:700;}
+.calm-meter-wrap{display:flex;flex-direction:column;align-items:center;gap:.22rem;}
+.calm-meter-label{color:#b89ec4;font-size:.7rem;}
+.calm-meter{width:140px;height:10px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;}
+.calm-bar{height:100%;width:0%;background:linear-gradient(90deg,#ff80ab,#ffd580,#80ff72);border-radius:10px;transition:width .4s;}
+.level-badge{color:#ffd580;font-size:.85rem;font-weight:700;}
+.bubble-rt{color:#b89ec4;font-size:.76rem;}
+
+/* ══ FOCUS ZONE ══ */
+#mandala-screen{background:radial-gradient(ellipse at center,#1a0f2e,#080510);}
+.mandala-title{color:#f9c784;}
+.mode-tabs{display:flex;gap:.5rem;margin-bottom:.7rem;}
+.mode-tab{padding:.36rem .85rem;border-radius:50px;border:1.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#c9a96e;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .25s;}
+.mode-tab.active{background:rgba(249,199,132,.25);border-color:#f9c784;color:#f9c784;}
+#light-panel{display:flex;flex-direction:column;align-items:center;gap:.55rem;}
+.light-arena{position:relative;width:clamp(210px,62vw,290px);height:clamp(210px,62vw,290px);border-radius:50%;background:radial-gradient(circle,#1a0f2e,#08050f);border:2px solid rgba(249,199,132,.15);overflow:hidden;}
+.light-orb{position:absolute;border-radius:50%;transition:left .5s cubic-bezier(.4,0,.2,1),top .5s cubic-bezier(.4,0,.2,1),background .3s,box-shadow .3s;}
+.light-orb.glow-on{animation:orb-glow .5s ease-in-out;}
+@keyframes orb-glow{0%{transform:scale(.7);opacity:.3;}60%{transform:scale(1.2);opacity:1;}100%{transform:scale(1);opacity:1;}}
+.focus-prompt{font-size:clamp(.92rem,2.4vw,1.25rem);font-weight:900;color:#fff;text-align:center;min-height:1.7rem;}
+.rt-timer-wrap{width:clamp(210px,62vw,290px);display:flex;flex-direction:column;gap:.18rem;}
+.rt-timer-label{font-size:.7rem;color:#c9a96e;text-align:right;}
+.rt-timer-bar-bg{width:100%;height:7px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;}
+.rt-timer-bar{height:100%;width:100%;border-radius:10px;background:linear-gradient(90deg,#80ff72,#ffd580,#ff4e4e);}
+.color-choices{display:flex;gap:.65rem;justify-content:center;flex-wrap:wrap;}
+.choice-btn{width:50px;height:50px;border-radius:50%;border:3px solid rgba(255,255,255,.2);cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;}
+.choice-btn:hover{transform:scale(1.18);border-color:white;}
+.choice-btn.correct-flash{animation:correct .5s ease;}
+.choice-btn.wrong-flash{animation:wrong .4s ease;}
+@keyframes correct{0%,100%{transform:scale(1);}50%{transform:scale(1.45);box-shadow:0 0 30px #80ff72;}}
+@keyframes wrong{0%,25%,75%,100%{transform:translateX(0);}50%{transform:translateX(-8px);}}
+.focus-hud{display:flex;gap:1.1rem;align-items:center;flex-wrap:wrap;justify-content:center;}
+.focus-score-num{color:#fff;font-size:.98rem;font-weight:900;}
+.focus-streak{color:#f9c784;font-size:.86rem;font-weight:700;}
+.focus-rt-display{color:#84ffff;font-size:.8rem;font-weight:700;}
+.focus-stars{display:flex;gap:.23rem;}
+.focus-star{font-size:1.05rem;filter:grayscale(1);opacity:.25;transition:all .4s;}
+.focus-star.lit{filter:none;opacity:1;animation:star-pop .5s ease;}
+.graph-wrap{width:clamp(210px,62vw,290px);background:rgba(255,255,255,.04);border:1px solid rgba(249,199,132,.14);border-radius:14px;padding:.55rem .75rem;}
+.graph-title{font-size:.7rem;color:#c9a96e;margin-bottom:.3rem;display:flex;justify-content:space-between;}
+#focus-graph{display:block;}
+.graph-legend{display:flex;gap:.8rem;font-size:.62rem;color:#888;margin-top:.22rem;}
+.leg-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:.2rem;vertical-align:middle;}
+#mandala-panel{display:flex;flex-direction:column;align-items:center;gap:.45rem;}
+#mandala-canvas{border-radius:50%;cursor:pointer;box-shadow:0 0 50px rgba(249,199,132,.22);}
+.color-palette{display:flex;gap:.48rem;flex-wrap:wrap;justify-content:center;}
+.color-dot{width:28px;height:28px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .2s,border-color .2s;}
+.color-dot:hover,.color-dot.active{transform:scale(1.35);border-color:white;}
+.clear-btn{padding:.38rem 1.4rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:50px;color:#f9c784;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;}
+.clear-btn:hover{background:rgba(255,255,255,.2);}
+
+/* ════════════════════════════════
+   REWARD OVERLAY  ← NEW
+════════════════════════════════ */
+#reward-overlay{
+  position:fixed;inset:0;z-index:300;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .6s;
+  overflow:hidden;
+}
+#reward-overlay.show{opacity:1;pointer-events:all;}
+
+/* Animated gradient background */
+.reward-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#0a0a2e,#1a0d3e,#0d2b1e,#1a1a4e);
+  background-size:400% 400%;
+  animation:grad-shift 4s ease infinite;
+}
+@keyframes grad-shift{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* Confetti canvas */
+#confetti-canvas{position:absolute;inset:0;pointer-events:none;z-index:1;}
+
+/* Reward card */
+.reward-card{
+  position:relative;z-index:5;
+  background:rgba(10,10,46,.75);
+  backdrop-filter:blur(20px);
+  border:2px solid rgba(255,255,255,.15);
+  border-radius:28px;
+  padding:2rem 2.2rem;
+  max-width:clamp(300px,88vw,440px);
+  text-align:center;
+  box-shadow:0 0 80px rgba(126,232,250,.2), 0 30px 80px rgba(0,0,0,.5);
+  animation:card-enter .7s cubic-bezier(.175,.885,.32,1.275);
+}
+@keyframes card-enter{
+  from{transform:scale(.4) translateY(60px);opacity:0;}
+  to{transform:scale(1) translateY(0);opacity:1;}
+}
+
+/* Big emoji with shimmer */
+.reward-emoji-wrap{
+  position:relative;display:inline-block;
+  margin-bottom:.6rem;
+}
+.reward-emoji{
+  font-size:4.5rem;display:block;
+  animation:emoji-bounce 1s cubic-bezier(.36,.07,.19,.97) .3s both;
+  filter:drop-shadow(0 0 18px rgba(255,255,255,.5));
+}
+@keyframes emoji-bounce{
+  0%{transform:scale(0) rotate(-20deg);}
+  50%{transform:scale(1.3) rotate(8deg);}
+  75%{transform:scale(.9) rotate(-4deg);}
+  100%{transform:scale(1) rotate(0);}
+}
+
+/* Shimmer ring around emoji */
+.emoji-ring{
+  position:absolute;inset:-12px;border-radius:50%;
+  border:3px solid transparent;
+  animation:ring-spin 2s linear infinite;
+}
+@keyframes ring-spin{to{transform:rotate(360deg);}}
+
+/* Stars row */
+.reward-stars-row{display:flex;justify-content:center;gap:.5rem;margin:.4rem 0 .8rem;}
+.reward-star{
+  font-size:1.8rem;
+  animation:star-rain .5s ease both;
+}
+@keyframes star-rain{
+  from{transform:translateY(-30px) scale(0);opacity:0;}
+  to{transform:translateY(0) scale(1);opacity:1;}
+}
+
+.reward-title{
+  font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;
+  background:linear-gradient(135deg,#7ee8fa,#80ff72,#ffd580,#eec0c6);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-size:200% auto;
+  animation:shine-text 2s linear infinite;
+  margin-bottom:.5rem;
+}
+@keyframes shine-text{to{background-position:200% center;}}
+
+.reward-message{
+  font-size:clamp(.9rem,2.5vw,1.1rem);
+  color:#d0e8ff;
+  line-height:1.65;
+  margin-bottom:1.2rem;
+}
+.reward-message em{
+  color:#80ff72;font-style:normal;font-weight:700;
+}
+.reward-message strong{
+  color:#ffd580;
+}
+
+/* Stats mini row */
+.reward-stats{
+  display:flex;gap:.8rem;justify-content:center;
+  flex-wrap:wrap;margin-bottom:1.2rem;
+}
+.reward-stat{
+  background:rgba(255,255,255,.07);
+  border-radius:14px;padding:.5rem .9rem;min-width:70px;
+}
+.reward-stat-val{font-size:1.2rem;font-weight:900;color:#fff;}
+.reward-stat-lab{font-size:.65rem;color:#aac4ff;margin-top:.1rem;}
+
+/* Buttons */
+.reward-btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;}
+.reward-btn-primary{
+  padding:.65rem 1.8rem;
+  background:linear-gradient(135deg,#80ff72,#4aff4a);
+  border:none;border-radius:50px;
+  font-size:.95rem;font-weight:700;font-family:'Nunito',sans-serif;
+  color:#0a2e0a;cursor:pointer;
+  box-shadow:0 4px 20px rgba(128,255,114,.5);
+  transition:transform .2s;
+}
+.reward-btn-primary:hover{transform:scale(1.07);}
+.reward-btn-secondary{
+  padding:.65rem 1.8rem;
+  background:rgba(255,255,255,.1);
+  border:1.5px solid rgba(255,255,255,.2);
+  border-radius:50px;
+  font-size:.95rem;font-weight:700;font-family:'Nunito',sans-serif;
+  color:#aac4ff;cursor:pointer;
+  transition:background .2s,transform .2s;
+}
+.reward-btn-secondary:hover{background:rgba(255,255,255,.18);transform:scale(1.05);}
+
+/* ── SESSION OVERLAY ── */
+#session-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .5s;}
+#session-overlay.show{opacity:1;pointer-events:all;}
+.session-box{background:linear-gradient(135deg,#0d1f3e,#1a0f2e);border:2px solid rgba(126,232,250,.28);border-radius:24px;padding:1.6rem 1.8rem;text-align:center;width:clamp(300px,85vw,420px);box-shadow:0 20px 60px rgba(126,232,250,.15);animation:card-enter .5s ease;}
+.session-title{font-size:1.4rem;font-weight:900;color:#7ee8fa;margin-bottom:.25rem;}
+.session-sub{font-size:.82rem;color:#aac4ff;margin-bottom:.9rem;}
+.session-stats{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.9rem;}
+.stat-card{background:rgba(255,255,255,.07);border-radius:12px;padding:.6rem .45rem;}
+.stat-val{font-size:1.35rem;font-weight:900;color:#fff;}
+.stat-label{font-size:.68rem;color:#aac4ff;margin-top:.12rem;}
+.stat-badge{font-size:.72rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;display:inline-block;margin-top:.15rem;}
+.badge-fast{background:rgba(128,255,114,.2);color:#80ff72;}
+.badge-slow{background:rgba(255,78,78,.2);color:#ff8888;}
+.badge-avg{background:rgba(255,213,0,.2);color:#ffd580;}
+.session-graph-wrap{background:rgba(255,255,255,.04);border-radius:12px;padding:.55rem;margin-bottom:.9rem;}
+.session-graph-title{font-size:.72rem;color:#c9a96e;margin-bottom:.35rem;text-align:left;}
+.session-close{padding:.5rem 1.8rem;background:linear-gradient(135deg,#7ee8fa,#4a9eff);border:none;border-radius:50px;font-size:.9rem;font-weight:700;font-family:'Nunito',sans-serif;color:#0a1a3e;cursor:pointer;}
+
+/* PARTICLES */
+.particle{position:fixed;pointer-events:none;border-radius:50%;z-index:5;animation:pfloat 1.8s ease-out forwards;}
+@keyframes pfloat{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-110px) scale(0);}}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<canvas id="confetti-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:301;display:none;"></canvas>
+
+<!-- HOME -->
+<div class="screen" id="home">
+  <div class="logo">🌊 Calm Zone</div>
+  <div class="tagline">Breathe · Release · Focus</div>
+  <div class="game-cards">
+    <div class="card" onclick="goTo('breath-screen',initBreath)">
+      <span class="icon">🫁</span><div class="label">Breathe</div><div class="sub">Calm down</div>
+    </div>
+    <div class="card" onclick="goTo('bubble-screen',initBubbles)">
+      <span class="icon">🫧</span><div class="label">Burst It!</div><div class="sub">Release frustration</div>
+    </div>
+    <div class="card" onclick="goTo('mandala-screen',initMandalaScreen)">
+      <span class="icon">✨</span><div class="label">Focus Zone</div><div class="sub">Light · Color · Draw</div>
+    </div>
+  </div>
+</div>
+
+<!-- BREATHING -->
+<div class="screen hidden" id="breath-screen">
+  <button class="back-btn" onclick="goBack('breath-screen')">← Back</button>
+  <div class="game-title breath-title">🫁 Box Breathing</div>
+  <div class="game-sub breath-sub">Breathe with the orb · Earn 5 stars</div>
+  <div class="breath-container">
+    <div class="breath-ring ring1"></div><div class="breath-ring ring2"></div><div class="breath-ring ring3"></div>
+    <div class="breath-circle" id="breath-circle"></div>
+  </div>
+  <div class="breath-label" id="breath-label">Ready?</div>
+  <div class="breath-prog"><div class="breath-bar" id="breath-bar"></div></div>
+  <div class="breath-count" id="breath-count">Cycle: 0 / 5</div>
+  <div class="star-reward" id="breath-stars">
+    <span class="star-box">⭐</span><span class="star-box">⭐</span><span class="star-box">⭐</span>
+    <span class="star-box">⭐</span><span class="star-box">⭐</span>
+  </div>
+  <div class="breath-rt-row">
+    <span class="breath-rt-label">⏱ Avg hold time:</span>
+    <span class="breath-rt-val" id="breath-rt-val">—</span>
+  </div>
+  <button class="start-btn" id="bstart" onclick="startBreathing()">▶ Start</button>
+</div>
+
+<!-- BUBBLE -->
+<div class="screen hidden" id="bubble-screen">
+  <button class="back-btn" onclick="goBack('bubble-screen')">← Back</button>
+  <div class="game-title bubble-title">🫧 Burst the Tension</div>
+  <div class="game-sub bubble-sub">Pop to cool down · Watch your speed!</div>
+  <canvas id="bubble-canvas"></canvas>
+  <div class="bubble-hud">
+    <div class="bubble-score" id="bscore">Popped: 0</div>
+    <div class="calm-meter-wrap">
+      <div class="calm-meter-label">😤 → 😌 Calm Meter</div>
+      <div class="calm-meter"><div class="calm-bar" id="calm-bar"></div></div>
+    </div>
+    <div class="level-badge" id="blevel">Lv 1</div>
+  </div>
+  <div class="bubble-rt" id="bubble-rt">⚡ Avg reaction: — ms</div>
+</div>
+
+<!-- FOCUS ZONE -->
+<div class="screen hidden" id="mandala-screen">
+  <button class="back-btn" onclick="goBack('mandala-screen')">← Back</button>
+  <div class="game-title mandala-title">✨ Focus Zone</div>
+  <div class="mode-tabs">
+    <button class="mode-tab active" id="tab-light" onclick="switchMode('light')">💡 Light Focus</button>
+    <button class="mode-tab" id="tab-draw" onclick="switchMode('draw')">🌸 Mandala</button>
+  </div>
+  <div id="light-panel">
+    <div class="light-arena" id="light-arena"><div class="light-orb" id="light-orb" style="opacity:0;"></div></div>
+    <div class="focus-prompt" id="focus-prompt">Watch the light…</div>
+    <div class="rt-timer-wrap" id="rt-timer-wrap" style="visibility:hidden;">
+      <div class="rt-timer-label" id="rt-timer-label">Tap fast! ⚡</div>
+      <div class="rt-timer-bar-bg"><div class="rt-timer-bar" id="rt-timer-bar"></div></div>
+    </div>
+    <div class="color-choices" id="color-choices"></div>
+    <div class="focus-hud">
+      <div class="focus-score-num" id="fscore">Score: 0</div>
+      <div class="focus-streak" id="fstreak">🔥 ×0</div>
+      <div class="focus-rt-display" id="focus-rt-display">⚡ —</div>
+    </div>
+    <div class="focus-stars" id="focus-stars"></div>
+    <div class="graph-wrap" id="graph-wrap" style="display:none;">
+      <div class="graph-title"><span>📈 Focus Progress</span><span id="graph-round-label">Round 1</span></div>
+      <canvas id="focus-graph" height="55"></canvas>
+      <div class="graph-legend">
+        <span><span class="leg-dot" style="background:#80ff72;"></span>Score</span>
+        <span><span class="leg-dot" style="background:#84ffff;"></span>Reaction (ms)</span>
+      </div>
+    </div>
+    <button class="start-btn" id="lstart" onclick="startLightGame()">▶ Start</button>
+  </div>
+  <div id="mandala-panel" style="display:none;">
+    <canvas id="mandala-canvas" width="240" height="240"></canvas>
+    <div class="color-palette" id="color-palette"></div>
+    <button class="clear-btn" onclick="clearMandala()">✨ Reset</button>
+  </div>
+</div>
+
+<!-- ════ REWARD OVERLAY ════ -->
+<div id="reward-overlay">
+  <div class="reward-bg"></div>
+  <div class="reward-card" id="reward-card">
+    <div class="reward-emoji-wrap">
+      <div class="emoji-ring" id="emoji-ring"></div>
+      <span class="reward-emoji" id="reward-emoji">🌟</span>
+    </div>
+    <div class="reward-stars-row" id="reward-stars-row"></div>
+    <div class="reward-title" id="reward-title">Amazing!</div>
+    <div class="reward-message" id="reward-message"></div>
+    <div class="reward-stats" id="reward-stats"></div>
+    <div class="reward-btns">
+      <button class="reward-btn-primary" id="reward-btn-go" onclick="closeReward(false)">Go to Work 💼</button>
+      <button class="reward-btn-secondary" id="reward-btn-more" onclick="closeReward(true)">More Practice 🔄</button>
+    </div>
+  </div>
+</div>
+
+<!-- SESSION SUMMARY -->
+<div id="session-overlay">
+  <div class="session-box">
+    <div class="session-title" id="ss-title">🎯 Session Report</div>
+    <div class="session-sub" id="ss-sub"></div>
+    <div class="session-stats" id="ss-stats"></div>
+    <div class="session-graph-wrap">
+      <div class="session-graph-title">📊 Reaction Time per Round</div>
+      <canvas id="session-graph" height="75"></canvas>
+    </div>
+    <button class="session-close" onclick="closeSession()">See Full Report 🎉</button>
+  </div>
+</div>
+
+<script>
+// ── BhavaSession ─────────────────────────────────────────────────
+try { if (window.BhavaSession) window.BhavaSession.start('calm-zone'); } catch(_) {}
+function bhavaEnd(score, total, section) {
+  try {
+    const pct = total > 0 ? Math.round((score / total) * 100) : 0;
+    if (window.BhavaSession) window.BhavaSession.end(pct, {
+      game: 'calm-zone', section, score, total, pct
+    });
+    console.log('[Bhava] calm-zone/' + section + ': ' + score + '/' + total + ' = ' + pct + '%');
+  } catch(_) {}
+}
+// ── STARS ──
+const starsEl=document.getElementById('stars');
+for(let i=0;i<130;i++){
+  const s=document.createElement('div');s.className='star';
+  const z=Math.random()*3+1;
+  s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${z}px;height:${z}px;--d:${(Math.random()*3+2).toFixed(1)}s;animation-delay:${(Math.random()*4).toFixed(1)}s;`;
+  starsEl.appendChild(s);
+}
+
+// ── CONFETTI ──
+let confettiAF=null;
+const confColors=['#7ee8fa','#80ff72','#ffd580','#eec0c6','#b388ff','#ff80ab','#ff9944'];
+function startConfetti(){
+  const canvas=document.getElementById('confetti-canvas');
+  canvas.style.display='block';
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const ctx=canvas.getContext('2d');
+  const pieces=Array.from({length:120},()=>({
+    x:Math.random()*canvas.width,y:-20,
+    vx:(Math.random()-.5)*3,vy:Math.random()*4+2,
+    size:Math.random()*8+4,color:confColors[Math.floor(Math.random()*confColors.length)],
+    rot:Math.random()*360,rotV:(Math.random()-.5)*8,
+    shape:Math.random()<.5?'rect':'circle'
+  }));
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;p.rot+=p.rotV;
+      if(p.y>canvas.height+20){p.y=-20;p.x=Math.random()*canvas.width;}
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;ctx.globalAlpha=.85;
+      if(p.shape==='rect'){ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*.6);}
+      else{ctx.beginPath();ctx.arc(0,0,p.size/2,0,Math.PI*2);ctx.fill();}
+      ctx.restore();
+    });
+    confettiAF=requestAnimationFrame(draw);
+  }
+  draw();
+  setTimeout(stopConfetti,4000);
+}
+function stopConfetti(){
+  if(confettiAF) cancelAnimationFrame(confettiAF);
+  document.getElementById('confetti-canvas').style.display='none';
+}
+
+// ── PARTICLES ──
+function spawnParticles(x,y,color){
+  for(let i=0;i<8;i++){
+    const p=document.createElement('div');p.className='particle';
+    const z=Math.random()*10+4;
+    p.style.cssText=`left:${x+(Math.random()-.5)*40}px;top:${y+(Math.random()-.5)*40}px;width:${z}px;height:${z}px;background:${color};animation-delay:${Math.random()*.25}s;`;
+    document.body.appendChild(p);setTimeout(()=>p.remove(),2200);
+  }
+}
+
+// ── NAV ──
+let bubbleAF=null,currentGame=null;
+function goTo(id,fn){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('hidden',s.id!==id));
+  currentGame=id;if(fn) fn();
+}
+function goBack(from){
+  if(from==='bubble-screen'&&bubbleAF){cancelAnimationFrame(bubbleAF);bubbleAF=null;}
+  if(from==='mandala-screen') stopLightGame();
+  goTo('home');
+}
+
+// ════════════════════════════════════════
+// REWARD OVERLAY ENGINE
+// ════════════════════════════════════════
+const REWARDS={
+  breath:{
+    emoji:'🌊',ringColor:'linear-gradient(135deg,#7ee8fa,#80ff72)',
+    title:'Mind Refreshed! 🌿',
+    message:`<em>Yes! You are calm now.</em><br><br>Your breathing is steady and your mind is clear. <strong>Go ahead and get back to your work</strong> — you'll do it wonderfully!<br><br>If tension builds again, <em>just 5 more cycles</em> and you'll feel even lighter. 🌸`,
+    stars:5
+  },
+  bubble:{
+    emoji:'🫧',ringColor:'linear-gradient(135deg,#eec0c6,#b388ff)',
+    title:'Tension Released! 💥',
+    message:`<em>All that frustration? Gone!</em><br><br>You burst it out and now you're <strong>lighter, calmer, and ready</strong> to face whatever comes next.<br><br>Remember — next time you feel frustrated, <em>come back and burst a few bubbles</em>. It always helps! 😌`,
+    stars:4
+  },
+  focus:{
+    emoji:'🎯',ringColor:'linear-gradient(135deg,#f9c784,#ff9944)',
+    title:'Focus Locked In! 🧠',
+    message:`<em>Your attention is sharp!</em><br><br>You've trained your brain to spot, react, and decide quickly. <strong>Carry that focus into your next task</strong> — you're in the zone!<br><br>Want to go even faster? <em>Play another round</em> and watch your reaction time drop! ⚡`,
+    stars:5
+  },
+  mandala:{
+    emoji:'🌸',ringColor:'linear-gradient(135deg,#f9c784,#cc66ff)',
+    title:'Peace Restored! 🌺',
+    message:`<em>Beautiful! Your mind settled.</em><br><br>The mandala you created reflects your inner calm. <strong>You are ready — refreshed and focused</strong>.<br><br>Whenever you need to reset your thoughts, <em>pick up the brush again</em> and let the patterns guide you. 🌸`,
+    stars:4
+  }
+};
+
+let rewardReturnGame=null,rewardReturnFn=null;
+
+function showReward(type,statsHtml){
+  const R=REWARDS[type];
+  document.getElementById('reward-emoji').textContent=R.emoji;
+  document.getElementById('emoji-ring').style.background=R.ringColor;
+  document.getElementById('reward-title').textContent=R.title;
+  document.getElementById('reward-message').innerHTML=R.message;
+  // Stars with staggered animation
+  const sr=document.getElementById('reward-stars-row');sr.innerHTML='';
+  for(let i=0;i<R.stars;i++){
+    const s=document.createElement('span');s.className='reward-star';
+    s.style.animationDelay=(i*.12)+'s';s.textContent='⭐';sr.appendChild(s);
+  }
+  // Stats
+  document.getElementById('reward-stats').innerHTML=statsHtml||'';
+  rewardReturnGame=currentGame;
+  // Store restart fn
+  rewardReturnFn={
+    'breath-screen':initBreath,
+    'bubble-screen':initBubbles,
+    'mandala-screen':initMandalaScreen
+  }[currentGame];
+  document.getElementById('reward-overlay').classList.add('show');
+  startConfetti();
+}
+
+function closeReward(practiceMore){
+  document.getElementById('reward-overlay').classList.remove('show');
+  stopConfetti();
+  if(practiceMore && rewardReturnFn){
+    goTo(rewardReturnGame, rewardReturnFn);
+  } else {
+    goTo('home');
+  }
+}
+
+// ════════════════════════════════════════
+// CANVAS CHART UTILITY
+// ════════════════════════════════════════
+function drawLineChart(canvasId,datasets,labels,opts={}){
+  const canvas=document.getElementById(canvasId);if(!canvas) return;
+  const W=canvas.parentElement.clientWidth-(opts.padH||32);
+  canvas.width=W;
+  const ctx=canvas.getContext('2d'),H=canvas.height;
+  const PAD={t:8,r:10,b:20,l:opts.leftPad||34};
+  const cW=W-PAD.l-PAD.r,cH=H-PAD.t-PAD.b;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(255,255,255,.06)';ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=PAD.t+cH*(1-i/4);ctx.beginPath();ctx.moveTo(PAD.l,y);ctx.lineTo(PAD.l+cW,y);ctx.stroke();}
+  datasets.forEach(ds=>{
+    if(!ds.data||ds.data.length<1) return;
+    const allVals=datasets.flatMap(d=>d.data);
+    const minV=opts.minY!==undefined?opts.minY:Math.min(...allVals)*.9;
+    const maxV=opts.maxY!==undefined?opts.maxY:Math.max(...allVals)*1.1||1;
+    const range=maxV-minV||1;const n=ds.data.length;
+    const pts=ds.data.map((v,i)=>({x:PAD.l+(n===1?cW/2:i/(n-1)*cW),y:PAD.t+cH*(1-(v-minV)/range)}));
+    if(ds.fill){
+      ctx.beginPath();ctx.moveTo(pts[0].x,PAD.t+cH);
+      pts.forEach(p=>ctx.lineTo(p.x,p.y));ctx.lineTo(pts[pts.length-1].x,PAD.t+cH);ctx.closePath();
+      const g=ctx.createLinearGradient(0,PAD.t,0,PAD.t+cH);
+      g.addColorStop(0,ds.color+'44');g.addColorStop(1,ds.color+'08');
+      ctx.fillStyle=g;ctx.fill();
+    }
+    ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
+    ctx.strokeStyle=ds.color;ctx.lineWidth=ds.width||2;ctx.lineJoin='round';ctx.lineCap='round';ctx.stroke();
+    pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,3.5,0,Math.PI*2);ctx.fillStyle=ds.color;ctx.fill();});
+    if(ds.yAxis){
+      ctx.fillStyle=ds.color+'aa';ctx.font='9px Nunito,sans-serif';ctx.textAlign='right';
+      [0,.5,1].forEach(f=>{ctx.fillText((minV+range*f).toFixed(0),PAD.l-3,PAD.t+cH*(1-f)+3);});
+    }
+  });
+  if(labels&&labels.length){
+    ctx.fillStyle='rgba(255,255,255,.4)';ctx.font='9px Nunito,sans-serif';ctx.textAlign='center';
+    const n=labels.length;
+    labels.forEach((l,i)=>{ctx.fillText(l,PAD.l+(n===1?cW/2:i/(n-1)*cW),H-3);});
+  }
+}
+
+// ════════════════════════════════════════
+// 1. BREATHING
+// ════════════════════════════════════════
+let bTimer=null,bCycle=0,bPhaseIdx=0,bRunning=false,bHoldDurations=[],bHoldStarts={};
+const bPhases=[
+  {name:'INHALE ↑',dur:4000,cls:'inhale',isHold:false},
+  {name:'HOLD —',dur:4000,cls:'hold',isHold:true},
+  {name:'EXHALE ↓',dur:6000,cls:'exhale',isHold:false},
+  {name:'HOLD —',dur:2000,cls:'hold',isHold:true},
+];
+function initBreath(){
+  bCycle=0;bPhaseIdx=0;bRunning=false;bHoldDurations=[];
+  document.getElementById('breath-label').textContent='Ready?';
+  document.getElementById('breath-bar').style.width='0%';
+  document.getElementById('breath-count').textContent='Cycle: 0 / 5';
+  document.getElementById('breath-rt-val').textContent='—';
+  document.getElementById('bstart').style.display='block';
+  document.getElementById('bstart').textContent='▶ Start';
+  document.querySelectorAll('.star-box').forEach(s=>s.classList.remove('lit'));
+  clearTimeout(bTimer);
+}
+function startBreathing(){
+  bCycle=0;bPhaseIdx=0;bRunning=true;bHoldDurations=[];
+  document.getElementById('bstart').style.display='none';
+  document.querySelectorAll('.star-box').forEach(s=>s.classList.remove('lit'));
+  runBPhase();
+}
+function runBPhase(){
+  if(!bRunning) return;
+  if(bCycle>=5){
+    document.getElementById('breath-label').textContent='✨ Perfect!';
+    document.getElementById('breath-bar').style.width='100%';
+    document.getElementById('bstart').style.display='block';
+    document.getElementById('bstart').textContent='↺ Again';
+    const avgHold=bHoldDurations.length?Math.round(bHoldDurations.reduce((a,b)=>a+b,0)/bHoldDurations.length/1000*10)/10:0;
+    if(avgHold) document.getElementById('breath-rt-val').textContent=avgHold+'s';
+    bhavaEnd(5,5,'breathing');
+    setTimeout(()=>showReward('breath',`
+      <div class="reward-stat"><div class="reward-stat-val">5</div><div class="reward-stat-lab">Cycles</div></div>
+      <div class="reward-stat"><div class="reward-stat-val">${avgHold||'—'}s</div><div class="reward-stat-lab">Avg Hold</div></div>
+      <div class="reward-stat"><div class="reward-stat-val">😌</div><div class="reward-stat-lab">Calm Level</div></div>
+    `),600);
+    return;
+  }
+  const ph=bPhases[bPhaseIdx];
+  document.getElementById('breath-circle').className='breath-circle '+ph.cls;
+  document.getElementById('breath-label').textContent=ph.name;
+  document.getElementById('breath-bar').style.width=((bCycle/5)*100+(bPhaseIdx/4)*(100/5))+'%';
+  if(ph.isHold) bHoldStarts[bPhaseIdx]=performance.now();
+  clearTimeout(bTimer);
+  bTimer=setTimeout(()=>{
+    if(ph.isHold) bHoldDurations.push(performance.now()-bHoldStarts[bPhaseIdx]);
+    bPhaseIdx++;
+    if(bPhaseIdx>=bPhases.length){
+      bPhaseIdx=0;bCycle++;
+      document.getElementById('breath-count').textContent=`Cycle: ${bCycle} / 5`;
+      const stars=document.querySelectorAll('.star-box');
+      if(bCycle<=5) stars[bCycle-1].classList.add('lit');
+    }
+    runBPhase();
+  },ph.dur);
+}
+
+// ════════════════════════════════════════
+// 2. BUBBLES
+// ════════════════════════════════════════
+let bubbles=[],bPopped=0,bLevel=1,bubbleSpawnTimes={},bubbleRTs=[];
+const bColors=['#7ee8fa','#80ff72','#eec0c6','#ffd580','#b388ff','#ff80ab','#84ffff'];
+function initBubbles(){
+  const canvas=document.getElementById('bubble-canvas');
+  const W=Math.min(window.innerWidth-30,510),H=Math.min(window.innerHeight-230,350);
+  canvas.width=W;canvas.height=H;
+  bPopped=0;bLevel=1;bubbles=[];bubbleRTs=[];bubbleSpawnTimes={};
+  document.getElementById('bscore').textContent='Popped: 0';
+  document.getElementById('calm-bar').style.width='0%';
+  document.getElementById('blevel').textContent='Lv 1';
+  document.getElementById('bubble-rt').textContent='⚡ Avg reaction: — ms';
+  for(let i=0;i<16;i++) spawnBubble(canvas);
+  canvas.onclick=e=>popBubble(e,canvas);
+  canvas.ontouchstart=e=>{e.preventDefault();popBubble(e.touches[0],canvas);};
+  if(bubbleAF) cancelAnimationFrame(bubbleAF);
+  animateBubbles(canvas);
+}
+function spawnBubble(canvas){
+  const r=Math.random()*24+16,speed=.5+bLevel*.22;
+  const id=Math.random().toString(36).slice(2);
+  const b={id,x:Math.random()*(canvas.width-r*2)+r,y:canvas.height+r,r,
+    vx:(Math.random()-.5)*.8,vy:-(Math.random()*speed+.5),
+    color:bColors[Math.floor(Math.random()*bColors.length)],
+    wobble:Math.random()*Math.PI*2,popped:false,popAnim:0,bonus:Math.random()<.12};
+  bubbleSpawnTimes[id]=performance.now();bubbles.push(b);
+}
+function animateBubbles(canvas){
+  const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);
+  bubbles=bubbles.filter(b=>{if(b.popped){b.popAnim+=.1;return b.popAnim<1;}return b.y+b.r>-10;});
+  while(bubbles.length<16+bLevel*2) spawnBubble(canvas);
+  bubbles.forEach(b=>{
+    if(!b.popped){
+      b.wobble+=.03;b.x+=Math.sin(b.wobble)*.5+b.vx;b.y+=b.vy;
+      ctx.save();ctx.globalAlpha=.82;
+      const g=ctx.createRadialGradient(b.x-b.r*.3,b.y-b.r*.3,b.r*.1,b.x,b.y,b.r);
+      g.addColorStop(0,'rgba(255,255,255,.9)');g.addColorStop(.3,b.color+'cc');g.addColorStop(1,b.color+'44');
+      ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,.35)';ctx.lineWidth=1.5;ctx.stroke();
+      if(b.bonus){ctx.font=`${b.r*.9}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('✨',b.x,b.y);}
+      ctx.restore();
+    } else {
+      const pr=b.popAnim;ctx.save();ctx.globalAlpha=1-pr;
+      for(let i=0;i<8;i++){
+        const a=(i/8)*Math.PI*2,dist=pr*b.r*2.5;
+        ctx.beginPath();ctx.arc(b.x+Math.cos(a)*dist,b.y+Math.sin(a)*dist,b.r*.2*(1-pr),0,Math.PI*2);
+        ctx.fillStyle=b.color;ctx.fill();
+      }
+      ctx.restore();
+    }
+  });
+  bubbleAF=requestAnimationFrame(()=>animateBubbles(canvas));
+}
+function popBubble(e,canvas){
+  const rect=canvas.getBoundingClientRect(),mx=e.clientX-rect.left,my=e.clientY-rect.top;
+  bubbles.forEach(b=>{
+    if(!b.popped&&Math.hypot(mx-b.x,my-b.y)<b.r){
+      const rt=Math.round(performance.now()-bubbleSpawnTimes[b.id]);
+      b.popped=true;bPopped++;bubbleRTs.push(rt);
+      spawnParticles(e.clientX,e.clientY,b.color);
+      document.getElementById('bscore').textContent=`Popped: ${bPopped}`;
+      const avg=Math.round(bubbleRTs.reduce((a,c)=>a+c,0)/bubbleRTs.length);
+      document.getElementById('bubble-rt').textContent=`⚡ Avg reaction: ${avg<9999?avg+'ms':'—'}`;
+      const prog=Math.min((bPopped%(50*bLevel))/(50*bLevel)*100,100);
+      document.getElementById('calm-bar').style.width=prog+'%';
+      if(bPopped>0&&bPopped%(50*bLevel)===0){
+        bLevel=Math.min(bLevel+1,5);
+        document.getElementById('blevel').textContent=`Lv ${bLevel}`;
+        if(bLevel===5){
+          cancelAnimationFrame(bubbleAF);bubbleAF=null;
+          bhavaEnd(bPopped,50,'bubble-burst');
+          setTimeout(()=>showReward('bubble',`
+            <div class="reward-stat"><div class="reward-stat-val">${bPopped}</div><div class="reward-stat-lab">Bubbles Popped</div></div>
+            <div class="reward-stat"><div class="reward-stat-val">Lv ${bLevel}</div><div class="reward-stat-lab">Level Reached</div></div>
+            <div class="reward-stat"><div class="reward-stat-val">${avg}ms</div><div class="reward-stat-lab">Avg Speed</div></div>
+          `),400);
+        }
+      }
+    }
+  });
+}
+
+// ════════════════════════════════════════
+// 3A. LIGHT FOCUS
+// ════════════════════════════════════════
+const LIGHT_COLORS=[
+  {name:'Red',hex:'#ff4e4e',glow:'rgba(255,78,78,.75)'},
+  {name:'Blue',hex:'#4e9eff',glow:'rgba(78,158,255,.75)'},
+  {name:'Green',hex:'#4eff88',glow:'rgba(78,255,136,.75)'},
+  {name:'Yellow',hex:'#ffee44',glow:'rgba(255,238,68,.75)'},
+  {name:'Purple',hex:'#cc66ff',glow:'rgba(204,102,255,.75)'},
+  {name:'Orange',hex:'#ff9944',glow:'rgba(255,153,68,.75)'},
+];
+const DIFFICULTY=[
+  {blink:1100,distractors:2},{blink:850,distractors:3},{blink:650,distractors:4},{blink:480,distractors:5}
+];
+const RT_LIMIT=3000;
+let lScore=0,lStreak=0,lRound=0,lCorrectColor=null;
+let lTimer=null,lBlinkTimer=null,lRTTimer=null,lRTInterval=null,lGameActive=false;
+let lRoundStart=0,lRTs=[],lScores=[],lRoundLabels=[];
+
+function initMandalaScreen(){
+  switchMode('light');lScore=0;lStreak=0;lRound=0;lGameActive=false;
+  lRTs=[];lScores=[];lRoundLabels=[];
+  document.getElementById('fscore').textContent='Score: 0';
+  document.getElementById('fstreak').textContent='🔥 ×0';
+  document.getElementById('focus-rt-display').textContent='⚡ —';
+  buildFocusStars(0);
+  document.getElementById('focus-prompt').textContent='Watch the light…';
+  document.getElementById('color-choices').innerHTML='';
+  document.getElementById('lstart').style.display='block';
+  document.getElementById('graph-wrap').style.display='none';
+  document.getElementById('rt-timer-wrap').style.visibility='hidden';
+  initMandala();
+}
+function switchMode(mode){
+  document.getElementById('light-panel').style.display=mode==='light'?'flex':'none';
+  document.getElementById('mandala-panel').style.display=mode==='draw'?'flex':'none';
+  document.getElementById('tab-light').classList.toggle('active',mode==='light');
+  document.getElementById('tab-draw').classList.toggle('active',mode==='draw');
+  if(mode==='light') stopLightGame();
+}
+function stopLightGame(){
+  lGameActive=false;
+  clearTimeout(lTimer);clearTimeout(lBlinkTimer);clearTimeout(lRTTimer);clearInterval(lRTInterval);
+  document.getElementById('rt-timer-wrap').style.visibility='hidden';
+}
+function buildFocusStars(n){
+  const el=document.getElementById('focus-stars');el.innerHTML='';
+  for(let i=0;i<10;i++){
+    const s=document.createElement('span');
+    s.className='focus-star'+(i<n?' lit':'');s.textContent='⭐';el.appendChild(s);
+  }
+}
+function startLightGame(){
+  lScore=0;lStreak=0;lRound=0;lGameActive=true;
+  lRTs=[];lScores=[];lRoundLabels=[];
+  document.getElementById('lstart').style.display='none';
+  document.getElementById('fscore').textContent='Score: 0';
+  document.getElementById('fstreak').textContent='🔥 ×0';
+  document.getElementById('focus-rt-display').textContent='⚡ —';
+  document.getElementById('graph-wrap').style.display='none';
+  buildFocusStars(0);
+  nextLightRound();
+}
+function getDiff(){
+  if(lRound<5) return DIFFICULTY[0];
+  if(lRound<12) return DIFFICULTY[1];
+  if(lRound<20) return DIFFICULTY[2];
+  return DIFFICULTY[3];
+}
+function nextLightRound(){
+  if(!lGameActive) return;
+  lRound++;
+  const diff=getDiff();
+  const arena=document.getElementById('light-arena');
+  const aW=arena.offsetWidth,aH=arena.offsetHeight;
+  const orb=document.getElementById('light-orb');
+  const orbSize=Math.min(aW,aH)*.26;
+  orb.style.width=orbSize+'px';orb.style.height=orbSize+'px';
+  lCorrectColor=LIGHT_COLORS[Math.floor(Math.random()*LIGHT_COLORS.length)];
+  document.getElementById('focus-prompt').textContent='👀 Watch carefully…';
+  document.getElementById('color-choices').innerHTML='';
+  document.getElementById('rt-timer-wrap').style.visibility='hidden';
+  function rPos(){
+    const mg=orbSize/2+12,maxR=(Math.min(aW,aH)/2)-mg;
+    const ang=Math.random()*Math.PI*2,r=Math.random()*maxR*.65;
+    return{x:aW/2+Math.cos(ang)*r-orbSize/2,y:aH/2+Math.sin(ang)*r-orbSize/2};
+  }
+  const pos=rPos();
+  orb.style.left=pos.x+'px';orb.style.top=pos.y+'px';
+  orb.style.background=lCorrectColor.hex;
+  orb.style.boxShadow=`0 0 ${orbSize*.6}px ${lCorrectColor.glow},0 0 ${orbSize*.3}px ${lCorrectColor.hex}`;
+  orb.style.opacity='0';orb.className='light-orb';
+  lBlinkTimer=setTimeout(()=>{
+    orb.style.opacity='1';orb.classList.add('glow-on');
+    lTimer=setTimeout(()=>{
+      orb.style.opacity='0';orb.classList.remove('glow-on');
+      const p2=rPos();orb.style.left=p2.x+'px';orb.style.top=p2.y+'px';
+      orb.style.background='rgba(255,255,255,.18)';orb.style.boxShadow='0 0 18px rgba(255,255,255,.12)';
+      setTimeout(()=>{orb.style.opacity='.2';},300);
+      document.getElementById('focus-prompt').textContent='Which color?';
+      buildColorChoices(diff.distractors);
+      lRoundStart=performance.now();
+      startRTTimer();
+    },diff.blink);
+  },400);
+}
+function startRTTimer(){
+  const wrap=document.getElementById('rt-timer-wrap'),bar=document.getElementById('rt-timer-bar');
+  wrap.style.visibility='visible';bar.style.width='100%';
+  clearInterval(lRTInterval);clearTimeout(lRTTimer);
+  const start=performance.now();
+  lRTInterval=setInterval(()=>{
+    const e=performance.now()-start,pct=Math.max(0,100-e/RT_LIMIT*100);
+    bar.style.width=pct+'%';
+    document.getElementById('rt-timer-label').textContent=`⚡ ${((RT_LIMIT-e)/1000).toFixed(1)}s`;
+  },80);
+  lRTTimer=setTimeout(()=>{clearInterval(lRTInterval);handleColorChoice(null,null,true);},RT_LIMIT);
+}
+function stopRTTimer(){
+  clearInterval(lRTInterval);clearTimeout(lRTTimer);
+  document.getElementById('rt-timer-wrap').style.visibility='hidden';
+}
+function buildColorChoices(numD){
+  const container=document.getElementById('color-choices');container.innerHTML='';
+  const pool=LIGHT_COLORS.filter(c=>c.name!==lCorrectColor.name).sort(()=>Math.random()-.5).slice(0,numD);
+  [...[lCorrectColor],...pool].sort(()=>Math.random()-.5).forEach(c=>{
+    const btn=document.createElement('button');btn.className='choice-btn';
+    btn.style.background=c.hex;btn.style.boxShadow=`0 0 10px ${c.glow}`;btn.title=c.name;
+    btn.onclick=()=>handleColorChoice(c,btn,false);container.appendChild(btn);
+  });
+}
+function handleColorChoice(chosen,btn,timedOut){
+  if(!lGameActive) return;
+  stopRTTimer();
+  document.querySelectorAll('.choice-btn').forEach(b=>b.onclick=null);
+  const rt=Math.round(performance.now()-lRoundStart);
+  const isCorrect=!timedOut&&chosen&&chosen.name===lCorrectColor.name;
+  lRTs.push(isCorrect?rt:RT_LIMIT);
+  document.getElementById('focus-rt-display').textContent=`⚡ ${isCorrect?rt+'ms':'—'}`;
+  if(isCorrect){
+    if(btn) btn.classList.add('correct-flash');
+    const bonus=Math.max(0,Math.floor((RT_LIMIT-rt)/100));
+    const pts=10+(lStreak*2)+bonus;
+    lScore+=pts;lStreak++;
+    spawnParticles(btn.getBoundingClientRect().left+25,btn.getBoundingClientRect().top+25,chosen.hex);
+    document.getElementById('fscore').textContent=`Score: ${lScore}`;
+    document.getElementById('fstreak').textContent=`🔥 ×${lStreak}`;
+    buildFocusStars(Math.min(Math.floor(lScore/20),10));
+    document.getElementById('focus-prompt').textContent=`✅ ${chosen.name}! +${pts}`;
+  } else {
+    if(btn) btn.classList.add('wrong-flash');
+    lStreak=0;document.getElementById('fstreak').textContent='🔥 ×0';
+    document.getElementById('focus-prompt').textContent=timedOut?`⏰ Too slow! ${lCorrectColor.name}`:`❌ It was ${lCorrectColor.name}!`;
+    document.querySelectorAll('.choice-btn').forEach(b=>{if(b.title===lCorrectColor.name) b.style.transform='scale(1.3)';});
+  }
+  lScores.push(lScore);lRoundLabels.push(`R${lRound}`);updateLiveGraph();
+  if(lRound>=20||(lScore>=200&&lRound>=5)){
+    lGameActive=false;
+    document.getElementById('graph-wrap').style.display='block';
+    setTimeout(()=>showFocusSummary(),1200);
+    return;
+  }
+  lTimer=setTimeout(()=>nextLightRound(),1300);
+}
+function updateLiveGraph(){
+  if(lRTs.length<2) return;
+  document.getElementById('graph-wrap').style.display='block';
+  document.getElementById('graph-round-label').textContent=`Round ${lRound}`;
+  drawLineChart('focus-graph',[
+    {data:lScores,color:'#80ff72',fill:true,yAxis:true,width:2},
+    {data:lRTs.map(v=>Math.min(v,3000)),color:'#84ffff',fill:false,width:1.5}
+  ],lRoundLabels,{minY:0,leftPad:32});
+}
+function showFocusSummary(){
+  document.getElementById('lstart').style.display='block';
+  document.getElementById('lstart').textContent='↺ Play Again';
+  const validRTs=lRTs.filter(v=>v<RT_LIMIT);
+  const avgRT=validRTs.length?Math.round(validRTs.reduce((a,b)=>a+b,0)/validRTs.length):null;
+  const bestRT=validRTs.length?Math.min(...validRTs):null;
+  const accuracy=Math.round((validRTs.length/lRTs.length)*100);
+  const rtBadge=avgRT?avgRT<600?['Fast ⚡','badge-fast']:avgRT<1200?['Good 👍','badge-avg']:['Keep Going 💪','badge-slow']:['—','badge-avg'];
+  document.getElementById('ss-title').textContent='🎯 Session Report';
+  document.getElementById('ss-sub').textContent=`${lRound} rounds completed`;
+  document.getElementById('ss-stats').innerHTML=`
+    <div class="stat-card"><div class="stat-val">${lScore}</div><div class="stat-label">Total Score</div></div>
+    <div class="stat-card"><div class="stat-val">${accuracy}%</div><div class="stat-label">Accuracy</div></div>
+    <div class="stat-card"><div class="stat-val">${avgRT?avgRT+'ms':'—'}</div><div class="stat-label">Avg Reaction</div><span class="stat-badge ${rtBadge[1]}">${rtBadge[0]}</span></div>
+    <div class="stat-card"><div class="stat-val">${bestRT?bestRT+'ms':'—'}</div><div class="stat-label">Best Reaction</div></div>`;
+  setTimeout(()=>{
+    drawLineChart('session-graph',[
+      {data:lRTs.map(v=>Math.min(v,3000)),color:'#84ffff',fill:true,yAxis:true,width:2},
+      {data:lScores,color:'#80ff72',fill:false,width:1.5}
+    ],lRoundLabels,{minY:0,leftPad:34,padH:48});
+  },100);
+  document.getElementById('session-overlay').classList.add('show');
+}
+function closeSession(){
+  document.getElementById('session-overlay').classList.remove('show');
+  bhavaEnd(lScore, Math.max(lScore,200), 'focus-light');
+  const avgRT=lRTs.filter(v=>v<RT_LIMIT);
+  const avg=avgRT.length?Math.round(avgRT.reduce((a,b)=>a+b,0)/avgRT.length):0;
+  setTimeout(()=>showReward('focus',`
+    <div class="reward-stat"><div class="reward-stat-val">${lScore}</div><div class="reward-stat-lab">Score</div></div>
+    <div class="reward-stat"><div class="reward-stat-val">${avg?avg+'ms':'—'}</div><div class="reward-stat-lab">Avg Speed</div></div>
+    <div class="reward-stat"><div class="reward-stat-val">${Math.round(avgRT.length/lRTs.length*100)}%</div><div class="reward-stat-lab">Accuracy</div></div>
+  `),200);
+}
+
+// ════════════════════════════════════════
+// 3B. MANDALA DRAW
+// ════════════════════════════════════════
+let mandalaColor='#7ee8fa',isDrawing=false,mandalaStrokes=0;
+const mColors=['#7ee8fa','#80ff72','#eec0c6','#ffd580','#b388ff','#ff80ab','#84ffff','#ffab40','#69f0ae'];
+function initMandala(){
+  const canvas=document.getElementById('mandala-canvas');
+  const size=Math.min(window.innerWidth-60,240);
+  canvas.width=size;canvas.height=size;canvas.style.width=size+'px';canvas.style.height=size+'px';
+  mandalaStrokes=0;drawMandalaBg(canvas);
+  const pal=document.getElementById('color-palette');pal.innerHTML='';
+  mColors.forEach((c,i)=>{
+    const d=document.createElement('div');d.className='color-dot'+(i===0?' active':'');d.style.background=c;
+    d.onclick=()=>{mandalaColor=c;pal.querySelectorAll('.color-dot').forEach(x=>x.classList.remove('active'));d.classList.add('active');};
+    pal.appendChild(d);
+  });
+  const draw=e=>{
+    if(!isDrawing) return;e.preventDefault();
+    const rect=canvas.getBoundingClientRect(),sc=canvas.width/rect.width;
+    const src=e.touches?e.touches[0]:e;
+    paintMandala(canvas,(src.clientX-rect.left)*sc,(src.clientY-rect.top)*sc);
+    mandalaStrokes++;
+    if(mandalaStrokes===200){
+      bhavaEnd(mandalaStrokes,200,'mandala-draw');
+      showReward('mandala',`
+        <div class="reward-stat"><div class="reward-stat-val">🎨</div><div class="reward-stat-lab">Created</div></div>
+        <div class="reward-stat"><div class="reward-stat-val">8×</div><div class="reward-stat-lab">Symmetry</div></div>
+        <div class="reward-stat"><div class="reward-stat-val">😌</div><div class="reward-stat-lab">Calm</div></div>
+      `);
+    }
+  };
+  canvas.onmousedown=e=>{isDrawing=true;draw(e);};canvas.onmousemove=draw;
+  canvas.onmouseup=()=>isDrawing=false;canvas.onmouseleave=()=>isDrawing=false;
+  canvas.ontouchstart=e=>{isDrawing=true;draw(e);};canvas.ontouchmove=draw;canvas.ontouchend=()=>isDrawing=false;
+}
+function drawMandalaBg(canvas){
+  const ctx=canvas.getContext('2d'),cx=canvas.width/2,cy=canvas.height/2;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const bg=ctx.createRadialGradient(cx,cy,0,cx,cy,cx);
+  bg.addColorStop(0,'#1a0f2e');bg.addColorStop(1,'#080510');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle='rgba(255,255,255,.08)';
+  [.15,.3,.45,.6,.75,.9].forEach(f=>{ctx.beginPath();ctx.arc(cx,cy,cx*f,0,Math.PI*2);ctx.lineWidth=1;ctx.stroke();});
+  for(let i=0;i<12;i++){const a=(i/12)*Math.PI*2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*cx*.95,cy+Math.sin(a)*cy*.95);ctx.stroke();}
+  for(let i=0;i<8;i++){
+    const a=(i/8)*Math.PI*2;ctx.save();ctx.translate(cx,cy);ctx.rotate(a);
+    ctx.beginPath();ctx.ellipse(cx*.45,0,cx*.15,cx*.07,0,0,Math.PI*2);
+    ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=1.5;ctx.stroke();ctx.restore();
+  }
+  ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.18)';ctx.fill();
+}
+function paintMandala(canvas,x,y){
+  const ctx=canvas.getContext('2d'),cx=canvas.width/2,cy=canvas.height/2;
+  const dx=x-cx,dy=y-cy,angle=Math.atan2(dy,dx),dist=Math.hypot(dx,dy);
+  for(let i=0;i<8;i++){
+    const a=angle+(i/8)*Math.PI*2;
+    ctx.beginPath();ctx.arc(cx+Math.cos(a)*dist,cy+Math.sin(a)*dist,5,0,Math.PI*2);ctx.fillStyle=mandalaColor+'cc';ctx.fill();
+    ctx.beginPath();ctx.arc(cx+Math.cos(Math.PI+a)*dist,cy+Math.sin(Math.PI+a)*dist,5,0,Math.PI*2);ctx.fillStyle=mandalaColor+'55';ctx.fill();
+  }
+}
+function clearMandala(){mandalaStrokes=0;drawMandalaBg(document.getElementById('mandala-canvas'));}
+</script>
+</body>
+</html>

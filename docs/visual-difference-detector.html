@@ -1,692 +1,744 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Focus Flow</title>
-  <link rel="preconnect" href="https://api.fontshare.com" />
-  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
-  <style>
-    :root, [data-theme="light"] {
-      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
-      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
-      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
-      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
-      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem; --space-5: 1.25rem;
-      --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem; --space-16: 4rem;
-      --color-bg: #f7f6f2; --color-surface: #faf9f6; --color-surface-2:#f0ede8; --color-border:#d5d1c8;
-      --color-text:#22201b; --color-text-muted:#66635d; --color-primary:#116d73; --color-primary-hover:#0b585d;
-      --color-secondary:#d58d00; --color-good:#3d7a44; --color-danger:#ab365f; --color-accent:#9b5de5;
-      --shadow-sm: 0 1px 2px oklch(0.2 0.01 80 / 0.06); --shadow-md: 0 8px 24px oklch(0.2 0.01 80 / 0.10);
-      --shadow-lg: 0 20px 60px oklch(0.2 0.01 80 / 0.16); --radius-sm:0.5rem; --radius-md:0.9rem; --radius-lg:1.2rem; --radius-xl:1.6rem;
-      --font-display:'Cabinet Grotesk', 'Inter', sans-serif; --font-body:'Satoshi', 'Inter', sans-serif;
-    }
-    [data-theme="dark"] {
-      --color-bg: #131313; --color-surface:#1c1b19; --color-surface-2:#252422; --color-border:#3a3834;
-      --color-text:#ece7de; --color-text-muted:#b3ada1; --color-primary:#5eb0b8; --color-primary-hover:#7fc4ca;
-      --color-secondary:#f0b74d; --color-good:#70b26d; --color-danger:#df6d95; --color-accent:#c38aff;
-      --shadow-sm:0 1px 2px rgba(0,0,0,.25); --shadow-md:0 10px 30px rgba(0,0,0,.35); --shadow-lg:0 28px 80px rgba(0,0,0,.45);
-    }
-    *,*::before,*::after{box-sizing:border-box}
-    html{-webkit-text-size-adjust:none;text-size-adjust:none;scroll-behavior:smooth}
-    body{margin:0;min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);line-height:1.5;color:var(--color-text);background:
-      radial-gradient(circle at 20% 10%, color-mix(in oklab, var(--color-primary) 16%, transparent), transparent 24%),
-      radial-gradient(circle at 85% 15%, color-mix(in oklab, var(--color-secondary) 14%, transparent), transparent 18%),
-      linear-gradient(180deg, color-mix(in oklab, var(--color-bg) 92%, black), var(--color-bg));overflow-x:hidden}
-    button{font:inherit;color:inherit;cursor:pointer;border:none;background:none}
-    canvas{display:block;max-width:100%;height:auto}
-    .skip-link{position:absolute;left:-9999px;top:auto}.skip-link:focus{left:1rem;top:1rem;background:var(--color-surface);padding:.75rem 1rem;border-radius:var(--radius-sm);z-index:1000}
-    .app{min-height:100dvh;display:grid;grid-template-rows:auto 1fr auto;position:relative;isolation:isolate}
-    .noise,.glow{position:fixed;inset:0;pointer-events:none}.noise{opacity:.04;background-image:radial-gradient(circle at 20% 20%, #fff 0.5px, transparent 0.6px),radial-gradient(circle at 80% 40%, #fff 0.4px, transparent 0.6px),radial-gradient(circle at 50% 80%, #fff 0.5px, transparent 0.7px);background-size:22px 22px, 18px 18px, 26px 26px;animation:drift 26s linear infinite}.glow{background:radial-gradient(circle at 50% 0%, color-mix(in oklab,var(--color-primary) 22%, transparent), transparent 40%)}
-    @keyframes drift{from{transform:translateY(0)}to{transform:translateY(-22px)}}
-    header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:color-mix(in oklab, var(--color-bg) 76%, transparent);border-bottom:1px solid color-mix(in oklab, var(--color-text) 12%, transparent)}
-    .topbar{max-width:1240px;margin:0 auto;padding:var(--space-4);display:flex;gap:var(--space-4);align-items:center;justify-content:space-between;flex-wrap:wrap}
-    .brand{display:flex;align-items:center;gap:var(--space-3)}
-    .logo{width:44px;height:44px;padding:8px;border-radius:14px;background:linear-gradient(135deg,color-mix(in oklab,var(--color-primary) 35%, transparent),color-mix(in oklab,var(--color-accent) 20%, transparent));box-shadow:var(--shadow-sm)}
-    .brand-text strong{display:block;font-family:var(--font-display);font-size:var(--text-lg);line-height:1}
-    .brand-text span{display:block;font-size:var(--text-xs);color:var(--color-text-muted);letter-spacing:.08em;text-transform:uppercase}
-    .controls{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
-    .btn{min-height:44px;padding:.8rem 1rem;border-radius:999px;border:1px solid color-mix(in oklab,var(--color-text) 12%, transparent);background:color-mix(in oklab,var(--color-surface) 86%, transparent);box-shadow:var(--shadow-sm);transition:transform .18s ease, background .18s ease, border-color .18s ease}
-    .btn:hover,.btn:focus-visible{transform:translateY(-1px);background:color-mix(in oklab,var(--color-surface-2) 92%, transparent)}
-    .btn.primary{background:var(--color-primary);color:#fff;border-color:transparent}.btn.primary:hover,.btn.primary:focus-visible{background:var(--color-primary-hover)}
-    .hero{max-width:1240px;margin:0 auto;padding:clamp(1rem,2vw,2rem) var(--space-4) var(--space-4);display:grid;gap:var(--space-6)}
-    .headline{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--space-6);align-items:end}
-    .headline h1{margin:0;font-family:var(--font-display);font-size:clamp(2.6rem,8vw,5.5rem);line-height:.95;letter-spacing:-.04em;max-width:11ch}
-    .headline p{margin:0;color:var(--color-text-muted);max-width:44ch}
-    .meta{display:flex;gap:var(--space-3);flex-wrap:wrap}.pill{padding:.55rem .85rem;border-radius:999px;background:color-mix(in oklab,var(--color-primary) 10%, var(--color-surface));border:1px solid color-mix(in oklab,var(--color-primary) 18%, transparent);font-size:var(--text-sm)}
-    main{max-width:1240px;margin:0 auto;padding:0 var(--space-4) var(--space-8);width:100%}
-    .board{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:var(--space-6);align-items:start}
-    .playfield{position:relative;padding:var(--space-4);border-radius:var(--radius-xl);background:linear-gradient(180deg,color-mix(in oklab,var(--color-surface) 92%, transparent),color-mix(in oklab,var(--color-surface-2) 92%, transparent));border:1px solid color-mix(in oklab,var(--color-text) 10%, transparent);box-shadow:var(--shadow-lg);overflow:hidden}
-    .playfield::before{content:"";position:absolute;inset:auto -10% -50% auto;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,color-mix(in oklab,var(--color-accent) 18%, transparent),transparent 70%);filter:blur(20px)}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)}
-    .scene-wrap{position:relative;border-radius:calc(var(--radius-xl) - var(--space-4));overflow:hidden;background:#0f0f0f;min-height:280px;border:1px solid color-mix(in oklab, white 8%, transparent)}
-    .scene-wrap canvas{width:100%;aspect-ratio:1/1;background:#101010}
-    .scene-label{position:absolute;left:12px;top:12px;padding:.45rem .7rem;border-radius:999px;background:rgba(0,0,0,.38);backdrop-filter:blur(8px);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;color:#fff}
-    .crosshair{position:absolute;left:50%;top:50%;width:26px;height:26px;translate:-50% -50%;pointer-events:none;opacity:.18}
-    .crosshair::before,.crosshair::after{content:"";position:absolute;background:#fff;border-radius:999px}.crosshair::before{left:50%;top:0;translate:-50% 0;width:2px;height:100%}.crosshair::after{left:0;top:50%;translate:0 -50%;width:100%;height:2px}
-    .hud{display:grid;gap:var(--space-4)}
-    .panel{padding:var(--space-4);border-radius:var(--radius-lg);background:color-mix(in oklab,var(--color-surface) 88%, transparent);border:1px solid color-mix(in oklab,var(--color-text) 10%, transparent);box-shadow:var(--shadow-md)}
-    .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
-    .stat{padding:var(--space-4);border-radius:var(--radius-md);background:color-mix(in oklab,var(--color-surface-2) 82%, transparent);border:1px solid color-mix(in oklab,var(--color-text) 10%, transparent)}
-    .stat span{display:block;font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-muted)}
-    .stat strong{display:block;font-size:var(--text-xl);font-family:var(--font-display);line-height:1.05;margin-top:.3rem;font-variant-numeric:tabular-nums lining-nums}
-    .difference-list{display:grid;gap:var(--space-2);margin-top:var(--space-3)}
-    .difference-item{display:flex;gap:.7rem;align-items:center;padding:.7rem .8rem;border-radius:999px;background:color-mix(in oklab,var(--color-surface-2) 70%, transparent);border:1px solid color-mix(in oklab,var(--color-text) 9%, transparent);font-size:var(--text-sm)}
-    .dot{width:12px;height:12px;border-radius:50%;background:var(--color-text-muted);box-shadow:0 0 0 4px color-mix(in oklab,var(--color-text) 8%, transparent)}
-    .difference-item.found .dot{background:var(--color-good);box-shadow:0 0 0 4px color-mix(in oklab,var(--color-good) 16%, transparent)}
-    .difference-item.found{color:var(--color-text-muted)}
-    .message{min-height:52px;display:flex;align-items:center;font-size:var(--text-sm);color:var(--color-text-muted)}
-    .progress{height:14px;background:color-mix(in oklab,var(--color-text) 8%, transparent);border-radius:999px;overflow:hidden}
-    .bar{height:100%;width:100%;background:linear-gradient(90deg,var(--color-primary),var(--color-secondary));transform-origin:left center;transition:transform .3s ease}
-    .legend{display:grid;gap:var(--space-2);color:var(--color-text-muted);font-size:var(--text-sm)}
-    .legend strong{color:var(--color-text);font-size:var(--text-base)}
-    .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:var(--space-4);background:linear-gradient(180deg,rgba(10,10,10,.16),rgba(10,10,10,.72));opacity:0;pointer-events:none;transition:opacity .35s ease}
-    .overlay.show{opacity:1;pointer-events:auto}
-    .card{max-width:520px;padding:clamp(1.2rem,3vw,2rem);border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-surface) 88%, transparent);border:1px solid color-mix(in oklab,var(--color-text) 12%, transparent);box-shadow:var(--shadow-lg);text-align:left}
-    .card h2{margin:0 0 .5rem;font-family:var(--font-display);font-size:var(--text-2xl);line-height:.95}
-    .card p{margin:0 0 1rem;color:var(--color-text-muted)}
-    .card .row{display:flex;gap:var(--space-3);flex-wrap:wrap}
-    .footer{padding:var(--space-6) var(--space-4) var(--space-8);max-width:1240px;margin:0 auto;color:var(--color-text-muted);font-size:var(--text-sm)}
-    .pulse{animation:pulse 1.6s ease-in-out infinite}@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-    .pop{position:absolute;width:28px;height:28px;border-radius:999px;border:2px solid #fff;box-shadow:0 0 0 6px rgba(255,255,255,.15);pointer-events:none;animation:pop .55s ease-out forwards}@keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}35%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.45)}}
-    .sparkle{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--color-secondary);pointer-events:none;animation:sparkle .8s ease-out forwards}@keyframes sparkle{from{opacity:1;transform:translate(0,0) scale(1)}to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.1)}}
-    @media (max-width: 980px){.board{grid-template-columns:1fr}.headline{grid-template-columns:1fr}.hud{order:-1}.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
-    @media (max-width: 720px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.topbar{align-items:flex-start}.controls{width:100%}.controls .btn{flex:1 1 140px}.headline h1{max-width:9ch}}
-    @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Focus Flow</title>
+<style>
+:root{
+  --bg1:#071826;
+  --bg2:#0d2740;
+  --panel:rgba(255,255,255,.10);
+  --panel2:rgba(255,255,255,.16);
+  --text:#ecf8ff;
+  --muted:#b8d5ea;
+  --accent:#82f7d6;
+  --accent2:#ffd36e;
+  --danger:#ff7b7b;
+  --good:#8dff9d;
+  --shadow:0 20px 50px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(circle at top,#11385b 0%,#071826 56%,#04101a 100%);color:var(--text);overflow:hidden}
+body::before, body::after{content:"";position:fixed;inset:auto;pointer-events:none;border-radius:50%;filter:blur(70px);opacity:.35;animation:drift 16s ease-in-out infinite}
+body::before{width:420px;height:420px;left:-120px;top:-80px;background:#43d6ff}
+body::after{width:360px;height:360px;right:-100px;bottom:-60px;background:#51ffb9;animation-delay:-6s}
+@keyframes drift{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(20px) scale(1.08)}}
+#app{position:relative;height:100%;display:flex;align-items:center;justify-content:center;padding:0}
+.particles{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.particles span{position:absolute;border-radius:50%;background:rgba(255,255,255,.18);animation:floatUp linear infinite}
+@keyframes floatUp{from{transform:translateY(0) scale(1);opacity:0}10%{opacity:.9}to{transform:translateY(-120vh) scale(1.8);opacity:0}}
+.shell{width:100%;height:100vh;border-radius:0;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.05));backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.14);border-radius:28px;box-shadow:var(--shadow);overflow:hidden;position:relative}
+.topbar{display:flex;gap:14px;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02))}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:54px;height:54px;border-radius:16px;background:conic-gradient(from 180deg,#75f2ff,#86ffd0,#ffd36e,#75f2ff);display:grid;place-items:center;color:#092132;font-weight:900;box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.brand h1{margin:0;font-size:1.2rem;letter-spacing:.2px}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:.92rem}
+.stats{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+.pill{padding:10px 14px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);border-radius:999px;color:#f6fbff;font-size:.95rem;min-width:110px;text-align:center}
+.main{display:grid;grid-template-columns:280px 1fr;gap:18px;padding:18px;height:calc(100vh - 91px);overflow:hidden}
+.sidebar{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:16px}
+.card h2,.card h3{margin:0 0 10px}
+.muted{color:var(--muted)}
+.btns{display:grid;grid-template-columns:1fr;gap:10px}
+button{border:0;border-radius:16px;padding:14px 16px;font:inherit;font-weight:700;cursor:pointer;transition:transform .15s ease,box-shadow .2s ease,background .25s ease;color:#092132}
+button:hover{transform:translateY(-1px)}
+button:active{transform:translateY(1px)}
+.primary{background:linear-gradient(135deg,var(--accent),#7cd2ff);box-shadow:0 12px 22px rgba(93,229,211,.28)}
+.secondary{background:rgba(255,255,255,.12);color:var(--text);border:1px solid rgba(255,255,255,.12)}
+.ghost{background:rgba(255,255,255,.07);color:var(--text);border:1px solid rgba(255,255,255,.08)}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.level{padding:12px 8px;border-radius:14px;background:rgba(255,255,255,.09);color:var(--text);border:1px solid transparent;font-weight:700}
+.level.active{border-color:rgba(130,247,214,.8);background:rgba(130,247,214,.14)}
+.sceneWrap{display:grid;grid-template-rows:auto 1fr auto;gap:12px;min-width:0;height:100%;overflow:hidden}
+.sceneHead{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 2px}
+.legend{display:flex;gap:10px;flex-wrap:wrap}
+.tag{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);font-size:.92rem}
+.board{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;min-height:0;overflow:hidden}
+.sceneCard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:12px;display:flex;flex-direction:column;min-width:0;min-height:0;height:100%;overflow:hidden}
+.sceneLabel{display:flex;justify-content:space-between;align-items:center;padding:4px 6px 10px 6px;color:#d6efff;font-weight:700}
+.scene{position:relative;flex:1;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#10273e,#0a1e31);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);min-height:0}
+.scene::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.10),transparent 35%),radial-gradient(circle at 80% 12%,rgba(255,255,255,.06),transparent 24%);pointer-events:none}
+.themeTitle{font-size:.88rem;color:var(--muted)}
+.obj{position:absolute;transform-origin:center center;filter:drop-shadow(0 8px 14px rgba(0,0,0,.18));transition:transform .2s ease, filter .2s ease, opacity .2s ease}
+.obj svg{width:100%;height:100%;overflow:visible}
+.obj.found{animation:foundPulse .8s ease}
+@keyframes foundPulse{0%{transform:scale(1)}30%{transform:scale(1.12)}100%{transform:scale(1)}}
+.hit{position:absolute;border-radius:20px;background:transparent;border:0;z-index:10}
+.hit:hover{box-shadow:0 0 0 2px rgba(255,255,255,.14) inset}
+.ring{position:absolute;border:3px solid rgba(130,247,214,.9);border-radius:20px;box-shadow:0 0 0 6px rgba(130,247,214,.18);pointer-events:none;animation:ring .9s ease}
+@keyframes ring{0%{transform:scale(.65);opacity:0}35%{opacity:1}100%{transform:scale(1);opacity:1}}
+.toast{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);background:rgba(4,16,26,.82);border:1px solid rgba(255,255,255,.14);color:#ecfbff;padding:12px 16px;border-radius:14px;backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .25s ease, transform .25s ease}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
+.bottom{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.progress{flex:1;height:14px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .35s ease}
+.overlay{position:absolute;inset:0;background:radial-gradient(circle at top,rgba(17,53,86,.95),rgba(6,18,31,.96));display:flex;align-items:center;justify-content:center;padding:24px;z-index:40}
+.panel{width:min(820px,100%);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:26px;box-shadow:var(--shadow)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:center}
+.hero h2{font-size:2.2rem;line-height:1.03;margin:.15rem 0 .6rem}
+.hero p{font-size:1rem;color:#d4ebfa;line-height:1.6}
+.heroArt{min-height:280px;border-radius:24px;background:linear-gradient(135deg,rgba(130,247,214,.22),rgba(125,210,255,.18));border:1px solid rgba(255,255,255,.10);position:relative;overflow:hidden}
+.heroArt .bubble{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.85),rgba(255,255,255,.12));animation:driftBubble linear infinite}
+@keyframes driftBubble{from{transform:translateY(20px) scale(.9)}50%{transform:translateY(-16px) scale(1.04)}to{transform:translateY(10px) scale(.95)}}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.feature{padding:12px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)}
+.feature strong{display:block;margin-bottom:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.kbd{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;padding:0 8px;border-radius:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14);font-weight:800;color:#fff}
+.resultScore{font-size:3.2rem;font-weight:900;line-height:1;margin:10px 0}
+.sparkles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.spark{position:absolute;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle,#fff,var(--accent));animation:confetti .9s linear forwards}
+@keyframes confetti{to{transform:translate(var(--dx),var(--dy)) rotate(360deg) scale(.1);opacity:0}}
+.penalty{animation:shake .25s linear}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.small{font-size:.88rem}
+.hide{display:none!important}
+@media (max-width:1100px){
+  .main{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .sidebar{order:2}
+  .sceneWrap{order:1}
+}
+@media (max-width:900px){
+  .board,.hero,.features,.grid2{grid-template-columns:1fr}
+  .shell{height:100vh;border-radius:0;width:100%}
+  .topbar{padding:14px}
+  .main{padding:12px}
+  .stats{gap:8px}
+  .pill{min-width:auto}
+}
+
+        /* ===== Bhava Layout Fix v2 ===================================
+           Prevents game buttons/options from being clipped at bottom.
+           ============================================================ */
+        body {
+            align-items: flex-start !important;
+            overflow-y: auto !important;
+            padding: 16px !important;
+        }
+        #iq-app, #app, #game-app, #quiz-app, #game-container,
+        #main-container, #container, #game-wrapper,
+        [id$="-app"], [id$="-game"], [id$="-container"] {
+            max-height: none !important;
+            overflow: visible !important;
+            overflow-y: visible !important;
+        }
+        .options, .choices, .answer-grid, .btn-grid,
+        .option-container, #option-container {
+            overflow: visible !important;
+        }
+        /* ============================================================ */
+        </style>
 </head>
 <body>
-  <a class="skip-link" href="#game">Skip to game</a>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="glow" aria-hidden="true"></div>
-  <div class="app">
-    <header>
-      <div class="topbar">
-        <div class="brand" aria-label="Visual Difference Detector">
-          <svg class="logo" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-            <rect x="7" y="7" width="50" height="50" rx="16" stroke="currentColor" stroke-width="3"></rect>
-            <circle cx="27" cy="27" r="9" stroke="currentColor" stroke-width="3"></circle>
-            <path d="M34 34 L47 47" stroke="currentColor" stroke-width="5" stroke-linecap="round"></path>
-            <circle cx="41" cy="21" r="4" fill="currentColor"></circle>
-          </svg>
-          <div class="brand-text">
-            <strong>Visual Difference Detector</strong>
-            <span>Observation • Calm Focus • Detail Awareness</span>
-          </div>
-        </div>
-        <div class="controls">
-          <button class="btn" id="themeToggle" aria-label="Switch theme">Theme</button>
-          <button class="btn" id="modeToggle" aria-label="Change difficulty">Calm Mode</button>
-          <button class="btn primary" id="newRoundBtn">New Unique Round</button>
+<div class="particles" id="particles"></div>
+<div id="app">
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">VD</div>
+        <div>
+          <h1>Visual Difference Detector</h1>
+          <p>Spot subtle changes • calm focus • fresh every play</p>
         </div>
       </div>
-    </header>
-
-    <section class="hero" aria-label="Introduction">
-      <div class="headline">
-        <div>
-          <h1>Spot the smallest shifts in living scenes.</h1>
-        </div>
-        <div>
-          <p>Every round is procedurally generated from layered artwork, moving details, and randomized change sets, so each play creates a fresh pair instead of repeating fixed image packs.</p>
-          <div class="meta" style="margin-top:1rem">
-            <div class="pill">Unique every play</div>
-            <div class="pill">Animated environments</div>
-            <div class="pill">Touch + mouse friendly</div>
-          </div>
-        </div>
+      <div class="stats">
+        <div class="pill">Round <span id="roundNow">0</span>/<span id="roundMax">6</span></div>
+        <div class="pill">Found <span id="foundNow">0</span>/<span id="foundMax">0</span></div>
+        <div class="pill">Score <span id="scoreNow">0</span></div>
+        <div class="pill">Best <span id="bestScore">0</span></div>
       </div>
-    </section>
-
-    <main id="game">
-      <section class="board" aria-label="Game board">
-        <div class="playfield">
-          <div class="grid">
-            <div class="scene-wrap">
-              <div class="scene-label">Reference Scene</div>
-              <canvas id="leftCanvas" width="720" height="720" aria-label="Reference image"></canvas>
-              <div class="crosshair" aria-hidden="true"></div>
-            </div>
-            <div class="scene-wrap" id="clickAreaWrap">
-              <div class="scene-label">Find Changes</div>
-              <canvas id="rightCanvas" width="720" height="720" aria-label="Interactive image with subtle differences"></canvas>
-              <div class="crosshair" aria-hidden="true"></div>
-              <div class="overlay" id="victoryOverlay" aria-live="polite">
-                <div class="card">
-                  <h2>Scene cleared</h2>
-                  <p>You found every subtle shift in this generated world. Start a new unique round to receive a new palette, layout, and change map.</p>
-                  <div class="row">
-                    <button class="btn primary" id="overlayNext">Play Another</button>
-                    <button class="btn" id="overlayReplay">Replay Same Seed</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+    </div>
+    <div class="main">
+      <aside class="sidebar">
+        <div class="card">
+          <h2>Play</h2>
+          <div class="muted">Find all differences by tapping either image. Missing a click costs a little time.</div>
+          <div class="btns" style="margin-top:12px">
+            <button class="primary" id="startBtn">Start Session</button>
+            <button class="secondary" id="nextBtn">Next Round</button>
+            <button class="ghost" id="restartBtn">Fresh Session</button>
           </div>
         </div>
-
-        <aside class="hud">
-          <div class="panel">
-            <div class="stats">
-              <div class="stat"><span>Seed</span><strong id="seedValue">—</strong></div>
-              <div class="stat"><span>Found</span><strong id="foundValue">0/0</strong></div>
-              <div class="stat"><span>Time</span><strong id="timeValue">00:00</strong></div>
-              <div class="stat"><span>Mistakes</span><strong id="mistakeValue">0</strong></div>
-            </div>
+        <div class="card">
+          <h3>Difficulty</h3>
+          <div class="levels">
+            <button class="level active" data-level="gentle">Gentle</button>
+            <button class="level" data-level="steady">Steady</button>
+            <button class="level" data-level="expert">Expert</button>
           </div>
-
-          <div class="panel">
-            <div class="legend">
-              <strong>Change radar</strong>
-              <span>Tap or click the altered image. Correct hits mark both scenes, while misses gently cost focus points.</span>
-            </div>
-            <div class="difference-list" id="differenceList"></div>
+          <div class="muted small" id="levelText" style="margin-top:10px">3 differences, larger hints, slower pace.</div>
+        </div>
+        <div class="card">
+          <h3>Focus meter</h3>
+          <div class="progress"><div class="bar" id="focusBar"></div></div>
+          <div class="muted small" style="margin-top:10px">Smooth spotting builds streak and bonus points.</div>
+        </div>
+        <div class="card">
+          <h3>Why it feels fresh</h3>
+          <div class="muted small">Each round uses a new seed, shuffled themes, new object layouts, fresh difference types, and a session history lock so the same scene pattern does not repeat during the session.</div>
+        </div>
+      </aside>
+      <section class="sceneWrap">
+        <div class="sceneHead">
+          <div>
+            <div class="themeTitle" id="themeTitle">Theme: —</div>
+            <div class="muted">Tap subtle changes before the timer fades.</div>
           </div>
-
-          <div class="panel">
-            <div class="legend"><strong>Session flow</strong><span>Calm mode keeps the timer soft. Focus mode adds a tighter pace and smaller hit zones.</span></div>
-            <div class="progress" style="margin-top:1rem"><div class="bar" id="timeBar"></div></div>
-            <div class="message" id="messageBox">A fresh procedural pair is ready.</div>
+          <div class="legend">
+            <div class="tag">Time: <span id="timerNow">60</span>s</div>
+            <div class="tag">Streak: <span id="streakNow">0</span></div>
+            <div class="tag">Misses: <span id="missNow">0</span></div>
           </div>
-        </aside>
+        </div>
+        <div class="board">
+          <div class="sceneCard">
+            <div class="sceneLabel"><span>Original</span><span class="muted small">Memorize details</span></div>
+            <div class="scene" id="sceneLeft"></div>
+          </div>
+          <div class="sceneCard">
+            <div class="sceneLabel"><span>Changed</span><span class="muted small">Tap the differences</span></div>
+            <div class="scene" id="sceneRight"></div>
+          </div>
+        </div>
+        <div class="bottom">
+          <div class="progress"><div class="bar" id="roundBar"></div></div>
+          <div class="muted small" id="statusLine">Choose a difficulty, then start.</div>
+        </div>
       </section>
-    </main>
-
-    <div class="footer">Built as a procedural spot-the-difference game with animated scenes, no stored packs, and a fresh randomized change layout every round.</div>
+    </div>
+    <div class="overlay" id="introOverlay">
+      <div class="panel">
+        <div class="hero">
+          <div>
+            <div class="tag" style="display:inline-flex;margin-bottom:10px">Observation • Calm Focus • Detail Awareness</div>
+            <h2>Train the eye with animated, never-boring difference hunts.</h2>
+            <p>Visual Difference Detector creates a fresh puzzle every round with gentle motion, polished themes, and shuffled change patterns. It is designed to feel relaxing, smart, and replayable.</p>
+            <div class="features">
+              <div class="feature"><strong>Unique session</strong><span class="muted small">No repeated scene signature in the same run.</span></div>
+              <div class="feature"><strong>Subtle changes</strong><span class="muted small">Color, size, position, rotation, missing items, and style tweaks.</span></div>
+              <div class="feature"><strong>User friendly</strong><span class="muted small">Works on touch and mouse with clear highlights.</span></div>
+            </div>
+            <div class="grid2">
+              <button class="primary" id="introStart">Begin Calm Play</button>
+              <button class="secondary" id="howBtn">How to Play</button>
+            </div>
+          </div>
+          <div class="heroArt" id="heroArt"></div>
+        </div>
+      </div>
+    </div>
+    <div class="overlay hide" id="helpOverlay">
+      <div class="panel">
+        <h2 style="margin-top:0">How to play</h2>
+        <p class="muted">Compare the two scenes. Tap the changed spots in either image. Find them all before time runs out.</p>
+        <div class="features">
+          <div class="feature"><strong>Calm focus</strong><span class="muted small">Wrong taps reduce time slightly, so accuracy matters more than rushing.</span></div>
+          <div class="feature"><strong>Combo bonus</strong><span class="muted small">Consecutive correct finds increase your streak and score.</span></div>
+          <div class="feature"><strong>Fresh rounds</strong><span class="muted small">Themes, object shapes, palettes, and difference rules are reshuffled every round.</span></div>
+        </div>
+        <p class="muted small">Quick keys: <span class="kbd">N</span> next round, <span class="kbd">R</span> restart, <span class="kbd">Esc</span> close popup.</p>
+        <div class="grid2">
+          <button class="primary" id="closeHelp">Got it</button>
+          <button class="ghost" id="helpStart">Start Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="overlay hide" id="resultOverlay">
+      <div class="panel" style="text-align:center;position:relative;overflow:hidden">
+        <div class="sparkles" id="sparkles"></div>
+        <div class="tag" id="resultTag" style="display:inline-flex">Session complete</div>
+        <div class="resultScore" id="finalScore">0</div>
+        <p class="muted" id="resultText">Great noticing.</p>
+        <div class="features" style="margin-top:18px">
+          <div class="feature"><strong>Accuracy</strong><span id="accText" class="muted small">0%</span></div>
+          <div class="feature"><strong>Best streak</strong><span id="bestStreakText" class="muted small">0</span></div>
+          <div class="feature"><strong>Rounds cleared</strong><span id="roundsText" class="muted small">0</span></div>
+        </div>
+        <div class="grid2">
+          <button class="primary" id="playAgainBtn">Play a New Unique Set</button>
+          <button class="secondary" id="closeResultBtn">Back to Board</button>
+        </div>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
   </div>
+</div>
+<script>
+const app = {
+  level:'gentle',
+  timer:60,
+  round:0,
+  roundsTotal:6,
+  score:0,
+  streak:0,
+  bestStreak:0,
+  misses:0,
+  found:0,
+  totalDiffs:0,
+  totalFoundClicks:0,
+  totalWrongClicks:0,
+  usedSceneKeys:new Set(),
+  themeQueue:[],
+  active:null,
+  playing:false,
+  tick:null,
+  sessionSeed:0,
+  best:Number(localStorage.getItem('vdd_best')||0)
+};
 
-  <script>
-    (() => {
-      const html = document.documentElement;
-      const themeToggle = document.getElementById('themeToggle');
-      let currentTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      html.setAttribute('data-theme', currentTheme);
-      themeToggle.textContent = currentTheme === 'dark' ? 'Light Theme' : 'Dark Theme';
-      themeToggle.addEventListener('click', () => {
-        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        html.setAttribute('data-theme', currentTheme);
-        themeToggle.textContent = currentTheme === 'dark' ? 'Light Theme' : 'Dark Theme';
-      });
+const cfg = {
+  gentle:{time:70,diffs:3,objects:[8,10],penalty:3,rounds:6},
+  steady:{time:60,diffs:4,objects:[10,13],penalty:4,rounds:7},
+  expert:{time:52,diffs:5,objects:[12,15],penalty:5,rounds:8}
+};
 
-      const leftCanvas = document.getElementById('leftCanvas');
-      const rightCanvas = document.getElementById('rightCanvas');
-      const lctx = leftCanvas.getContext('2d');
-      const rctx = rightCanvas.getContext('2d');
-      const newRoundBtn = document.getElementById('newRoundBtn');
-      const overlayNext = document.getElementById('overlayNext');
-      const overlayReplay = document.getElementById('overlayReplay');
-      const modeToggle = document.getElementById('modeToggle');
-      const victoryOverlay = document.getElementById('victoryOverlay');
-      const differenceList = document.getElementById('differenceList');
-      const foundValue = document.getElementById('foundValue');
-      const timeValue = document.getElementById('timeValue');
-      const mistakeValue = document.getElementById('mistakeValue');
-      const seedValue = document.getElementById('seedValue');
-      const timeBar = document.getElementById('timeBar');
-      const messageBox = document.getElementById('messageBox');
-      const clickAreaWrap = document.getElementById('clickAreaWrap');
+const themes = [
+  {name:'Zen Garden', sky:['#9fe6d9','#467e8f'], ground:['#d9c7a1','#9b7d58'], deco:'stones'},
+  {name:'Moon Rooftop', sky:['#0d1f4a','#1f4e79'], ground:['#2b3446','#3d4b62'], deco:'lights'},
+  {name:'Coral Reef', sky:['#3cc3d6','#0d4d73'], ground:['#efb978','#c8776e'], deco:'bubbles'},
+  {name:'Dream Forest', sky:['#7fd3aa','#315f68'], ground:['#4e8465','#2f573d'], deco:'fireflies'},
+  {name:'Cloud Studio', sky:['#a4c7ff','#6986d1'], ground:['#f4d8b3','#cba57a'], deco:'paper'},
+  {name:'Candy Comet', sky:['#9d6bff','#35225d'], ground:['#ffc6de','#f59cc6'], deco:'stars'},
+  {name:'Aurora Lake', sky:['#11204a','#1e9da6'], ground:['#5ea1a8','#294f5e'], deco:'glow'},
+  {name:'Sunset Balcony', sky:['#ffbf8b','#e87f8f'], ground:['#8b4b64','#4e3042'], deco:'petals'}
+];
 
-      const state = {
-        scene: null,
-        found: new Set(),
-        mistakes: 0,
-        seconds: 0,
-        raf: 0,
-        timerStart: 0,
-        timeLimit: 150,
-        mode: 'calm',
-        sameSeed: null,
-        paused: false,
-        messageTimeout: null,
-        audio: null,
-        audioReady: false
-      };
+const objectTypes = ['flower','lantern','kite','fish','star','book','cup','tree','planet','butterfly','shell','gem','leaf','cloud','mountain','mushroom'];
+const diffModes = ['move','color','size','rotate','missing','style'];
+const paletteSets = [
+  ['#ffd36e','#ff8ca8','#7ce8ff','#82f7d6'],
+  ['#f6a66b','#e96d71','#6dd7e8','#f2d0a4'],
+  ['#d2a7ff','#7cc8ff','#8cf0d7','#ffe39f'],
+  ['#fca5a5','#f9d76e','#84e1bc','#93c5fd'],
+  ['#ffd1eb','#b9f3ff','#f9e2ae','#b5ffd9']
+];
 
-      function mulberry32(a){return function(){let t = a += 0x6D2B79F5; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296;}}
-      function randRange(rng,min,max){return min + rng()*(max-min)}
-      function randInt(rng,min,max){return Math.floor(randRange(rng,min,max+1))}
-      function pick(rng,arr){return arr[Math.floor(rng()*arr.length)]}
-      function pad(n){return String(n).padStart(2,'0')}
-      function formatTime(sec){const m=Math.floor(sec/60);const s=Math.floor(sec%60);return `${pad(m)}:${pad(s)}`}
-      function setMessage(text, good=false){messageBox.textContent=text; messageBox.style.color = good ? 'var(--color-good)' : 'var(--color-text-muted)'; clearTimeout(state.messageTimeout); state.messageTimeout = setTimeout(()=>{messageBox.style.color='var(--color-text-muted)'}, 1400)}
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const leftScene = $('#sceneLeft');
+const rightScene = $('#sceneRight');
+const introOverlay = $('#introOverlay');
+const helpOverlay = $('#helpOverlay');
+const resultOverlay = $('#resultOverlay');
 
-      function ensureAudio(){
-        if(state.audioReady) return;
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if(!AudioCtx) return;
-        state.audio = new AudioCtx();
-        state.audioReady = true;
-      }
-      function beep(type='good'){
-        ensureAudio();
-        const ctx = state.audio;
-        if(!ctx) return;
-        if(ctx.state === 'suspended') ctx.resume();
-        const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = type === 'bad' ? 'square' : 'sine';
-        osc.frequency.value = type === 'bad' ? 180 : 640;
-        if(type === 'win') osc.frequency.value = 520;
-        gain.gain.setValueAtTime(0.0001, now);
-        gain.gain.exponentialRampToValueAtTime(type === 'bad' ? 0.025 : 0.04, now + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + (type === 'win' ? 0.55 : 0.18));
-        osc.connect(gain).connect(ctx.destination);
-        osc.start(now);
-        if(type === 'win'){
-          const osc2 = ctx.createOscillator();
-          const gain2 = ctx.createGain();
-          osc2.type='triangle'; osc2.frequency.value=780;
-          gain2.gain.setValueAtTime(0.0001, now+0.12);
-          gain2.gain.exponentialRampToValueAtTime(0.03, now+0.16);
-          gain2.gain.exponentialRampToValueAtTime(0.0001, now+0.46);
-          osc2.connect(gain2).connect(ctx.destination);
-          osc2.start(now+0.12); osc2.stop(now+0.48);
-        }
-        osc.stop(now + (type === 'win' ? 0.6 : 0.2));
-      }
+function rng(seed){
+  let a = seed >>> 0;
+  return function(){
+    a += 0x6D2B79F5;
+    let t = a;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function randInt(r, min, max){return Math.floor(r()*(max-min+1))+min}
+function pick(r, arr){return arr[Math.floor(r()*arr.length)]}
+function shuffle(r, arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+function cryptoSeed(){const a = new Uint32Array(2); crypto.getRandomValues(a); return Number(a[0]) ^ Number(a[1]) ^ Date.now();}
+function hsl(h,s,l){return `hsl(${h} ${s}% ${l}%)`}
+function showToast(msg, good=true){const t=$('#toast');t.textContent=msg;t.style.borderColor=good?'rgba(130,247,214,.45)':'rgba(255,123,123,.45)';t.classList.add('show');clearTimeout(showToast._id);showToast._id=setTimeout(()=>t.classList.remove('show'),1100)}
+function updateHUD(){
+  $('#roundNow').textContent = app.round;
+  $('#roundMax').textContent = app.roundsTotal;
+  $('#foundNow').textContent = app.found;
+  $('#foundMax').textContent = app.totalDiffs;
+  $('#scoreNow').textContent = app.score;
+  $('#bestScore').textContent = app.best;
+  $('#timerNow').textContent = Math.max(0,Math.ceil(app.timer));
+  $('#streakNow').textContent = app.streak;
+  $('#missNow').textContent = app.misses;
+  $('#focusBar').style.width = `${clamp((app.streak*14) + (app.found/(app.totalDiffs||1))*30,0,100)}%`;
+  $('#roundBar').style.width = `${clamp((app.found/(app.totalDiffs||1))*100,0,100)}%`;
+}
+function setStatus(txt){$('#statusLine').textContent = txt}
 
-      function generateScene(seed){
-        const rng = mulberry32(seed);
-        const palettes = [
-          {sky1:'#0d3954',sky2:'#2f6e7e',ground:'#173a3f',accent:'#ffca6c',leaf:'#84c98b',roof:'#c97756',water:'#5eb0b8'},
-          {sky1:'#26143f',sky2:'#6d5fa8',ground:'#26312d',accent:'#ffd37b',leaf:'#92c17c',roof:'#d47f6c',water:'#6c9cff'},
-          {sky1:'#1f313b',sky2:'#6393a6',ground:'#22342c',accent:'#f7d48b',leaf:'#a4cf6d',roof:'#a86c52',water:'#70c4d6'},
-          {sky1:'#45263d',sky2:'#9a6876',ground:'#2d2f29',accent:'#ffe0a8',leaf:'#9bc67d',roof:'#db8f76',water:'#66b0a8'}
-        ];
-        const themes = ['Lantern Garden','Floating Courtyard','Quiet Rooftops','Mirror Orchard','Evening Market'];
-        const palette = pick(rng, palettes);
-        const theme = pick(rng, themes);
-        const hills = Array.from({length:3}, (_,i)=>({x:randRange(rng,-100,820), y:randRange(rng,220,380)+i*14, r:randRange(rng,180,280)}));
-        const clouds = Array.from({length:randInt(rng,3,6)}, ()=>({x:randRange(rng,50,670),y:randRange(rng,60,190),w:randRange(rng,70,160),h:randRange(rng,24,48),speed:randRange(rng,0.04,0.12)}));
-        const stars = Array.from({length:36}, ()=>({x:randRange(rng,0,720),y:randRange(rng,0,280),r:randRange(rng,1,2.2),tw:randRange(rng,0,6.28)}));
-        const trees = Array.from({length:randInt(rng,4,7)}, ()=>({x:randRange(rng,50,680),y:randRange(rng,310,460),scale:randRange(rng,0.8,1.35),tilt:randRange(rng,-0.08,0.08)}));
-        const houses = Array.from({length:randInt(rng,2,4)}, (_,i)=>({x:140+i*randRange(rng,120,175), y:randRange(rng,320,430), w:randRange(rng,80,120), h:randRange(rng,70,100), door: rng()>0.5, lit: rng()>0.35}));
-        const lanterns = Array.from({length:randInt(rng,5,9)}, ()=>({x:randRange(rng,50,680),y:randRange(rng,160,470),size:randRange(rng,9,18),phase:randRange(rng,0,6.28),hang:rng()>0.5}));
-        const stones = Array.from({length:randInt(rng,7,12)}, ()=>({x:randRange(rng,40,680),y:randRange(rng,470,650),w:randRange(rng,16,36),h:randRange(rng,7,18)}));
-        const reeds = Array.from({length:randInt(rng,8,14)}, ()=>({x:randRange(rng,430,700),y:randRange(rng,430,690),h:randRange(rng,16,38)}));
-        const koi = Array.from({length:randInt(rng,2,4)}, ()=>({x:randRange(rng,430,640),y:randRange(rng,470,620),s:randRange(rng,0.7,1.2),phase:randRange(rng,0,6.28)}));
+function buildParticles(){
+  const box = $('#particles'); box.innerHTML='';
+  for(let i=0;i<26;i++){
+    const s=document.createElement('span');
+    const size = Math.random()*8+4;
+    s.style.width=s.style.height=`${size}px`;
+    s.style.left=`${Math.random()*100}%`;
+    s.style.bottom=`${-20 - Math.random()*100}px`;
+    s.style.animationDuration=`${12 + Math.random()*18}s`;
+    s.style.animationDelay=`${-Math.random()*20}s`;
+    box.appendChild(s);
+  }
+}
+function buildHeroArt(){
+  const art=$('#heroArt'); art.innerHTML='';
+  for(let i=0;i<18;i++){
+    const b=document.createElement('div');
+    b.className='bubble';
+    const size=40+Math.random()*88;
+    b.style.width=b.style.height=size+'px';
+    b.style.left=Math.random()*90+'%';
+    b.style.top=Math.random()*85+'%';
+    b.style.animationDuration=(5+Math.random()*8)+'s';
+    b.style.animationDelay=(-Math.random()*6)+'s';
+    art.appendChild(b);
+  }
+}
 
-        const changePool = [
-          {type:'lantern-move', label:'A lantern shifts position', radius:26},
-          {type:'window-toggle', label:'A window glow changes', radius:28},
-          {type:'tree-fruit', label:'A tree detail appears or fades', radius:24},
-          {type:'roof-mark', label:'A roof ornament changes', radius:22},
-          {type:'stone-move', label:'A stepping stone slides', radius:24},
-          {type:'cloud-size', label:'A cloud changes shape', radius:34},
-          {type:'koi-move', label:'A koi drifts elsewhere', radius:24},
-          {type:'reed-height', label:'A reed cluster changes height', radius:22},
-          {type:'star-miss', label:'A bright spark disappears', radius:20},
-          {type:'door-toggle', label:'A doorway changes', radius:24},
-          {type:'bridge-flag', label:'A banner changes', radius:22},
-          {type:'sun-ring', label:'The moon halo shifts', radius:28},
-          {type:'flower-patch', label:'A flower patch changes', radius:24}
-        ];
+function svgFor(type, c1, c2, c3, variant){
+  const v = variant;
+  if(type==='flower') return `<svg viewBox="0 0 100 100"><g><rect x="47" y="42" width="6" height="42" rx="3" fill="#2d7f53"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(0 50 34)" fill="${c1}"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(72 50 34)" fill="${c2}"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(144 50 34)" fill="${c1}"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(216 50 34)" fill="${c2}"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(288 50 34)" fill="${c1}"/><circle cx="50" cy="34" r="12" fill="${c3}"/></g></svg>`;
+  if(type==='lantern') return `<svg viewBox="0 0 100 100"><g><line x1="50" y1="8" x2="50" y2="24" stroke="#d6eef8" stroke-width="4"/><rect x="28" y="24" width="44" height="44" rx="10" fill="${c1}"/><rect x="35" y="31" width="30" height="30" rx="6" fill="${c2}" opacity=".9"/><path d="M35 68 Q50 ${76+v} 65 68" stroke="${c3}" stroke-width="6" fill="none" stroke-linecap="round"/></g></svg>`;
+  if(type==='kite') return `<svg viewBox="0 0 100 100"><g><path d="M50 10 L80 40 L50 86 L20 40 Z" fill="${c1}"/><path d="M50 10 L50 86" stroke="${c3}" stroke-width="4"/><path d="M20 40 L80 40" stroke="${c2}" stroke-width="4"/><path d="M50 86 Q${48-v} 93 ${56+v} 100" stroke="#f7f2ff" stroke-width="3" fill="none"/></g></svg>`;
+  if(type==='fish') return `<svg viewBox="0 0 100 100"><g><ellipse cx="48" cy="50" rx="26" ry="18" fill="${c1}"/><polygon points="70,50 92,34 92,66" fill="${c2}"/><circle cx="38" cy="46" r="3.8" fill="#12202f"/><path d="M36 58 Q48 ${62+v} 58 58" stroke="${c3}" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg>`;
+  if(type==='star') return `<svg viewBox="0 0 100 100"><polygon points="50,8 61,36 92,38 67,56 75,88 50,70 25,88 33,56 8,38 39,36" fill="${c1}" stroke="${c3}" stroke-width="4"/></svg>`;
+  if(type==='book') return `<svg viewBox="0 0 100 100"><g><path d="M18 22 h28 q10 0 14 6 v48 h-28 q-9 0 -14 5z" fill="${c1}"/><path d="M82 22 h-28 q-10 0 -14 6 v48 h28 q9 0 14 5z" fill="${c2}"/><line x1="50" y1="28" x2="50" y2="80" stroke="#ffffff" opacity=".45" stroke-width="3"/></g></svg>`;
+  if(type==='cup') return `<svg viewBox="0 0 100 100"><g><path d="M26 24 h40 v28 q0 20 -20 20 q-20 0 -20 -20z" fill="${c1}"/><path d="M66 32 h10 q12 0 12 10 q0 10 -12 10 h-10" fill="none" stroke="${c2}" stroke-width="8" stroke-linecap="round"/><path d="M22 78 h50" stroke="${c3}" stroke-width="7" stroke-linecap="round"/></g></svg>`;
+  if(type==='tree') return `<svg viewBox="0 0 100 100"><g><rect x="45" y="52" width="10" height="30" rx="4" fill="#704d35"/><circle cx="50" cy="46" r="22" fill="${c1}"/><circle cx="34" cy="50" r="14" fill="${c2}" opacity=".9"/><circle cx="66" cy="50" r="14" fill="${c2}" opacity=".9"/></g></svg>`;
+  if(type==='planet') return `<svg viewBox="0 0 100 100"><g><circle cx="50" cy="50" r="22" fill="${c1}"/><ellipse cx="50" cy="52" rx="36" ry="12" fill="none" stroke="${c2}" stroke-width="8" transform="rotate(${20+v} 50 52)"/><circle cx="38" cy="42" r="5" fill="${c3}" opacity=".7"/></g></svg>`;
+  if(type==='butterfly') return `<svg viewBox="0 0 100 100"><g><ellipse cx="34" cy="42" rx="16" ry="20" fill="${c1}" transform="rotate(${14+v} 34 42)"/><ellipse cx="66" cy="42" rx="16" ry="20" fill="${c2}" transform="rotate(${-14-v} 66 42)"/><ellipse cx="34" cy="64" rx="12" ry="16" fill="${c2}" transform="rotate(${8+v} 34 64)"/><ellipse cx="66" cy="64" rx="12" ry="16" fill="${c1}" transform="rotate(${-8-v} 66 64)"/><rect x="47" y="28" width="6" height="42" rx="4" fill="#23384a"/></g></svg>`;
+  if(type==='shell') return `<svg viewBox="0 0 100 100"><g><path d="M20 72 q30 -50 60 0" fill="${c1}"/><path d="M30 70 q20 -36 40 0" fill="${c2}"/><path d="M20 72 h60" stroke="${c3}" stroke-width="4"/></g></svg>`;
+  if(type==='gem') return `<svg viewBox="0 0 100 100"><polygon points="24,38 40,20 60,20 76,38 50,82" fill="${c1}"/><polyline points="24,38 40,38 50,82 60,38 76,38" fill="none" stroke="${c3}" stroke-width="4"/></svg>`;
+  if(type==='leaf') return `<svg viewBox="0 0 100 100"><path d="M22 66 q0 -42 48 -46 q10 28 -6 50 q-16 22 -42 -4z" fill="${c1}"/><path d="M30 64 q26 -18 40 -36" stroke="${c2}" stroke-width="5" fill="none" stroke-linecap="round"/></svg>`;
+  if(type==='cloud') return `<svg viewBox="0 0 100 100"><g><circle cx="36" cy="54" r="16" fill="${c1}"/><circle cx="54" cy="46" r="20" fill="${c1}"/><circle cx="70" cy="54" r="14" fill="${c2}"/><rect x="24" y="54" width="52" height="14" rx="7" fill="${c1}"/></g></svg>`;
+  if(type==='mountain') return `<svg viewBox="0 0 100 100"><g><polygon points="14,80 40,28 66,80" fill="${c1}"/><polygon points="44,80 68,38 90,80" fill="${c2}"/><polygon points="34,40 40,28 46,40" fill="#fff" opacity=".75"/></g></svg>`;
+  return `<svg viewBox="0 0 100 100"><g><path d="M50 16 q18 0 18 18 q0 10 -8 16 q12 4 16 16 q0 18 -26 18 q-26 0 -26 -18 q4 -12 16 -16 q-8 -6 -8 -16 q0 -18 18 -18z" fill="${c1}"/><rect x="47" y="10" width="6" height="12" rx="3" fill="${c3}"/></g></svg>`;
+}
 
-        const selected = [];
-        const used = new Set();
-        const total = state.mode === 'calm' ? 5 : 7;
-        while(selected.length < total){
-          const idx = randInt(rng,0,changePool.length-1);
-          if(used.has(idx)) continue;
-          used.add(idx);
-          selected.push(structuredClone(changePool[idx]));
-        }
+function bgFor(theme, r){
+  const [s1,s2] = theme.sky; const [g1,g2] = theme.ground;
+  let deco='';
+  if(theme.deco==='bubbles'){
+    for(let i=0;i<10;i++) deco += `<span style="position:absolute;left:${5+i*9}%;top:${15+((i*13)%45)}%;width:${8+(i%4)*5}px;height:${8+(i%4)*5}px;border:2px solid rgba(255,255,255,.22);border-radius:50%;opacity:.55"></span>`;
+  }
+  if(theme.deco==='fireflies'){
+    for(let i=0;i<14;i++) deco += `<span style="position:absolute;left:${randInt(r,3,95)}%;top:${randInt(r,8,68)}%;width:6px;height:6px;background:rgba(255,250,180,.8);border-radius:50%;box-shadow:0 0 12px rgba(255,250,180,.9)"></span>`;
+  }
+  if(theme.deco==='stars'){
+    for(let i=0;i<16;i++) deco += `<span style="position:absolute;left:${randInt(r,4,95)}%;top:${randInt(r,6,50)}%;width:${3+randInt(r,0,4)}px;height:${3+randInt(r,0,4)}px;background:rgba(255,255,255,.9);border-radius:50%;box-shadow:0 0 10px rgba(255,255,255,.8)"></span>`;
+  }
+  if(theme.deco==='petals'||theme.deco==='paper'||theme.deco==='lights'||theme.deco==='glow'||theme.deco==='stones'){
+    for(let i=0;i<10;i++) deco += `<span style="position:absolute;left:${randInt(r,4,95)}%;top:${randInt(r,12,78)}%;width:${10+randInt(r,0,12)}px;height:${6+randInt(r,0,8)}px;background:rgba(255,255,255,.12);border-radius:12px;transform:rotate(${randInt(r,0,180)}deg)"></span>`;
+  }
+  return {
+    background:`linear-gradient(180deg,${s1},${s2} 58%,${g1} 58%,${g2})`,
+    deco
+  };
+}
 
-        selected.forEach((item, i) => {
-          if(item.type === 'lantern-move'){
-            const t = lanterns[randInt(rng,0,lanterns.length-1)];
-            item.target = {refX:t.x, refY:t.y, altX:t.x + randRange(rng,-30,30), altY:t.y + randRange(rng,-16,16)};
-            item.cx = item.target.altX; item.cy = item.target.altY;
-          }
-          if(item.type === 'window-toggle'){
-            const h = houses[randInt(rng,0,houses.length-1)];
-            item.target = {x:h.x+h.w*0.3,y:h.y+h.h*0.45,w:18,h:18}; item.cx=item.target.x; item.cy=item.target.y;
-          }
-          if(item.type === 'tree-fruit'){
-            const t = trees[randInt(rng,0,trees.length-1)];
-            item.target = {x:t.x+randRange(rng,-20,20),y:t.y-randRange(rng,40,80)}; item.cx=item.target.x; item.cy=item.target.y;
-          }
-          if(item.type === 'roof-mark'){
-            const h = houses[randInt(rng,0,houses.length-1)];
-            item.target = {x:h.x+h.w*.7,y:h.y-14}; item.cx=item.target.x; item.cy=item.target.y;
-          }
-          if(item.type === 'stone-move'){
-            const s = stones[randInt(rng,0,stones.length-1)];
-            item.target = {refX:s.x,refY:s.y,altX:s.x+randRange(rng,-24,24),altY:s.y+randRange(rng,-10,10),w:s.w,h:s.h}; item.cx=item.target.altX; item.cy=item.target.altY;
-          }
-          if(item.type === 'cloud-size'){
-            const c = clouds[randInt(rng,0,clouds.length-1)];
-            item.target = {x:c.x,y:c.y,w:c.w,h:c.h}; item.cx=c.x; item.cy=c.y;
-          }
-          if(item.type === 'koi-move'){
-            const k = koi[randInt(rng,0,koi.length-1)];
-            item.target = {refX:k.x,refY:k.y,altX:k.x+randRange(rng,-36,36),altY:k.y+randRange(rng,-18,18)}; item.cx=item.target.altX; item.cy=item.target.altY;
-          }
-          if(item.type === 'reed-height'){
-            const r = reeds[randInt(rng,0,reeds.length-1)];
-            item.target = {x:r.x,y:r.y,h:r.h}; item.cx=r.x; item.cy=r.y-r.h;
-          }
-          if(item.type === 'star-miss'){
-            const s = stars[randInt(rng,0,stars.length-1)];
-            item.target = {x:s.x,y:s.y}; item.cx=s.x; item.cy=s.y;
-          }
-          if(item.type === 'door-toggle'){
-            const h = houses[randInt(rng,0,houses.length-1)];
-            item.target = {x:h.x+h.w*.5,y:h.y+h.h*.72}; item.cx=item.target.x; item.cy=item.target.y;
-          }
-          if(item.type === 'bridge-flag'){
-            item.target = {x:randRange(rng,260,410),y:randRange(rng,430,480)}; item.cx=item.target.x; item.cy=item.target.y;
-          }
-          if(item.type === 'sun-ring'){
-            item.target = {x:randRange(rng,100,210), y:randRange(rng,90,180), r:randRange(rng,34,48)}; item.cx=item.target.x; item.cy=item.target.y;
-          }
-          if(item.type === 'flower-patch'){
-            item.target = {x:randRange(rng,90,320), y:randRange(rng,530,650)}; item.cx=item.target.x; item.cy=item.target.y;
-          }
-          item.id = `d${i}`;
-          item.radius = state.mode === 'calm' ? item.radius : item.radius * 0.8;
-        });
+function uniqueScene(level){
+  const c = cfg[level];
+  for(let tries=0;tries<80;tries++){
+    const seed = cryptoSeed() + tries + app.sessionSeed + app.round*101;
+    const r = rng(seed);
+    if(app.themeQueue.length===0) app.themeQueue = shuffle(r, themes.map((_,i)=>i));
+    const themeIndex = app.themeQueue.shift();
+    const theme = themes[themeIndex];
+    const objCount = randInt(r, c.objects[0], c.objects[1]);
+    const diffCount = c.diffs;
+    const types = shuffle(r, objectTypes).slice(0, objCount);
+    const sig = `${theme.name}|${types.slice(0,6).join('-')}|${diffCount}|${Math.floor(seed%97)}`;
+    if(app.usedSceneKeys.has(sig)) continue;
+    app.usedSceneKeys.add(sig);
+    return {seed, r, theme, objCount, diffCount, sig};
+  }
+  app.usedSceneKeys.clear();
+  return uniqueScene(level);
+}
 
-        return {seed, rng, palette, theme, hills, clouds, stars, trees, houses, lanterns, stones, reeds, koi, selected};
-      }
+function generateRound(){
+  const meta = uniqueScene(app.level);
+  const r = meta.r;
+  const palette = pick(r, paletteSets);
+  const objects = [];
+  const placed = [];
+  const w = leftScene.clientWidth || 580;
+  const h = leftScene.clientHeight || 500;
+  for(let i=0;i<meta.objCount;i++){
+    const type = objectTypes[(i + randInt(r,0,objectTypes.length-1)) % objectTypes.length];
+    let ow = randInt(r,52,104), oh = ow + randInt(r,-14,16);
+    let x=0,y=0,safe=false;
+    for(let attempts=0;attempts<80 && !safe;attempts++){
+      x = randInt(r,18,w-ow-18);
+      y = randInt(r,36,h-oh-18);
+      safe = placed.every(p => Math.abs((x+ow/2)-(p.x+p.w/2)) > (ow+p.w)*0.38 || Math.abs((y+oh/2)-(p.y+p.h/2)) > (oh+p.h)*0.42);
+    }
+    placed.push({x,y,w:ow,h:oh});
+    const colors = shuffle(r, palette).slice(0,3);
+    objects.push({
+      id:'o'+i,
+      type,
+      x,y,w:ow,h:oh,
+      colors,
+      rot:randInt(r,-18,18),
+      scale:1,
+      variant:randInt(r,0,10),
+      anim:5 + r()*8,
+      delay:-r()*4,
+      opacity:.98,
+      styleTag:pick(r,['soft','glow','plain'])
+    });
+  }
+  const diffIds = shuffle(r, objects.map(o=>o.id)).slice(0, meta.diffCount);
+  const diffs=[];
+  const rightObjects = objects.map(o=>JSON.parse(JSON.stringify(o)));
+  diffIds.forEach((id, idx)=>{
+    const obj = rightObjects.find(o=>o.id===id);
+    let mode = shuffle(r, diffModes)[0];
+    if(idx===0 && app.level==='gentle') mode = pick(r,['color','size','move']);
+    if(obj.type==='cloud' && mode==='missing' && app.level==='gentle') mode='move';
+    const before = JSON.parse(JSON.stringify(obj));
+    if(mode==='move'){
+      obj.x = clamp(obj.x + randInt(r,-28,28),12,w-obj.w-12);
+      obj.y = clamp(obj.y + randInt(r,-26,26),12,h-obj.h-12);
+    } else if(mode==='color'){
+      const hue = randInt(r,0,359);
+      obj.colors = [hsl(hue,86,72),hsl((hue+70)%360,78,66),hsl((hue+130)%360,84,78)];
+    } else if(mode==='size'){
+      const factor = 1 + (r()>.5?1:-1)*(app.level==='expert'?0.22:0.16);
+      obj.w = clamp(Math.round(obj.w*factor),40,122);
+      obj.h = clamp(Math.round(obj.h*factor),38,126);
+      obj.x = clamp(obj.x - Math.round((obj.w-before.w)/2),10,w-obj.w-10);
+      obj.y = clamp(obj.y - Math.round((obj.h-before.h)/2),10,h-obj.h-10);
+    } else if(mode==='rotate'){
+      obj.rot += randInt(r,26,54) * (r()>.5?1:-1);
+    } else if(mode==='missing'){
+      obj.opacity = 0;
+    } else if(mode==='style'){
+      obj.variant += randInt(r,2,6);
+      obj.styleTag = obj.styleTag==='glow'?'soft':'glow';
+    }
+    diffs.push({id, mode, left:{x:before.x,y:before.y,w:before.w,h:before.h}, right:{x:obj.x,y:obj.y,w:obj.w,h:obj.h}, found:false});
+  });
+  return {theme:meta.theme, palette, objects, rightObjects, diffs, seed:meta.seed};
+}
 
-      function drawScene(ctx, scene, t, variant='left'){
-        const {palette} = scene;
-        ctx.clearRect(0,0,720,720);
-        const sky = ctx.createLinearGradient(0,0,0,720);
-        sky.addColorStop(0,palette.sky1); sky.addColorStop(.55,palette.sky2); sky.addColorStop(1,palette.ground);
-        ctx.fillStyle = sky; ctx.fillRect(0,0,720,720);
+function renderScene(container, theme, objects){
+  container.innerHTML='';
+  const bg = bgFor(theme, rng((theme.name.length*31 + objects.length*71)));
+  container.style.background = bg.background;
+  const deco = document.createElement('div');
+  deco.style.position='absolute'; deco.style.inset='0'; deco.style.pointerEvents='none';
+  deco.innerHTML = bg.deco;
+  container.appendChild(deco);
+  objects.forEach((o, i)=>{
+    const el = document.createElement('div');
+    el.className='obj';
+    el.dataset.id=o.id;
+    el.style.left=o.x+'px';
+    el.style.top=o.y+'px';
+    el.style.width=o.w+'px';
+    el.style.height=o.h+'px';
+    el.style.transform = `rotate(${o.rot}deg) scale(${o.scale})`;
+    el.style.opacity = o.opacity;
+    el.style.animation = `drift ${o.anim}s ease-in-out ${o.delay}s infinite`;
+    if(o.styleTag==='glow') el.style.filter='drop-shadow(0 0 12px rgba(255,255,255,.25)) drop-shadow(0 10px 16px rgba(0,0,0,.22))';
+    el.innerHTML = svgFor(o.type, o.colors[0], o.colors[1], o.colors[2], o.variant);
+    container.appendChild(el);
+  });
+}
 
-        const moonX = 140 + Math.sin(t*0.00012 + scene.seed)*18;
-        const moonY = 130 + Math.cos(t*0.00009 + scene.seed)*10;
-        const ringDiff = scene.selected.find(d=>d.type==='sun-ring');
-        const ringR = ringDiff && variant==='right' ? ringDiff.target.r + 10 : ringDiff ? ringDiff.target.r : 38;
-        ctx.fillStyle = 'rgba(255,244,210,0.95)';
-        ctx.beginPath(); ctx.arc(moonX, moonY, 28, 0, Math.PI*2); ctx.fill();
-        ctx.strokeStyle = 'rgba(255,240,190,0.26)'; ctx.lineWidth = 3;
-        ctx.beginPath(); ctx.arc(ringDiff ? ringDiff.target.x : moonX, ringDiff ? ringDiff.target.y : moonY, ringR, 0, Math.PI*2); ctx.stroke();
+function addHitboxes(){
+  [...leftScene.querySelectorAll('.hit,.ring'), ...rightScene.querySelectorAll('.hit,.ring')].forEach(n=>n.remove());
+  app.active.diffs.forEach((d, idx)=>{
+    ['left','right'].forEach(side=>{
+      const box = d[side];
+      const hit = document.createElement('button');
+      hit.className='hit';
+      hit.style.left = (box.x-8)+'px';
+      hit.style.top = (box.y-8)+'px';
+      hit.style.width = (box.w+16)+'px';
+      hit.style.height = (box.h+16)+'px';
+      hit.setAttribute('aria-label','difference '+(idx+1));
+      hit.addEventListener('click', e=>{e.stopPropagation(); handleCorrect(d.id)});
+      (side==='left'?leftScene:rightScene).appendChild(hit);
+    });
+  });
+}
 
-        scene.stars.forEach((s, idx) => {
-          const missing = scene.selected.find(d=>d.type==='star-miss' && Math.abs(d.target.x-s.x)<1 && Math.abs(d.target.y-s.y)<1);
-          if(variant==='right' && missing) return;
-          const tw = 0.35 + 0.65*Math.abs(Math.sin(t*0.0016 + s.tw + idx));
-          ctx.fillStyle = `rgba(255,255,240,${tw})`;
-          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill();
-        });
+function highlightDiff(diff){
+  ['left','right'].forEach(side=>{
+    const box = diff[side];
+    const ring = document.createElement('div');
+    ring.className='ring';
+    ring.style.left=(box.x-8)+'px'; ring.style.top=(box.y-8)+'px';
+    ring.style.width=(box.w+16)+'px'; ring.style.height=(box.h+16)+'px';
+    (side==='left'?leftScene:rightScene).appendChild(ring);
+    setTimeout(()=>ring.remove(),1100);
+    const target = (side==='left'?leftScene:rightScene).querySelector(`.obj[data-id="${diff.id}"]`);
+    if(target) target.classList.add('found');
+  });
+}
 
-        scene.clouds.forEach((c, idx) => {
-          const altered = scene.selected.find(d=>d.type==='cloud-size' && Math.abs(d.target.x-c.x)<1 && Math.abs(d.target.y-c.y)<1);
-          const floatX = (c.x + t*c.speed*0.02 + idx*6) % 820 - 50;
-          const w = altered && variant==='right' ? c.w*0.72 : c.w;
-          const h = altered && variant==='right' ? c.h*1.28 : c.h;
-          ctx.fillStyle = 'rgba(255,255,255,0.12)';
-          roundedBlob(ctx, floatX, c.y, w, h, 16);
-        });
+function handleCorrect(id){
+  if(!app.playing) return;
+  const diff = app.active.diffs.find(d=>d.id===id);
+  if(!diff || diff.found) return;
+  diff.found = true;
+  app.found++;
+  app.totalFoundClicks++;
+  app.streak++;
+  app.bestStreak = Math.max(app.bestStreak, app.streak);
+  const bonus = 90 + app.streak*15 + Math.max(0, Math.floor(app.timer));
+  app.score += bonus;
+  highlightDiff(diff);
+  showToast(`Found! +${bonus}`, true);
+  setStatus(`${app.found} of ${app.totalDiffs} differences found in ${app.active.theme.name}.`);
+  updateHUD();
+  if(app.found >= app.totalDiffs){
+    endRound(true);
+  }
+}
 
-        scene.hills.forEach((h, idx) => {
-          ctx.fillStyle = idx===2 ? 'rgba(10,20,20,0.28)' : idx===1 ? 'rgba(20,50,50,0.22)' : 'rgba(35,80,80,0.18)';
-          ctx.beginPath(); ctx.arc(h.x,h.y,h.r,Math.PI,Math.PI*2); ctx.fill();
-        });
+function wrongTap(){
+  if(!app.playing) return;
+  app.totalWrongClicks++;
+  app.misses++;
+  app.streak = 0;
+  app.timer = Math.max(0, app.timer - cfg[app.level].penalty);
+  rightScene.classList.add('penalty'); leftScene.classList.add('penalty');
+  setTimeout(()=>{rightScene.classList.remove('penalty');leftScene.classList.remove('penalty')},260);
+  showToast(`Missed! -${cfg[app.level].penalty}s`, false);
+  updateHUD();
+  if(app.timer<=0) endRound(false);
+}
 
-        ctx.fillStyle = palette.water;
-        ctx.globalAlpha = .3;
-        ctx.beginPath();
-        ctx.moveTo(380,440); ctx.quadraticCurveTo(560,420,700,460); ctx.lineTo(720,720); ctx.lineTo(420,720); ctx.closePath(); ctx.fill();
-        ctx.globalAlpha = 1;
+function bindMissAreas(){
+  [leftScene,rightScene].forEach(scene=>{
+    scene.onclick = e => { if(e.target===scene || e.target===scene.firstChild || e.target.classList.contains('obj')) wrongTap(); };
+  });
+}
 
-        scene.reeds.forEach((r, idx) => {
-          const altered = scene.selected.find(d=>d.type==='reed-height' && Math.abs(d.target.x-r.x)<1 && Math.abs(d.target.y-r.y)<1);
-          const h = altered && variant==='right' ? r.h*0.45 : r.h;
-          ctx.strokeStyle = palette.leaf; ctx.lineWidth = 2;
-          ctx.beginPath(); ctx.moveTo(r.x,r.y); ctx.lineTo(r.x + Math.sin(t*0.001 + idx)*3, r.y-h); ctx.stroke();
-        });
+function startSession(){
+  clearInterval(app.tick);
+  app.sessionSeed = cryptoSeed();
+  app.round = 0;
+  app.score = 0;
+  app.streak = 0;
+  app.bestStreak = 0;
+  app.misses = 0;
+  app.totalFoundClicks = 0;
+  app.totalWrongClicks = 0;
+  app.usedSceneKeys.clear();
+  app.themeQueue = [];
+  app.roundsTotal = cfg[app.level].rounds;
+  $('#roundMax').textContent = app.roundsTotal;
+  nextRound(true);
+}
 
-        scene.stones.forEach((s) => {
-          const altered = scene.selected.find(d=>d.type==='stone-move' && Math.abs(d.target.refX-s.x)<1 && Math.abs(d.target.refY-s.y)<1);
-          const x = altered && variant==='right' ? altered.target.altX : s.x;
-          const y = altered && variant==='right' ? altered.target.altY : s.y;
-          ctx.fillStyle = 'rgba(235,228,216,0.8)';
-          ellipse(ctx, x, y, s.w, s.h);
-        });
+function nextRound(fromStart=false){
+  clearInterval(app.tick);
+  app.round++;
+  if(app.round > app.roundsTotal){
+    finishSession();
+    return;
+  }
+  app.streak = 0;
+  app.found = 0;
+  app.timer = cfg[app.level].time;
+  app.active = generateRound();
+  app.totalDiffs = app.active.diffs.length;
+  app.misses = 0;
+  $('#themeTitle').textContent = `Theme: ${app.active.theme.name}`;
+  renderScene(leftScene, app.active.theme, app.active.objects);
+  renderScene(rightScene, app.active.theme, app.active.rightObjects);
+  addHitboxes();
+  bindMissAreas();
+  app.playing = true;
+  setStatus(fromStart?`Session started. ${app.totalDiffs} differences are hiding.`:`Round ${app.round} is ready. Stay calm and scan edges, colors, size, and position.`);
+  updateHUD();
+  app.tick = setInterval(()=>{
+    if(!app.playing) return;
+    app.timer -= 0.2;
+    updateHUD();
+    if(app.timer<=0) endRound(false);
+  },200);
+}
 
-        drawBridge(ctx, scene, variant, t);
+function endRound(cleared){
+  app.playing = false;
+  clearInterval(app.tick);
+  if(cleared){
+    app.score += 120;
+    setStatus(`Round ${app.round} cleared. Tap Next Round.`);
+    showToast('Round cleared! +120', true);
+  } else {
+    setStatus(`Time faded on round ${app.round}. You can continue to the next unique puzzle.`);
+    showToast('Time up', false);
+  }
+  updateHUD();
+}
 
-        scene.houses.forEach((h, idx) => drawHouse(ctx, h, idx, scene, variant));
-        scene.trees.forEach((tree, idx) => drawTree(ctx, tree, idx, scene, variant, t));
-        scene.koi.forEach((k, idx) => drawKoi(ctx, k, idx, scene, variant, t));
-        scene.lanterns.forEach((lan, idx) => drawLantern(ctx, lan, idx, scene, variant, t));
-        drawFlowers(ctx, scene, variant, t);
-        drawMist(ctx, t);
+function finishSession(){
+  try { if (window.BhavaSession && typeof BhavaSession.end === 'function') { BhavaSession.end(app.score); } } catch(e) { console.warn('BhavaSession.end:', e.message); } // Bhava auto-tracked
+  clearInterval(app.tick);
+  app.playing = false;
+  app.best = Math.max(app.best, app.score);
+  localStorage.setItem('vdd_best', app.best);
+  updateHUD();
+  const attempts = app.totalFoundClicks + app.totalWrongClicks;
+  const acc = attempts ? Math.round(app.totalFoundClicks/attempts*100) : 100;
+  $('#finalScore').textContent = app.score;
+  $('#accText').textContent = acc + '%';
+  $('#bestStreakText').textContent = app.bestStreak;
+  $('#roundsText').textContent = app.roundsTotal;
+  let tag='Calm Observer';
+  let txt='You noticed fine details with steady attention.';
+  if(app.score > 2600){tag='Precision Master';txt='Excellent control. You spotted subtle shifts quickly and cleanly.'}
+  else if(app.score > 1700){tag='Sharp Scanner';txt='Strong visual awareness. Your pattern spotting stayed reliable.'}
+  $('#resultTag').textContent = tag;
+  $('#resultText').textContent = txt;
+  resultOverlay.classList.remove('hide');
+  burstSparkles();
+}
 
-        state.found.forEach(id => {
-          const d = scene.selected.find(x=>x.id===id);
-          if(!d) return;
-          ctx.strokeStyle = 'rgba(255,255,255,0.95)';
-          ctx.lineWidth = 3;
-          ctx.setLineDash([8,6]);
-          ctx.beginPath(); ctx.arc(d.cx, d.cy, d.radius + 6, 0, Math.PI*2); ctx.stroke();
-          ctx.setLineDash([]);
-        });
-      }
+function burstSparkles(){
+  const s = $('#sparkles'); s.innerHTML='';
+  for(let i=0;i<46;i++){
+    const p=document.createElement('span');
+    p.className='spark';
+    p.style.left='50%'; p.style.top='42%';
+    p.style.setProperty('--dx', `${(Math.random()*520-260)}px`);
+    p.style.setProperty('--dy', `${(Math.random()*340-170)}px`);
+    p.style.animationDelay = (Math.random()*0.25)+'s';
+    p.style.background = `radial-gradient(circle, #fff, ${pick(Math.random, ['#82f7d6','#ffd36e','#7ce8ff','#ff9cc2'])})`;
+    s.appendChild(p);
+  }
+}
 
-      function drawMist(ctx, t){
-        ctx.save();
-        ctx.globalAlpha = 0.12;
-        for(let i=0;i<4;i++){
-          const x = (t*0.01 + i*140)%900 - 120;
-          const g = ctx.createLinearGradient(x,0,x+180,0);
-          g.addColorStop(0,'rgba(255,255,255,0)'); g.addColorStop(.5,'rgba(255,255,255,0.22)'); g.addColorStop(1,'rgba(255,255,255,0)');
-          ctx.fillStyle = g; ctx.fillRect(x,360+i*44,180,44);
-        }
-        ctx.restore();
-      }
-      function roundedBlob(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fill()}
-      function ellipse(ctx,x,y,w,h){ctx.beginPath();ctx.ellipse(x,y,w,h,0,0,Math.PI*2);ctx.fill()}
-      function drawHouse(ctx,h,idx,scene,variant){
-        const p = scene.palette;
-        ctx.fillStyle = colorAlpha('#1f1814',0.88); roundedRect(ctx,h.x,h.y,h.w,h.h,10);
-        ctx.fillStyle = p.roof;
-        ctx.beginPath(); ctx.moveTo(h.x-8,h.y+10); ctx.lineTo(h.x+h.w/2,h.y-28); ctx.lineTo(h.x+h.w+8,h.y+10); ctx.closePath(); ctx.fill();
-        const mark = scene.selected.find(d=>d.type==='roof-mark' && Math.abs(d.target.x-(h.x+h.w*.7))<1);
-        if(mark && variant==='right'){ctx.fillStyle = p.accent; ctx.beginPath(); ctx.arc(mark.target.x, mark.target.y, 7, 0, Math.PI*2); ctx.fill();}
-        ctx.fillStyle = colorAlpha(h.lit ? '#ffe9a8' : '#43525c', h.lit ? .95 : .65);
-        const winToggle = scene.selected.find(d=>d.type==='window-toggle' && Math.abs(d.target.x-(h.x+h.w*0.3))<1);
-        const lit = winToggle && variant==='right' ? !h.lit : h.lit;
-        ctx.fillStyle = lit ? colorAlpha('#ffe8a2',.95) : colorAlpha('#31414a',.8);
-        roundedRect(ctx,h.x+h.w*0.22,h.y+h.h*0.32,18,18,4);
-        roundedRect(ctx,h.x+h.w*0.58,h.y+h.h*0.32,18,18,4);
-        const doorToggle = scene.selected.find(d=>d.type==='door-toggle' && Math.abs(d.target.x-(h.x+h.w*.5))<1);
-        const door = doorToggle && variant==='right' ? !h.door : h.door;
-        if(door){ctx.fillStyle = '#8e5c41'; roundedRect(ctx,h.x+h.w*0.42,h.y+h.h*0.58,22,30,6)}
-      }
-      function drawTree(ctx,tree,idx,scene,variant,t){
-        ctx.save(); ctx.translate(tree.x,tree.y); ctx.rotate(tree.tilt + Math.sin(t*0.001+idx)*0.015); ctx.scale(tree.scale,tree.scale);
-        ctx.fillStyle = '#5e402d'; roundedRect(ctx,-7,0,14,62,6);
-        const g = ctx.createRadialGradient(0,-10,10,0,-10,64); g.addColorStop(0,scene.palette.leaf); g.addColorStop(1,colorAlpha(scene.palette.leaf,.12));
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(-14,-10,28,0,Math.PI*2); ctx.arc(16,-18,26,0,Math.PI*2); ctx.arc(0,-36,30,0,Math.PI*2); ctx.fill();
-        const fruit = scene.selected.find(d=>d.type==='tree-fruit' && Math.hypot((tree.x+d.target.x)-tree.x,d.target.y-tree.y)<90);
-        if((variant==='right' && fruit) || (variant==='left' && fruit && idx%2===0)){
-          ctx.fillStyle = '#ffd66e'; ctx.beginPath(); ctx.arc((fruit.target.x-tree.x)/tree.scale,(fruit.target.y-tree.y)/tree.scale,6,0,Math.PI*2); ctx.fill();
-        }
-        ctx.restore();
-      }
-      function drawLantern(ctx,lan,idx,scene,variant,t){
-        const move = scene.selected.find(d=>d.type==='lantern-move' && Math.abs(d.target.refX-lan.x)<1 && Math.abs(d.target.refY-lan.y)<1);
-        const x = move && variant==='right' ? move.target.altX : lan.x;
-        const y = move && variant==='right' ? move.target.altY : lan.y;
-        const sway = Math.sin(t*0.0014 + lan.phase)*5;
-        ctx.strokeStyle = 'rgba(255,255,255,0.26)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x,y-24); ctx.lineTo(x+sway*0.2,y-2); ctx.stroke();
-        ctx.fillStyle = 'rgba(255,218,124,0.92)'; roundedRect(ctx,x-8+sway*0.22,y-2,16,22,6);
-        ctx.fillStyle = 'rgba(255,255,210,0.18)'; ctx.beginPath(); ctx.arc(x+sway*0.22,y+8,lan.size*1.1,0,Math.PI*2); ctx.fill();
-      }
-      function drawBridge(ctx,scene,variant,t){
-        ctx.strokeStyle = '#6d493b'; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(210,500); ctx.quadraticCurveTo(330,430,470,490); ctx.stroke();
-        for(let x=235;x<455;x+=36){ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x,490);ctx.lineTo(x,530);ctx.stroke()}
-        const flag = scene.selected.find(d=>d.type==='bridge-flag');
-        if(flag){ctx.fillStyle = variant==='right' ? scene.palette.accent : scene.palette.secondary || '#eab15d'; ctx.beginPath(); ctx.moveTo(flag.target.x,flag.target.y); ctx.lineTo(flag.target.x+18,flag.target.y+6); ctx.lineTo(flag.target.x,flag.target.y+12); ctx.closePath(); ctx.fill();}
-      }
-      function drawKoi(ctx,k,idx,scene,variant,t){
-        const move = scene.selected.find(d=>d.type==='koi-move' && Math.abs(d.target.refX-k.x)<1 && Math.abs(d.target.refY-k.y)<1);
-        const x = move && variant==='right' ? move.target.altX : k.x;
-        const y = move && variant==='right' ? move.target.altY : k.y;
-        const swim = Math.sin(t*0.0015 + k.phase)*8;
-        ctx.save(); ctx.translate(x+swim,y+Math.cos(t*0.0012+k.phase)*5); ctx.scale(k.s,k.s); ctx.rotate(Math.sin(t*0.0013+k.phase)*0.2);
-        ctx.fillStyle = idx%2===0 ? '#ffcf7f' : '#f8f8f0';
-        ctx.beginPath(); ctx.ellipse(0,0,20,10,0,0,Math.PI*2); ctx.fill();
-        ctx.beginPath(); ctx.moveTo(-18,0); ctx.lineTo(-34,-12); ctx.lineTo(-30,0); ctx.lineTo(-34,12); ctx.closePath(); ctx.fill();
-        ctx.restore();
-      }
-      function drawFlowers(ctx,scene,variant,t){
-        const patch = scene.selected.find(d=>d.type==='flower-patch');
-        const spots = [{x:126,y:612},{x:164,y:584},{x:254,y:636},{x:302,y:560}];
-        spots.forEach((s, idx)=>{
-          const active = patch && Math.abs(patch.target.x-s.x)<60 && Math.abs(patch.target.y-s.y)<80;
-          if(active && variant==='right' && idx===1) return;
-          ctx.fillStyle = idx%2 ? '#ffd27d' : '#ffa6c3';
-          for(let p=0;p<5;p++){
-            const a=(Math.PI*2/5)*p+t*0.0002; ctx.beginPath(); ctx.arc(s.x+Math.cos(a)*6,s.y+Math.sin(a)*6,4,0,Math.PI*2); ctx.fill();
-          }
-          ctx.fillStyle='#fff4b8'; ctx.beginPath(); ctx.arc(s.x,s.y,3.2,0,Math.PI*2); ctx.fill();
-        });
-        if(patch && variant==='right'){ctx.fillStyle='#ffa6c3'; ctx.beginPath(); ctx.arc(patch.target.x,patch.target.y,6,0,Math.PI*2); ctx.fill();}
-      }
-      function roundedRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fill()}
-      function colorAlpha(hex, alpha){
-        if(hex.startsWith('rgba') || hex.startsWith('rgb')) return hex;
-        const c = hex.replace('#','');
-        const n = c.length===3 ? c.split('').map(v=>v+v).join('') : c;
-        const r = parseInt(n.slice(0,2),16), g = parseInt(n.slice(2,4),16), b = parseInt(n.slice(4,6),16);
-        return `rgba(${r},${g},${b},${alpha})`;
-      }
+$$('.level').forEach(btn=>btn.addEventListener('click',()=>{
+  $$('.level').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  app.level = btn.dataset.level;
+  const text = {
+    gentle:'3 differences, larger hints, slower pace.',
+    steady:'4 differences, balanced subtlety, moderate timer.',
+    expert:'5 differences, finer changes, faster pressure.'
+  };
+  $('#levelText').textContent = text[app.level];
+}));
 
-      function renderList(){
-        differenceList.innerHTML='';
-        state.scene.selected.forEach(d=>{
-          const item=document.createElement('div');
-          item.className='difference-item' + (state.found.has(d.id) ? ' found' : '');
-          item.innerHTML=`<span class="dot"></span><span>${state.found.has(d.id) ? 'Found' : 'Hidden'} · ${d.label}</span>`;
-          differenceList.appendChild(item);
-        });
-        foundValue.textContent=`${state.found.size}/${state.scene.selected.length}`;
-      }
+$('#startBtn').onclick = startSession;
+$('#introStart').onclick = ()=>{introOverlay.classList.add('hide'); startSession();};
+$('#helpStart').onclick = ()=>{helpOverlay.classList.add('hide'); introOverlay.classList.add('hide'); startSession();};
+$('#nextBtn').onclick = ()=> nextRound();
+$('#restartBtn').onclick = ()=> startSession();
+$('#playAgainBtn').onclick = ()=>{resultOverlay.classList.add('hide'); startSession();};
+$('#closeResultBtn').onclick = ()=> resultOverlay.classList.add('hide');
+$('#howBtn').onclick = ()=> helpOverlay.classList.remove('hide');
+$('#closeHelp').onclick = ()=> helpOverlay.classList.add('hide');
+window.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){helpOverlay.classList.add('hide');resultOverlay.classList.add('hide')}
+  if(e.key.toLowerCase()==='r') startSession();
+  if(e.key.toLowerCase()==='n') nextRound();
+});
 
-      function startRound(seed = Math.floor(100000 + Math.random()*900000)){
-        state.scene = generateScene(seed);
-        state.sameSeed = seed;
-        state.found = new Set();
-        state.mistakes = 0;
-        state.seconds = 0;
-        state.timeLimit = state.mode === 'calm' ? 180 : 120;
-        state.timerStart = performance.now();
-        state.paused = false;
-        victoryOverlay.classList.remove('show');
-        seedValue.textContent = seed;
-        mistakeValue.textContent = '0';
-        timeValue.textContent = '00:00';
-        timeBar.style.transform = 'scaleX(1)';
-        setMessage(`${state.scene.theme} generated. Search for ${state.scene.selected.length} subtle changes.`);
-        renderList();
-        cancelAnimationFrame(state.raf);
-        loop();
-      }
-
-      function loop(now = performance.now()){
-        if(!state.paused){
-          state.seconds = (now - state.timerStart)/1000;
-          timeValue.textContent = formatTime(state.seconds);
-          const ratio = Math.max(0, 1 - state.seconds/state.timeLimit);
-          timeBar.style.transform = `scaleX(${ratio})`;
-          if(state.seconds >= state.timeLimit && state.found.size < state.scene.selected.length){
-            state.timerStart = performance.now() - (state.timeLimit * 1000 * 0.82);
-            state.mistakes += 1;
-            mistakeValue.textContent = String(state.mistakes);
-            setMessage('Breathe and continue. The timer gently rolled over.', false);
-      BhavaSession.end(Math.round((state.found / state.totalDiffs) * 100)); // Bhava Tech auto-tracked
-          }
-        }
-        drawScene(lctx, state.scene, now, 'left');
-        drawScene(rctx, state.scene, now, 'right');
-        state.raf = requestAnimationFrame(loop);
-      }
-
-      function getCanvasPoint(event){
-        const rect = rightCanvas.getBoundingClientRect();
-        const x = (event.clientX - rect.left) * (rightCanvas.width / rect.width);
-        const y = (event.clientY - rect.top) * (rightCanvas.height / rect.height);
-        return {x,y,clientX:event.clientX,clientY:event.clientY};
-      }
-
-      function burst(clientX, clientY, good=true){
-        const rect = clickAreaWrap.getBoundingClientRect();
-        const ring = document.createElement('div');
-        ring.className = 'pop';
-        ring.style.left = `${clientX - rect.left}px`;
-        ring.style.top = `${clientY - rect.top}px`;
-        ring.style.borderColor = good ? 'rgba(255,255,255,.95)' : 'rgba(223,109,149,.95)';
-        clickAreaWrap.appendChild(ring);
-        for(let i=0;i<7;i++){
-          const s=document.createElement('div'); s.className='sparkle';
-          s.style.left=`${clientX - rect.left}px`; s.style.top=`${clientY - rect.top}px`;
-          s.style.background = good ? 'var(--color-secondary)' : 'var(--color-danger)';
-          s.style.setProperty('--dx', `${Math.cos((Math.PI*2*i)/7)*(22+Math.random()*18)}px`);
-          s.style.setProperty('--dy', `${Math.sin((Math.PI*2*i)/7)*(22+Math.random()*18)}px`);
-          clickAreaWrap.appendChild(s); setTimeout(()=>s.remove(), 820);
-        }
-        setTimeout(()=>ring.remove(), 600);
-      }
-
-      function handlePick(event){
-        ensureAudio();
-        if(state.paused) return;
-        const p = getCanvasPoint(event);
-        const hit = state.scene.selected.find(d => !state.found.has(d.id) && Math.hypot(d.cx - p.x, d.cy - p.y) <= d.radius);
-        if(hit){
-          state.found.add(hit.id);
-          renderList();
-          burst(p.clientX, p.clientY, true);
-          beep('good');
-          setMessage(`Found: ${hit.label}`, true);
-          if(state.found.size === state.scene.selected.length){
-            state.paused = true;
-            victoryOverlay.classList.add('show');
-            beep('win');
-            setMessage('All changes detected. A new procedural world is ready when you are.', true);
-          }
-        } else {
-          state.mistakes += 1;
-          mistakeValue.textContent = String(state.mistakes);
-          state.timerStart -= state.mode === 'focus' ? 3500 : 1800;
-          burst(p.clientX, p.clientY, false);
-          beep('bad');
-          setMessage('That area is unchanged. Slow down and compare edges.', false);
-        }
-      }
-
-      rightCanvas.addEventListener('pointerdown', handlePick);
-      newRoundBtn.addEventListener('click', ()=>startRound());
-      overlayNext.addEventListener('click', ()=>startRound());
-      overlayReplay.addEventListener('click', ()=>startRound(state.sameSeed));
-      modeToggle.addEventListener('click', ()=>{
-        state.mode = state.mode === 'calm' ? 'focus' : 'calm';
-        modeToggle.textContent = state.mode === 'calm' ? 'Calm Mode' : 'Focus Mode';
-        setMessage(state.mode === 'calm' ? 'Calm mode enabled: gentler timing and larger targets.' : 'Focus mode enabled: tighter timing and subtler hit zones.');
-        startRound();
-      });
-
-      window.addEventListener('keydown', (e)=>{
-        if(e.key.toLowerCase()==='n') startRound();
-        if(e.key.toLowerCase()==='r') startRound(state.sameSeed);
-      });
-
-      startRound();
-    })();
-  </script>
+buildParticles();
+buildHeroArt();
+updateHUD();
+setStatus('Choose a difficulty, then start.');
+</script>
 
   <!-- Bhava Tech Session Tracker -->
-  <script>document.title = "Visual Difference Detector";</script>
+  <script>document.title = "Visual Difference Detector V2";</script>
   <script src="bhava-session.js"></script>
 </body>
 </html>

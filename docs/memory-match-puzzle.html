@@ -237,7 +237,28 @@
       80%{transform:translateX(4px)}
     }
     .card.shake { animation: shake .4s ease; }
-  </style>
+  
+        /* ===== Bhava Layout Fix v2 ===================================
+           Prevents game buttons/options from being clipped at bottom.
+           ============================================================ */
+        body {
+            align-items: flex-start !important;
+            overflow-y: auto !important;
+            padding: 16px !important;
+        }
+        #iq-app, #app, #game-app, #quiz-app, #game-container,
+        #main-container, #container, #game-wrapper,
+        [id$="-app"], [id$="-game"], [id$="-container"] {
+            max-height: none !important;
+            overflow: visible !important;
+            overflow-y: visible !important;
+        }
+        .options, .choices, .answer-grid, .btn-grid,
+        .option-container, #option-container {
+            overflow: visible !important;
+        }
+        /* ============================================================ */
+        </style>
 
   <!-- Bhava Game Menu - Auto Injected -->
   <style>
@@ -509,7 +530,7 @@ function startGame(diff) {
 
 function restartGame() {
   stopTimer();
-      BhavaSession.end(G.score); // Bhava Tech auto-tracked
+      try { if (window.BhavaSession && typeof BhavaSession.end === 'function') { BhavaSession.end(G.score); } } catch(e) { console.warn('BhavaSession.end:', e.message); } // Bhava Tech auto-tracked
   const diff = DIFFICULTIES[G.difficulty];
   const picked = shuffle([...EMOJIS]).slice(0, diff.pairs);
   const cardData = shuffle([...picked, ...picked]);
