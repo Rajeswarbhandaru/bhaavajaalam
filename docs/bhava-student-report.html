@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhāva Tech — Student Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════════
+   Bhāva Tech · Student Report · Phase 1 Live
+   Palette: warm parchment + deep teal
+   Typography: Instrument Serif (display) + DM Sans (body)
+   ═══════════════════════════════════════════════ */
+
+:root, [data-theme="light"] {
+  --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+  --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+  --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
+  --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
+  --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
+
+  --space-1:0.25rem;--space-2:0.5rem;--space-3:0.75rem;--space-4:1rem;
+  --space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;
+  --space-12:3rem;--space-16:4rem;
+
+  --color-bg:             #f7f6f2;
+  --color-surface:        #f9f8f5;
+  --color-surface-2:      #fbfbf9;
+  --color-surface-offset: #f3f0ec;
+  --color-surface-offset-2: #edeae5;
+  --color-surface-dynamic: #e6e4df;
+  --color-divider:        #dcd9d5;
+  --color-border:         #d4d1ca;
+  --color-text:           #28251d;
+  --color-text-muted:     #6b6963;
+  --color-text-faint:     #bab9b4;
+  --color-text-inverse:   #f9f8f4;
+  --color-primary:        #01696f;
+  --color-primary-hover:  #0c4e54;
+  --color-primary-active: #0f3638;
+  --color-primary-highlight: #cedcd8;
+  --color-success:        #437a22;
+  --color-success-highlight: #d4dfcc;
+  --color-warning:        #964219;
+  --color-warning-highlight: #ddcfc6;
+  --color-error:          #a12c7b;
+  --color-error-highlight: #e0ced7;
+  --color-blue:           #006494;
+  --color-blue-highlight: #c6d8e4;
+  --color-gold:           #c28a00;
+  --color-gold-highlight: #e9e0c6;
+  --color-purple:         #6b2fa8;
+  --color-purple-highlight: #dacfde;
+  --color-orange:         #c45f00;
+  --color-orange-highlight: #e7d7c4;
+
+  --radius-sm:0.375rem;--radius-md:0.5rem;--radius-lg:0.75rem;
+  --radius-xl:1rem;--radius-full:9999px;
+  --transition-interactive:180ms cubic-bezier(0.16,1,0.3,1);
+  --shadow-sm:0 1px 2px oklch(0.2 0.01 80/.06);
+  --shadow-md:0 4px 12px oklch(0.2 0.01 80/.08);
+  --shadow-lg:0 12px 32px oklch(0.2 0.01 80/.12);
+  --content-wide:1200px;
+  --font-display:'Instrument Serif', Georgia, serif;
+  --font-body:'DM Sans', 'Helvetica Neue', sans-serif;
+
+  --cat-memory:    #006494;
+  --cat-logic:     #437a22;
+  --cat-language:  #6b2fa8;
+  --cat-math:      #c28a00;
+  --cat-social:    #a12c7b;
+  --cat-focus:     #c45f00;
+  --cat-iq:        #01696f;
+  --cat-habit:     #964219;
+  --cat-telugu:    #7a3800;
+}
+
+[data-theme="dark"] {
+  --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
+  --color-surface-offset:#1d1c1a;--color-surface-offset-2:#22211f;
+  --color-surface-dynamic:#2d2c2a;--color-divider:#262523;--color-border:#393836;
+  --color-text:#cdccca;--color-text-muted:#8c8b88;--color-text-faint:#5a5957;
+  --color-text-inverse:#2b2a28;
+  --color-primary:#4f98a3;--color-primary-hover:#227f8b;--color-primary-active:#1a626b;
+  --color-primary-highlight:#313b3b;
+  --color-success:#6daa45;--color-success-highlight:#3a4435;
+  --color-warning:#bb653b;--color-warning-highlight:#564942;
+  --color-error:#d163a7;--color-error-highlight:#4c3d46;
+  --color-blue:#5591c7;--color-blue-highlight:#3a4550;
+  --color-gold:#e8af34;--color-gold-highlight:#4d4332;
+  --color-purple:#a86fdf;--color-purple-highlight:#4e4652;
+  --color-orange:#fdab43;--color-orange-highlight:#564b3e;
+  --shadow-sm:0 1px 2px oklch(0 0 0/.2);
+  --shadow-md:0 4px 12px oklch(0 0 0/.3);
+  --shadow-lg:0 12px 32px oklch(0 0 0/.4);
+  --cat-memory:#5591c7;--cat-logic:#6daa45;--cat-language:#a86fdf;
+  --cat-math:#e8af34;--cat-social:#d163a7;--cat-focus:#fdab43;
+  --cat-iq:#4f98a3;--cat-habit:#bb653b;--cat-telugu:#c87040;
+}
+
+@media (prefers-color-scheme:dark){:root:not([data-theme]){
+  --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
+  --color-surface-offset:#1d1c1a;--color-surface-offset-2:#22211f;
+  --color-surface-dynamic:#2d2c2a;--color-divider:#262523;--color-border:#393836;
+  --color-text:#cdccca;--color-text-muted:#8c8b88;--color-text-faint:#5a5957;
+  --color-text-inverse:#2b2a28;
+  --color-primary:#4f98a3;--color-primary-hover:#227f8b;
+  --color-primary-highlight:#313b3b;
+  --color-success:#6daa45;--color-success-highlight:#3a4435;
+  --color-warning:#bb653b;--color-warning-highlight:#564942;
+  --color-error:#d163a7;--color-error-highlight:#4c3d46;
+  --color-blue:#5591c7;--color-blue-highlight:#3a4550;
+  --color-gold:#e8af34;--color-gold-highlight:#4d4332;
+  --color-purple:#a86fdf;--color-purple-highlight:#4e4652;
+  --color-orange:#fdab43;--color-orange-highlight:#564b3e;
+  --shadow-sm:0 1px 2px oklch(0 0 0/.2);
+  --shadow-md:0 4px 12px oklch(0 0 0/.3);
+  --shadow-lg:0 12px 32px oklch(0 0 0/.4);
+  --cat-memory:#5591c7;--cat-logic:#6daa45;--cat-language:#a86fdf;
+  --cat-math:#e8af34;--cat-social:#d163a7;--cat-focus:#fdab43;
+  --cat-iq:#4f98a3;--cat-habit:#bb653b;--cat-telugu:#c87040;
+}}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  scroll-behavior:smooth;scroll-padding-top:var(--space-16)}
+body{min-height:100dvh;line-height:1.6;font-family:var(--font-body);
+  font-size:var(--text-base);color:var(--color-text);background:var(--color-bg)}
+img,svg{display:block;max-width:100%}
+ul[role="list"],ol[role="list"]{list-style:none}
+input,button,textarea,select{font:inherit;color:inherit}
+h1,h2,h3,h4{text-wrap:balance;line-height:1.15}
+p{text-wrap:pretty;max-width:72ch}
+button{cursor:pointer;background:none;border:none}
+table{border-collapse:collapse;width:100%}
+a,button,[role="button"],input,select{
+  transition:color var(--transition-interactive),
+    background var(--transition-interactive),
+    border-color var(--transition-interactive),
+    box-shadow var(--transition-interactive)}
+:focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm)}
+::selection{background:oklch(from var(--color-primary) l c h/.25);color:var(--color-text)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{
+  animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
+
+/* ── LOADING STATE ── */
+.loading-state{
+  min-height:100dvh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:var(--space-4);
+  color:var(--color-text-muted)}
+.loading-spinner{
+  width:40px;height:40px;border:3px solid var(--color-divider);
+  border-top-color:var(--color-primary);border-radius:50%;
+  animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-state{
+  min-height:100dvh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:var(--space-3);
+  text-align:center;padding:var(--space-8)}
+.error-state h2{font-family:var(--font-display);font-style:italic;color:var(--color-error)}
+.error-state p{color:var(--color-text-muted);font-size:var(--text-sm)}
+
+/* ── LAYOUT ── */
+.app-shell{display:flex;flex-direction:column;min-height:100dvh}
+
+/* TOP NAV */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:color-mix(in oklch,var(--color-bg) 92%,transparent);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid oklch(from var(--color-text) l c h/.08);
+  padding:0 var(--space-6);
+  display:flex;align-items:center;justify-content:space-between;
+  height:56px;gap:var(--space-4)}
+
+.topbar-brand{display:flex;align-items:center;gap:var(--space-3);text-decoration:none;color:var(--color-text)}
+.topbar-brand-name{font-family:var(--font-display);font-size:var(--text-lg);font-style:italic;letter-spacing:-0.01em}
+.topbar-brand-sub{font-size:var(--text-xs);color:var(--color-text-muted);font-weight:500;text-transform:uppercase;letter-spacing:0.08em}
+
+.topbar-actions{display:flex;align-items:center;gap:var(--space-3)}
+.btn-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;
+  border-radius:var(--radius-md);color:var(--color-text-muted);
+  border:1px solid oklch(from var(--color-text) l c h/.1)}
+.btn-icon:hover{background:var(--color-surface-offset);color:var(--color-text)}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:var(--space-2);
+  padding:var(--space-2) var(--space-4);
+  background:var(--color-primary);color:var(--color-text-inverse);
+  border-radius:var(--radius-md);font-size:var(--text-sm);font-weight:500;
+  border:none;text-decoration:none}
+.btn-primary:hover{background:var(--color-primary-hover)}
+.btn-primary:active{background:var(--color-primary-active)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:var(--space-2);
+  padding:var(--space-2) var(--space-4);
+  background:var(--color-surface-offset);color:var(--color-text);
+  border-radius:var(--radius-md);font-size:var(--text-sm);font-weight:500;
+  border:1px solid oklch(from var(--color-text) l c h/.1);text-decoration:none}
+.btn-secondary:hover{background:var(--color-surface-dynamic)}
+
+/* MAIN CONTENT */
+.main-content{flex:1;max-width:var(--content-wide);width:100%;
+  margin-inline:auto;padding:var(--space-8) var(--space-6)}
+
+/* STUDENT HEADER CARD */
+.student-header{
+  background:var(--color-surface);
+  border:1px solid oklch(from var(--color-text) l c h/.08);
+  border-radius:var(--radius-xl);
+  padding:var(--space-6) var(--space-8);
+  display:grid;grid-template-columns:auto 1fr auto auto auto;gap:var(--space-6);
+  align-items:center;margin-bottom:var(--space-8);
+  box-shadow:var(--shadow-sm)}
+
+.student-avatar{
+  width:72px;height:72px;border-radius:var(--radius-full);
+  background:var(--color-primary-highlight);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:var(--text-xl);
+  color:var(--color-primary);font-weight:700;flex-shrink:0}
+
+.student-meta h1{font-family:var(--font-display);font-size:var(--text-xl);
+  font-style:italic;margin-bottom:var(--space-1)}
+.student-meta-row{display:flex;flex-wrap:wrap;gap:var(--space-3);
+  align-items:center;margin-top:var(--space-2)}
+.meta-badge{
+  font-size:var(--text-xs);font-weight:500;
+  padding:2px var(--space-2);border-radius:var(--radius-full);
+  background:var(--color-surface-offset);color:var(--color-text-muted);
+  border:1px solid oklch(from var(--color-text) l c h/.08)}
+.meta-badge.school{background:var(--color-primary-highlight);color:var(--color-primary)}
+
+/* IQ / EQ / SQ score rings */
+.score-ring-group{display:flex;gap:var(--space-5);flex-shrink:0;align-items:center}
+.student-score-ring{text-align:center;flex-shrink:0}
+.ring-label{font-size:var(--text-xs);color:var(--color-text-muted);
+  text-transform:uppercase;letter-spacing:0.08em;margin-top:var(--space-1)}
+
+.ring-canvas{position:relative;width:72px;height:72px;margin:0 auto}
+.ring-canvas canvas{width:72px!important;height:72px!important}
+.ring-number{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  font-size:var(--text-base);font-weight:700;color:var(--color-primary);
+  font-family:var(--font-display);line-height:1}
+.ring-number span{font-size:0.6rem;color:var(--color-text-muted);font-weight:400;font-family:var(--font-body)}
+.ring-iq  .ring-number{color:var(--color-purple)}
+.ring-eq  .ring-number{color:var(--color-error)}
+.ring-sq  .ring-number{color:var(--color-success)}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4);margin-bottom:var(--space-8)}
+.kpi-card{
+  background:var(--color-surface);
+  border:1px solid oklch(from var(--color-text) l c h/.08);
+  border-radius:var(--radius-lg);padding:var(--space-4) var(--space-5);
+  box-shadow:var(--shadow-sm)}
+.kpi-label{font-size:var(--text-xs);color:var(--color-text-muted);
+  text-transform:uppercase;letter-spacing:0.08em;margin-bottom:var(--space-1)}
+.kpi-value{font-size:var(--text-xl);font-family:var(--font-display);
+  font-weight:700;line-height:1.1;tabular-nums}
+.kpi-delta{font-size:var(--text-xs);margin-top:var(--space-1);font-weight:500}
+.kpi-delta.up{color:var(--color-success)}
+.kpi-delta.down{color:var(--color-error)}
+.kpi-delta.neutral{color:var(--color-text-muted)}
+
+/* SECTION TITLES */
+.section-title{font-size:var(--text-lg);font-family:var(--font-display);
+  font-style:italic;margin-bottom:var(--space-4);color:var(--color-text)}
+.section-row{display:grid;gap:var(--space-6);margin-bottom:var(--space-8)}
+.section-row.two-col{grid-template-columns:1fr 1fr}
+.section-row.three-col{grid-template-columns:2fr 1fr}
+
+/* CHART CARDS */
+.chart-card{
+  background:var(--color-surface);
+  border:1px solid oklch(from var(--color-text) l c h/.08);
+  border-radius:var(--radius-lg);padding:var(--space-5) var(--space-6);
+  box-shadow:var(--shadow-sm)}
+.chart-card-title{font-size:var(--text-base);font-weight:600;margin-bottom:var(--space-4)}
+.chart-card-title span{font-size:var(--text-xs);color:var(--color-text-muted);font-weight:400;margin-left:var(--space-2)}
+.chart-wrap{position:relative;height:220px}
+.chart-wrap.tall{height:280px}
+
+/* IQ / EQ / SQ breakdown cards */
+.quotient-section{margin-bottom:var(--space-8)}
+.quotient-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-5)}
+.quotient-card{
+  background:var(--color-surface);
+  border:1px solid oklch(from var(--color-text) l c h/.08);
+  border-radius:var(--radius-lg);padding:var(--space-5) var(--space-6);
+  box-shadow:var(--shadow-sm)}
+.quotient-card-header{
+  display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4);
+  padding-bottom:var(--space-3);border-bottom:1px solid var(--color-divider)}
+.quotient-badge{
+  font-size:var(--text-xs);font-weight:700;padding:3px 10px;
+  border-radius:var(--radius-full);text-transform:uppercase;letter-spacing:0.08em}
+.quotient-badge.iq{background:var(--color-purple-highlight);color:var(--color-purple)}
+.quotient-badge.eq{background:var(--color-error-highlight);color:var(--color-error)}
+.quotient-badge.sq{background:var(--color-success-highlight);color:var(--color-success)}
+.quotient-total{font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;margin-left:auto}
+.quotient-total.iq{color:var(--color-purple)}
+.quotient-total.eq{color:var(--color-error)}
+.quotient-total.sq{color:var(--color-success)}
+
+.dim-row{display:flex;flex-direction:column;gap:var(--space-3)}
+.dim-item{display:flex;flex-direction:column;gap:var(--space-1)}
+.dim-header{display:flex;justify-content:space-between;align-items:center}
+.dim-name{font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);text-transform:capitalize}
+.dim-score{font-size:var(--text-xs);font-weight:700;font-family:var(--font-display)}
+.dim-bar{height:5px;background:var(--color-surface-dynamic);border-radius:var(--radius-full);overflow:hidden}
+.dim-bar-fill{height:100%;border-radius:var(--radius-full);transition:width 1s cubic-bezier(0.16,1,0.3,1)}
+.dim-formula{font-size:0.65rem;color:var(--color-text-faint);margin-top:var(--space-2);font-style:italic;border-top:1px solid var(--color-divider);padding-top:var(--space-2)}
+
+/* GAME PERFORMANCE TABLE */
+.game-table-wrap{
+  background:var(--color-surface);
+  border:1px solid oklch(from var(--color-text) l c h/.08);
+  border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm)}
+.game-table-header{
+  padding:var(--space-4) var(--space-6);
+  border-bottom:1px solid var(--color-divider);
+  display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
+.game-table-header h2{font-size:var(--text-base);font-weight:600}
+.filter-pills{display:flex;gap:var(--space-2);flex-wrap:wrap}
+.pill{
+  font-size:var(--text-xs);font-weight:500;padding:3px var(--space-3);
+  border-radius:var(--radius-full);cursor:pointer;
+  border:1px solid oklch(from var(--color-text) l c h/.12);
+  background:transparent;color:var(--color-text-muted);
+  transition:all var(--transition-interactive)}
+.pill:hover{background:var(--color-surface-offset)}
+.pill.active{background:var(--color-primary);color:var(--color-text-inverse);border-color:var(--color-primary)}
+
+.game-table{width:100%}
+.game-table th{
+  font-size:var(--text-xs);font-weight:600;text-transform:uppercase;
+  letter-spacing:0.07em;color:var(--color-text-muted);
+  padding:var(--space-3) var(--space-4);
+  border-bottom:1px solid var(--color-divider);
+  background:var(--color-surface-offset);text-align:left}
+.game-table td{
+  padding:var(--space-3) var(--space-4);
+  border-bottom:1px solid oklch(from var(--color-text) l c h/.05);
+  font-size:var(--text-sm);vertical-align:middle}
+.game-table tbody tr:last-child td{border-bottom:none}
+.game-table tbody tr{transition:background var(--transition-interactive)}
+.game-table tbody tr:hover{background:var(--color-surface-offset)}
+
+.game-name-cell{display:flex;align-items:center;gap:var(--space-3)}
+.game-dot{width:8px;height:8px;border-radius:var(--radius-full);flex-shrink:0}
+.game-name-text{font-weight:500}
+
+.score-bar-wrap{display:flex;align-items:center;gap:var(--space-3);min-width:120px}
+.score-bar-bg{flex:1;height:6px;background:var(--color-surface-dynamic);border-radius:var(--radius-full);overflow:hidden}
+.score-bar-fill{height:100%;border-radius:var(--radius-full);transition:width 0.8s cubic-bezier(0.16,1,0.3,1)}
+.score-num{font-size:var(--text-xs);color:var(--color-text-muted);width:36px;text-align:right;font-weight:500;tabular-nums}
+
+.badge{display:inline-flex;align-items:center;
+  font-size:var(--text-xs);font-weight:500;padding:2px var(--space-2);
+  border-radius:var(--radius-full)}
+.badge-success{background:var(--color-success-highlight);color:var(--color-success)}
+.badge-warning{background:var(--color-warning-highlight);color:var(--color-warning)}
+.badge-error{background:var(--color-error-highlight);color:var(--color-error)}
+.badge-neutral{background:var(--color-surface-offset-2);color:var(--color-text-muted)}
+
+/* TIMELINE */
+.timeline-card{
+  background:var(--color-surface);
+  border:1px solid oklch(from var(--color-text) l c h/.08);
+  border-radius:var(--radius-lg);padding:var(--space-5) var(--space-6);
+  box-shadow:var(--shadow-sm)}
+.timeline-list{display:flex;flex-direction:column;gap:0}
+.timeline-item{
+  display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-4);
+  align-items:start;padding:var(--space-3) 0;
+  border-bottom:1px solid oklch(from var(--color-text) l c h/.05)}
+.timeline-item:last-child{border-bottom:none}
+.tl-dot-col{display:flex;flex-direction:column;align-items:center;padding-top:4px}
+.tl-dot{width:10px;height:10px;border-radius:var(--radius-full);flex-shrink:0}
+.tl-line{width:1px;flex:1;background:var(--color-divider);margin-top:4px;min-height:20px}
+.timeline-item:last-child .tl-line{display:none}
+.tl-game{font-size:var(--text-sm);font-weight:500}
+.tl-when{font-size:var(--text-xs);color:var(--color-text-muted)}
+.tl-score{font-size:var(--text-sm);font-weight:600;font-family:var(--font-display)}
+
+/* RECOMMENDATIONS */
+.reco-list{display:flex;flex-direction:column;gap:var(--space-3)}
+.reco-item{
+  display:flex;gap:var(--space-4);align-items:start;
+  padding:var(--space-4);
+  background:var(--color-surface-offset);
+  border-radius:var(--radius-md);
+  border:1px solid oklch(from var(--color-text) l c h/.06)}
+.reco-icon{width:36px;height:36px;border-radius:var(--radius-md);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  background:var(--color-surface);box-shadow:var(--shadow-sm)}
+.reco-title{font-size:var(--text-sm);font-weight:600;margin-bottom:2px}
+.reco-body{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.5}
+
+/* PRINT BANNER */
+.print-topbar{
+  display:none;padding:var(--space-4) var(--space-8);
+  align-items:center;justify-content:space-between;
+  border-bottom:2px solid var(--color-primary)}
+
+/* FOOTER */
+.report-footer{
+  border-top:1px solid var(--color-divider);
+  padding:var(--space-6) var(--space-6);
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:var(--text-xs);color:var(--color-text-muted)}
+
+/* DISCLAIMER */
+.disclaimer{
+  display:flex;gap:var(--space-3);align-items:flex-start;
+  max-width:var(--content-wide);
+  margin:var(--space-8) auto var(--space-6);
+  padding:var(--space-4) var(--space-5);
+  background:color-mix(in oklch,var(--color-warning) 7%,var(--color-surface));
+  border:1px solid color-mix(in oklch,var(--color-warning) 22%,transparent);
+  border-radius:var(--radius-lg);
+  color:var(--color-text-muted);font-size:var(--text-sm);line-height:1.6}
+.disclaimer svg{color:var(--color-warning)}
+.disclaimer strong{color:var(--color-text);font-weight:600}
+.disclaimer em{font-style:normal;font-weight:500;color:var(--color-text)}
+.disclaimer p{max-width:100%}
+
+/* FORMULA NOTE */
+.formula-note{
+  font-size:var(--text-xs);color:var(--color-text-faint);
+  margin-top:var(--space-2);font-style:italic}
+
+/* RESPONSIVE */
+@media(max-width:1100px){.quotient-grid{grid-template-columns:1fr}}
+@media(max-width:900px){
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .section-row.two-col,.section-row.three-col{grid-template-columns:1fr}
+  .student-header{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
+  .score-ring-group{grid-column:1/-1;justify-content:center}}
+@media(max-width:600px){
+  .main-content{padding:var(--space-5) var(--space-4)}
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .student-header{padding:var(--space-4)}
+  .topbar{padding:0 var(--space-4)}
+  .filter-pills{display:none}
+  .game-table th:nth-child(4),.game-table td:nth-child(4){display:none}
+  .game-table th:nth-child(5),.game-table td:nth-child(5){display:none}}
+
+/* PRINT */
+@media print{
+  .topbar,.btn-primary,.btn-secondary,.btn-icon,[data-theme-toggle],.filter-pills{display:none!important}
+  .print-topbar{display:flex!important}
+  body{background:#fff;color:#000}
+  .chart-card,.game-table-wrap,.quotient-card,.reco-item{break-inside:avoid}
+  .main-content{padding:0}
+  .disclaimer{border:1px solid #ccc;background:#fffdf7;color:#555;font-size:10pt}}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp 0.45s cubic-bezier(0.16,1,0.3,1) both}
+.fade-up-1{animation-delay:0.05s}.fade-up-2{animation-delay:0.1s}
+.fade-up-3{animation-delay:0.15s}.fade-up-4{animation-delay:0.2s}
+
+/* ── Capacity profile ──────────────────────────────────────────────────────── */
+.cap-profile-section {
+  margin: 32px 0 0;
+  background: var(--color-surface, #fff);
+  border-radius: var(--radius-lg, 12px);
+  border: 1px solid var(--color-border, #e5e7eb);
+  padding: 24px 28px;
+}
+.cap-profile-title {
+  font-size: 1rem; font-weight: 700;
+  color: var(--color-text, #111);
+  margin-bottom: 4px;
+}
+.cap-profile-sub {
+  font-size: 0.78rem;
+  color: var(--color-text-muted, #6b7280);
+  margin-bottom: 20px;
+}
+.cap-bar-row {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 14px;
+}
+.cap-bar-label {
+  width: 120px; flex-shrink: 0;
+  font-size: 0.82rem; font-weight: 600;
+  color: var(--color-text, #111);
+  display: flex; align-items: center; gap: 6px;
+}
+.cap-bar-wrap {
+  flex: 1; position: relative;
+  background: var(--color-border, #e5e7eb);
+  border-radius: 6px; height: 10px; overflow: hidden;
+}
+.cap-bar-fill {
+  height: 100%; border-radius: 6px;
+  transition: width 1s cubic-bezier(.22,1,.36,1);
+  width: 0%;
+}
+.cap-bar-score {
+  width: 56px; flex-shrink: 0;
+  font-size: 0.82rem; font-weight: 700;
+  text-align: right;
+}
+.cap-bar-level {
+  width: 100px; flex-shrink: 0;
+  font-size: 0.72rem;
+  color: var(--color-text-muted, #6b7280);
+}
+.cap-low-msg {
+  font-size: 0.78rem;
+  color: var(--color-text-muted, #6b7280);
+  background: var(--color-warning-highlight, #fffbeb);
+  border-radius: 8px; padding: 10px 14px;
+  margin-top: 8px;
+}
+.cap-disclaimer {
+  font-size: 0.72rem;
+  color: var(--color-text-muted, #6b7280);
+  margin-top: 16px; font-style: italic;
+}
+/* dark mode overrides */
+[data-theme="dark"] .cap-profile-section {
+  background: #1e2334; border-color: #2d3555;
+}
+[data-theme="dark"] .cap-bar-wrap { background: #2d3555; }
+[data-theme="dark"] .cap-low-msg  { background: rgba(245,158,11,0.08); color: #94a3b8; }
+
+</style>
+</head>
+<body>
+
+<a href="#main" class="sr-only">Skip to main content</a>
+
+<!-- PRINT HEADER -->
+<div class="print-topbar">
+  <div style="display:flex;align-items:center;gap:12px">
+    <svg aria-label="Bhāva Tech" width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <circle cx="14" cy="14" r="13" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M9 10 Q14 6 19 10 Q14 14 9 10Z" fill="currentColor" opacity="0.25"/>
+      <path d="M9 14 Q14 10 19 14 Q14 18 9 14Z" fill="currentColor" opacity="0.5"/>
+      <path d="M9 18 Q14 14 19 18 Q14 22 9 18Z" fill="currentColor"/>
+    </svg>
+    <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.2rem">Bhāva Tech</span>
+    <span style="font-size:0.75rem;color:#666;margin-left:8px">Student Cognitive Report</span>
+  </div>
+  <span id="print-date" style="font-size:0.75rem;color:#666"></span>
+</div>
+
+<!-- TOP NAVIGATION -->
+<header class="topbar" role="banner">
+  <a href="index.html" class="topbar-brand" aria-label="Bhāva Tech home">
+    <svg aria-hidden="true" width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="16" r="15" stroke="var(--color-primary)" stroke-width="1.5"/>
+      <path d="M10 11 Q16 7 22 11 Q16 15 10 11Z" fill="var(--color-primary)" opacity="0.25"/>
+      <path d="M10 16 Q16 12 22 16 Q16 20 10 16Z" fill="var(--color-primary)" opacity="0.55"/>
+      <path d="M10 21 Q16 17 22 21 Q16 25 10 21Z" fill="var(--color-primary)"/>
+    </svg>
+    <span>
+      <div class="topbar-brand-name">Bhāva Tech</div>
+      <div class="topbar-brand-sub">Student Report</div>
+    </span>
+  </a>
+  <div class="topbar-actions">
+    <button class="btn-secondary" id="backBtn" style="gap:6px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back
+    </button>
+    <button class="btn-icon" id="printBtn" aria-label="Print report" title="Print report">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+        <rect x="6" y="14" width="12" height="8"/>
+      </svg>
+    </button>
+    <button class="btn-icon" data-theme-toggle aria-label="Toggle dark mode">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <a href="index.html" class="btn-primary">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      Home
+    </a>
+  </div>
+</header>
+
+<!-- LOADING STATE (shown while data fetches) -->
+<div id="loadingState" class="loading-state">
+  <div class="loading-spinner"></div>
+  <p>Loading student report…</p>
+</div>
+
+<!-- ERROR STATE -->
+<div id="errorState" class="error-state" style="display:none">
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-error)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  <h2>Student Not Found</h2>
+  <p id="errorMsg">Could not load the report. Please check the student ID and try again.</p>
+  <a href="index.html" class="btn-primary" style="margin-top:16px">Go to Dashboard</a>
+</div>
+
+<!-- MAIN REPORT (hidden until data loads) -->
+<main id="main" class="main-content" style="display:none">
+
+  <!-- STUDENT IDENTITY HEADER -->
+  <section class="student-header fade-up" aria-label="Student profile">
+    <div class="student-avatar" id="studentAvatarInitials">?</div>
+    <div class="student-meta">
+      <h1 id="studentName">Loading…</h1>
+      <div class="student-meta-row">
+        <span class="meta-badge" id="studentRoll"></span>
+        <span class="meta-badge" id="studentGrade"></span>
+        <span class="meta-badge school" id="studentSchool"></span>
+        <span class="meta-badge" id="reportPeriod"></span>
+      </div>
+      <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-3);max-width:55ch" id="studentSummary"></p>
+    </div>
+    <!-- IQ / EQ / SQ rings -->
+    <div class="score-ring-group" aria-label="IQ, EQ, SQ scores">
+      <div class="student-score-ring">
+        <div class="ring-canvas ring-iq">
+          <canvas id="ringIQ" width="72" height="72" aria-label="IQ score"></canvas>
+          <div class="ring-number"><span id="iqNum">—</span><span>IQ</span></div>
+        </div>
+        <div class="ring-label">IQ</div>
+      </div>
+      <div class="student-score-ring">
+        <div class="ring-canvas ring-eq">
+          <canvas id="ringEQ" width="72" height="72" aria-label="EQ score"></canvas>
+          <div class="ring-number"><span id="eqNum">—</span><span>EQ</span></div>
+        </div>
+        <div class="ring-label">EQ</div>
+      </div>
+      <div class="student-score-ring">
+        <div class="ring-canvas ring-sq">
+          <canvas id="ringSQ" width="72" height="72" aria-label="SQ score"></canvas>
+          <div class="ring-number"><span id="sqNum">—</span><span>SQ</span></div>
+        </div>
+        <div class="ring-label">SQ</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KPI SUMMARY ROW -->
+  <section aria-label="Key performance indicators">
+    <div class="kpi-row">
+      <div class="kpi-card fade-up fade-up-1">
+        <div class="kpi-label">Games Played</div>
+        <div class="kpi-value" id="kpiGamesPlayed">—</div>
+        <div class="kpi-delta neutral" id="kpiGamesSub">Total sessions</div>
+      </div>
+      <div class="kpi-card fade-up fade-up-2">
+        <div class="kpi-label">Avg. Game Score</div>
+        <div class="kpi-value" id="kpiAvgScore">—</div>
+        <div class="kpi-delta neutral">Out of 100</div>
+      </div>
+      <div class="kpi-card fade-up fade-up-3">
+        <div class="kpi-label">Best Domain</div>
+        <div class="kpi-value" style="font-size:var(--text-lg)" id="kpiBestDomain">—</div>
+        <div class="kpi-delta neutral" id="kpiBestScore"></div>
+      </div>
+      <div class="kpi-card fade-up fade-up-4">
+        <div class="kpi-label">Needs Attention</div>
+        <div class="kpi-value" style="font-size:var(--text-lg)" id="kpiWeakDomain">—</div>
+        <div class="kpi-delta down" id="kpiWeakScore"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCORE TREND + RADAR -->
+  <div class="section-row two-col">
+    <div class="chart-card fade-up">
+      <div class="chart-card-title">Score Trend <span id="trendSubtitle">last sessions</span></div>
+      <div class="chart-wrap">
+        <canvas id="trendChart" aria-label="Score trend chart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card fade-up fade-up-1">
+      <div class="chart-card-title">Cognitive Radar <span>IQ sub-dimensions</span></div>
+      <div class="chart-wrap">
+        <canvas id="radarChart" aria-label="Cognitive radar chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- IQ / EQ / SQ BREAKDOWN -->
+  <h2 class="section-title fade-up">Quotient Breakdown</h2>
+  <p class="formula-note fade-up" style="margin-bottom:var(--space-5)">
+    IQ: Cattell-Horn-Carroll model (Logic 30%, Memory 30%, Attention 25%, Speed 15%) ·
+    EQ: Mayer-Salovey-Caruso model (Empathy 25%, Communication 20%, Balance 20%, Confidence 20%, Self-Awareness 15%) ·
+    SQ: Goleman model (Cooperation 30%, Social Awareness 25%, Leadership 25%, Conflict Resolution 20%)
+  </p>
+  <div class="quotient-grid fade-up" id="quotientGrid">
+    <!-- filled by JS -->
+  </div>
+
+  <!-- GAME SESSION TREND + TIMELINE -->
+  <div class="section-row three-col" style="margin-top:var(--space-8)">
+    <div class="chart-card fade-up">
+      <div class="chart-card-title">Games by Category <span>session count</span></div>
+      <div class="chart-wrap tall">
+        <canvas id="barChart" aria-label="Games per category bar chart"></canvas>
+      </div>
+    </div>
+    <div class="timeline-card fade-up fade-up-1">
+      <h2 class="chart-card-title" style="margin-bottom:var(--space-3)">Recent Activity</h2>
+      <div class="timeline-list" id="timelineList"></div>
+    </div>
+  </div>
+
+  <!-- ALL GAMES TABLE -->
+  <section aria-label="All games performance" style="margin-bottom:var(--space-8)">
+    <div class="game-table-wrap fade-up">
+      <div class="game-table-header">
+        <h2>All Games Performance</h2>
+        <div class="filter-pills" id="filterPills" role="group" aria-label="Filter by domain">
+          <button class="pill active" data-cat="all">All</button>
+          <button class="pill" data-cat="IQ">IQ</button>
+          <button class="pill" data-cat="EQ">EQ</button>
+          <button class="pill" data-cat="SQ">SQ</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="game-table" id="gamesTable">
+          <thead>
+            <tr>
+              <th scope="col">Game</th>
+              <th scope="col">Domain</th>
+              <th scope="col">Avg Score</th>
+              <th scope="col">Sessions</th>
+              <th scope="col">Last Played</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody id="gamesTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECOMMENDATIONS -->
+  <div class="section-row two-col" style="margin-bottom:var(--space-8)">
+    <div>
+      <h2 class="section-title fade-up">Recommendations</h2>
+      <div class="reco-list fade-up" id="recoList"></div>
+    </div>
+    <div class="chart-card fade-up fade-up-1" style="align-self:start">
+      <div class="chart-card-title">Time by Domain <span>minutes played</span></div>
+      <div class="chart-wrap">
+        <canvas id="donutChart" aria-label="Time by domain donut chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+
+<!-- ══ CAPACITY PROFILE ══════════════════════════════════════════════════ -->
+<div class="cap-profile-section fade-up" id="capProfileSection" style="display:none">
+  <div class="cap-profile-title">🧩 Cognitive Capacity Profile</div>
+  <div class="cap-profile-sub" id="capProfileSub">Based on your game sessions</div>
+
+  <div id="capBarsWrap"></div>
+
+  <div class="cap-low-msg" id="capLowMsg" style="display:none">
+    🎮 Play more games to build a fuller profile — each game strengthens a different capacity.
+  </div>
+  <div class="cap-disclaimer">
+    * These scores are Bhāva's proprietary algorithmic estimates based on in-game performance.
+    They are not clinically validated assessments and should be read as general indicators only.
+  </div>
+</div>
+
+</main>
+
+<!-- DISCLAIMER -->
+<aside class="disclaimer" id="disclaimerBox" role="note" aria-label="Report disclaimer" style="display:none">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  <p><strong>Disclaimer:</strong> This report reflects activity scores generated by Bhāva Tech's learning platform and is intended purely as a <em>progress indicator</em>. The scores are algorithmic estimates based on in-game performance and do not represent any clinically validated cognitive assessment. Results may vary across sessions and should not be used to label, rank, or make definitive judgments about a child's intelligence or potential. Please interpret this report with care, in conversation with the child's teachers and parents.</p>
+</aside>
+
+<footer class="report-footer" id="reportFooter" style="display:none">
+  <span>Bhāva Tech · Cognitive Report · <span id="footerDate"></span></span>
+  <span id="footerStudent"></span>
+</footer>
+
+<script>
+/* ═══════════════════════════════
+   THEME TOGGLE
+   ═══════════════════════════════ */
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  function setIcon(){
+    if(!t)return;
+    t.innerHTML=d==='dark'
+      ?'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      :'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+  setIcon();
+  t&&t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    setIcon();
+    if(window._rebuildCharts) window._rebuildCharts();
+  });
+})();
+
+/* DATE HELPERS */
+const now=new Date();
+const fmtDate=d=>d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+const _fd=document.getElementById('footerDate');if(_fd)_fd.textContent=fmtDate(now);
+const _pd=document.getElementById('print-date');if(_pd)_pd.textContent=fmtDate(now);
+
+/* ═══════════════════════════════
+   GAME → DOMAIN CLASSIFIER
+   Maps game names to IQ/EQ/SQ display domain for the table filter
+   ═══════════════════════════════ */
+const GAME_DOMAIN = {
+  'Memory Match Puzzle':'IQ','Memory Zoo Puzzle':'IQ','Memory Match Ultimate':'IQ',
+  'NeuroFlash Memory':'IQ','Logic Grid Puzzle':'IQ','Logic':'IQ',
+  'Visual Difference Detector':'IQ','Mental Rotation':'IQ',
+  'Grammar Galaxy':'IQ','Grammar Pro':'IQ','Imaginia Quest':'IQ','Telugu Script Game':'IQ',
+  'Math Blitz':'IQ','Number Garden Quest':'IQ','Percentile Game':'IQ',
+  'Focus Under Distraction':'IQ','Brain Garden':'IQ',
+  'Bhaava Brain Quest':'IQ','NeuroSpark':'IQ','Neuro-Ascend IQ':'IQ',
+  'MindScape Pro':'IQ','MindSpark IQ':'IQ','IQ Test Level 3':'IQ',
+  'MathBlitz IQ Mode':'IQ','Form 1 Integrated':'IQ',
+  'Empathy Quest':'EQ','Empathical Conversation':'EQ','Heart Heroes':'EQ',
+  'Good Habits':'EQ','Calm Zone':'EQ','Day Super Hero':'EQ','DayHero Game':'EQ',
+  'Planet Guardians':'SQ',
+};
+function domainOf(name){return GAME_DOMAIN[name]||'IQ';}
+
+const DOMAIN_COLORS={
+  'IQ':'var(--color-purple)',
+  'EQ':'var(--color-error)',
+  'SQ':'var(--color-success)',
+};
+
+/* ═══════════════════════════════
+   SCORE HELPERS
+   ═══════════════════════════════ */
+// Convert scaled (60–160) back to display percentage for bars
+// The 60–160 range → normalize to 0–100 for display
+function scaleToDisplay(v){
+  if(!v||v===0)return 0;
+  return Math.round(Math.min(100,Math.max(0,(v-60)/100*100)));
+}
+
+function scoreLabel(v){
+  if(!v||v===0)return '<span class="badge badge-neutral">No data</span>';
+  if(v>=130)return '<span class="badge badge-success">Excellent</span>';
+  if(v>=110)return '<span class="badge badge-success">Above Avg</span>';
+  if(v>=90) return '<span class="badge badge-warning">Average</span>';
+  return '<span class="badge badge-error">Developing</span>';
+}
+
+function rawScoreStatus(s){
+  if(s>=80)return '<span class="badge badge-success">Strong</span>';
+  if(s>=60)return '<span class="badge badge-warning">Developing</span>';
+  return '<span class="badge badge-error">Needs Work</span>';
+}
+
+/* ═══════════════════════════════
+   MAIN DATA LOAD
+   ═══════════════════════════════ */
+document.addEventListener('DOMContentLoaded', async function boot(){
+
+  /* Button wiring */
+  document.getElementById('printBtn').addEventListener('click',()=>window.print());
+  document.getElementById('backBtn').addEventListener('click',()=>{
+    window.history.length>1?window.history.back():window.location.href='index.html';
+  });
+
+  /* Resolve student ID from URL: ?sid=... */
+  const params = new URLSearchParams(window.location.search);
+  const sid    = params.get('sid') || params.get('studentId') || params.get('roll') || null;
+
+  if(!sid){
+    showError('No student ID in URL. Use ?sid=ROLL_NUMBER to open a report.');
+    return;
+  }
+
+  /* Check IPC availability */
+  if(!window.bhava || typeof window.bhava.getStudentReport !== 'function'){
+    showError('Bhāva IPC not available. Please open this report from inside the Electron app.');
+    return;
+  }
+
+  let data;
+  try {
+    data = await window.bhava.getStudentReport(sid);
+  } catch(e){
+    showError('Failed to load report: ' + e.message);
+    return;
+  }
+
+  if(!data || data.error || !data.student){
+    showError(data?.error || 'Student not found for ID: ' + sid);
+    return;
+  }
+
+  renderReport(data);
+  renderCapacityProfile(sid);
+});
+
+/* ═══════════════════════════════
+   SHOW / HIDE STATES
+   ═══════════════════════════════ */
+function showError(msg){
+  document.getElementById('loadingState').style.display='none';
+  document.getElementById('errorState').style.display='flex';
+  document.getElementById('errorMsg').textContent=msg;
+}
+
+function showReport(){
+  document.getElementById('loadingState').style.display='none';
+  document.getElementById('main').style.display='';
+  document.getElementById('disclaimerBox').style.display='';
+  document.getElementById('reportFooter').style.display='';
+}
+
+/* ═══════════════════════════════
+   RENDER EVERYTHING
+   ═══════════════════════════════ */
+function renderReport(data){
+  const {student, quotients, sessions, trend, gameSummary} = data;
+  const q = quotients || {};
+
+  /* ── Student header ── */
+  const initials = (student.name||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('studentAvatarInitials').textContent = initials;
+  document.getElementById('studentName').textContent = student.name || '—';
+  document.getElementById('studentRoll').textContent = 'Roll No: ' + (student.roll_no||'—');
+  document.getElementById('studentGrade').textContent = 'Class ' + (student.class||'—') + (student.section?' '+student.section:'');
+  document.getElementById('studentSchool').textContent = student.school_name || '—';
+  document.getElementById('reportPeriod').textContent = 'Report: ' + new Date().toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+  document.getElementById('footerStudent').textContent = student.name + ' · Roll ' + student.roll_no + ' · Class ' + student.class;
+
+  const iqTotal = q.iq_total||0;
+  const eqTotal = q.eq_total||0;
+  const sqTotal = q.sq_total||0;
+
+  document.getElementById('iqNum').textContent = iqTotal||'—';
+  document.getElementById('eqNum').textContent = eqTotal||'—';
+  document.getElementById('sqNum').textContent = sqTotal||'—';
+
+  /* Summary paragraph */
+  const bestQ = [['IQ',iqTotal],['EQ',eqTotal],['SQ',sqTotal]].filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1])[0];
+  const weakQ = [['IQ',iqTotal],['EQ',eqTotal],['SQ',sqTotal]].filter(x=>x[1]>0).sort((a,b)=>a[1]-b[1])[0];
+  const summaryText = sessions.length === 0
+    ? student.name.split(' ')[0] + ' has not played any games yet. Encourage them to start!'
+    : student.name.split(' ')[0] + ' has completed ' + q.total_sessions + ' game sessions.'
+      + (bestQ ? ' Strongest in ' + bestQ[0] + ' (' + bestQ[1] + ').' : '')
+      + (weakQ && weakQ !== bestQ ? ' Room to grow in ' + weakQ[0] + ' (' + weakQ[1] + ').' : '');
+  document.getElementById('studentSummary').textContent = summaryText;
+
+  /* ── KPI row ── */
+  document.getElementById('kpiGamesPlayed').textContent = q.total_sessions||0;
+  const avgRaw = sessions.length
+    ? Math.round(sessions.reduce((s,x)=>s+x.raw_score,0)/sessions.length) : 0;
+  document.getElementById('kpiAvgScore').textContent = avgRaw ? avgRaw + '%' : '—';
+
+  if(bestQ){
+    document.getElementById('kpiBestDomain').textContent = bestQ[0];
+    document.getElementById('kpiBestScore').textContent = bestQ[1] + ' / 160';
+  }
+  if(weakQ){
+    document.getElementById('kpiWeakDomain').textContent = weakQ[0];
+    document.getElementById('kpiWeakScore').textContent = '↓ ' + weakQ[1] + ' / 160';
+  }
+
+  /* ── Quotient breakdown cards ── */
+  buildQuotientGrid(q);
+
+  /* ── Game table ── */
+  buildGameTable(gameSummary, 'all');
+
+  /* ── Timeline ── */
+  buildTimeline(sessions.slice(0,8));
+
+  /* ── Recommendations ── */
+  buildRecos(q, gameSummary);
+
+  /* ── Charts ── */
+  document.getElementById('trendSubtitle').textContent = 'last ' + trend.length + ' sessions';
+  document.fonts.ready.then(()=>buildCharts(q, trend, gameSummary, sessions));
+
+  /* Filter pills */
+  document.getElementById('filterPills').addEventListener('click',e=>{
+    const pill=e.target.closest('.pill');
+    if(!pill)return;
+    document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+    pill.classList.add('active');
+    buildGameTable(gameSummary, pill.dataset.cat);
+  });
+
+  showReport();
+}
+
+/* ═══════════════════════════════
+   QUOTIENT BREAKDOWN GRID
+   ═══════════════════════════════ */
+function buildQuotientGrid(q){
+  const grid = document.getElementById('quotientGrid');
+
+  const cards = [
+    {
+      key:'iq', label:'Intelligence Quotient', badge:'iq',
+      total: q.iq_total||0,
+      dims:[
+        {name:'Logic & Reasoning', val:q.iq_logic||0,        weight:'30%', color:'var(--color-purple)'},
+        {name:'Memory & Recall',   val:q.iq_memory||0,       weight:'30%', color:'var(--color-blue)'},
+        {name:'Attention & Focus', val:q.iq_attention||0,    weight:'25%', color:'var(--color-orange)'},
+        {name:'Processing Speed',  val:q.iq_processing_speed||0, weight:'15%', color:'var(--color-gold)'},
+      ],
+      formula:'CHC Theory (McGrew 2009): Logic×0.30 + Memory×0.30 + Attention×0.25 + Speed×0.15'
+    },
+    {
+      key:'eq', label:'Emotional Quotient', badge:'eq',
+      total: q.eq_total||0,
+      dims:[
+        {name:'Empathy',            val:q.eq_empathy||0,           weight:'25%', color:'var(--color-error)'},
+        {name:'Communication',      val:q.eq_communication||0,     weight:'20%', color:'var(--color-social,var(--color-error))'},
+        {name:'Emotional Balance',  val:q.eq_emotional_balance||0, weight:'20%', color:'var(--color-success)'},
+        {name:'Confidence',         val:q.eq_confidence||0,        weight:'20%', color:'var(--color-gold)'},
+        {name:'Self-Awareness',     val:q.eq_self_awareness||0,    weight:'15%', color:'var(--color-primary)'},
+      ],
+      formula:'MSCEIT Model (Mayer, Salovey & Caruso 2004): Empathy×0.25 + Comm×0.20 + Balance×0.20 + Confidence×0.20 + Self-Awareness×0.15'
+    },
+    {
+      key:'sq', label:'Social Quotient', badge:'sq',
+      total: q.sq_total||0,
+      dims:[
+        {name:'Cooperation',         val:q.sq_cooperation||0,         weight:'30%', color:'var(--color-success)'},
+        {name:'Social Awareness',    val:q.sq_social_awareness||0,    weight:'25%', color:'var(--color-blue)'},
+        {name:'Leadership Basics',   val:q.sq_leadership||0,          weight:'25%', color:'var(--color-purple)'},
+        {name:'Conflict Resolution', val:q.sq_conflict_resolution||0, weight:'20%', color:'var(--color-warning)'},
+      ],
+      formula:'Goleman (2006) + Bar-On & Parker (2000): Cooperation×0.30 + Social Awareness×0.25 + Leadership×0.25 + Conflict Res.×0.20'
+    },
+  ];
+
+  grid.innerHTML = '';
+  cards.forEach(card=>{
+    const activeDims = card.dims.filter(d=>d.val>0);
+    const dimHtml = card.dims.map(d=>{
+      const pct = scaleToDisplay(d.val);
+      return `<div class="dim-item">
+        <div class="dim-header">
+          <span class="dim-name">${d.name} <span style="color:var(--color-text-faint);font-weight:400">(${d.weight})</span></span>
+          <span class="dim-score" style="color:${d.color}">${d.val>0?d.val:'—'}</span>
+        </div>
+        <div class="dim-bar">
+          <div class="dim-bar-fill" style="width:${pct}%;background:${d.color}"></div>
+        </div>
+      </div>`;
+    }).join('');
+
+    const el = document.createElement('div');
+    el.className = 'quotient-card fade-up';
+    el.innerHTML = `
+      <div class="quotient-card-header">
+        <span class="quotient-badge ${card.badge}">${card.label}</span>
+        <span class="quotient-total ${card.badge}">${card.total>0?card.total:'—'}<span style="font-size:0.6em;font-weight:400;color:var(--color-text-muted)"> /160</span></span>
+      </div>
+      <div class="dim-row">${dimHtml}</div>
+      <div class="dim-formula">${card.formula}</div>`;
+    grid.appendChild(el);
+  });
+}
+
+/* ═══════════════════════════════
+   TIMELINE
+   ═══════════════════════════════ */
+function buildTimeline(recentSessions){
+  const list = document.getElementById('timelineList');
+  list.innerHTML = '';
+  if(!recentSessions.length){
+    list.innerHTML='<div style="padding:var(--space-4);color:var(--color-text-muted);font-size:var(--text-sm)">No sessions yet.</div>';
+    return;
+  }
+  recentSessions.forEach(s=>{
+    const dom = domainOf(s.game_name);
+    const color = DOMAIN_COLORS[dom]||'var(--color-primary)';
+    const dateStr = s.started_at
+      ? new Date(s.started_at).toLocaleDateString('en-IN',{day:'numeric',month:'short'})
+      : '—';
+    const el = document.createElement('div');
+    el.className = 'timeline-item';
+    el.innerHTML = `
+      <div class="tl-dot-col">
+        <div class="tl-dot" style="background:${color}"></div>
+        <div class="tl-line"></div>
+      </div>
+      <div>
+        <div class="tl-game">${s.game_name||'Game'}</div>
+        <div class="tl-when">${dom} · ${dateStr}</div>
+      </div>
+      <div class="tl-score" style="color:${color}">${s.raw_score??'—'}</div>`;
+    list.appendChild(el);
+  });
+}
+
+/* ═══════════════════════════════
+   GAME TABLE
+   ═══════════════════════════════ */
+function buildGameTable(gameSummary, filterCat){
+  const tbody = document.getElementById('gamesTableBody');
+  tbody.innerHTML = '';
+  if(!gameSummary||!gameSummary.length){
+    tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--color-text-muted)">No games played yet.</td></tr>';
+    return;
+  }
+  const filtered = filterCat==='all'?gameSummary:gameSummary.filter(g=>domainOf(g.game_name)===filterCat);
+  filtered.forEach(g=>{
+    const dom = domainOf(g.game_name);
+    const color = DOMAIN_COLORS[dom]||'var(--color-primary)';
+    const pct = g.avg_score;
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-cat', dom);
+    tr.innerHTML=`
+      <td>
+        <div class="game-name-cell">
+          <div class="game-dot" style="background:${color}"></div>
+          <div class="game-name-text">${g.game_name}</div>
+        </div>
+      </td>
+      <td><span style="font-size:var(--text-xs);font-weight:600;padding:2px 8px;border-radius:999px;
+        background:color-mix(in oklch,${color} 14%,var(--color-surface));color:${color}">${dom}</span></td>
+      <td>
+        <div class="score-bar-wrap">
+          <div class="score-bar-bg">
+            <div class="score-bar-fill" style="width:${pct}%;background:${color}"></div>
+          </div>
+          <span class="score-num">${pct}%</span>
+        </div>
+      </td>
+      <td style="text-align:center;font-size:var(--text-sm)">${g.sessions}</td>
+      <td style="font-size:var(--text-xs);color:var(--color-text-muted)">${g.last_played}</td>
+      <td>${rawScoreStatus(g.avg_score)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+/* ═══════════════════════════════
+   RECOMMENDATIONS
+   ═══════════════════════════════ */
+function buildRecos(q, gameSummary){
+  const list = document.getElementById('recoList');
+  const recos = [];
+
+  // IQ
+  if(q.iq_total>0&&q.iq_total<90)
+    recos.push({icon:'🧠',title:'Boost IQ with daily logic & memory games',
+      body:'IQ score is in the developing range. 10 minutes of Logic Grid or Memory Match daily can improve fluid reasoning within 3–4 weeks.'});
+  if(q.iq_logic>0&&q.iq_logic<90)
+    recos.push({icon:'📐',title:'Logic & Reasoning needs practice',
+      body:'Logic sub-score is below average. Games like Logic Grid Puzzle and IQ Test Level 3 specifically target this dimension.'});
+  if(q.iq_memory>0&&q.iq_memory>=110)
+    recos.push({icon:'⭐',title:'Excellent memory — keep it up!',
+      body:'Memory sub-score is above average. Continue Memory Match Ultimate to maintain this strength.'});
+
+  // EQ
+  if(q.eq_total>0&&q.eq_total<90)
+    recos.push({icon:'💬',title:'Build emotional intelligence',
+      body:'EQ score is developing. Empathy Quest and Heart Heroes are great games to strengthen emotional understanding.'});
+  if(q.eq_empathy>0&&q.eq_empathy>=110)
+    recos.push({icon:'💛',title:'Strong empathy — social strength!',
+      body:'Empathy sub-score is high. This child is likely a natural collaborator. Channel this into leadership activities.'});
+
+  // SQ
+  if(q.sq_total>0&&q.sq_total<90)
+    recos.push({icon:'🤝',title:'Social skills need encouragement',
+      body:'SQ score is developing. Planet Guardians and Day Super Hero build cooperation and social awareness.'});
+
+  // Game-based (weakest game)
+  if(gameSummary&&gameSummary.length){
+    const weakest = gameSummary.filter(g=>g.sessions>=2).sort((a,b)=>a.avg_score-b.avg_score)[0];
+    if(weakest&&weakest.avg_score<60)
+      recos.push({icon:'🎯',title:'Focus on ' + weakest.game_name,
+        body:'This game has the lowest average score (' + weakest.avg_score + '/100). Regular practice here will show the fastest improvement.'});
+  }
+
+  // No data
+  if(recos.length===0)
+    recos.push({icon:'🚀',title:'Great start — keep playing!',
+      body:'Play more games across all categories to build a complete cognitive profile and get personalised recommendations.'});
+
+  list.innerHTML = '';
+  recos.slice(0,4).forEach(r=>{
+    const el = document.createElement('div');
+    el.className = 'reco-item';
+    el.innerHTML=`
+      <div class="reco-icon" aria-hidden="true" style="font-size:1.1rem">${r.icon}</div>
+      <div>
+        <div class="reco-title">${r.title}</div>
+        <div class="reco-body">${r.body}</div>
+      </div>`;
+    list.appendChild(el);
+  });
+}
+
+/* ═══════════════════════════════
+   CHARTS
+   ═══════════════════════════════ */
+let _charts=[];
+function destroyCharts(){_charts.forEach(c=>{try{c.destroy()}catch(e){}});_charts=[];}
+
+function getCSSVar(name){
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function buildCharts(q, trend, gameSummary, sessions){
+  destroyCharts();
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  const textMuted = getCSSVar('--color-text-muted');
+  const border    = getCSSVar('--color-border');
+  const surface   = getCSSVar('--color-surface');
+  const primary   = getCSSVar('--color-primary');
+  const purple    = getCSSVar('--color-purple');
+  const errorC    = getCSSVar('--color-error');
+  const success   = getCSSVar('--color-success');
+
+  const baseFont = {family:"'DM Sans',sans-serif", size:11};
+  Chart.defaults.font = baseFont;
+  Chart.defaults.color = textMuted;
+
+  /* ── IQ RING ── */
+  function makeRing(canvasId, value, color){
+    const ctx = document.getElementById(canvasId);
+    if(!ctx)return;
+    const pct = scaleToDisplay(value);
+    const c = new Chart(ctx.getContext('2d'),{
+      type:'doughnut',
+      data:{datasets:[{
+        data:[pct, 100-pct],
+        backgroundColor:[color, isDark?'#2d2c2a':'#e6e4df'],
+        borderWidth:0,borderRadius:3
+      }]},
+      options:{cutout:'74%',responsive:false,
+        plugins:{legend:{display:false},tooltip:{enabled:false}},
+        animation:{duration:1000,easing:'easeOutQuart'}}
+    });
+    _charts.push(c);
+  }
+  makeRing('ringIQ', q.iq_total||0, purple);
+  makeRing('ringEQ', q.eq_total||0, errorC);
+  makeRing('ringSQ', q.sq_total||0, success);
+
+  /* ── TREND LINE ── */
+  if(trend&&trend.length){
+    const trendCtx = document.getElementById('trendChart').getContext('2d');
+    const grad = trendCtx.createLinearGradient(0,0,0,200);
+    grad.addColorStop(0,primary+'44');grad.addColorStop(1,primary+'00');
+    const trendChart = new Chart(trendCtx,{
+      type:'line',
+      data:{
+        labels: trend.map(t=>t.label),
+        datasets:[{
+          data: trend.map(t=>t.score),
+          borderColor:primary,borderWidth:2,pointRadius:4,pointHoverRadius:6,
+          pointBackgroundColor:primary,pointBorderColor:surface,pointBorderWidth:2,
+          fill:true,backgroundColor:grad,tension:0.4
+        }]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        scales:{
+          x:{grid:{color:border+'55'},ticks:{font:baseFont,color:textMuted}},
+          y:{min:0,max:100,grid:{color:border+'55'},ticks:{font:baseFont,color:textMuted,stepSize:20}}
+        },
+        plugins:{legend:{display:false},tooltip:{
+          backgroundColor:isDark?'#1c1b19':'#fff',
+          titleColor:getCSSVar('--color-text'),bodyColor:textMuted,
+          borderColor:border,borderWidth:1,padding:10,
+          callbacks:{
+            label:ctx=>` Score: ${ctx.raw}`,
+            title:items=>trend[items[0].dataIndex]?.game||items[0].label
+          }
+        }}
+      }
+    });
+    _charts.push(trendChart);
+  }
+
+  /* ── RADAR (IQ sub-dims) ── */
+  const radarDims = ['Logic','Memory','Attention','Speed'];
+  const radarVals = [
+    scaleToDisplay(q.iq_logic||0),
+    scaleToDisplay(q.iq_memory||0),
+    scaleToDisplay(q.iq_attention||0),
+    scaleToDisplay(q.iq_processing_speed||0),
+  ];
+  if(radarVals.some(v=>v>0)){
+    const radarCtx = document.getElementById('radarChart').getContext('2d');
+    const radarChart = new Chart(radarCtx,{
+      type:'radar',
+      data:{
+        labels:radarDims,
+        datasets:[{
+          data:radarVals,
+          backgroundColor:purple+'22',
+          borderColor:purple,borderWidth:2,
+          pointBackgroundColor:purple,
+          pointRadius:5,pointHoverRadius:7
+        }]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        scales:{r:{min:0,max:100,
+          grid:{color:border+'66'},
+          angleLines:{color:border+'44'},
+          pointLabels:{font:{...baseFont,size:11},color:textMuted},
+          ticks:{stepSize:25,display:false}}},
+        plugins:{legend:{display:false}}
+      }
+    });
+    _charts.push(radarChart);
+  }
+
+  /* ── BAR (sessions per domain) ── */
+  if(gameSummary&&gameSummary.length){
+    const domainCounts = {IQ:0,EQ:0,SQ:0};
+    gameSummary.forEach(g=>{domainCounts[domainOf(g.game_name)]=(domainCounts[domainOf(g.game_name)]||0)+g.sessions;});
+    const barLabels = Object.keys(domainCounts);
+    const barColors = [purple, errorC, success];
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    const barChart = new Chart(barCtx,{
+      type:'bar',
+      data:{
+        labels:barLabels,
+        datasets:[{
+          data:barLabels.map(k=>domainCounts[k]),
+          backgroundColor:barColors,
+          borderRadius:4,borderSkipped:false
+        }]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,indexAxis:'y',
+        scales:{
+          x:{grid:{color:border+'55'},ticks:{font:baseFont,color:textMuted}},
+          y:{grid:{display:false},ticks:{font:baseFont,color:textMuted}}
+        },
+        plugins:{legend:{display:false}}
+      }
+    });
+    _charts.push(barChart);
+  }
+
+  /* ── DONUT (time by domain) ── */
+  if(sessions&&sessions.length){
+    const domainMins = {IQ:0,EQ:0,SQ:0};
+    sessions.forEach(s=>{
+      const dom = domainOf(s.game_name);
+      domainMins[dom] = (domainMins[dom]||0) + (s.duration_minutes||0);
+    });
+    const donutLabels = Object.keys(domainMins).filter(k=>domainMins[k]>0);
+    if(donutLabels.length){
+      const donutColors = donutLabels.map(k=>({IQ:purple,EQ:errorC,SQ:success}[k]));
+      const donutCtx = document.getElementById('donutChart').getContext('2d');
+      const donutChart = new Chart(donutCtx,{
+        type:'doughnut',
+        data:{
+          labels:donutLabels,
+          datasets:[{
+            data:donutLabels.map(k=>Math.round(domainMins[k])),
+            backgroundColor:donutColors,
+            borderWidth:2,borderColor:surface,hoverOffset:6
+          }]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,cutout:'58%',
+          plugins:{
+            legend:{position:'bottom',labels:{font:{...baseFont,size:11},color:textMuted,
+              boxWidth:10,padding:12,usePointStyle:true,pointStyleWidth:8}},
+            tooltip:{
+              backgroundColor:isDark?'#1c1b19':'#fff',
+              titleColor:getCSSVar('--color-text'),bodyColor:textMuted,
+              borderColor:border,borderWidth:1,padding:10,
+              callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} min`}
+            }
+          }
+        }
+      });
+      _charts.push(donutChart);
+    }
+  }
+}
+
+window._rebuildCharts = function(){
+  // called by theme toggle
+  const main = document.getElementById('main');
+  if(main.style.display==='none')return;
+  // Charts will be rebuilt; data is already in DOM
+  // Re-read from rendered elements is complex — simpler to reload
+  window.location.reload();
+};
+
+/* ═══════════════════════════════
+   CAPACITY PROFILE
+   ═══════════════════════════════ */
+const CAP_DEFS = [
+  { key:'focus',       label:'🕯️ Focus',        color:'#f59e0b' },
+  { key:'attention',   label:'👁️ Attention',     color:'#34d399' },
+  { key:'memory',      label:'🧠 Memory',        color:'#a78bfa' },
+  { key:'imagination', label:'🌸 Imagination',   color:'#fb7185' },
+  { key:'creativity',  label:'🎨 Creativity',    color:'#4ade80' },
+  { key:'awareness',   label:'🪞 Self-Awareness', color:'#7dd3fc' },
+];
+
+function capLevel(score) {
+  if (score >= 125) return 'Exceptional';
+  if (score >= 110) return 'Thriving';
+  if (score >= 95)  return 'Developing Well';
+  if (score >= 80)  return 'Growing';
+  return 'Needs Nurturing';
+}
+
+async function renderCapacityProfile(studentId) {
+  const sec = document.getElementById('capProfileSection');
+  if (!sec) return;
+
+  let result;
+  try {
+    result = await window.bhava.getCapacityScores(studentId);
+  } catch(e) {
+    console.warn('[Capacity] IPC error:', e.message);
+    return;
+  }
+
+  if (!result || result.error) return;
+
+  const { scores, sessionCount, confidence } = result;
+
+  // Sub-title
+  const sub = document.getElementById('capProfileSub');
+  if (confidence === 'high')   sub.textContent = 'Based on ' + sessionCount + ' game sessions — confident profile';
+  else if (confidence === 'medium') sub.textContent = 'Based on ' + sessionCount + ' sessions — play more for a fuller picture';
+  else                         sub.textContent = 'Based on ' + sessionCount + ' session(s) — early estimate only';
+
+  // Low session warning
+  if (confidence === 'low') {
+    document.getElementById('capLowMsg').style.display = '';
+  }
+
+  // Bars
+  const wrap = document.getElementById('capBarsWrap');
+  wrap.innerHTML = '';
+
+  const hasAny = CAP_DEFS.some(d => scores[d.key] !== null && scores[d.key] !== undefined);
+  if (!hasAny) {
+    document.getElementById('capLowMsg').style.display = '';
+    sec.style.display = '';
+    return;
+  }
+
+  CAP_DEFS.forEach(def => {
+    const score = scores[def.key];
+    const row = document.createElement('div');
+    row.className = 'cap-bar-row';
+
+    if (score === null || score === undefined) {
+      row.innerHTML =
+        '<div class="cap-bar-label">' + def.label + '</div>' +
+        '<div class="cap-bar-wrap"><div class="cap-bar-fill" style="background:#e5e7eb;width:20%"></div></div>' +
+        '<div class="cap-bar-score" style="color:#9ca3af">—</div>' +
+        '<div class="cap-bar-level" style="color:#9ca3af">Play more games</div>';
+    } else {
+      const pct = Math.round(((score - 60) / 100) * 100);
+      const level = capLevel(score);
+      row.innerHTML =
+        '<div class="cap-bar-label">' + def.label + '</div>' +
+        '<div class="cap-bar-wrap"><div class="cap-bar-fill" id="cfill_' + def.key + '" style="background:' + def.color + ';width:0%"></div></div>' +
+        '<div class="cap-bar-score" style="color:' + def.color + '">' + score + '</div>' +
+        '<div class="cap-bar-level">' + level + '</div>';
+
+      // animate after paint
+      setTimeout(() => {
+        const el = document.getElementById('cfill_' + def.key);
+        if (el) el.style.width = pct + '%';
+      }, 80);
+    }
+    wrap.appendChild(row);
+  });
+
+  sec.style.display = '';
+}
+
+</script>
+
+</body>
+</html>

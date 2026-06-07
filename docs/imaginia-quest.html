@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bhava-game="Imaginia Quest">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -358,6 +358,8 @@ function end(){el('questBar').classList.remove('active');clearInterval(S.tm);bha
 function start(){el('questBar').classList.add('active');unlock();S={i:0,score:0,lives:3,coins:0,keys:0,combo:0,best:0,correct:0,ans:0,t:30,lock:false,q:[],foundChests:0,bossHp:5};mkQ();el('start').classList.add('hide');el('end').classList.add('hide');el('game').classList.remove('hide');toast('QUEST START');pet('🧚 Follow the light!');el('door').classList.remove('open');el('door').textContent='🔒';el('bossFill').style.width='0%';el('bossDistance').textContent='Boss distance: 5 steps away';render();sfx(true)}
 el('playBtn').onclick=openIntro;el('again').onclick=start;el('hintBtn').onclick=()=>{if(S.score>=20){S.score-=20;hint('Clue revealed');pet('💡 Hint used');scr()}};el('skipBtn').onclick=()=>{if(S.score>=30&&!S.lock){S.score-=30;S.combo=0;S.ans++;pet('⏭️ Skipped');scr();next()}};
 </script>
+
+<script src="../bhava-session.js"></script>
 </body>
 </html>
 <style>@media (min-width: 1100px){.adventure{grid-template-columns:minmax(370px,.88fr) minmax(640px,1.12fr)} .storyCard{padding:18px}} @media (max-width: 900px){.adventure{grid-template-columns:1fr}.scene,.storyCard{min-height:360px}.choice{min-height:86px}}</style>
@@ -365,3 +367,4 @@ el('playBtn').onclick=openIntro;el('again').onclick=start;el('hintBtn').onclick=
 <style>.choice{padding:10px 12px}.choice .l{word-break:break-word}</style>
 
 <style>.choiceGrid{grid-auto-rows:minmax(118px,auto)} .choice .l{display:block}</style>
+

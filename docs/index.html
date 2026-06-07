@@ -1,4 +1,4 @@
-﻿  <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -16,6 +16,15 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-16G9BJKDVS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-16G9BJKDVS');
+  </script>
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,6 +38,288 @@
   <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
   <style>
     /* ---- INLINE ADDITIONS ---- */
+  /* ── Google Login Gate ───────────────────────────────────────────────── */
+  #bhava-gate {
+    position: fixed; inset: 0; z-index: 999999;
+    background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 40%, #f0f9ff 100%);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; font-family: 'Poppins', sans-serif;
+  }
+  #bhava-gate.hidden { display: none; }
+  .gate-card {
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 48px 40px 40px;
+    max-width: 420px; width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(249,115,22,0.15), 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid rgba(249,115,22,0.2);
+    position: relative; overflow: hidden;
+  }
+  .gate-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    background: linear-gradient(90deg, #f97316, #8b5cf6, #0ea5e9, #10b981);
+  }
+  .gate-logo { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 18px; display: block; }
+  .gate-title {
+    font-size: 1.6rem; font-weight: 800; color: #1e293b; margin-bottom: 6px;
+  }
+  .gate-subtitle {
+    font-size: 0.88rem; color: #64748b; margin-bottom: 28px; line-height: 1.6;
+  }
+  .gate-google-btn {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    width: 100%; padding: 14px 20px;
+    background: #ffffff; border: 2px solid #e2e8f0;
+    border-radius: 14px; cursor: pointer;
+    font-size: 0.95rem; font-weight: 600; color: #1e293b;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .gate-google-btn:hover {
+    border-color: #f97316; box-shadow: 0 4px 16px rgba(249,115,22,0.2);
+    transform: translateY(-1px);
+  }
+  .gate-chips {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    justify-content: center; margin-top: 24px;
+  }
+  .gate-chip {
+    background: rgba(249,115,22,0.08); color: #64748b;
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 0.72rem; border: 1px solid rgba(249,115,22,0.15);
+  }
+  .gate-error {
+    margin-top: 14px; font-size: 0.8rem; color: #ef4444; min-height: 18px;
+  }
+  .gate-loading {
+    margin-top: 14px; font-size: 0.8rem; color: #64748b;
+  }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       BHĀVA BRIGHT THEME — Child-friendly light theme override
+       Replaces all dark navy/indigo backgrounds with warm bright palette
+       ═══════════════════════════════════════════════════════════════════ */
+    :root {
+      --bhv-bg:          #fffbf0;   /* warm white page bg */
+      --bhv-bg2:         #f0f9ff;   /* soft sky alternate sections */
+      --bhv-bg3:         #fff7ed;   /* warm cream cards */
+      --bhv-orange:      #f97316;   /* primary CTA orange */
+      --bhv-orange-dk:   #ea580c;   /* darker orange hover */
+      --bhv-purple:      #8b5cf6;   /* secondary accent */
+      --bhv-green:       #10b981;   /* success / focus */
+      --bhv-pink:        #ec4899;   /* creativity / imagination */
+      --bhv-sky:         #0ea5e9;   /* attention / awareness */
+      --bhv-yellow:      #f59e0b;   /* memory / warmth */
+      --bhv-text:        #1e293b;   /* primary text */
+      --bhv-text2:       #475569;   /* secondary text */
+      --bhv-text3:       #64748b;   /* muted text */
+      --bhv-card:        #ffffff;   /* card bg */
+      --bhv-border:      #e2e8f0;   /* borders */
+      --bhv-shadow:      rgba(0,0,0,0.08);
+    }
+
+    /* ── Page & body ── */
+    html, body {
+      background: var(--bhv-bg) !important;
+      color: var(--bhv-text) !important;
+    }
+
+    /* ── Nav ── */
+    #main-nav, nav, .navbar, header {
+      background: rgba(255,255,255,0.95) !important;
+      border-bottom: 1px solid var(--bhv-border) !important;
+      backdrop-filter: blur(12px) !important;
+    }
+    #main-nav a, nav a, .nav-links a {
+      color: var(--bhv-text) !important;
+    }
+    #main-nav a:hover, .nav-links a:hover {
+      color: var(--bhv-orange) !important;
+    }
+    .logo-text, .nav-logo { color: var(--bhv-text) !important; }
+
+    /* ── Sections with dark backgrounds ── */
+    section, .section, [class*="section"] {
+      background: var(--bhv-bg) !important;
+      color: var(--bhv-text) !important;
+    }
+
+    /* ── Hero ── */
+    #hero, .hero, #bhava-unified, .hero-section {
+      background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 40%, #f0f9ff 100%) !important;
+      color: var(--bhv-text) !important;
+    }
+    .hero h1, .hero h2, .hero p, #bhava-unified h1, #bhava-unified h2, #bhava-unified p {
+      color: var(--bhv-text) !important;
+    }
+    /* Gradient text headings — keep them colorful */
+    [style*="-webkit-background-clip: text"],
+    [style*="background-clip: text"],
+    .gradient-text { color: transparent !important; }
+
+    /* ── Capacity section ── */
+    .bhv-cap-section, [class*="cap-section"] {
+      background: linear-gradient(135deg, #f0f9ff 0%, #fff7ed 100%) !important;
+    }
+
+    /* Capacity cards — bright versions */
+    .bhv-cap-card.c-focus       { background: linear-gradient(145deg,#fff7e6,#ffedd5) !important; border: 2px solid rgba(251,146,60,0.4) !important; }
+    .bhv-cap-card.c-attention   { background: linear-gradient(145deg,#ecfdf5,#d1fae5) !important; border: 2px solid rgba(16,185,129,0.3) !important; }
+    .bhv-cap-card.c-memory      { background: linear-gradient(145deg,#f5f3ff,#ede9fe) !important; border: 2px solid rgba(139,92,246,0.3) !important; }
+    .bhv-cap-card.c-imagination { background: linear-gradient(145deg,#fff1f2,#ffe4e6) !important; border: 2px solid rgba(251,113,133,0.3) !important; }
+    .bhv-cap-card.c-creativity  { background: linear-gradient(145deg,#f0fdf4,#dcfce7) !important; border: 2px solid rgba(74,222,128,0.3) !important; }
+    .bhv-cap-card.c-awareness   { background: linear-gradient(145deg,#f0f9ff,#e0f2fe) !important; border: 2px solid rgba(14,165,233,0.3) !important; }
+    .bhv-cap-card h3, .bhv-cap-card p, .bhv-cap-card span {
+      color: var(--bhv-text) !important;
+    }
+
+    /* ── Game cards ── */
+    .game-card, a.game-card {
+      background: var(--bhv-card) !important;
+      border: 1px solid var(--bhv-border) !important;
+      box-shadow: 0 4px 16px var(--bhv-shadow) !important;
+      color: var(--bhv-text) !important;
+    }
+    .game-card:hover, a.game-card:hover {
+      box-shadow: 0 8px 28px rgba(249,115,22,0.2) !important;
+      border-color: var(--bhv-orange) !important;
+      transform: translateY(-3px);
+    }
+    .game-card h3, .game-card p, .game-card span,
+    a.game-card h3, a.game-card p, a.game-card span {
+      color: var(--bhv-text) !important;
+    }
+
+    /* ── Capacity row / section headers ── */
+    .cap-row-label, .cap-section-title, [class*="row-title"] {
+      color: var(--bhv-text) !important;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary, .cta-btn, [class*="btn-orange"], button[class*="primary"] {
+      background: var(--bhv-orange) !important;
+      color: #fff !important;
+      border: none !important;
+    }
+    .btn-primary:hover { background: var(--bhv-orange-dk) !important; }
+
+    /* ── FAQ / Accordion ── */
+    .bgt-accordion, .accordion, [class*="accordion"] {
+      background: var(--bhv-card) !important;
+      border: 1px solid var(--bhv-border) !important;
+      color: var(--bhv-text) !important;
+    }
+    .bgt-acc-head, .accordion-header {
+      color: var(--bhv-text) !important;
+      background: var(--bhv-card) !important;
+    }
+    .bgt-acc-body, .accordion-body {
+      color: var(--bhv-text2) !important;
+      background: var(--bhv-card) !important;
+    }
+
+    /* ── Footer ── */
+    footer, .footer {
+      background: #1e293b !important;  /* footer can stay dark — it's professional */
+      color: #f1f5f9 !important;
+    }
+    footer a, .footer a { color: #94a3b8 !important; }
+    footer a:hover, .footer a:hover { color: #f97316 !important; }
+
+    /* ── Worldwide banner ── */
+    .worldwide-banner {
+      background: linear-gradient(135deg, var(--bhv-orange), var(--bhv-purple)) !important;
+    }
+
+    /* ── Testimonials ── */
+    .testimonials-section {
+      background: linear-gradient(135deg,#fff7ed,#f0f9ff) !important;
+    }
+    .testi-card {
+      background: #fff !important;
+      box-shadow: 0 4px 20px rgba(249,115,22,0.1) !important;
+    }
+    .testi-text { color: #374151 !important; }
+    .testi-author { color: #1e293b !important; }
+
+    /* ── Gain / feature section ── */
+    #gain-section {
+      background: linear-gradient(135deg,#fff7ed,#f0f9ff) !important;
+      color: var(--bhv-text) !important;
+    }
+    #gain-section h2, #gain-section p, #gain-section span {
+      color: var(--bhv-text) !important;
+    }
+
+    /* ── School hero banner ── */
+    #school-hero-banner {
+      background: linear-gradient(135deg,#fff7ed,#fef3c7) !important;
+      color: var(--bhv-text) !important;
+    }
+
+    /* ── Careers section ── */
+    #careers {
+      background: linear-gradient(160deg,#f0f9ff,#fff7ed) !important;
+      color: var(--bhv-text) !important;
+    }
+    #careers .c-name { color: var(--bhv-text) !important; }
+    #careers .c-desc { color: var(--bhv-text2) !important; }
+    #careers .c-form-box {
+      background: #fff !important;
+      border: 1px solid var(--bhv-border) !important;
+    }
+    #careers .c-fld input, #careers .c-fld select, #careers .c-uq-ta {
+      background: #f8fafc !important;
+      border: 1px solid var(--bhv-border) !important;
+      color: var(--bhv-text) !important;
+    }
+    #careers .c-div span {
+      background: var(--bhv-bg) !important;
+      color: var(--bhv-text2) !important;
+    }
+    #careers .c-form-ttl { color: var(--bhv-text) !important; }
+
+    /* ── Generic dark background overrides ── */
+    [style*="background: #0a0a1a"],
+    [style*="background:#0a0a1a"],
+    [style*="background: #1e293b"],
+    [style*="background:#1e293b"],
+    [style*="background: #0f172a"],
+    [style*="background:#0f172a"],
+    [style*="background: #0d1117"],
+    [style*="background:#0d1117"] {
+      background: var(--bhv-bg) !important;
+      color: var(--bhv-text) !important;
+    }
+
+    /* ── Canvas/orb background ── */
+    #bv-canvas { opacity: 0.15 !important; }
+    .orb { opacity: 0.12 !important; }
+
+    /* ── Login modal override ── */
+    #bhava-login-modal > div {
+      background: linear-gradient(145deg,#fff7ed,#ffffff) !important;
+      border: 1px solid rgba(249,115,22,0.3) !important;
+      box-shadow: 0 20px 60px rgba(249,115,22,0.15) !important;
+    }
+    #bhava-login-modal h3 { color: var(--bhv-text) !important; }
+    #bhava-login-modal p  { color: var(--bhv-text2) !important; }
+    #login-roll, #login-class, #login-pin {
+      background: #f8fafc !important;
+      border: 1px solid var(--bhv-border) !important;
+      color: var(--bhv-text) !important;
+    }
+    #login-roll::placeholder, #login-class::placeholder, #login-pin::placeholder {
+      color: #94a3b8 !important;
+    }
+    #login-submit-btn {
+      background: linear-gradient(135deg, var(--bhv-orange), var(--bhv-orange-dk)) !important;
+    }
+    /* ══ END BHĀVA BRIGHT THEME ══ */
+
   /* NAV Z-INDEX FIX */
   #main-nav { position: relative; z-index: 1000; }
   #main-nav .hamburger { position: relative; z-index: 1001; }
@@ -263,13 +554,20 @@
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#brain-gym">What is Brain Gym?</a></li>
-      <li><a href="bhaava-tech-form-v2.html">Enroll Now</a></li>
+      <li data-public-only><a href="bhaava-tech-form-v2.html">Enroll Now</a></li>
       <li><a href="#games">Games</a></li>
-      <li><a href="#pricing">Pricing</a></li>
-	  <li><a href="#collaborate">Collaborate</a></li>
-      <li><a href="#careers">Careers</a></li>
+      <li data-public-only><a href="#pricing">Pricing</a></li>
+	  <li data-public-only><a href="#collaborate">Collaborate</a></li>
+      <li data-public-only><a href="#careers">Careers</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contact" class="nav-cta">CONTACT</a></li>
+      <li data-public-only><a href="#contact" class="nav-cta">CONTACT</a></li>
+      <!-- Admin link — only visible to verified admin inside Electron -->
+      <li id="admin-nav-item" style="display:none">
+        <a href="bhava-student-import.html"
+           style="background:#1B4F5A;color:#fff;padding:6px 14px;border-radius:6px;font-size:0.82rem;font-weight:700;letter-spacing:0.03em;">
+          ⚙ Admin
+        </a>
+      </li>
     </ul>
   </div>
 </nav>
@@ -796,6 +1094,58 @@ body {
 </head>
 <body>
 
+<!-- ══ Bhāva Google Login Gate ══ -->
+<div id="bhava-gate">
+  <div class="gate-card">
+    <img src="assets/bhava-logo.png" alt="Bhāva Tech" class="gate-logo"
+         onerror="this.style.display='none'">
+    <h1 class="gate-title">Bhāva Tech</h1>
+    <p class="gate-subtitle">
+      Cognitive Enhancement Platform<br>
+      Sign in with Google to continue
+    </p>
+    <button class="gate-google-btn" onclick="gateGoogleLogin()" id="gate-login-btn">
+      <svg width="20" height="20" viewBox="0 0 18 18">
+        <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
+        <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
+        <path fill="#FBBC05" d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332z"/>
+        <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 7.294C4.672 5.163 6.656 3.58 9 3.58z"/>
+      </svg>
+      Continue with Google
+    </button>
+    <div class="gate-chips">
+      <span class="gate-chip">🔒 Secure login</span>
+      <span class="gate-chip">🎮 33+ Brain games</span>
+      <span class="gate-chip">🧠 Cognitive growth</span>
+    </div>
+    <div class="gate-error" id="gate-error"></div>
+  </div>
+</div>
+
+
+
+<!-- School mode welcome — shown only in school context -->
+<section id="school-hero-banner" style="display:none;
+  padding: 28px 20px; text-align:center;
+  background: linear-gradient(135deg, #1B4F5A, #0f3540);
+  color:#fff;">
+  <div style="max-width:600px;margin:0 auto">
+    <div style="font-size:1.6rem;font-weight:800;margin-bottom:8px">
+      🧠 Ready for Today's Brain Workout?
+    </div>
+    <div style="font-size:0.9rem;opacity:0.8;margin-bottom:18px">
+      Choose a game below and strengthen your Focus, Memory, or Imagination today.
+    </div>
+    <a href="#games" style="
+      display:inline-block;background:#F5A623;color:#1a1a2e;
+      padding:12px 28px;border-radius:10px;font-weight:800;
+      font-size:0.95rem;text-decoration:none;
+      box-shadow:0 4px 16px rgba(245,166,35,0.35)">
+      Start Assessment →
+    </a>
+  </div>
+</section>
+
 <section id="bhava-unified">
 
   <!-- Ambient Orbs -->
@@ -844,7 +1194,7 @@ body {
                 letter-spacing:0.03em;
                 transition:transform 0.3s ease,box-shadow 0.3s ease;
                 animation:btnPulse 2.5s ease-in-out infinite alternate;">
-        Begin Your Mind Evaluation →
+        <span id="hero-cta-public" data-public-only>Begin Your Mind Evaluation →</span><span id="hero-cta-school" style="display:none">Start Today's Assessment →</span>
       </a>
     </div>
   </div>
@@ -1466,53 +1816,359 @@ body {
       </div>
     </div>
 
-    <div class="bgt-h bgt-fade d3" style="margin-bottom:20px;">
-      <h2 style="font-size:1.5rem;">⚡ 6 Layers of Brain Activation</h2>
-      <p style="font-size:0.88rem;">Tap any method to understand how it works.</p>
+    <!-- ══ YOU WERE BORN COMPLETE — 6 Capacity Cards ══ -->
+    <div class="bgt-h bgt-fade d3" style="margin-bottom:8px;">
+      <h2 style="font-size:1.6rem; letter-spacing:-0.01em;">✨ You Were Born Complete</h2>
+      <p style="font-size:0.92rem; color:#94a3b8; max-width:520px; margin:6px auto 0;">
+        Focus. Attention. Memory. Imagination. Creativity. Self-Awareness.<br>
+        Every child already carries them. Bhāva makes them stronger.
+      </p>
     </div>
 
-    <div class="bgt-fade d3">
-      <div class="bgt-accordion" id="acc-m1">
-        <div class="bgt-acc-header" onclick="bgtToggle('acc-m1')">
-          <span><span class="bgt-acc-icon">🔀</span>Cross-Brain Integration</span>
-          <span class="bgt-acc-arrow">▼</span>
+    <style>
+    /* ── Capacity Cards ──────────────────────────────────── */
+    .bhv-cap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin: 28px 0 10px;
+    }
+    @media (max-width: 700px) {
+      .bhv-cap-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    }
+    @media (max-width: 420px) {
+      .bhv-cap-grid { grid-template-columns: 1fr; }
+    }
+
+    .bhv-cap-card {
+      position: relative;
+      border-radius: 20px;
+      padding: 28px 20px 22px;
+      overflow: hidden;
+      cursor: default;
+      transition: transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s;
+      will-change: transform;
+    }
+    .bhv-cap-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.35);
+    }
+
+    /* Soft color backgrounds — eye-friendly, warm, not saturated */
+    .bhv-cap-card.c-focus      { background: linear-gradient(145deg, #2d1f00, #3d2a00); border: 1px solid rgba(251,191,36,0.25); }
+    .bhv-cap-card.c-attention  { background: linear-gradient(145deg, #00221e, #002e28); border: 1px solid rgba(52,211,153,0.22); }
+    .bhv-cap-card.c-memory     { background: linear-gradient(145deg, #1a1030, #221540); border: 1px solid rgba(167,139,250,0.25); }
+    .bhv-cap-card.c-imagination{ background: linear-gradient(145deg, #2a1018, #361420); border: 1px solid rgba(251,113,133,0.22); }
+    .bhv-cap-card.c-creativity { background: linear-gradient(145deg, #0d2218, #0f2e1e); border: 1px solid rgba(74,222,128,0.22); }
+    .bhv-cap-card.c-awareness  { background: linear-gradient(145deg, #0d1a30, #0f2040); border: 1px solid rgba(125,211,252,0.22); }
+
+    .bhv-cap-anim {
+      width: 64px; height: 64px;
+      margin: 0 auto 14px;
+      position: relative;
+    }
+
+    .bhv-cap-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+    .c-focus      .bhv-cap-name { color: #fbbf24; }
+    .c-attention  .bhv-cap-name { color: #34d399; }
+    .c-memory     .bhv-cap-name { color: #a78bfa; }
+    .c-imagination .bhv-cap-name { color: #fb7185; }
+    .c-creativity .bhv-cap-name { color: #4ade80; }
+    .c-awareness  .bhv-cap-name { color: #7dd3fc; }
+
+    .bhv-cap-quote {
+      font-size: 0.78rem;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.62);
+      font-style: italic;
+      margin-bottom: 12px;
+    }
+
+    .bhv-cap-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+      opacity: 0.75;
+    }
+    .c-focus      .bhv-cap-tag { background: rgba(251,191,36,0.15); color: #fbbf24; }
+    .c-attention  .bhv-cap-tag { background: rgba(52,211,153,0.15); color: #34d399; }
+    .c-memory     .bhv-cap-tag { background: rgba(167,139,250,0.15); color: #a78bfa; }
+    .c-imagination .bhv-cap-tag { background: rgba(251,113,133,0.15); color: #fb7185; }
+    .c-creativity .bhv-cap-tag { background: rgba(74,222,128,0.15); color: #4ade80; }
+    .c-awareness  .bhv-cap-tag { background: rgba(125,211,252,0.15); color: #7dd3fc; }
+
+    /* ── Animations ─────────────────────────────────── */
+
+    /* Focus — candle flame */
+    .anim-focus { display:flex; align-items:flex-end; justify-content:center; height:64px; }
+    .candle-body { width:14px; height:28px; background:linear-gradient(to bottom,#fef3c7,#fbbf24); border-radius:3px 3px 0 0; position:relative; }
+    .candle-wick { width:2px; height:10px; background:#92400e; position:absolute; top:-10px; left:6px; border-radius:1px; }
+    .candle-flame {
+      width:12px; height:18px;
+      background: radial-gradient(ellipse at 50% 80%, #fde68a 0%, #f59e0b 40%, #ef4444 90%, transparent 100%);
+      border-radius: 50% 50% 30% 30%;
+      position: absolute; top: -28px; left: 1px;
+      animation: flicker 1.8s ease-in-out infinite alternate;
+      transform-origin: bottom center;
+    }
+    @keyframes flicker {
+      0%   { transform: scaleX(1) scaleY(1) rotate(-2deg); opacity: 1; }
+      30%  { transform: scaleX(0.88) scaleY(1.08) rotate(2deg); opacity: 0.95; }
+      60%  { transform: scaleX(1.06) scaleY(0.95) rotate(-1deg); opacity: 1; }
+      100% { transform: scaleX(0.92) scaleY(1.05) rotate(3deg); opacity: 0.9; }
+    }
+
+    /* Attention — radar pulse */
+    .anim-attention { display:flex; align-items:center; justify-content:center; height:64px; }
+    .radar-wrap { position:relative; width:56px; height:56px; }
+    .radar-dot  { width:8px; height:8px; background:#34d399; border-radius:50%; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:2; }
+    .radar-ring {
+      position:absolute; border-radius:50%; border:2px solid #34d399;
+      top:50%; left:50%; transform:translate(-50%,-50%);
+      animation: radarPulse 2.2s ease-out infinite;
+      opacity:0;
+    }
+    .radar-ring:nth-child(2){ animation-delay:0s;   width:16px; height:16px; }
+    .radar-ring:nth-child(3){ animation-delay:0.6s; width:32px; height:32px; }
+    .radar-ring:nth-child(4){ animation-delay:1.2s; width:50px; height:50px; }
+    @keyframes radarPulse {
+      0%   { opacity:0.9; transform:translate(-50%,-50%) scale(0.4); }
+      100% { opacity:0;   transform:translate(-50%,-50%) scale(1); }
+    }
+
+    /* Memory — constellation dots connecting */
+    .anim-memory { display:flex; align-items:center; justify-content:center; height:64px; }
+    .memory-svg { width:56px; height:56px; }
+    .mem-line { stroke:#a78bfa; stroke-width:1.5; stroke-dasharray:40; stroke-dashoffset:40; animation: drawLine 2.4s ease-in-out infinite; }
+    .mem-line:nth-child(2){ animation-delay:0.5s; }
+    .mem-line:nth-child(3){ animation-delay:1s; }
+    @keyframes drawLine {
+      0%,10%   { stroke-dashoffset:40; opacity:0.3; }
+      50%,60%  { stroke-dashoffset:0;  opacity:1; }
+      90%,100% { stroke-dashoffset:0;  opacity:0.3; }
+    }
+    .mem-dot { fill:#a78bfa; animation: memDotPulse 2.4s ease-in-out infinite; }
+    .mem-dot:nth-child(5){ animation-delay:0.3s; }
+    .mem-dot:nth-child(6){ animation-delay:0.8s; }
+    .mem-dot:nth-child(7){ animation-delay:1.3s; }
+    @keyframes memDotPulse {
+      0%,100% { r:3; opacity:0.6; }
+      50%     { r:4.5; opacity:1; }
+    }
+
+    /* Imagination — seed to tree */
+    .anim-imagination { display:flex; align-items:flex-end; justify-content:center; height:64px; }
+    .imag-svg { width:48px; height:60px; }
+    .imag-stem   { stroke:#fb7185; stroke-width:2; stroke-linecap:round;
+                   stroke-dasharray:30; stroke-dashoffset:30;
+                   animation: growStem 2s ease-in-out infinite alternate; }
+    .imag-leaf-l { fill:rgba(251,113,133,0.7); transform-origin:24px 30px;
+                   animation: leafGrow 2s ease-in-out infinite alternate; transform:scale(0); }
+    .imag-leaf-r { fill:rgba(251,113,133,0.55); transform-origin:24px 26px;
+                   animation: leafGrow 2s 0.3s ease-in-out infinite alternate; transform:scale(0); }
+    .imag-bloom  { fill:#fda4af; transform-origin:24px 12px;
+                   animation: bloom 2s 0.6s ease-in-out infinite alternate; transform:scale(0); opacity:0; }
+    @keyframes growStem  { from{ stroke-dashoffset:30; } to{ stroke-dashoffset:0; } }
+    @keyframes leafGrow  { from{ transform:scale(0); } to{ transform:scale(1); } }
+    @keyframes bloom     { from{ transform:scale(0); opacity:0; } to{ transform:scale(1); opacity:1; } }
+
+    /* Creativity — shapes rearranging */
+    .anim-creativity { display:flex; align-items:center; justify-content:center; height:64px; }
+    .creat-svg { width:56px; height:56px; }
+    .creat-tri { fill:none; stroke:#4ade80; stroke-width:2;
+                 animation: triSpin 3s ease-in-out infinite; transform-origin:28px 28px; }
+    .creat-sq  { fill:none; stroke:#86efac; stroke-width:2;
+                 animation: sqPulse 3s 0.5s ease-in-out infinite; transform-origin:28px 28px; }
+    .creat-circ { fill:none; stroke:#bbf7d0; stroke-width:2;
+                  animation: circPop 3s 1s ease-in-out infinite; transform-origin:28px 28px; }
+    @keyframes triSpin  { 0%,100%{transform:rotate(0deg) scale(1);}   50%{transform:rotate(60deg) scale(0.85);} }
+    @keyframes sqPulse  { 0%,100%{transform:rotate(0deg) scale(1);}   50%{transform:rotate(45deg) scale(1.1);} }
+    @keyframes circPop  { 0%,100%{transform:scale(1);opacity:1;}       50%{transform:scale(0.7);opacity:0.5;} }
+
+    /* Self-Awareness — ripple in still water */
+    .anim-awareness { display:flex; align-items:center; justify-content:center; height:64px; }
+    .aware-svg { width:56px; height:40px; }
+    .aware-ripple {
+      fill:none; stroke:#7dd3fc; stroke-width:1.5;
+      animation: ripple 2.6s ease-out infinite;
+      transform-origin:28px 20px;
+      opacity:0;
+    }
+    .aware-ripple:nth-child(1){ animation-delay:0s; }
+    .aware-ripple:nth-child(2){ animation-delay:0.65s; }
+    .aware-ripple:nth-child(3){ animation-delay:1.3s; }
+    .aware-dot { fill:#7dd3fc; }
+    @keyframes ripple {
+      0%   { opacity:0.9; transform:scale(0.15); }
+      100% { opacity:0;   transform:scale(1); }
+    }
+
+    /* ── "How We Strengthen Them" bridge ─── */
+    .bhv-method-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 32px;
+    }
+    @media (max-width: 600px) { .bhv-method-row { grid-template-columns: 1fr; } }
+
+    .bhv-method-card {
+      border-radius: 16px;
+      padding: 20px 18px;
+      text-align: center;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .bhv-method-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    }
+    .bhv-method-icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .bhv-method-title {
+      font-size: 0.9rem; font-weight: 700;
+      color: #e2e8f0; margin-bottom: 6px;
+    }
+    .bhv-method-desc {
+      font-size: 0.76rem; color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+    </style>
+
+    <div class="bhv-cap-grid bgt-fade d3">
+
+      <!-- 1. Focus -->
+      <div class="bhv-cap-card c-focus">
+        <div class="bhv-cap-anim">
+          <div class="anim-focus">
+            <div class="candle-body">
+              <div class="candle-wick"></div>
+              <div class="candle-flame"></div>
+            </div>
+          </div>
         </div>
-        <div class="bgt-acc-body"><div class="bgt-acc-body-inner">Exercises engaging both hemispheres simultaneously — left (logic, math, language) and right (creativity, intuition, arts) — building stronger neural bridges between both sides of the brain.</div></div>
+        <div class="bhv-cap-name">Focus</div>
+        <div class="bhv-cap-quote">"The potter whose hands are steady for three hours — seeing only the form in her mind."</div>
+        <span class="bhv-cap-tag">Games · Brain Gym</span>
       </div>
-      <div class="bgt-accordion" id="acc-m2">
-        <div class="bgt-acc-header" onclick="bgtToggle('acc-m2')">
-          <span><span class="bgt-acc-icon">🎮</span>Gamified Cognitive Challenges</span>
-          <span class="bgt-acc-arrow">▼</span>
+
+      <!-- 2. Attention -->
+      <div class="bhv-cap-card c-attention">
+        <div class="bhv-cap-anim">
+          <div class="anim-attention">
+            <div class="radar-wrap">
+              <div class="radar-dot"></div>
+              <div class="radar-ring"></div>
+              <div class="radar-ring"></div>
+              <div class="radar-ring"></div>
+            </div>
+          </div>
         </div>
-        <div class="bgt-acc-body"><div class="bgt-acc-body-inner">IQ puzzles, memory games, pattern recognition, and logical reasoning wrapped in fun formats — challenge feels like play. Children learn 40% faster when content is gamified.</div></div>
+        <div class="bhv-cap-name">Attention</div>
+        <div class="bhv-cap-quote">"The grandmother who notices the slight fever in her grandchild's eyes — before he says a word."</div>
+        <span class="bhv-cap-tag">Games · Assessment</span>
       </div>
-      <div class="bgt-accordion" id="acc-m3">
-        <div class="bgt-acc-header" onclick="bgtToggle('acc-m3')">
-          <span><span class="bgt-acc-icon">🧘</span>Cognitive Lab</span>
-          <span class="bgt-acc-arrow">▼</span>
+
+      <!-- 3. Memory -->
+      <div class="bhv-cap-card c-memory">
+        <div class="bhv-cap-anim">
+          <div class="anim-memory">
+            <svg class="memory-svg" viewBox="0 0 56 56" fill="none">
+              <line class="mem-line" x1="10" y1="40" x2="28" y2="18"/>
+              <line class="mem-line" x1="28" y1="18" x2="46" y2="36"/>
+              <line class="mem-line" x1="46" y1="36" x2="22" y2="46"/>
+              <circle class="mem-dot" cx="10" cy="40" r="3"/>
+              <circle class="mem-dot" cx="28" cy="18" r="3"/>
+              <circle class="mem-dot" cx="46" cy="36" r="3"/>
+              <circle class="mem-dot" cx="22" cy="46" r="3"/>
+            </svg>
+          </div>
         </div>
-        <div class="bgt-acc-body"><div class="bgt-acc-body-inner">Structured breathing and body-scan meditations calm the nervous system, reduce cortisol, quiet the amygdala (fear centre), and open the child to deep learning states. A calm child learns more in 20 minutes than an anxious child in 2 hours.</div></div>
+        <div class="bhv-cap-name">Memory</div>
+        <div class="bhv-cap-quote">"The vendor who remembers every customer's face and favourite — across ten years of mornings."</div>
+        <span class="bhv-cap-tag">Games · Spaced Recall</span>
       </div>
-      <div class="bgt-accordion" id="acc-m4">
-        <div class="bgt-acc-header" onclick="bgtToggle('acc-m4')">
-          <span><span class="bgt-acc-icon">🔁</span>Spaced Repetition &amp; Memory Training</span>
-          <span class="bgt-acc-arrow">▼</span>
+
+      <!-- 4. Imagination -->
+      <div class="bhv-cap-card c-imagination">
+        <div class="bhv-cap-anim">
+          <div class="anim-imagination">
+            <svg class="imag-svg" viewBox="0 0 48 60" fill="none">
+              <line class="imag-stem" x1="24" y1="56" x2="24" y2="22"/>
+              <ellipse class="imag-leaf-l" cx="16" cy="32" rx="10" ry="6" transform="rotate(-30 16 32)"/>
+              <ellipse class="imag-leaf-r" cx="32" cy="28" rx="10" ry="6" transform="rotate(30 32 28)"/>
+              <circle class="imag-bloom" cx="24" cy="14" r="8"/>
+            </svg>
+          </div>
         </div>
-        <div class="bgt-acc-body"><div class="bgt-acc-body-inner">Scientifically timed recall sessions strengthen hippocampal circuits — moving information from short-term to long-term memory. Directly improves academic retention and exam confidence.</div></div>
+        <div class="bhv-cap-name">Imagination</div>
+        <div class="bhv-cap-quote">"The child who turns a cardboard box into a rocket, a boat, and a cave — all in one afternoon."</div>
+        <span class="bhv-cap-tag">Games · Creative Play</span>
       </div>
-      <div class="bgt-accordion" id="acc-m5">
-        <div class="bgt-acc-header" onclick="bgtToggle('acc-m5')">
-          <span><span class="bgt-acc-icon">🎵</span>Binaural Audio Environments</span>
-          <span class="bgt-acc-arrow">▼</span>
+
+      <!-- 5. Creativity -->
+      <div class="bhv-cap-card c-creativity">
+        <div class="bhv-cap-anim">
+          <div class="anim-creativity">
+            <svg class="creat-svg" viewBox="0 0 56 56" fill="none">
+              <polygon class="creat-tri" points="28,8 48,44 8,44"/>
+              <rect class="creat-sq" x="16" y="16" width="24" height="24" rx="2"/>
+              <circle class="creat-circ" cx="28" cy="28" r="11"/>
+            </svg>
+          </div>
         </div>
-        <div class="bgt-acc-body"><div class="bgt-acc-body-inner">Frequency-specific soundscapes align brainwave states — beta for active focus, alpha for deep learning, theta for creative relaxation. The right sound environment multiplies every other activity.</div></div>
+        <div class="bhv-cap-name">Creativity</div>
+        <div class="bhv-cap-quote">"The cook with three ingredients and no recipe — who makes something the whole family asks for again."</div>
+        <span class="bhv-cap-tag">Games · Brain Gym</span>
       </div>
-      <div class="bgt-accordion" id="acc-m6">
-        <div class="bgt-acc-header" onclick="bgtToggle('acc-m6')">
-          <span><span class="bgt-acc-icon">🗣️</span>Multilingual Language Activation</span>
-          <span class="bgt-acc-arrow">▼</span>
+
+      <!-- 6. Self-Awareness -->
+      <div class="bhv-cap-card c-awareness">
+        <div class="bhv-cap-anim">
+          <div class="anim-awareness">
+            <svg class="aware-svg" viewBox="0 0 56 40" fill="none">
+              <circle class="aware-dot" cx="28" cy="20" r="3"/>
+              <ellipse class="aware-ripple" cx="28" cy="20" rx="26" ry="16"/>
+              <ellipse class="aware-ripple" cx="28" cy="20" rx="26" ry="16"/>
+              <ellipse class="aware-ripple" cx="28" cy="20" rx="26" ry="16"/>
+            </svg>
+          </div>
         </div>
-        <div class="bgt-acc-body"><div class="bgt-acc-body-inner">Phoneme and script awareness exercises (Telugu, Devanagari, English) activate Broca's area — the brain's language centre — and build neural density proven to enhance all cognitive functions.</div></div>
+        <div class="bhv-cap-name">Self-Awareness</div>
+        <div class="bhv-cap-quote">"The teacher who reads the room mid-lesson and changes her whole approach — in one breath."</div>
+        <span class="bhv-cap-tag">EQ Games · Reflection</span>
+      </div>
+
+    </div>
+
+    <!-- How Bhāva Strengthens Them -->
+    <div class="bgt-h bgt-fade" style="margin-top:40px; margin-bottom:16px;">
+      <h3 style="font-size:1.1rem; color:#94a3b8; font-weight:500;">How Bhāva strengthens what you already have</h3>
+    </div>
+
+    <div class="bhv-method-row bgt-fade">
+      <div class="bhv-method-card">
+        <div class="bhv-method-icon">🎮</div>
+        <div class="bhv-method-title">32 Cognitive Games</div>
+        <div class="bhv-method-desc">Play-based challenges that train Focus, Memory, Logic and Emotional Intelligence — without the child knowing they are training.</div>
+      </div>
+      <div class="bhv-method-card">
+        <div class="bhv-method-icon">🏋️</div>
+        <div class="bhv-method-title">Brain Gym Activities</div>
+        <div class="bhv-method-desc">Offline physical exercises that strengthen the mind-body connection — movements that directly activate cognitive circuits.</div>
+      </div>
+      <div class="bhv-method-card">
+        <div class="bhv-method-icon">📊</div>
+        <div class="bhv-method-title">IQ · EQ · SQ Assessment</div>
+        <div class="bhv-method-desc">Precise scores across three dimensions — showing exactly where each child stands and what to strengthen next.</div>
       </div>
     </div>
 
@@ -2016,233 +2672,397 @@ function bgtMode(mode){
 
 <!-- ===== GAMES & APPS SECTION ===== -->
 <section id="games">
+
   <div class="g-header">
-    <h2>🎮 <span>Games & Brain Apps</span></h2>
-    <p>Interactive games for cognitive, emotional &amp; language development</p>
+    <h2>🎮 <span>Games &amp; Brain Apps</span></h2>
+    <p>Choose what you want to strengthen today</p>
   </div>
 
-  <div class="g-tabs">
-    <span class="g-tab active" data-filter="all">All Games</span>
-    <span class="g-tab" data-filter="iq">🧠 IQ</span>
-    <span class="g-tab" data-filter="emotion">❤️ Emotional</span>
-    <span class="g-tab" data-filter="memory">🃏 Memory</span>
-    <span class="g-tab" data-filter="math">➕ Math</span>
-    <span class="g-tab" data-filter="language">అ Language</span>
-    <span class="g-tab" data-filter="logic">👑 Logic</span>
-    <span class="g-tab" data-filter="science">🌍 Science</span>
+  <style>
+  /* ── Capacity group rows ─────────────────────────── */
+  .cap-group { margin-bottom: 40px; }
+
+  .cap-group-head {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 14px; padding: 0 4px;
+  }
+  .cap-group-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+  }
+  .cap-group-info { flex: 1; }
+  .cap-group-name {
+    font-size: 1.05rem; font-weight: 800;
+    letter-spacing: 0.02em; margin-bottom: 2px;
+  }
+  .cap-group-desc {
+    font-size: 0.78rem; color: rgba(255,255,255,0.5);
+    line-height: 1.4;
+  }
+  .cap-group-count {
+    font-size: 0.72rem; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* colour themes */
+  .cg-focus      .cap-group-icon { background: rgba(251,191,36,0.15); }
+  .cg-focus      .cap-group-name { color: #fbbf24; }
+  .cg-focus      .cap-group-count { background: rgba(251,191,36,0.12); color: #fbbf24; }
+
+  .cg-attention  .cap-group-icon { background: rgba(52,211,153,0.15); }
+  .cg-attention  .cap-group-name { color: #34d399; }
+  .cg-attention  .cap-group-count { background: rgba(52,211,153,0.12); color: #34d399; }
+
+  .cg-memory     .cap-group-icon { background: rgba(167,139,250,0.15); }
+  .cg-memory     .cap-group-name { color: #a78bfa; }
+  .cg-memory     .cap-group-count { background: rgba(167,139,250,0.12); color: #a78bfa; }
+
+  .cg-imagination .cap-group-icon { background: rgba(251,113,133,0.15); }
+  .cg-imagination .cap-group-name { color: #fb7185; }
+  .cg-imagination .cap-group-count { background: rgba(251,113,133,0.12); color: #fb7185; }
+
+  .cg-awareness  .cap-group-icon { background: rgba(125,211,252,0.15); }
+  .cg-awareness  .cap-group-name { color: #7dd3fc; }
+  .cg-awareness  .cap-group-count { background: rgba(125,211,252,0.12); color: #7dd3fc; }
+
+  .cg-language   .cap-group-icon { background: rgba(253,186,116,0.15); }
+  .cg-language   .cap-group-name { color: #fdba74; }
+  .cg-language   .cap-group-count { background: rgba(253,186,116,0.12); color: #fdba74; }
+
+  /* horizontal scroll row */
+  .cap-row {
+    display: flex; gap: 14px;
+    overflow-x: auto; padding-bottom: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.12) transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+  .cap-row::-webkit-scrollbar { height: 4px; }
+  .cap-row::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+  /* individual game tile */
+  .cap-tile {
+    flex-shrink: 0;
+    width: 130px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 16px;
+    padding: 18px 12px 14px;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .cap-tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+  }
+  .cg-focus      .cap-tile:hover { border-color: rgba(251,191,36,0.4); }
+  .cg-attention  .cap-tile:hover { border-color: rgba(52,211,153,0.4); }
+  .cg-memory     .cap-tile:hover { border-color: rgba(167,139,250,0.4); }
+  .cg-imagination .cap-tile:hover { border-color: rgba(251,113,133,0.4); }
+  .cg-awareness  .cap-tile:hover { border-color: rgba(125,211,252,0.4); }
+  .cg-language   .cap-tile:hover { border-color: rgba(253,186,116,0.4); }
+
+  .cap-tile-icon { font-size: 2rem; line-height: 1; }
+  .cap-tile-name {
+    font-size: 0.78rem; font-weight: 700;
+    color: #e2e8f0; line-height: 1.3; text-align: center;
+  }
+  .cap-tile-tag {
+    font-size: 0.65rem; color: rgba(255,255,255,0.38);
+    text-align: center; line-height: 1.3;
+  }
+  .cap-tile-new {
+    font-size: 0.6rem; font-weight: 800; letter-spacing: 0.06em;
+    background: #7c3aed; color: #fff;
+    padding: 2px 6px; border-radius: 4px; margin-top: -4px;
+  }
+  </style>
+
+  <!-- ══ 1. FOCUS ══════════════════════════════════════════════════════ -->
+  <div class="cap-group cg-focus">
+    <div class="cap-group-head">
+      <div class="cap-group-icon">🕯️</div>
+      <div class="cap-group-info">
+        <div class="cap-group-name">Focus</div>
+        <div class="cap-group-desc">Staying fully present — the surgeon, the potter, the student in an exam.</div>
+      </div>
+      <span class="cap-group-count">10 games</span>
+    </div>
+    <div class="cap-row">
+      <a href="focus-under-distraction.html" class="cap-tile">
+        <span class="cap-tile-icon">🎯</span>
+        <span class="cap-tile-new">NEW</span>
+        <span class="cap-tile-name">Focus Master</span>
+        <span class="cap-tile-tag">Focus · Attention</span>
+      </a>
+      <a href="mindscape-pro.html" class="cap-tile">
+        <span class="cap-tile-icon">🧠</span>
+        <span class="cap-tile-new">NEW</span>
+        <span class="cap-tile-name">MindScape Pro</span>
+        <span class="cap-tile-tag">Focus · Logic</span>
+      </a>
+      <a href="mindspark-iq.html" class="cap-tile">
+        <span class="cap-tile-icon">⚡</span>
+        <span class="cap-tile-new">NEW</span>
+        <span class="cap-tile-name">MindSpark IQ</span>
+        <span class="cap-tile-tag">Focus · Pattern</span>
+      </a>
+      <a href="iq-test-level-3.html" class="cap-tile">
+        <span class="cap-tile-icon">🧩</span>
+        <span class="cap-tile-name">IQ Test</span>
+        <span class="cap-tile-tag">Focus · Reasoning</span>
+      </a>
+      <a href="logic-grid-puzzle.html" class="cap-tile">
+        <span class="cap-tile-icon">👑</span>
+        <span class="cap-tile-name">Logic Puzzle</span>
+        <span class="cap-tile-tag">Focus · Deduction</span>
+      </a>
+      <a href="logic-game.html" class="cap-tile">
+        <span class="cap-tile-icon">♟️</span>
+        <span class="cap-tile-name">Logical King</span>
+        <span class="cap-tile-tag">Focus · Strategy</span>
+      </a>
+      <a href="bhaava-brain-quest.html" class="cap-tile">
+        <span class="cap-tile-icon">🧠</span>
+        <span class="cap-tile-name">Brain Quest</span>
+        <span class="cap-tile-tag">Focus · Logic</span>
+      </a>
+      <a href="math-blitz.html" class="cap-tile">
+        <span class="cap-tile-icon">➕</span>
+        <span class="cap-tile-name">Math Blitz</span>
+        <span class="cap-tile-tag">Focus · Speed Maths</span>
+      </a>
+      <a href="number-garden-quest.html" class="cap-tile">
+        <span class="cap-tile-icon">🌻</span>
+        <span class="cap-tile-name">Number Garden</span>
+        <span class="cap-tile-tag">Focus · Numbers</span>
+      </a>
+      <a href="percentile-game.html" class="cap-tile">
+        <span class="cap-tile-icon">📊</span>
+        <span class="cap-tile-name">Percentile</span>
+        <span class="cap-tile-tag">Focus · Maths</span>
+      </a>
+    </div>
   </div>
 
-  <div class="g-grid">
+  <!-- ══ 2. ATTENTION ══════════════════════════════════════════════════ -->
+  <div class="cap-group cg-attention">
+    <div class="cap-group-head">
+      <div class="cap-group-icon">👁️</div>
+      <div class="cap-group-info">
+        <div class="cap-group-name">Attention</div>
+        <div class="cap-group-desc">Noticing what others miss — before it is too late.</div>
+      </div>
+      <span class="cap-group-count">7 games</span>
+    </div>
+    <div class="cap-row">
+      <a href="visual-difference-detector.html" class="cap-tile">
+        <span class="cap-tile-icon">🔍</span>
+        <span class="cap-tile-new">NEW</span>
+        <span class="cap-tile-name">Visual Difference</span>
+        <span class="cap-tile-tag">Attention · Precision</span>
+      </a>
+      <a href="mental-rotation-game.html" class="cap-tile">
+        <span class="cap-tile-icon">🔄</span>
+        <span class="cap-tile-name">Mind Rotation</span>
+        <span class="cap-tile-tag">Attention · Space</span>
+      </a>
+      <a href="grammar-galaxy.html" class="cap-tile">
+        <span class="cap-tile-icon">📝</span>
+        <span class="cap-tile-name">English Grammar</span>
+        <span class="cap-tile-tag">Attention · Language</span>
+      </a>
+      <a href="grammar-pro.html" class="cap-tile">
+        <span class="cap-tile-icon">💬</span>
+        <span class="cap-tile-name">Daily English</span>
+        <span class="cap-tile-tag">Attention · Language</span>
+      </a>
+      <a href="brain-garden.html" class="cap-tile">
+        <span class="cap-tile-icon">🌱</span>
+        <span class="cap-tile-name">Brain Garden</span>
+        <span class="cap-tile-tag">Attention · Memory</span>
+      </a>
+      <a href="neurospark.html" class="cap-tile">
+        <span class="cap-tile-icon">⚡</span>
+        <span class="cap-tile-new">NEW</span>
+        <span class="cap-tile-name">NeuroSpark</span>
+        <span class="cap-tile-tag">Attention · Speed</span>
+      </a>
+      <a href="know-maths/index.html" class="cap-tile">
+        <span class="cap-tile-icon">🔢</span>
+        <span class="cap-tile-name">Know Maths</span>
+        <span class="cap-tile-tag">Attention · Maths</span>
+      </a>
+    </div>
+  </div>
 
-    <a href="bhaava-brain-quest.html" class="g-card iq" data-cat="iq">
-      <span class="g-icon">🧠</span>
-      <h4>Brain Quest</h4>
-      <span class="g-tag">Ages 7–17</span>
-    </a>
+  <!-- ══ 3. MEMORY ═════════════════════════════════════════════════════ -->
+  <div class="cap-group cg-memory">
+    <div class="cap-group-head">
+      <div class="cap-group-icon">🧠</div>
+      <div class="cap-group-info">
+        <div class="cap-group-name">Memory</div>
+        <div class="cap-group-desc">The vendor who remembers every face — across ten years of mornings.</div>
+      </div>
+      <span class="cap-group-count">6 games</span>
+    </div>
+    <div class="cap-row">
+      <a href="memory-match-puzzle.html" class="cap-tile">
+        <span class="cap-tile-icon">🃏</span>
+        <span class="cap-tile-name">Memory Match</span>
+        <span class="cap-tile-tag">Visual Memory</span>
+      </a>
+      <a href="memory-match-ultimate.html" class="cap-tile">
+        <span class="cap-tile-icon">🃏</span>
+        <span class="cap-tile-name">Memory Ultimate</span>
+        <span class="cap-tile-tag">Memory · Challenge</span>
+      </a>
+      <a href="memory-zoo-puzzle.html" class="cap-tile">
+        <span class="cap-tile-icon">🦁</span>
+        <span class="cap-tile-name">Memory Zoo</span>
+        <span class="cap-tile-tag">Associative Memory</span>
+      </a>
+      <a href="neuroflash-memory.html" class="cap-tile">
+        <span class="cap-tile-icon">🧬</span>
+        <span class="cap-tile-new">NEW</span>
+        <span class="cap-tile-name">Neuro Flash</span>
+        <span class="cap-tile-tag">Speed Memory</span>
+      </a>
+      <a href="neuro-ascend-iq.html" class="cap-tile">
+        <span class="cap-tile-icon">🧬</span>
+        <span class="cap-tile-new">NEW</span>
+        <span class="cap-tile-name">Neuro Ascend IQ</span>
+        <span class="cap-tile-tag">Memory · IQ</span>
+      </a>
+      <a href="imaginia-quest.html" class="cap-tile">
+        <span class="cap-tile-icon">🎨</span>
+        <span class="cap-tile-new">NEW</span>
+        <span class="cap-tile-name">Imaginia Quest</span>
+        <span class="cap-tile-tag">Memory · Imagination</span>
+      </a>
+    </div>
+  </div>
 
-    <a href="day-hero-game.html" class="g-card emotion" data-cat="emotion">
-      <span class="g-icon">🦸</span>
-      <h4>Day Hero</h4>
-      <span class="g-tag">Responsibility & Emotions</span>
-    </a>
+  <!-- ══ 4. IMAGINATION & CREATIVITY ═══════════════════════════════════ -->
+  <div class="cap-group cg-imagination">
+    <div class="cap-group-head">
+      <div class="cap-group-icon">🌸</div>
+      <div class="cap-group-info">
+        <div class="cap-group-name">Imagination &amp; Creativity</div>
+        <div class="cap-group-desc">The child who turns a cardboard box into a rocket — all in one afternoon.</div>
+      </div>
+      <span class="cap-group-count">4 games</span>
+    </div>
+    <div class="cap-row">
+      <a href="imaginia-quest.html" class="cap-tile">
+        <span class="cap-tile-icon">🎨</span>
+        <span class="cap-tile-new">NEW</span>
+        <span class="cap-tile-name">Imaginia Quest</span>
+        <span class="cap-tile-tag">Imagination · Creativity</span>
+      </a>
+      <a href="planet-guardians.html" class="cap-tile">
+        <span class="cap-tile-icon">🌍</span>
+        <span class="cap-tile-name">Planet Guardians</span>
+        <span class="cap-tile-tag">Creativity · Systems</span>
+      </a>
+      <a href="day-super-hero.html" class="cap-tile">
+        <span class="cap-tile-icon">🦸‍♂️</span>
+        <span class="cap-tile-name">Day Super Hero</span>
+        <span class="cap-tile-tag">Moral Imagination</span>
+      </a>
+      <a href="mental-rotation-game.html" class="cap-tile">
+        <span class="cap-tile-icon">🔄</span>
+        <span class="cap-tile-name">Mind Rotation</span>
+        <span class="cap-tile-tag">Spatial Imagination</span>
+      </a>
+    </div>
+  </div>
 
-    <a href="math-blitz.html" class="g-card math" data-cat="math">
-      <span class="g-icon">➕</span>
-      <h4>Math Blitz</h4>
-      <span class="g-tag">Mathematics</span>
-    </a>
+  <!-- ══ 5. SELF-AWARENESS ══════════════════════════════════════════════ -->
+  <div class="cap-group cg-awareness">
+    <div class="cap-group-head">
+      <div class="cap-group-icon">🪞</div>
+      <div class="cap-group-info">
+        <div class="cap-group-name">Self-Awareness &amp; Emotional Intelligence</div>
+        <div class="cap-group-desc">The teacher who reads the room and changes her approach — in one breath.</div>
+      </div>
+      <span class="cap-group-count">6 games</span>
+    </div>
+    <div class="cap-row">
+      <a href="empathy-quest.html" class="cap-tile">
+        <span class="cap-tile-icon">❤️</span>
+        <span class="cap-tile-name">Empathy Quest</span>
+        <span class="cap-tile-tag">Empathy · EQ</span>
+      </a>
+      <a href="empathy-conversation.html" class="cap-tile">
+        <span class="cap-tile-icon">💬</span>
+        <span class="cap-tile-new">NEW</span>
+        <span class="cap-tile-name">Empathy Talk</span>
+        <span class="cap-tile-tag">Emotional Dialogue</span>
+      </a>
+      <a href="heart-heroes.html" class="cap-tile">
+        <span class="cap-tile-icon">💖</span>
+        <span class="cap-tile-name">Heart Heroes</span>
+        <span class="cap-tile-tag">Kindness · Empathy</span>
+      </a>
+      <a href="day-hero-game.html" class="cap-tile">
+        <span class="cap-tile-icon">🦸</span>
+        <span class="cap-tile-name">Day Hero</span>
+        <span class="cap-tile-tag">Responsibility · EQ</span>
+      </a>
+      <a href="good-habits.html" class="cap-tile">
+        <span class="cap-tile-icon">✅</span>
+        <span class="cap-tile-name">Good Habits</span>
+        <span class="cap-tile-tag">Self-Monitoring</span>
+      </a>
+      <a href="calm-zone.html" class="cap-tile">
+        <span class="cap-tile-icon">🧘</span>
+        <span class="cap-tile-new">NEW</span>
+        <span class="cap-tile-name">Calm Zone</span>
+        <span class="cap-tile-tag">Mindfulness · EQ</span>
+      </a>
+    </div>
+  </div>
 
-     <a href="number-garden-quest.html" class="g-card math" data-cat="math">
-      <span class="g-icon">➕</span>
-      <h4>Number Garden Quest</h4>
-      <span class="g-tag">Mathematics</span>
-    </a>
+  <!-- ══ 6. LANGUAGE ════════════════════════════════════════════════════ -->
+  <div class="cap-group cg-language">
+    <div class="cap-group-head">
+      <div class="cap-group-icon">🗣️</div>
+      <div class="cap-group-info">
+        <div class="cap-group-name">Language &amp; Script</div>
+        <div class="cap-group-desc">Every language you know is a new lens through which the world becomes clearer.</div>
+      </div>
+      <span class="cap-group-count">4 games</span>
+    </div>
+    <div class="cap-row">
+      <a href="grammar-galaxy.html" class="cap-tile">
+        <span class="cap-tile-icon">📝</span>
+        <span class="cap-tile-name">Grammar Galaxy</span>
+        <span class="cap-tile-tag">English Grammar</span>
+      </a>
+      <a href="grammar-pro.html" class="cap-tile">
+        <span class="cap-tile-icon">💬</span>
+        <span class="cap-tile-name">Daily English</span>
+        <span class="cap-tile-tag">English Fluency</span>
+      </a>
+      <a href="telugu-script-game.html" class="cap-tile">
+        <span class="cap-tile-icon">అ</span>
+        <span class="cap-tile-name">Telugu Script</span>
+        <span class="cap-tile-tag">Mother Tongue</span>
+      </a>
+      <a href="devanagari-game/index.html" class="cap-tile">
+        <span class="cap-tile-icon">अ</span>
+        <span class="cap-tile-name">Devanagari</span>
+        <span class="cap-tile-tag">Sanskrit Script</span>
+      </a>
+    </div>
+  </div>
 
-
-
-    <a href="empathy-quest.html" class="g-card kindness" data-cat="kindness">
-      <span class="g-icon">❤️</span>
-      <h4>Empathy Quest</h4>
-      <span class="g-tag">Emotional Intelligence</span>
-    </a>
-
-    <a href="iq-test-level-3.html" class="g-card iq" data-cat="iq">
-      <span class="g-icon">🧩</span>
-      <h4>IQ Test</h4>
-      <span class="g-tag">IQ Assessment</span>
-    </a>
-
-    <a href="day-super-hero.html" class="g-card emotion" data-cat="emotion">
-      <span class="g-icon">🦸‍♂️</span>
-      <h4>Day Super Hero</h4>
-      <span class="g-tag">Responsibility & Emotions</span>
-    </a>
-
-    <a href="brain-garden.html" class="g-card memory" data-cat="memory">
-      <span class="g-icon">🌱</span>
-      <h4>Brain Garden</h4>
-      <span class="g-tag">Memory Training</span>
-    </a>
-
-    <a href="logic-game.html" class="g-card logic" data-cat="logic">
-      <span class="g-icon">👑</span>
-      <h4>Logical King</h4>
-      <span class="g-tag">Logical Training</span>
-    </a>
-	<a href="logic-grid-puzzle.html" class="g-card logic" data-cat="logic">
-      <span class="g-icon">👑</span>
-      <h4>Logical Puzzle</h4>
-      <span class="g-tag">Logical Puzzle</span>
-    </a>
-	
-	<a href="mental-rotation-game.html" class="g-card logic" data-cat="logic">
-      <span class="g-icon">👑</span>
-      <h4>Mind Rotation</h4>
-      <span class="g-tag">Mind Rotation</span>
-    </a>
-
-    <a href="grammar-galaxy.html" class="g-card language" data-cat="language">
-      <span class="g-icon">📝</span>
-      <h4>English Grammar</h4>
-      <span class="g-tag">Grammar with Space</span>
-    </a>
-
-    <a href="grammar-pro.html" class="g-card language" data-cat="language">
-      <span class="g-icon">💬</span>
-      <h4>Daily English</h4>
-      <span class="g-tag">English Grammar</span>
-    </a>
-
-    <a href="telugu-script-game.html" class="g-card language" data-cat="language">
-      <span class="g-icon">అ</span>
-      <h4>Telugu Script Game</h4>
-      <span class="g-tag">Language Learning</span>
-    </a>
-
-
-    <a href="devanagari-game/index.html" class="g-card language" data-cat="language">
-      <span class="g-icon">अ</span>
-      <h4>Devanagari Game</h4>
-      <span class="g-tag">Sanskrit Script</span>
-    </a>
-
-    <a href="memory-match-puzzle.html" class="g-card memory" data-cat="memory">
-      <span class="g-icon">🃏</span>
-      <h4>Memory Match</h4>
-      <span class="g-tag">Memory Training</span>
-    </a>
-
-<a href="memory-match-ultimate.html" class="g-card memory" data-cat="memory">
-      <span class="g-icon">🃏</span>
-      <h4>Memory Match</h4>
-      <span class="g-tag">Ultimate Training</span>
-    </a>
-
-    <a href="memory-zoo-puzzle.html" class="g-card memory" data-cat="memory">
-      <span class="g-icon">🦁</span>
-      <h4>Memory Zoo</h4>
-      <span class="g-tag">Animal Memory Puzzle</span>
-    </a>
-
-    <a href="mindspark-iq.html" class="g-card iq" data-cat="iq">
-      <span class="g-new">NEW</span>
-      <span class="g-icon">⚡</span>
-      <h4>MindSpark IQ</h4>
-      <span class="g-tag">IQ & Logic Challenge</span>
-    </a>
-<a href="neuroflash-memory.html" class="g-card iq" data-cat="iq">
-      <span class="g-new">NEW</span>
-      <span class="g-icon">🧬</span>
-      <h4>Neuro Flash Memory</h4>
-      <span class="g-tag">Brain Level Up</span>
-    </a>
-    <a href="neuro-ascend-iq.html" class="g-card iq" data-cat="iq">
-      <span class="g-new">NEW</span>
-      <span class="g-icon">🧬</span>
-      <h4>Neuro Ascend IQ</h4>
-      <span class="g-tag">Brain Level Up</span>
-    </a>
-	
-	 <a href="focus-under-distraction.html" class="g-card iq" data-cat="iq">
-      <span class="g-new">NEW</span>
-      <span class="g-icon">🧬</span>
-      <h4>Focus Master</h4>
-      <span class="g-tag">Focus Master</span>
-    </a>
-  <a href="mindscape-pro.html" class="g-card iq" data-cat="iq">
-      <span class="g-new">NEW</span>
-      <span class="g-icon">🧠</span>
-      <h4>MindScape Pro</h4>
-      <span class="g-tag">Advanced Brain Training</span>
-    </a>
-
-    <a href="percentile-game.html" class="g-card math" data-cat="math">
-      <span class="g-icon">📊</span>
-      <h4>Percentile</h4>
-      <span class="g-tag">Maths & Percentages</span>
-    </a>
-
-    <a href="know-maths/index.html" class="g-card math" data-cat="math">
-      <span class="g-icon">📊</span>
-      <h4>KNOW MATHS</h4>
-      <span class="g-tag">Basics of Maths with English</span>
-    </a>
-
-
-    <a href="planet-guardians.html" class="g-card science" data-cat="science">
-      <span class="g-icon">🌍</span>
-      <h4>Planet Guardians</h4>
-      <span class="g-tag">Environment & Science</span>
-    </a>
-
-    <a href="heart-heroes.html" class="g-card kindness" data-cat="kindness">
-      <span class="g-icon">💖</span>
-      <h4>Heart Heroes</h4>
-      <span class="g-tag">Kindness & Empathy</span>
-    </a>
-	
-	<a href="good-habits.html" class="g-card kindness" data-cat="kindness">
-      <span class="g-icon">💖</span>
-      <h4>Good Habits</h4>
-      <span class="g-tag">Responsibility Checker</span>
-    </a>
-
-    <a href="imaginia-quest.html" class="g-card iq" data-cat="iq">
-      <span class="g-new">NEW</span>
-      <span class="g-icon">🎨</span>
-      <h4>Imaginia Quest</h4>
-      <span class="g-tag">Creativity & Imagination</span>
-    </a>
-
-    <a href="neurospark.html" class="g-card iq" data-cat="iq">
-      <span class="g-new">NEW</span>
-      <span class="g-icon">⚡</span>
-      <h4>NeuroSpark</h4>
-      <span class="g-tag">Brain Speed Challenge</span>
-    </a>
-
-    <a href="visual-difference-detector.html" class="g-card logic" data-cat="logic">
-      <span class="g-new">NEW</span>
-      <span class="g-icon">🔍</span>
-      <h4>Visual Difference</h4>
-      <span class="g-tag">Spot the Difference</span>
-    </a>
-
-    <a href="calm-zone.html" class="g-card kindness" data-cat="kindness">
-      <span class="g-new">NEW</span>
-      <span class="g-icon">🧘</span>
-      <h4>Calm Zone</h4>
-      <span class="g-tag">Mindfulness & Relaxation</span>
-    </a>
-
-    <a href="empathy-conversation.html" class="g-card emotion" data-cat="emotion">
-      <span class="g-new">NEW</span>
-      <span class="g-icon">💬</span>
-      <h4>Empathy Conversation</h4>
-      <span class="g-tag">Emotional Dialogue</span>
-    </a>
-
-  </div><!-- ← end g-grid -->
 </section>
 
 <script>
@@ -2330,7 +3150,7 @@ function bgtMode(mode){
   </div>
 </section>
 <!-- ✦ What Your Child Will Gain (Standalone Section) -->
-<section id="gain-section" style="padding:80px 20px; text-align:center; background:linear-gradient(135deg,#0f172a,#1e293b); color:white; overflow:hidden;">
+<section id="gain-section" data-public-only style="padding:80px 20px; text-align:center; background:linear-gradient(135deg,#0f172a,#1e293b); color:white; overflow:hidden;">
 
   <h2 style="font-size:2.5rem; margin-bottom:10px; background:linear-gradient(90deg,#38bdf8,#a78bfa); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
     ✦ What Your Child Will Gain
@@ -2459,7 +3279,7 @@ function bgtMode(mode){
 ════════════════════════════════════════ -->
 
 <!-- SUBSCRIPTION PLANS -->
-<section id="pricing" class="section-light">
+<section id="pricing" data-public-only class="section-light">
   <div class="container">
     <div class="section-header section-animate">
       <h2>Unlock Your <span class="accent">Brain Power</span></h2>
@@ -2731,7 +3551,7 @@ function bgtMode(mode){
 </style>
 
 <!-- ═══ COLLABORATION SECTION ═══ -->
-<section id="collaborate" class="collab-section">
+<section id="collaborate" data-public-only class="collab-section">
   <div class="bgt-inner" style="position:relative;z-index:1;">
 
     <p class="collab-eyebrow bgt-fade">🤝 Open Collaborations 2026</p>
@@ -2824,7 +3644,7 @@ function bgtMode(mode){
   </section>
 
   <!-- ===== CONTACT ===== -->
-  <section id="contact" class="section-light">
+  <section id="contact" data-public-only class="section-light">
     <div class="container">
       <div class="section-header section-animate">
         <h2>Contact <span class="accent">Us</span></h2>
@@ -2969,7 +3789,7 @@ function bgtMode(mode){
 </script>
   <!-- ============ FOOTER ============ -->
   
-<Section id="careers">
+<section id="careers" data-public-only>
 <style>
 /* CAREERS — fully scoped */
 careers { position: relative; overflow: hidden; background: linear-gradient(160deg, #0a0a1a 0%, #0f0c29 55%, #0a0a1a 100%); padding: 100px 0 130px; scroll-margin-top: 70px; }
@@ -3105,7 +3925,7 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
 </style>
 
 <!-- ======== CAREERS HTML ======== -->
-<section id="careers">
+<section id="careers" data-public-only>
   <div class="co co1"></div>
   <div class="co co2"></div>
   <div class="co co3"></div>
@@ -3347,8 +4167,8 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
           <ul>
             <li><a href="feedback.html">📝 Share Feedback</a>
             <li><a href="#about">About Us</a></li>
-            <li><a href="bhaava-tech-form-v2.html">Enroll Now</a></li>
-            <li><a href="#pricing">Pricing</a></li>
+            <li data-public-only><a href="bhaava-tech-form-v2.html">Enroll Now</a></li>
+            <li data-public-only><a href="#pricing">Pricing</a></li>
 			<li><a href="collaborate.html">Partner With Us</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#contact">Contact &amp; Book</a></li>
@@ -3558,17 +4378,116 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
  <script>
   // On Android Capacitor, open game links in same tab (not new tab)
   // On browser, keep opening in new tab as before
-  document.querySelectorAll('a.game-card').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      var isAndroid = window.location.protocol === 'https:' &&
-                      navigator.userAgent.toLowerCase().includes('wv'); // WebView
-      if (isAndroid) {
-        e.preventDefault();
-        window.location.href = link.getAttribute('href');
+// ── Student Login Gate ────────────────────────────────────────────────────
+// Shows login modal before launching any game.
+// On Electron: window.bhava already set by preload, login done in Electron context.
+// On Android/browser: uses bhava-bridge.js (loaded before this script).
+
+var _pendingGameUrl = null;
+var GOOGLE_CLIENT_ID = '236194435527-lioshsrq94528622ppo0n439da52ep45.apps.googleusercontent.com';
+
+function openLoginModal(gameUrl) {
+  _pendingGameUrl = gameUrl;
+  // If already logged in as student, go straight to game
+  if (window.bhava && window.bhava.getCurrentStudent) {
+    var s = window.bhava.getCurrentStudent();
+    if (s) { launchGame(gameUrl); return; }
+  }
+  document.getElementById('bhava-login-modal').style.display = 'flex';
+  document.getElementById('login-error').textContent = '';
+  document.getElementById('login-roll').value = '';
+  document.getElementById('login-class').value = '';
+  document.getElementById('login-pin').value = '';
+}
+
+function closeLoginModal() {
+  document.getElementById('bhava-login-modal').style.display = 'none';
+  _pendingGameUrl = null;
+}
+
+function launchGame(url) {
+  closeLoginModal();
+  var isAndroid = navigator.userAgent.toLowerCase().includes('wv');
+  if (isAndroid) {
+    window.location.href = url;
+  } else {
+    window.open(url, '_blank');
+  }
+}
+
+async function submitStudentLogin() {
+  var roll  = document.getElementById('login-roll').value.trim();
+  var cls   = document.getElementById('login-class').value.trim();
+  var pin   = document.getElementById('login-pin').value.trim();
+  var errEl = document.getElementById('login-error');
+  var btn   = document.getElementById('login-submit-btn');
+
+  if (!roll || !cls || !pin) {
+    errEl.textContent = 'Please fill Roll No, Class, and PIN.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Verifying…';
+  errEl.textContent = '';
+
+  try {
+    var result = await window.bhava.login(roll, cls, pin);
+    if (result && result.ok) {
+      if (result.offline) {
+        errEl.style.color = '#facc15';
+        errEl.textContent = 'Offline — using cached data.';
       }
-      // On browser: default behaviour (opens new tab) continues
-    });
+      setTimeout(() => launchGame(_pendingGameUrl), result.offline ? 800 : 0);
+    } else {
+      errEl.style.color = '#f87171';
+      errEl.textContent = result.error || 'Login failed. Check your details.';
+      btn.disabled = false;
+      btn.textContent = 'Login & Play →';
+    }
+  } catch(e) {
+    errEl.style.color = '#f87171';
+    errEl.textContent = 'Something went wrong. Try again.';
+    btn.disabled = false;
+    btn.textContent = 'Login & Play →';
+  }
+}
+
+async function loginAsGuest() {
+  // Google One Tap / GSI
+  if (typeof google === 'undefined' || !google.accounts) {
+    document.getElementById('login-error').textContent = 'Google Sign-In not available. Check internet.';
+    return;
+  }
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: async function(resp) {
+      var result = await window.bhava.loginGuest(resp.credential);
+      if (result && result.ok) {
+        launchGame(_pendingGameUrl);
+      } else {
+        document.getElementById('login-error').textContent = result.error || 'Google login failed.';
+      }
+    }
   });
+  google.accounts.id.prompt();
+}
+
+// Intercept all game card clicks
+document.querySelectorAll('a.game-card').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    // In Electron without bridge — allow direct (Electron has own session mgmt)
+    if (window.bhava && !window.bhava.getCurrentStudent) {
+      // Old Electron path — direct launch
+      var isAndroid = navigator.userAgent.toLowerCase().includes('wv');
+      if (isAndroid) window.location.href = link.getAttribute('href');
+      else window.open(link.getAttribute('href'), '_blank');
+      return;
+    }
+    openLoginModal(link.getAttribute('href'));
+  });
+});
 </script>
 
 
@@ -3607,13 +4526,13 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
      title="Download for Windows"
      style="display:flex; align-items:center; gap:7px; background:linear-gradient(135deg,#6c47ff,#a259ff); color:#fff; padding:7px 13px; border-radius:22px; text-decoration:none; font-size:11px; font-weight:700; font-family:sans-serif; box-shadow:0 2px 10px rgba(108,71,255,0.45); white-space:nowrap;"
      onmouseover="if(this){this.style.opacity='.85'" onmouseout="if(this){this.style.opacity='1'">
-    💻 Windows App
+    <span data-public-only-inline>💻 Windows App</span>
   </a>
   <a href="/assets/app-debug.apk" download="BhaavaJaalam.apk"
      title="Download for Android"
      style="display:flex; align-items:center; gap:7px; background:linear-gradient(135deg,#00b09b,#12c25b); color:#fff; padding:7px 13px; border-radius:22px; text-decoration:none; font-size:11px; font-weight:700; font-family:sans-serif; box-shadow:0 2px 10px rgba(0,176,155,0.45); white-space:nowrap;"
      onmouseover="if(this){this.style.opacity='.85'" onmouseout="if(this){this.style.opacity='1'">
-    🤖 Android App
+    <span data-public-only-inline>🤖 Android App</span>
   </a>
 </div>
 <style>
@@ -3659,5 +4578,298 @@ if (!sessionStorage.getItem('gs-popup-seen')) {
 </script>
 <script src="bhava-animate.js" defer></script>
 
+<script>
+// Show Admin link only when running inside Electron (window.bhava exists)
+(function() {
+  function checkBhava() {
+    if (window.bhava) {
+      var el = document.getElementById('admin-nav-item');
+      if (el) el.style.display = 'list-item';
+    }
+  }
+  // Check immediately and after a short delay (preload may load slightly after)
+  checkBhava();
+  setTimeout(checkBhava, 500);
+})();
+</script>
+
+<script>
+// Show Admin nav link only if running inside Electron as verified admin
+(function () {
+  async function checkAdminNav() {
+    if (!window.bhava) return; // not in Electron
+    const verified = sessionStorage.getItem('bhava_admin_verified') === '1';
+    if (!verified) return;
+    // Double-check config role
+    try {
+      const cfg = await window.bhava.getConfig();
+      if (cfg.role === 'admin') {
+        const el = document.getElementById('admin-nav-item');
+        if (el) el.style.display = '';
+      }
+    } catch (e) {}
+  }
+  // Run immediately and after short delay (for preload timing)
+  checkAdminNav();
+  setTimeout(checkAdminNav, 400);
+})();
+</script>
+
+
+<script>
+// ── School / Public context mode ─────────────────────────────────────────
+(function () {
+  async function applyContext() {
+    if (!window.bhava) return; // not in Electron — always public
+
+    let cfg = {};
+    try { cfg = await window.bhava.getConfig(); } catch(e) {}
+
+    if (cfg.context !== 'school') return; // public mode — show everything
+
+    // ── School mode: hide public-only elements ────────────────────────────
+    document.querySelectorAll('[data-public-only]').forEach(el => {
+      el.style.display = 'none';
+    });
+    document.querySelectorAll('[data-public-only-inline]').forEach(el => {
+      el.style.display = 'none';
+    });
+
+    // Hide hero public CTA, show school CTA
+    const pubCta = document.getElementById('hero-cta-public');
+    const scCta  = document.getElementById('hero-cta-school');
+    if (pubCta) pubCta.style.display = 'none';
+    if (scCta)  scCta.style.display  = '';
+
+    // Hide the main hero section, show school banner
+    const heroSection = document.getElementById('bhava-unified');
+    const schoolBanner = document.getElementById('school-hero-banner');
+    if (heroSection)  heroSection.style.display  = 'none';
+    if (schoolBanner) schoolBanner.style.display = '';
+
+    // Hide the stat-boxes row (100% online ready etc.)
+    const statRow = document.querySelector('.hero-stats') || document.querySelector('.stat-boxes');
+    if (statRow) statRow.style.display = 'none';
+
+    // Add school-mode body class for any CSS targeting
+    document.body.classList.add('school-mode');
+  }
+
+  applyContext();
+  setTimeout(applyContext, 400);
+})();
+</script>
+
+
+<!-- ══ Student Login Modal ══ -->
+<div id="bhava-login-modal" style="display:none;position:fixed;inset:0;z-index:99999;
+  background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:20px;">
+  <div style="background:linear-gradient(145deg,#0f172a,#1e293b);border:1px solid rgba(99,102,241,0.3);
+    border-radius:24px;padding:32px 28px;width:100%;max-width:360px;position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);">
+    <button onclick="closeLoginModal()" style="position:absolute;top:14px;right:16px;
+      background:rgba(255,255,255,0.08);border:none;color:#94a3b8;font-size:18px;
+      width:30px;height:30px;border-radius:50%;cursor:pointer;line-height:1;">✕</button>
+
+    <div style="text-align:center;margin-bottom:22px;">
+      <div style="font-size:28px;margin-bottom:6px;">🎮</div>
+      <h3 style="color:#e2e8f0;font-size:1.1rem;font-weight:700;margin:0 0 4px;">
+        Login to Play
+      </h3>
+      <p style="color:#64748b;font-size:0.78rem;margin:0;">
+        Use your school credentials or continue as guest
+      </p>
+    </div>
+
+    <!-- Student Login -->
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+      <input id="login-roll" type="text" placeholder="Roll Number"
+        style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
+        border-radius:12px;padding:11px 14px;color:#e2e8f0;font-size:0.9rem;
+        font-family:inherit;outline:none;width:100%;box-sizing:border-box;"
+        onkeydown="if(event.key==='Enter')document.getElementById('login-class').focus()" />
+      <input id="login-class" type="text" placeholder="Class (e.g. 6-A)"
+        style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
+        border-radius:12px;padding:11px 14px;color:#e2e8f0;font-size:0.9rem;
+        font-family:inherit;outline:none;width:100%;box-sizing:border-box;"
+        onkeydown="if(event.key==='Enter')document.getElementById('login-pin').focus()" />
+      <input id="login-pin" type="password" placeholder="4-digit PIN (from your teacher)"
+        maxlength="6"
+        style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
+        border-radius:12px;padding:11px 14px;color:#e2e8f0;font-size:0.9rem;
+        font-family:inherit;outline:none;width:100%;box-sizing:border-box;"
+        onkeydown="if(event.key==='Enter')submitStudentLogin()" />
+      <div id="login-error" style="min-height:18px;font-size:0.78rem;color:#f87171;text-align:center;"></div>
+      <button id="login-submit-btn" onclick="submitStudentLogin()"
+        style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;
+        border:none;border-radius:12px;padding:12px;font-size:0.9rem;font-weight:700;
+        font-family:inherit;cursor:pointer;width:100%;transition:opacity 0.2s;">
+        Login &amp; Play →
+      </button>
+    </div>
+
+    <!-- Divider -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+      <span style="color:#475569;font-size:0.72rem;font-weight:600;">OR</span>
+      <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+    </div>
+
+    <!-- Google Guest -->
+    <button onclick="loginAsGuest()"
+      style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);
+      border-radius:12px;padding:11px;font-size:0.85rem;font-weight:600;color:#cbd5e1;
+      font-family:inherit;cursor:pointer;width:100%;display:flex;align-items:center;
+      justify-content:center;gap:10px;transition:background 0.2s;">
+      <svg width="18" height="18" viewBox="0 0 18 18">
+        <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
+        <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
+        <path fill="#FBBC05" d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332z"/>
+        <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 7.294C4.672 5.163 6.656 3.58 9 3.58z"/>
+      </svg>
+      Continue as Guest (Google)
+    </button>
+
+    <p style="text-align:center;color:#334155;font-size:0.7rem;margin-top:12px;">
+      Guest scores are saved to your Google account
+    </p>
+  </div>
+</div>
+
+<!-- Google Sign-In SDK (for guest login) -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+
+// ══ Bhāva Login Gate ══════════════════════════════════════════════════════
+var GATE_CLIENT_ID  = '236194435527-lioshsrq94528622ppo0n439da52ep45.apps.googleusercontent.com';
+var CLOUD_URL       = 'https://bhava-cloud.onrender.com';
+var GATE_SESSION_KEY = 'bhava_gate_user';
+
+// Check if already logged in this session
+(function checkGateSession() {
+  try {
+    var user = JSON.parse(sessionStorage.getItem(GATE_SESSION_KEY));
+    if (user && user.sub) {
+      document.getElementById('bhava-gate').classList.add('hidden');
+      return;
+    }
+  } catch(e) {}
+  // Show gate — do nothing, gate is visible by default
+})();
+
+function gateGoogleLogin() {
+  var btn = document.getElementById('gate-login-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span style="color:#64748b">Connecting to Google…</span>';
+  document.getElementById('gate-error').textContent = '';
+
+  if (typeof google === 'undefined' || !google.accounts) {
+    // GSI not loaded yet — retry after short delay
+    setTimeout(gateGoogleLogin, 600);
+    return;
+  }
+
+  google.accounts.id.initialize({
+    client_id: GATE_CLIENT_ID,
+    callback:  handleGateCredential,
+    auto_select: false,
+    cancel_on_tap_outside: false
+  });
+  google.accounts.id.prompt(function(notification) {
+    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+      // One-tap blocked — show popup instead
+      google.accounts.id.renderButton(
+        document.getElementById('gate-login-btn'),
+        { theme: 'outline', size: 'large', width: 340 }
+      );
+      btn.disabled = false;
+    }
+  });
+}
+
+async function handleGateCredential(response) {
+  try {
+    // Decode JWT payload (no verification needed — server validates)
+    var parts   = response.credential.split('.');
+    var payload = JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/,'/')));
+
+    var user = {
+      sub:   payload.sub,
+      name:  payload.name,
+      email: payload.email,
+      pic:   payload.picture
+    };
+
+    // Save session
+    sessionStorage.setItem(GATE_SESSION_KEY, JSON.stringify(user));
+
+    // Track visit in cloud DB + Google Analytics
+    trackVisit(user);
+
+    // Hide gate
+    document.getElementById('bhava-gate').classList.add('hidden');
+
+  } catch(e) {
+    document.getElementById('gate-error').textContent = 'Login failed. Please try again.';
+    var btn = document.getElementById('gate-login-btn');
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 7.294C4.672 5.163 6.656 3.58 9 3.58z"/></svg> Continue with Google';
+  }
+}
+
+function trackVisit(user) {
+  // Detect device type
+  var ua     = navigator.userAgent;
+  var device = /tablet|ipad|playbook|silk/i.test(ua) ? 'tablet'
+             : /mobile|android|iphone|ipod|blackberry|iemobile|opera mini/i.test(ua) ? 'mobile'
+             : 'desktop';
+
+  // Detect browser
+  var browser = /edg/i.test(ua) ? 'Edge'
+              : /chrome/i.test(ua) ? 'Chrome'
+              : /safari/i.test(ua) ? 'Safari'
+              : /firefox/i.test(ua) ? 'Firefox'
+              : /opr|opera/i.test(ua) ? 'Opera'
+              : 'Other';
+
+  // Detect OS
+  var os = /windows/i.test(ua) ? 'Windows'
+         : /android/i.test(ua) ? 'Android'
+         : /iphone|ipad|ipod/i.test(ua) ? 'iOS'
+         : /mac/i.test(ua) ? 'macOS'
+         : /linux/i.test(ua) ? 'Linux'
+         : 'Other';
+
+  // Send to cloud DB (fire and forget)
+  fetch(CLOUD_URL + '/track/visit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      google_sub: user.sub,
+      name:       user.name,
+      email:      user.email,
+      device:     device,
+      browser:    browser,
+      os:         os,
+      referrer:   document.referrer || ''
+    })
+  }).catch(function() {}); // silent fail
+
+  // Send to Google Analytics
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'login', {
+      method:     'Google',
+      user_name:  user.name,
+      user_email: user.email
+    });
+    gtag('set', 'user_properties', {
+      user_id: user.sub
+    });
+  }
+}
+// ══ End Gate ══════════════════════════════════════════════════════════════
+
+</script>
 </body>
 </html>
