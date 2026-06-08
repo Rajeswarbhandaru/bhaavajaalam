@@ -4256,44 +4256,7 @@ document.querySelectorAll('a.game-card').forEach(function(link) {
 .collab-section .bgt-fade,
 .collab-section .collab-card { opacity:1!important; transform:translateY(0)!important; }
 </style>
-
-<!-- ══ GameSpark Popup ══ -->
-<div class="gs-overlay" id="gs-overlay">
-  <div class="gs-modal">
-    <button class="gs-close" onclick="closeGSPopup()">✕</button>
-    <div class="gs-badge">🎮 Now Open · Registration Live</div>
-    <h2>Bhāva Game Spark 2026</h2>
-    <p>
-      India's 1st National Learn-with-Fun Game Challenge.<br/>
-      Build an educational game. Win big. Get published.
-    </p>
-    <div class="gs-prizes">
-      <div class="gs-prize"><span>🥇</span>₹10,000</div>
-      <div class="gs-prize"><span>🥈</span>₹7,000</div>
-      <div class="gs-prize"><span>🥉</span>₹5,000</div>
-    </div>
-    <p style="font-size:0.8rem;margin-bottom:20px;">
-      📅 25 Apr – 25 May 2026 &nbsp;·&nbsp; &nbsp;·&nbsp; All India &nbsp;·&nbsp; ₹100 Entry
-    </p>
-    <a href="gamespark.html" class="gs-btn">🚀 Register Now &amp; Learn More</a>
-    <button class="gs-skip" onclick="closeGSPopup()">Maybe later, close this</button>
-  </div>
-</div>
-<script>
-// Game Spark Popup — show once per session
-function closeGSPopup() {
-  document.getElementById('gs-overlay').classList.add('hidden');
-  sessionStorage.setItem('gs-popup-seen', '1');
-}
-// Only show if not already seen this session
-if (!sessionStorage.getItem('gs-popup-seen')) {
-  document.getElementById('gs-overlay').classList.remove('hidden');
-} else {
-  document.getElementById('gs-overlay').classList.add('hidden');
-}
-</script>
 <script src="bhava-animate.js" defer></script>
-
 <script>
 // Show Admin link only when running inside Electron (window.bhava exists)
 (function() {
