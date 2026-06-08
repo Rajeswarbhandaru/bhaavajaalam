@@ -4529,6 +4529,15 @@ var GATE_SESSION_KEY = 'bhava_gate_user';
 // Check if already logged in this session
 (function checkGateSession() {
   try {
+    // Skip gate entirely inside Android/Capacitor WebView — bridge handles login
+    var ua = navigator.userAgent || '';
+    var isWebView = /wv/.test(ua) || ((/android/i.test(ua)) && !/chrome/i.test(ua))
+                   || (typeof window.Capacitor !== 'undefined');
+    if (isWebView) {
+      document.getElementById('bhava-gate').classList.add('hidden');
+      return;
+    }
+
     var user = JSON.parse(sessionStorage.getItem(GATE_SESSION_KEY));
     if (user && user.sub) {
       document.getElementById('bhava-gate').classList.add('hidden');
