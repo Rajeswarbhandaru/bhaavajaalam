@@ -385,11 +385,7 @@
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#brain-gym">What is Brain Gym?</a></li>
-      <li data-public-only><a href="bhaava-tech-form-v2.html">Enroll Now</a></li>
       <li><a href="#games">Games</a></li>
-      <li data-public-only><a href="#pricing">Pricing</a></li>
-	  <li data-public-only><a href="#collaborate">Collaborate</a></li>
-      <li data-public-only><a href="#careers">Careers</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li data-public-only><a href="#contact" class="nav-cta">CONTACT</a></li>
       <!-- Admin link — only visible to verified admin inside Electron -->
@@ -3998,8 +3994,7 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
           <ul>
             <li><a href="feedback.html">📝 Share Feedback</a>
             <li><a href="#about">About Us</a></li>
-            <li data-public-only><a href="bhaava-tech-form-v2.html">Enroll Now</a></li>
-            <li data-public-only><a href="#pricing">Pricing</a></li>
+
 			<li><a href="collaborate.html">Partner With Us</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#contact">Contact &amp; Book</a></li>
@@ -4325,6 +4320,10 @@ document.querySelectorAll('a.game-card').forEach(function(link) {
 <script>
   const hamburger = document.getElementById('hamburger');
   let navLinks = document.querySelector('.nav-links');
+
+  // Ensure nav is CLOSED on load
+  navLinks.classList.remove('open');
+  hamburger.classList.remove('active');
 
   hamburger.addEventListener('click', () => {
     const open = navLinks.classList.toggle('open');
