@@ -388,7 +388,7 @@
       <li data-public-only><a href="bhaava-tech-form-v2.html">Enroll Now</a></li>
       <li><a href="#games">Games</a></li>
       <li data-public-only><a href="#pricing">Pricing</a></li>
-	  <li data-public-only><a href="#collaborate">Collaborate</a></li>
+      <li data-public-only><a href="#collaborate">Collaborate</a></li>
       <li data-public-only><a href="#careers">Careers</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li data-public-only><a href="#contact" class="nav-cta">CONTACT</a></li>
@@ -3998,8 +3998,7 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
           <ul>
             <li><a href="feedback.html">📝 Share Feedback</a>
             <li><a href="#about">About Us</a></li>
-            <li data-public-only><a href="bhaava-tech-form-v2.html">Enroll Now</a></li>
-            <li data-public-only><a href="#pricing">Pricing</a></li>
+
 			<li><a href="collaborate.html">Partner With Us</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#contact">Contact &amp; Book</a></li>
@@ -4326,6 +4325,10 @@ document.querySelectorAll('a.game-card').forEach(function(link) {
   const hamburger = document.getElementById('hamburger');
   let navLinks = document.querySelector('.nav-links');
 
+  // Ensure nav is CLOSED on load
+  navLinks.classList.remove('open');
+  hamburger.classList.remove('active');
+
   hamburger.addEventListener('click', () => {
     const open = navLinks.classList.toggle('open');
     hamburger.classList.toggle('active');
@@ -4450,8 +4453,21 @@ if (!sessionStorage.getItem('gs-popup-seen')) {
 <script>
 // ── School / Public context mode ─────────────────────────────────────────
 (function () {
+  // Detect Android WebView / Capacitor app
+  var ua = navigator.userAgent || '';
+  var isWebView = (typeof window.Capacitor !== 'undefined')
+               || /wv/.test(ua)
+               || (/android/i.test(ua) && !/chrome\/[.0-9]* mobile/i.test(ua));
+
   async function applyContext() {
-    if (!window.bhava) return; // not in Electron — always public
+    // In Android WebView — always hide public-only (app mode)
+    if (isWebView) {
+      document.querySelectorAll('[data-public-only]').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('[data-public-only-inline]').forEach(el => el.style.display = 'none');
+      return;
+    }
+
+    if (!window.bhava) return; // not in Electron — always public (website)
 
     let cfg = {};
     try { cfg = await window.bhava.getConfig(); } catch(e) {}
