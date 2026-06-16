@@ -105,6 +105,34 @@
   #main-nav .hamburger { position: relative; z-index: 1001; }
   #bv-canvas { pointer-events: none; z-index: 0 !important; }
   .orb { pointer-events: none; z-index: 0 !important; }
+  /* ── Nav Brand Title ── */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.nav-brand span {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 18px rgba(6, 182, 212, 0.5);
+  transition: color 0.25s, text-shadow 0.25s;
+}
+
+.nav-brand:hover span {
+  color: #67e8f9;
+  text-shadow: 0 0 24px rgba(6, 182, 212, 0.85);
+}
+
+.nav-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
 
   /* ── MOBILE FIXES ────────────────────────────────────────────── */
   /* 1. Prevent any horizontal overflow on mobile */
@@ -368,7 +396,33 @@
   <!-- ============ WORLDWIDE BANNER ============ -->
   
   <div id="scroll-progress"></div>
-
+<!-- ══ BACK TO TOP BUTTON ══ -->
+<button id="back-to-top"
+  onclick="window.scrollTo({top:0, behavior:'smooth'})"
+  aria-label="Back to top"
+  style="
+    position: fixed;
+    bottom: 32px;
+    right: 28px;
+    z-index: 9999;
+    display: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, #06b6d4, #7c3aed);
+    color: #fff;
+    font-size: 1.3rem;
+    box-shadow: 0 6px 24px rgba(6,182,212,0.45);
+    transition: transform 0.25s, box-shadow 0.25s;
+    align-items: center;
+    justify-content: center;
+  "
+  onmouseover="this.style.transform='translateY(-4px) scale(1.1)';this.style.boxShadow='0 12px 32px rgba(6,182,212,0.65)'"
+  onmouseout="this.style.transform='';this.style.boxShadow='0 6px 24px rgba(6,182,212,0.45)'">
+  ↑
+</button>
  <nav id="main-nav">
   <div class="nav-container">
     <a href="#hero" class="nav-brand">
@@ -387,6 +441,7 @@
       <li><a href="#brain-gym">What is Brain Gym?</a></li>
       <li data-public-only><a href="bhaava-tech-form-v2.html">Enroll Now</a></li>
       <li><a href="#games">Games</a></li>
+	  <li><a href="#games-to-skills">Benefits</a></li>
       <li data-public-only><a href="#pricing">Pricing</a></li>
       
       <li data-public-only><a href="#careers">Careers</a></li>
@@ -1004,17 +1059,36 @@ body {
     <div class="sr up d1">
       <div class="z1-tag">✦ Bhāva Tech · Rewiring How Children Learn</div>
     </div>
+<div class="sr up d2">
+  <h2 class="z1-heading bv-hero-title">
+    Learn beyond syllabus and books,<br>
+    through <span class="bv-hero-accent">our games</span> —
+    a gateway to success.
+  </h2>
+</div>
+<style>
+.bv-hero-title {
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1.35;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
 
-    <div class="sr up d2">
-      <h2 class="z1-heading">While AI Gets Smarter,<br>We Make Children Wiser</h2>
-    </div>
+.bv-hero-accent {
+  background: linear-gradient(90deg, #06b6d4 0%, #a855f7 50%, #06b6d4 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: bv-shimmer 3s linear infinite;
+}
 
-    <div class="z1-pills sr up d3">
-      <div class="z1-pill p1"><span>🎯</span> Deep Focus</div>
-      <div class="z1-pill p2"><span>💡</span> Original Thinking</div>
-      <div class="z1-pill p3"><span>🧭</span> Analytical Wisdom</div>
-    </div>
-
+@keyframes bv-shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+</style>
     <div class="sr up d4" style="margin-top:2rem;">
       <a href="#games"
          style="display:inline-block;padding:14px 38px;
@@ -1055,32 +1129,7 @@ body {
       display: none;
     }
   }
-</style>
-    <!-- ══════════════════════════════════
-         ZONE 2 — STATS
-    ══════════════════════════════════ -->
-    <div class="z2">
-      
-      </div>
-      <div class="stat-card s2 sr up d2">
-        <div class="stat-num" data-target="7" data-suffix="+">0+</div>
-        <div class="stat-label">Age Groups</div>
-      </div>
-      <div class="stat-card s3 sr up d3">
-        <div class="stat-num">🧠</div>
-        <div class="stat-label">IQ · EQ · SQ</div>
-      </div>
-      <div class="stat-card s4 sr up d4">
-        <div class="stat-num">🧘</div>
-        <div class="stat-label">Meditation Lab</div>
-      </div>
-      <div class="stat-card s5 sr up d5">
-        <div class="stat-num">🏋️</div>
-        <div class="stat-label">Brain Gym</div>
-      </div>
-      
-    </div>
-	
+</style>	
 <!-- Bhāva Definition Box Start -->
 <section style="padding:50px 20px; display:flex; justify-content:center;">
 
@@ -1973,7 +2022,7 @@ body {
     <div class="bhv-method-row bgt-fade">
       <div class="bhv-method-card">
         <div class="bhv-method-icon">🎮</div>
-        <div class="bhv-method-title">32 Cognitive Games</div>
+        <div class="bhv-method-title"> Cognitive Games</div>
         <div class="bhv-method-desc">Play-based challenges that train Focus, Memory, Logic and Emotional Intelligence — without the child knowing they are training.</div>
       </div>
       <div class="bhv-method-card">
@@ -2564,7 +2613,7 @@ function bgtMode(mode){
               onmouseover="this.style.background='rgba(255,255,255,0.18)';this.style.borderColor='rgba(255,255,255,0.5)'"
               onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.borderColor='rgba(255,255,255,0.22)'">
         <span id="explore-btn-icon">▶</span>
-        <span id="explore-btn-text">Explore All 32 Games</span>
+        <span id="explore-btn-text">Explore All Games</span>
       </button>
     </div>
   </div>
@@ -2572,7 +2621,7 @@ function bgtMode(mode){
   <!-- All Games Grid — collapsed by default -->
   <div id="all-games-wrap" style="display:none;opacity:0;transition:opacity 0.4s ease;">
 <div class="g-header">
-    <h2>🎮 <span>Games &amp; Brain Apps</span></h2>
+    <h2>🎮 <span>Games to Skills </span></h2>
     <p>Choose what you want to strengthen today</p>
   </div>
 
@@ -3000,8 +3049,8 @@ function bgtMode(mode){
     <div style="text-align:center;margin-bottom:52px;">
       <p style="font-size:0.72rem;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:14px;">Why These Games Exist</p>
       <h2 style="font-size:clamp(1.6rem,3.8vw,2.6rem);font-weight:900;color:#fff;line-height:1.25;margin-bottom:16px;">
-        Every Game Trains a<br>
-        <span style="background:linear-gradient(90deg,#06b6d4,#a855f7,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Real Life Skill</span>
+        Our Game Train <br>
+        <span style="background:linear-gradient(90deg,#06b6d4,#a855f7,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Real Life Skills Also</span>
       </h2>
       <p style="font-size:0.95rem;color:rgba(255,255,255,0.45);max-width:560px;margin:0 auto;line-height:1.7;">
         Normal education teaches content. Bhāva trains the <em style="color:rgba(255,255,255,0.7);font-style:normal;font-weight:600;">capacity to think</em> — the one skill AI cannot replace.
@@ -3479,32 +3528,22 @@ function bgtMode(mode){
     }
 
     // Scroll progress
-   window.addEventListener('scroll', function () {
-  if (window.innerWidth <= 768) {
-    if (window.scrollY > 300) {
-      if (backToTopBtn) backToTopBtn.style.display = 'block';
+ <script>
+// ── Back To Top — universal (desktop + mobile) ──
+(function () {
+  var btn = document.getElementById('back-to-top');
+  if (!btn) return;
+
+  // Show after scrolling past hero (~100vh)
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > window.innerHeight * 0.8) {
+      btn.style.display = 'flex';
     } else {
-      if (backToTopBtn) backToTopBtn.style.display = 'none';
+      btn.style.display = 'none';
     }
-  } else {
-    if (backToTopBtn) backToTopBtn.style.display = 'none';
-  }
-});
-
-    // Back to top
-    const btt = document.getElementById('back-to-top');
-    if(btt) {
-      window.addEventListener('scroll', () => { if (btt) btt.style.display = window.scrollY > 400 ? 'block' : 'none'; });
-      btt.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
-    }
-
-    // Hamburger menu
-    const ham = document.querySelector('.hamburger');
-    const _navLinks1 = document.querySelector('.nav-links');
-    if(ham) ham.addEventListener('click', () => _navLinks1.classList.toggle('open'));
-  </script>
-
-<script>
+  }, { passive: true });
+})();
+</script>
   // ── Scroll To Top Button ──
   const backToTopBtn = document.getElementById('back-to-top');
 
@@ -4614,7 +4653,7 @@ function toggleAllGames() {
     wrap.style.opacity = '0';
     setTimeout(function(){ wrap.style.display = 'none'; }, 400);
     if (icon) icon.textContent = '▶';
-    if (txt)  txt.textContent  = 'Explore All 32 Games';
+    if (txt)  txt.textContent  = 'Explore All Games';
     if (btn)  btn.style.background = 'rgba(255,255,255,0.08)';
   }
 }
