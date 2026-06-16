@@ -101,16 +101,10 @@
 
 
   /* NAV Z-INDEX FIX */
-  #main-nav { position: sticky; top: 0; z-index: 1000; background: rgba(10,10,26,0.97); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 2px 16px rgba(0,0,0,0.35); }
+  #main-nav { position: sticky; top: 0; z-index: 9000; background: rgba(10,10,26,0.97) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 2px 20px rgba(0,0,0,0.5); }
   #main-nav .hamburger { position: relative; z-index: 1001; }
   #bv-canvas { pointer-events: none; z-index: 0 !important; }
   .orb { pointer-events: none; z-index: 0 !important; }
-
-  /* ── Nav Brand Title ── */
-  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .nav-brand span { font-size: 1.1rem; font-weight: 800; color: #ffffff; letter-spacing: 0.04em; text-shadow: 0 0 18px rgba(6,182,212,0.5); transition: color 0.25s, text-shadow 0.25s; }
-  .nav-brand:hover span { color: #67e8f9; text-shadow: 0 0 24px rgba(6,182,212,0.85); }
-  .nav-logo { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 
   /* ── MOBILE FIXES ────────────────────────────────────────────── */
   /* 1. Prevent any horizontal overflow on mobile */
@@ -377,19 +371,19 @@
 
  <!-- ══ BACK TO TOP BUTTON ══ -->
 <button id="back-to-top"
-  onclick="window.scrollTo({top:0, behavior:'smooth'})"
+  onclick="window.scrollTo({top:0,behavior:'smooth'})"
   aria-label="Back to top"
-  style="position:fixed;bottom:32px;right:28px;z-index:99999;display:none;
-         width:48px;height:48px;border-radius:50%;border:none;cursor:pointer;
+  style="position:fixed;bottom:30px;right:24px;z-index:99999;display:none;
+         width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;
          background:linear-gradient(135deg,#06b6d4,#7c3aed);color:#fff;
-         font-size:1.4rem;line-height:1;
-         box-shadow:0 6px 24px rgba(6,182,212,0.45);
-         transition:transform 0.25s,box-shadow 0.25s;
+         font-size:1.5rem;font-weight:700;line-height:1;
+         box-shadow:0 6px 24px rgba(6,182,212,0.5);
+         transition:transform 0.2s,box-shadow 0.2s;
          align-items:center;justify-content:center;"
-  onmouseover="this.style.transform='translateY(-4px) scale(1.1)';this.style.boxShadow='0 12px 32px rgba(6,182,212,0.7)'"
-  onmouseout="this.style.transform='';this.style.boxShadow='0 6px 24px rgba(6,182,212,0.45)'">&#8679;
+  onmouseover="this.style.transform='translateY(-4px) scale(1.1)';this.style.boxShadow='0 12px 32px rgba(6,182,212,0.75)'"
+  onmouseout="this.style.transform='';this.style.boxShadow='0 6px 24px rgba(6,182,212,0.5)'">&#8679;
 </button>
-<nav id="main-nav" style="position:sticky!important;top:0!important;z-index:9999!important;background:rgba(10,10,26,0.97)!important;backdrop-filter:blur(14px)!important;-webkit-backdrop-filter:blur(14px)!important;box-shadow:0 2px 16px rgba(0,0,0,0.35)!important;">
+<nav id="main-nav">
   <div class="nav-container">
     <a href="#hero" class="nav-brand">
       <img src="assets/logo.png" alt="Bhāva Tech Logo" class="nav-logo" />
@@ -3538,23 +3532,21 @@ function bgtMode(mode){
     // ── Hamburger menu ──
     const ham = document.querySelector('.hamburger');
     const _navLinks1 = document.querySelector('.nav-links');
-    if(ham) ham.addEventListener('click', () => _navLinks1.classList.toggle('open'));
+    if (ham) ham.addEventListener('click', () => _navLinks1.classList.toggle('open'));
   </script>
 
-<script>
-// ── Back To Top Button — universal (desktop + mobile) ──
-(function () {
-  var btn = document.getElementById('back-to-top');
-  if (!btn) return;
-  window.addEventListener('scroll', function () {
-    if (window.scrollY > (window.innerHeight * 0.8)) {
-      btn.style.setProperty('display', 'flex', 'important');
-    } else {
-      btn.style.setProperty('display', 'none', 'important');
-    }
-  }, { passive: true });
-})();
-</script>
+  <script>
+  // ── Back To Top (universal: desktop + mobile) ──
+  (function () {
+    var btn = document.getElementById('back-to-top');
+    if (!btn) return;
+    btn.style.display = 'none';
+    window.addEventListener('scroll', function () {
+      btn.style.display = (window.scrollY > Math.max(300, window.innerHeight * 0.5)) ? 'flex' : 'none';
+    }, { passive: true });
+  })();
+  </script>
+
   <!-- ============ FOOTER ============ -->
   
 <section id="careers" data-public-only>
