@@ -39,64 +39,7 @@
   <style>
     /* ---- INLINE ADDITIONS ---- */
   /* ── Google Login Gate ───────────────────────────────────────────────── */
-  #bhava-gate {
-    position: fixed; inset: 0; z-index: 999999;
-    background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 40%, #f0f9ff 100%);
-    display: flex; align-items: center; justify-content: center;
-    padding: 20px; font-family: 'Poppins', sans-serif;
-  }
-  #bhava-gate.hidden { display: none; }
-  .gate-card {
-    background: #ffffff;
-    border-radius: 28px;
-    padding: 48px 40px 40px;
-    max-width: 420px; width: 100%;
-    text-align: center;
-    box-shadow: 0 20px 60px rgba(249,115,22,0.15), 0 4px 20px rgba(0,0,0,0.08);
-    border: 1px solid rgba(249,115,22,0.2);
-    position: relative; overflow: hidden;
-  }
-  .gate-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 5px;
-    background: linear-gradient(90deg, #f97316, #8b5cf6, #0ea5e9, #10b981);
-  }
-  .gate-logo { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 18px; display: block; }
-  .gate-title {
-    font-size: 1.6rem; font-weight: 800; color: #1e293b; margin-bottom: 6px;
-  }
-  .gate-subtitle {
-    font-size: 0.88rem; color: #64748b; margin-bottom: 28px; line-height: 1.6;
-  }
-  .gate-google-btn {
-    display: flex; align-items: center; justify-content: center; gap: 12px;
-    width: 100%; padding: 14px 20px;
-    background: #ffffff; border: 2px solid #e2e8f0;
-    border-radius: 14px; cursor: pointer;
-    font-size: 0.95rem; font-weight: 600; color: #1e293b;
-    font-family: 'Poppins', sans-serif;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  .gate-google-btn:hover {
-    border-color: #f97316; box-shadow: 0 4px 16px rgba(249,115,22,0.2);
-    transform: translateY(-1px);
-  }
-  .gate-chips {
-    display: flex; gap: 8px; flex-wrap: wrap;
-    justify-content: center; margin-top: 24px;
-  }
-  .gate-chip {
-    background: rgba(249,115,22,0.08); color: #64748b;
-    padding: 4px 12px; border-radius: 20px;
-    font-size: 0.72rem; border: 1px solid rgba(249,115,22,0.15);
-  }
-  .gate-error {
-    margin-top: 14px; font-size: 0.8rem; color: #ef4444; min-height: 18px;
-  }
-  .gate-loading {
-    margin-top: 14px; font-size: 0.8rem; color: #64748b;
-  }
+
 
 
 
@@ -996,32 +939,6 @@ body {
 <body>
 
 <!-- ══ Bhāva Google Login Gate ══ -->
-<div id="bhava-gate">
-  <div class="gate-card">
-    <img src="assets/bhava-logo.png" alt="Bhāva Tech" class="gate-logo"
-         onerror="this.style.display='none'">
-    <h1 class="gate-title">Bhāva Tech</h1>
-    <p class="gate-subtitle">
-      Cognitive Enhancement Platform<br>
-      Sign in with Google to continue
-    </p>
-    <button class="gate-google-btn" onclick="gateGoogleLogin()" id="gate-login-btn">
-      <svg width="20" height="20" viewBox="0 0 18 18">
-        <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
-        <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
-        <path fill="#FBBC05" d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332z"/>
-        <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 7.294C4.672 5.163 6.656 3.58 9 3.58z"/>
-      </svg>
-      Continue with Google
-    </button>
-    <div class="gate-chips">
-      <span class="gate-chip">🔒 Secure login</span>
-      <span class="gate-chip">🎮 33+ Brain games</span>
-      <span class="gate-chip">🧠 Cognitive growth</span>
-    </div>
-    <div class="gate-error" id="gate-error"></div>
-  </div>
-</div>
 
 
 
@@ -4507,147 +4424,45 @@ document.querySelectorAll('a.game-card').forEach(function(link) {
 </div>
 
 <!-- Google Sign-In SDK (for guest login) -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 
-// ══ Bhāva Login Gate ══════════════════════════════════════════════════════
-var GATE_CLIENT_ID  = '236194435527-lioshsrq94528622ppo0n439da52ep45.apps.googleusercontent.com';
-var CLOUD_URL       = 'https://bhava-cloud.onrender.com';
-var GATE_SESSION_KEY = 'bhava_gate_user';
-
-// Check if already logged in this session
-(function checkGateSession() {
-  try {
-    // Skip gate entirely inside Android/Capacitor WebView — bridge handles login
-    var ua = navigator.userAgent || '';
-        var isWebView = /wv/.test(ua) || ((/android/i.test(ua)) && !/chrome/i.test(ua))
-                   || (typeof window.Capacitor !== 'undefined');
-    var isElectron = navigator.userAgent.indexOf('Electron') !== -1;
-    if (isWebView || isElectron) {
-      document.getElementById('bhava-gate').classList.add('hidden');
-      return;
-    }
-
-    var user = JSON.parse(sessionStorage.getItem(GATE_SESSION_KEY));
-    if (user && user.sub) {
-      document.getElementById('bhava-gate').classList.add('hidden');
-      return;
-    }
-  } catch(e) {}
-  // Show gate — do nothing, gate is visible by default
-})();
-
-function gateGoogleLogin() {
-  var btn = document.getElementById('gate-login-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span style="color:#64748b">Connecting to Google…</span>';
-  document.getElementById('gate-error').textContent = '';
-
-  if (typeof google === 'undefined' || !google.accounts) {
-    // GSI not loaded yet — retry after short delay
-    setTimeout(gateGoogleLogin, 600);
-    return;
-  }
-
-  google.accounts.id.initialize({
-    client_id: GATE_CLIENT_ID,
-    callback:  handleGateCredential,
-    auto_select: false,
-    cancel_on_tap_outside: false
-  });
-  google.accounts.id.prompt(function(notification) {
-    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-      // One-tap blocked — show popup instead
-      google.accounts.id.renderButton(
-        document.getElementById('gate-login-btn'),
-        { theme: 'outline', size: 'large', width: 340 }
-      );
-      btn.disabled = false;
-    }
-  });
-}
-
-async function handleGateCredential(response) {
-  try {
-    // Decode JWT payload (no verification needed — server validates)
-    var parts   = response.credential.split('.');
-    var payload = JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/,'/')));
-
-    var user = {
-      sub:   payload.sub,
-      name:  payload.name,
-      email: payload.email,
-      pic:   payload.picture
-    };
-
-    // Save session
-    sessionStorage.setItem(GATE_SESSION_KEY, JSON.stringify(user));
-
-    // Track visit in cloud DB + Google Analytics
-    trackVisit(user);
-
-    // Hide gate
-    document.getElementById('bhava-gate').classList.add('hidden');
-
-  } catch(e) {
-    document.getElementById('gate-error').textContent = 'Login failed. Please try again.';
-    var btn = document.getElementById('gate-login-btn');
-    btn.disabled = false;
-    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 7.294C4.672 5.163 6.656 3.58 9 3.58z"/></svg> Continue with Google';
-  }
-}
-
-function trackVisit(user) {
-  // Detect device type
-  var ua     = navigator.userAgent;
+// ══ Silent Visitor Tracker (no login required) ══════════════════════════════
+(function trackSilentVisit() {
+  var ua     = navigator.userAgent || '';
   var device = /tablet|ipad|playbook|silk/i.test(ua) ? 'tablet'
              : /mobile|android|iphone|ipod|blackberry|iemobile|opera mini/i.test(ua) ? 'mobile'
              : 'desktop';
-
-  // Detect browser
   var browser = /edg/i.test(ua) ? 'Edge'
               : /chrome/i.test(ua) ? 'Chrome'
               : /safari/i.test(ua) ? 'Safari'
               : /firefox/i.test(ua) ? 'Firefox'
-              : /opr|opera/i.test(ua) ? 'Opera'
-              : 'Other';
-
-  // Detect OS
+              : /opr|opera/i.test(ua) ? 'Opera' : 'Other';
   var os = /windows/i.test(ua) ? 'Windows'
          : /android/i.test(ua) ? 'Android'
          : /iphone|ipad|ipod/i.test(ua) ? 'iOS'
          : /mac/i.test(ua) ? 'macOS'
-         : /linux/i.test(ua) ? 'Linux'
-         : 'Other';
+         : /linux/i.test(ua) ? 'Linux' : 'Other';
 
-  // Send to cloud DB (fire and forget)
-  fetch(CLOUD_URL + '/track/visit', {
+  fetch('https://bhava-cloud.onrender.com/track/visit', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      google_sub: user.sub,
-      name:       user.name,
-      email:      user.email,
-      device:     device,
-      browser:    browser,
-      os:         os,
-      referrer:   document.referrer || ''
+      google_sub: 'anonymous_' + Math.random().toString(36).slice(2,9),
+      name:    'Anonymous Visitor',
+      email:   '',
+      device:  device,
+      browser: browser,
+      os:      os,
+      referrer: document.referrer || ''
     })
-  }).catch(function() {}); // silent fail
+  }).catch(function() {}); // silent fail — never blocks page
 
-  // Send to Google Analytics
+  // Google Analytics pageview
   if (typeof gtag !== 'undefined') {
-    gtag('event', 'login', {
-      method:     'Google',
-      user_name:  user.name,
-      user_email: user.email
-    });
-    gtag('set', 'user_properties', {
-      user_id: user.sub
-    });
+    gtag('event', 'page_view', { device_type: device });
   }
-}
-// ══ End Gate ══════════════════════════════════════════════════════════════
+})();
+// ══ End Silent Tracker ═══════════════════════════════════════════════════
 
 </script>
 
