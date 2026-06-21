@@ -48,6 +48,8 @@
   #main-nav .hamburger { position: relative; z-index: 1001; }
   #bv-canvas { pointer-events: none; z-index: 0 !important; }
   .orb { pointer-events: none; z-index: 0 !important; }
+  /* ── Scroll Spy Active Nav ── */
+  .nav-links a.active { color: #67e8f9 !important; border-bottom: 2px solid #67e8f9 !important; }
   /* ── Nav Brand Title ── */
 .nav-brand {
   display: flex;
@@ -397,7 +399,6 @@
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#brain-gym">What is Brain Gym?</a></li>
-      <li data-public-only><a href="bhaava-tech-form-v2.html">Enroll Now</a></li>
       <li><a href="#games">Games</a></li>
 	  <li><a href="#games-to-skills">Benefits</a></li>
       <li data-public-only><a href="#pricing">Pricing</a></li>
@@ -2535,7 +2536,7 @@ function bgtMode(mode){
     </div>
 
     <!-- Explore All Games Toggle -->
-    <div style="text-align:center;margin-bottom:32px;">
+    <div style="text-align:center;margin-bottom:16px;">
       <button id="explore-all-btn"
               onclick="toggleAllGames()"
               style="display:inline-flex;align-items:center;gap:10px;
@@ -2548,6 +2549,32 @@ function bgtMode(mode){
         <span id="explore-btn-icon">▶</span>
         <span id="explore-btn-text">Explore All Games</span>
       </button>
+    </div>
+
+    <!-- Secondary Links: Intro + Career -->
+    <div style="text-align:center;margin-bottom:32px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
+      <a href="bhava-game-intro-full.html"
+         style="display:inline-flex;align-items:center;gap:8px;
+                background:linear-gradient(135deg,rgba(99,102,241,0.25),rgba(139,92,246,0.25));
+                border:1.5px solid rgba(139,92,246,0.5);color:#c4b5fd;
+                font-family:inherit;font-weight:700;font-size:0.85rem;
+                padding:10px 22px;border-radius:30px;text-decoration:none;
+                transition:all 0.25s;"
+         onmouseover="this.style.background='rgba(139,92,246,0.35)';this.style.borderColor='rgba(139,92,246,0.8)'"
+         onmouseout="this.style.background='linear-gradient(135deg,rgba(99,102,241,0.25),rgba(139,92,246,0.25))';this.style.borderColor='rgba(139,92,246,0.5)'">
+        🌱 New to Bhāva? Start Here
+      </a>
+      <a href="career-adventure.html"
+         style="display:inline-flex;align-items:center;gap:8px;
+                background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2));
+                border:1.5px solid rgba(245,158,11,0.5);color:#fcd34d;
+                font-family:inherit;font-weight:700;font-size:0.85rem;
+                padding:10px 22px;border-radius:30px;text-decoration:none;
+                transition:all 0.25s;"
+         onmouseover="this.style.background='rgba(245,158,11,0.35)';this.style.borderColor='rgba(245,158,11,0.8)'"
+         onmouseout="this.style.background='linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2))';this.style.borderColor='rgba(245,158,11,0.5)'">
+        🎯 Career &amp; Life Guide
+      </a>
     </div>
   </div>
 
@@ -4290,6 +4317,44 @@ document.querySelectorAll('a.game-card').forEach(function(link) {
 
 
 <script>
+// ── Scroll Spy — highlight active nav item ──────────────────────────────────
+(function initScrollSpy() {
+  // Map nav links to their target section IDs
+  var sections = [
+    { id: 'about',         link: 'a[href="#about"]' },
+    { id: 'brain-gym',     link: 'a[href="#brain-gym"]' },
+    { id: 'games',         link: 'a[href="#games"]' },
+    { id: 'benefits',      link: 'a[href="#benefits"]' },
+    { id: 'faq',           link: 'a[href="#faq"]' },
+    { id: 'contact',       link: 'a[href="#contact"]' },
+  ];
+
+  function onScroll() {
+    var scrollY = window.scrollY || window.pageYOffset;
+    var active  = null;
+
+    sections.forEach(function(s) {
+      var el = document.getElementById(s.id);
+      if (!el) return;
+      if (el.offsetTop - 120 <= scrollY) active = s;
+    });
+
+    // Remove active from all nav links
+    document.querySelectorAll('.nav-links a').forEach(function(a) {
+      a.classList.remove('active');
+    });
+
+    // Add active to current section link
+    if (active) {
+      var link = document.querySelector('.nav-links ' + active.link);
+      if (link) link.classList.add('active');
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); // run once on load
+})();
+
 // ── School / Public context mode ─────────────────────────────────────────
 (function () {
   // Detect Android WebView / Capacitor app
@@ -4505,6 +4570,41 @@ function toggleCareers() {
     if (arrow) { arrow.textContent = '▶'; arrow.style.transform = ''; }
   }
 }
+
+// ── Scroll Spy: highlight active nav link as user scrolls ──
+(function() {
+  var sectionIds = ['about','brain-gym','games','games-to-skills','pricing','careers','faq','contact'];
+  var navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+  if (!navLinks.length) return;
+
+  function getActiveId() {
+    var scrollY = window.scrollY || window.pageYOffset;
+    var offset  = 120; // px below nav to trigger
+    var active  = sectionIds[0];
+    for (var i = 0; i < sectionIds.length; i++) {
+      var el = document.getElementById(sectionIds[i]);
+      if (el && el.getBoundingClientRect().top + scrollY - offset <= scrollY) {
+        active = sectionIds[i];
+      }
+    }
+    return active;
+  }
+
+  function updateNav() {
+    var activeId = getActiveId();
+    navLinks.forEach(function(a) {
+      var href = a.getAttribute('href');
+      if (href === '#' + activeId) {
+        a.classList.add('active');
+      } else {
+        a.classList.remove('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav(); // run once on load
+})();
 </script>
 </body>
 </html>
