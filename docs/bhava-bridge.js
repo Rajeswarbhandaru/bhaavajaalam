@@ -62,20 +62,20 @@
         (pin ? '&pin=' + encodeURIComponent(pin) : '');
       var res = await fetch(url, { headers: { 'x-bhava-sync-key': SYNC_KEY } });
       var data = await res.json();
-      if (!res.ok) return { ok: false, error: data.error || 'Login failed' };
-      if (!data || !data.id) return { ok: false, error: 'Student not found' };
+      if (!res.ok) return null;  // bhava-session.js checks student.id, null = not found
+      if (!data || !data.id) return null;
       // Cache for offline resilience
       LS.set('student_' + rollNo + '_' + cls, data);
       LS.set('current_student', data);
-      return { ok: true, student: data };
+      return data;  // return raw student object — bhava-session.js expects { id, name, ... }
     } catch (e) {
       // Fallback to cached student if offline
       var cached = LS.get('student_' + rollNo + '_' + cls);
       if (cached) {
         LS.set('current_student', cached);
-        return { ok: true, student: cached, offline: true };
+        return cached;  // raw student object
       }
-      return { ok: false, error: 'No internet connection and no cached data.' };
+      return null;
     }
   }
 
