@@ -25,8 +25,13 @@
   var currentSessionId = null;
 
   // ── Environment detection ──────────────────────────────────────────────────
-  var isElectron  = (typeof window !== 'undefined') && (typeof window.bhava !== 'undefined');
+  // Electron sets window.bhava without _isElectron flag (undefined = truthy check).
+  // bhava-bridge.js sets window.bhava._isElectron = false to signal Android/web mode.
+  var isElectron  = (typeof window !== 'undefined') &&
+                    (typeof window.bhava !== 'undefined') &&
+                    (window.bhava._isElectron !== false);
   var isCapacitor = !isElectron && (typeof window !== 'undefined') && (
+    (typeof window.bhava !== 'undefined') ||   // bhava-bridge.js active = Capacitor/web
     window.location.protocol === 'capacitor:' ||
     (typeof navigator !== 'undefined' && /wv|Android/i.test(navigator.userAgent))
   );
