@@ -16,6 +16,14 @@
   // ── Already injected by Electron preload — nothing to do ──────────────────
   if (window.bhava && typeof window.bhava.login === 'function') return;
 
+  // ── Plain website browser (not Capacitor, not Electron) — skip bridge ──────
+  // bhava-session.js checks window.bhava to decide if it's in "app mode".
+  // On the public website we don't want app mode — only on Android/Capacitor.
+  var ua = navigator.userAgent || '';
+  var isCapacitor = (typeof window.Capacitor !== 'undefined');
+  var isAndroidWebView = /wv/.test(ua) || (/android/i.test(ua) && !/chrome\/[.0-9]* mobile/i.test(ua));
+  if (!isCapacitor && !isAndroidWebView) return; // plain browser — do nothing
+
   // ── Cloud base URL ─────────────────────────────────────────────────────────
   var CLOUD = 'https://bhava-cloud.onrender.com';
   var SYNC_KEY = '0042bfd36ef4a5a219e0bbb206e58ec7b84c7d9334b75c7e';

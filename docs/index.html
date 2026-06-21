@@ -4164,16 +4164,34 @@ async function submitStudentLogin() {
   errEl.textContent = '';
 
   try {
-    var result = await window.bhava.login(roll, cls, pin);
-    if (result && result.ok) {
-      if (result.offline) {
+    var loginResult;
+    // Use bhava bridge if available (Android/Capacitor), else call cloud directly
+    if (window.bhava && typeof window.bhava.login === 'function') {
+      loginResult = await window.bhava.login(roll, cls, pin);
+    } else {
+      // Direct cloud call for plain website browser
+      var CLOUD = 'https://bhava-cloud.onrender.com';
+      var SYNC_KEY = '0042bfd36ef4a5a219e0bbb206e58ec7b84c7d9334b75c7e';
+      var url = CLOUD + '/sync/student-lookup?roll=' + encodeURIComponent(roll) + '&class=' + encodeURIComponent(cls);
+      var resp = await fetch(url, { headers: { 'x-bhava-sync-key': SYNC_KEY } });
+      var data = await resp.json();
+      if (!resp.ok) {
+        loginResult = { ok: false, error: data.error || 'Login failed' };
+      } else {
+        // Cache for report page
+        localStorage.setItem('current_student', JSON.stringify(data));
+        loginResult = { ok: true, student: data };
+      }
+    }
+    if (loginResult && loginResult.ok) {
+      if (loginResult.offline) {
         errEl.style.color = '#facc15';
         errEl.textContent = 'Offline — using cached data.';
       }
-      setTimeout(() => launchGame(_pendingGameUrl), result.offline ? 800 : 0);
+      setTimeout(() => launchGame(_pendingGameUrl), loginResult.offline ? 800 : 0);
     } else {
       errEl.style.color = '#f87171';
-      errEl.textContent = result.error || 'Login failed. Check your details.';
+      errEl.textContent = (loginResult && loginResult.error) || 'Login failed. Check your details.';
       btn.disabled = false;
       btn.textContent = 'Login & Play →';
     }
