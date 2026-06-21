@@ -60,7 +60,7 @@
       var url = CLOUD + '/sync/student-lookup?roll=' +
         encodeURIComponent(rollNo) + '&class=' + encodeURIComponent(cls) +
         (pin ? '&pin=' + encodeURIComponent(pin) : '');
-      var res = await fetch(url, { headers: { 'x-sync-key': SYNC_KEY } });
+      var res = await fetch(url, { headers: { 'x-bhava-sync-key': SYNC_KEY } });
       var data = await res.json();
       if (!res.ok) return { ok: false, error: data.error || 'Login failed' };
       if (!data || !data.id) return { ok: false, error: 'Student not found' };
@@ -158,7 +158,7 @@
       try {
         var res = await fetch(CLOUD + '/sync/session', {
           method:  'POST',
-          headers: { 'Content-Type': 'application/json', 'x-sync-key': SYNC_KEY },
+          headers: { 'Content-Type': 'application/json', 'x-bhava-sync-key': SYNC_KEY },
           body:    JSON.stringify({
             id:         session.id,
             student_id: session.student_id,
@@ -193,6 +193,7 @@
 
   // ── Expose as window.bhava ─────────────────────────────────────────────────
   window.bhava = {
+    _isElectron:      false,   // bridge = web/Android, NOT Electron
     // Core
     getConfig:        getConfig,
     login:            login,

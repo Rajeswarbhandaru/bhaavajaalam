@@ -4280,15 +4280,14 @@ document.querySelectorAll('a.game-card').forEach(function(link) {
 <script src="bhava-animate.js" defer></script>
 
 <script>
-// Show Admin link only when running inside Electron (window.bhava exists)
+// Show Admin link only when running inside Electron (not bridge/web)
 (function() {
   function checkBhava() {
-    if (window.bhava) {
+    if (window.bhava && window.bhava._isElectron !== false) {
       var el = document.getElementById('admin-nav-item');
       if (el) el.style.display = 'list-item';
     }
   }
-  // Check immediately and after a short delay (preload may load slightly after)
   checkBhava();
   setTimeout(checkBhava, 500);
 })();
@@ -4298,7 +4297,7 @@ document.querySelectorAll('a.game-card').forEach(function(link) {
 // Show Admin nav link only if running inside Electron as verified admin
 (function () {
   async function checkAdminNav() {
-    if (!window.bhava) return; // not in Electron
+    if (!window.bhava || window.bhava._isElectron === false) return; // not in Electron
     const verified = sessionStorage.getItem('bhava_admin_verified') === '1';
     if (!verified) return;
     // Double-check config role

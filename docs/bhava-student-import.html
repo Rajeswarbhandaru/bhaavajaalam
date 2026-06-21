@@ -547,6 +547,12 @@ async function addManual() {
 
 // ── Load & Display Students ───────────────────────────────────────────────────
 async function loadStudents() {
+  // This page only works inside the Electron app
+  if (!window.bhava || !window.bhava.getStudents) {
+    showMsg(document.getElementById('school-msg'), 'This page only works inside the Bhāva desktop app.', false);
+    return;
+  }
+
   schoolId = document.getElementById('schoolIdInput').value.trim().toUpperCase();
   document.getElementById('schoolBadge').textContent = schoolId || 'No school selected';
 
