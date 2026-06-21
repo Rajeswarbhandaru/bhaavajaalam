@@ -2,7 +2,8 @@
 
 /**
  * routes-sync.js
- * Endpoints called by the Electron app to push data to the cloud.
+ * Endpoints called by the Electron app to push data to the cloud,
+ * and by the Android/Capacitor app to read data from the cloud.
  * All routes require the x-bhava-sync-key header.
  */
 
@@ -13,12 +14,9 @@ const { requireSyncKey } = require('./auth');
 const router = express.Router();
 router.use(requireSyncKey);
 
-// ── POST /sync/students ───────────────────────────────────────────────────────
-// Electron pushes the full student list for a school (on startup).
-// Body: { school_id, students: [{ id, roll_no, name, class, section, is_active }] }
-
 // ── GET /sync/student-lookup ──────────────────────────────────────────────────
-// Used by Android bridge to look up a student by roll number + class.
+// Used by Android/Capacitor to look up a student by roll number + class.
+// Query params: roll, class
 // Returns student record if found, 404 if not.
 router.get('/student-lookup', async (req, res) => {
   try {
@@ -40,6 +38,59 @@ router.get('/student-lookup', async (req, res) => {
   }
 });
 
+// ── GET /sync/student-quotients ───────────────────────────────────────────────
+// Used by Android/Capacitor inline report modal to fetch IQ/EQ/SQ scores.
+// Query params: student_id
+router.get('/student-quotients', async (req, res) => {
+  try {
+    const sid = (req.query.student_id || '').trim();
+    if (!sid) return res.status(400).json({ error: 'student_id required' });
+    const { rows } = await query(
+      `SELECT iq_total, eq_total, sq_total,
+              iq_logic, iq_memory, iq_attention, iq_processing_speed,
+              eq_empathy, eq_communication, eq_emotional_balance, eq_confidence, eq_self_awareness,
+              sq_cooperation, sq_leadership, sq_social_awareness, sq_conflict_resolution,
+              total_sessions, total_raw_score, updated_at
+       FROM student_quotients
+       WHERE student_id = $1
+       LIMIT 1`,
+      [sid]
+    );
+    if (rows.length === 0) return res.json({});
+    return res.json(rows[0]);
+  } catch (err) {
+    console.error('[sync/student-quotients]', err.message);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ── GET /sync/student-sessions ────────────────────────────────────────────────
+// Used by Android/Capacitor inline report modal to fetch recent game sessions.
+// Query params: student_id, limit (optional, default 5)
+router.get('/student-sessions', async (req, res) => {
+  try {
+    const sid   = (req.query.student_id || '').trim();
+    const limit = Math.min(parseInt(req.query.limit, 10) || 5, 20);
+    if (!sid) return res.status(400).json({ error: 'student_id required' });
+    const { rows } = await query(
+      `SELECT game_name, raw_score, completed, started_at, ended_at, duration_minutes
+       FROM game_sessions
+       WHERE student_id = $1
+         AND game_name != 'TestGame'
+       ORDER BY started_at DESC
+       LIMIT $2`,
+      [sid, limit]
+    );
+    return res.json(rows);
+  } catch (err) {
+    console.error('[sync/student-sessions]', err.message);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ── POST /sync/students ───────────────────────────────────────────────────────
+// Electron pushes the full student list for a school (on startup).
+// Body: { school_id, students: [{ id, roll_no, name, class, section, is_active }] }
 router.post('/students', async (req, res) => {
   try {
     const { school_id, students } = req.body;
@@ -77,6 +128,7 @@ router.post('/students', async (req, res) => {
 
 // ── POST /sync/session ────────────────────────────────────────────────────────
 // Electron pushes one completed game session immediately after it ends.
+// Android/Capacitor also posts here directly after a game ends.
 // Body: { id, student_id, school_id, game_name, raw_score, completed,
 //         started_at, ended_at, duration_minutes }
 router.post('/session', async (req, res) => {
@@ -223,6 +275,73 @@ router.post('/bulk', async (req, res) => {
     return res.json({ ok: true, sessions: sessions.length, quotients: quotients.length });
   } catch (err) {
     console.error('[sync/bulk]', err.message);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ── POST /sync/badges ─────────────────────────────────────────────────────────
+// Electron pushes earned badges after evaluateBadgesForStudent() runs.
+// Body: { student_id, school_id, badges: [{ badge_key, badge_label, badge_emoji,
+//         tier, domain, awarded_at }] }
+router.post('/badges', async (req, res) => {
+  try {
+    const { student_id, school_id, badges } = req.body;
+    if (!student_id || !school_id || !Array.isArray(badges)) {
+      return res.status(400).json({ error: 'student_id, school_id and badges[] required.' });
+    }
+
+    await transaction(async (client) => {
+      for (const b of badges) {
+        await client.query(`
+          INSERT INTO student_badges
+            (student_id, school_id, badge_key, badge_label, badge_emoji, tier, domain, awarded_at, synced_at)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
+          ON CONFLICT (student_id, badge_key) DO UPDATE SET
+            badge_label = EXCLUDED.badge_label,
+            awarded_at  = EXCLUDED.awarded_at,
+            synced_at   = NOW()
+        `, [
+          student_id, school_id,
+          b.badge_key, b.badge_label, b.badge_emoji,
+          b.tier, b.domain, b.awarded_at
+        ]);
+      }
+    });
+
+    return res.json({ ok: true, synced: badges.length });
+  } catch (err) {
+    console.error('[sync/badges]', err.message);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ── POST /sync/certificates ───────────────────────────────────────────────────
+// Electron pushes earned certificates.
+// Body: { student_id, school_id, certificates: [{ level, certificate_code, awarded_at }] }
+router.post('/certificates', async (req, res) => {
+  try {
+    const { student_id, school_id, certificates } = req.body;
+    if (!student_id || !school_id || !Array.isArray(certificates)) {
+      return res.status(400).json({ error: 'student_id, school_id and certificates[] required.' });
+    }
+
+    await transaction(async (client) => {
+      for (const c of certificates) {
+        await client.query(`
+          INSERT INTO student_certificates
+            (student_id, school_id, level, certificate_code, awarded_at, synced_at)
+          VALUES ($1, $2, $3, $4, $5, NOW())
+          ON CONFLICT (student_id, level) DO UPDATE SET
+            certificate_code = EXCLUDED.certificate_code,
+            awarded_at       = EXCLUDED.awarded_at,
+            synced_at        = NOW()
+        `, [student_id, school_id, c.level, c.certificate_code, c.awarded_at]);
+      }
+    });
+
+    return res.json({ ok: true, synced: certificates.length });
+  } catch (err) {
+    console.error('[sync/certificates]', err.message);
     return res.status(500).json({ error: err.message });
   }
 });

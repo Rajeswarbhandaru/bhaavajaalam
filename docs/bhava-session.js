@@ -1,4 +1,4 @@
-﻿// ── Bhāva Tech — Session Tracker + Game Nav v3 ───────────────────────────────
+// ── Bhāva Tech — Session Tracker + Game Nav v3 ───────────────────────────────
 // Single unified file. Drop ONE tag before </body> in any game HTML:
 //   <script src="bhava-session.js"></script>
 //
@@ -6,6 +6,7 @@
 //   Browser / website  → completely silent (public access, no tracking)
 //   Electron + guest   → login modal shown, student chooses Login or Guest
 //   Electron + login   → full session tracking + nav bar with My Report page
+//   Android/Capacitor  → login via cloud lookup, session posted to cloud on end
 //
 // Call from game score logic:
 //   BhavaSession.end(myScore);   // score: 0–100
@@ -15,16 +16,23 @@
   'use strict';
 
   var SCHOOL_ID  = 'BHAVA-SVN-001';
+  var CLOUD_URL  = 'https://bhava-cloud.onrender.com';
+  var CLOUD_KEY  = '0042bfd36ef4a5a219e0bbb206e58ec7b84c7d9334b75c7e';
   var GAME_NAME  = document.title || 'Unknown Game';
   var REPORT_URL = 'bhava-student-report.html';   // all files are inside docs/
 
   var currentStudent   = null;
   var currentSessionId = null;
 
-  // ── Only activate inside Electron ─────────────────────────────────────────
-  var isElectron = (typeof window !== 'undefined') && (typeof window.bhava !== 'undefined');
+  // ── Environment detection ──────────────────────────────────────────────────
+  var isElectron  = (typeof window !== 'undefined') && (typeof window.bhava !== 'undefined');
+  var isCapacitor = !isElectron && (typeof window !== 'undefined') && (
+    window.location.protocol === 'capacitor:' ||
+    (typeof navigator !== 'undefined' && /wv|Android/i.test(navigator.userAgent))
+  );
+  var isActive = isElectron || isCapacitor;  // tracking is active on either platform
 
-  if (!isElectron) {
+  if (!isActive) {
     // Browser / public website — expose silent no-op API
     window.BhavaSession = {
       end:        function () {},
@@ -168,8 +176,26 @@
       btn.disabled = true;
 
       try {
-        var student = await window.bhava.login(rollNo, cls);
-        if (!student) {
+        var student;
+
+        if (window.bhava) {
+          // Electron — look up from local SQLite
+          student = await window.bhava.login(rollNo, cls);
+        } else {
+          // Android/Capacitor — look up from cloud
+          var res = await fetch(
+            CLOUD_URL + '/sync/student-lookup?roll=' + encodeURIComponent(rollNo) +
+            '&class=' + encodeURIComponent(cls),
+            { headers: { 'x-bhava-sync-key': CLOUD_KEY } }
+          );
+          student = res.ok ? await res.json() : null;
+          // Normalise field names to match Electron response shape
+          if (student && student.roll_number && !student.roll_no) {
+            student.roll_no = student.roll_number;
+          }
+        }
+
+        if (!student || !student.id) {
           errEl.textContent = 'Not found. Check Roll No and Class.';
           btn.textContent = '\u25B6 Login & Play';
           btn.disabled = false;
@@ -200,12 +226,19 @@
   async function startSession() {
     if (!currentStudent) return;
     try {
-      currentSessionId = await window.bhava.startSession(
-        currentStudent.id,
-        currentStudent.school_id || SCHOOL_ID,
-        GAME_NAME
-      );
-      console.log('[BhavaSession] started:', currentSessionId, '| game:', GAME_NAME);
+      if (window.bhava) {
+        // Electron — create session in local SQLite via IPC
+        currentSessionId = await window.bhava.startSession(
+          currentStudent.id,
+          currentStudent.school_id || SCHOOL_ID,
+          GAME_NAME
+        );
+        console.log('[BhavaSession] started:', currentSessionId, '| game:', GAME_NAME);
+      } else {
+        // Android/Capacitor — generate a local UUID; session is posted to cloud on end
+        currentSessionId = 'and-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+        console.log('[BhavaSession] Android session ID generated:', currentSessionId, '| game:', GAME_NAME);
+      }
     } catch (e) {
       console.error('[BhavaSession] startSession failed:', e);
     }
@@ -391,10 +424,10 @@
     // My Report button → open inline modal
     document.getElementById('bgnav-report').addEventListener('click', _openReportModal);
 
-    // Show report button once Electron IPC is confirmed
+    // Show report button once student is confirmed (Electron IPC or Capacitor login)
     var checks = 0;
     var poll = setInterval(function () {
-      if (window.bhava) {
+      if (currentStudent || window.bhava) {
         document.getElementById('bgnav-report').classList.remove('bgnav-hidden');
         clearInterval(poll);
       }
@@ -404,12 +437,11 @@
 
   // ── Navigation helpers ─────────────────────────────────────────────────────
   function _goHome() {
-    // All game files live in docs/ — navigate relative to current page
     var here = window.location.pathname;
     if (here.indexOf('/docs/') !== -1) {
-      window.location.href = 'index.html';   // stay inside docs/
+      window.location.href = 'index.html';
     } else {
-      window.location.href = 'docs/index.html'; // from app root
+      window.location.href = 'docs/index.html';
     }
   }
   function _goBack() {
@@ -419,17 +451,14 @@
   // ── Open the full report page (passes sid in URL) ──────────────────────────
   function _openReportPage() {
     var sid = _resolveStudentId();
-    var base = 'bhava-student-report.html'; // all files live in docs/
+    var base = 'bhava-student-report.html';
     window.location.href = base + (sid ? '?sid=' + encodeURIComponent(sid) : '');
   }
 
   // ── Resolve student ID from all possible sources ───────────────────────────
   function _resolveStudentId() {
-    // 1. In-memory (fastest)
     if (currentStudent && currentStudent.id != null) return String(currentStudent.id);
-    // 2. window var
     if (window._bhavaStudentId) return String(window._bhavaStudentId);
-    // 3. sessionStorage (all key names)
     var keys = ['bhava_student', 'bhavaStudentId', 'bhava_student_id', 'studentId'];
     try {
       var json = sessionStorage.getItem('bhava_student');
@@ -438,7 +467,6 @@
     for (var i = 1; i < keys.length; i++) {
       try { var v = sessionStorage.getItem(keys[i]); if (v) return v; } catch (e) {}
     }
-    // 4. URL params
     try {
       var p = new URLSearchParams(window.location.search);
       return p.get('sid') || p.get('studentId') || null;
@@ -450,12 +478,9 @@
   function _syncToNav() {
     var sid = _resolveStudentId();
     if (!sid) return;
-    // Directly update window var
     window._bhavaStudentId = sid;
-    // Show the report button if nav bar is already mounted
     var btn = document.getElementById('bgnav-report');
     if (btn) btn.classList.remove('bgnav-hidden');
-    // Call BhavaNav.setStudent if it's a separate script
     if (window.BhavaNav && typeof window.BhavaNav.setStudent === 'function') {
       window.BhavaNav.setStudent(sid);
     }
@@ -471,18 +496,12 @@
     var sub  = document.getElementById('bgnav-msub');
     body.innerHTML = '<div class="bgnav-loading">Fetching scores from Bh\u0101va DB\u2026</div>';
 
-    if (!window.bhava) {
-      body.innerHTML = '<div class="bgnav-info">Bh\u0101va IPC not available.<br>Launch from the Electron app.</div>';
-      return;
-    }
-
     var sid = _resolveStudentId();
     if (!sid) {
       body.innerHTML = '<div class="bgnav-info">Not logged in.<br>Please log in from Home first.</div>';
       return;
     }
 
-    // Show student name in subtitle if available
     if (currentStudent && currentStudent.name) {
       sub.textContent = currentStudent.name + (currentStudent.class ? ' \u00B7 Class ' + currentStudent.class : '');
     } else {
@@ -490,20 +509,43 @@
     }
 
     try {
-      var results = await Promise.allSettled([
-        window.bhava.getIQScores(sid),
-        window.bhava.getEQScores(sid),
-        window.bhava.getSQScores(sid),
-        window.bhava.getGameSessions(sid)
-      ]);
+      var iq = '—', eq = '—', sq = '—', sessions = [];
 
-      var iq = fmtScore(results[0]);
-      var eq = fmtScore(results[1]);
-      var sq = fmtScore(results[2]);
-
-      var sessions = (results[3].status === 'fulfilled' && Array.isArray(results[3].value))
-        ? results[3].value.filter(function (s) { return s.game_name !== 'TestGame'; }).slice(0, 5)
-        : [];
+      if (window.bhava) {
+        // Electron — use IPC
+        var results = await Promise.allSettled([
+          window.bhava.getIQScores(sid),
+          window.bhava.getEQScores(sid),
+          window.bhava.getSQScores(sid),
+          window.bhava.getGameSessions(sid)
+        ]);
+        iq = fmtScore(results[0]);
+        eq = fmtScore(results[1]);
+        sq = fmtScore(results[2]);
+        sessions = (results[3].status === 'fulfilled' && Array.isArray(results[3].value))
+          ? results[3].value.filter(function (s) { return s.game_name !== 'TestGame'; }).slice(0, 5)
+          : [];
+      } else {
+        // Android/Capacitor — fetch from cloud
+        var qRes = await fetch(
+          CLOUD_URL + '/sync/student-quotients?student_id=' + encodeURIComponent(sid),
+          { headers: { 'x-bhava-sync-key': CLOUD_KEY } }
+        );
+        if (qRes.ok) {
+          var qData = await qRes.json();
+          iq = qData.iq_total != null ? Math.round(qData.iq_total) : '—';
+          eq = qData.eq_total != null ? Math.round(qData.eq_total) : '—';
+          sq = qData.sq_total != null ? Math.round(qData.sq_total) : '—';
+        }
+        var sRes = await fetch(
+          CLOUD_URL + '/sync/student-sessions?student_id=' + encodeURIComponent(sid) + '&limit=5',
+          { headers: { 'x-bhava-sync-key': CLOUD_KEY } }
+        );
+        if (sRes.ok) {
+          var sData = await sRes.json();
+          sessions = Array.isArray(sData) ? sData : [];
+        }
+      }
 
       var sessHtml = sessions.length === 0
         ? '<div class="bgnav-info">No sessions yet. Start playing!</div>'
@@ -547,8 +589,33 @@
         return;
       }
       try {
-        var result = await window.bhava.endSession(currentSessionId, rawScore);
-        console.log('[BhavaSession] Score saved. Scaled:', result && result.scaled);
+        if (window.bhava) {
+          // Electron — save to local SQLite via IPC
+          var result = await window.bhava.endSession(currentSessionId, rawScore);
+          console.log('[BhavaSession] Score saved. Scaled:', result && result.scaled);
+        } else {
+          // Android/Capacitor — post directly to cloud
+          var now = new Date().toISOString();
+          await fetch(CLOUD_URL + '/sync/session', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-bhava-sync-key': CLOUD_KEY
+            },
+            body: JSON.stringify({
+              id:               currentSessionId,
+              student_id:       currentStudent.id,
+              school_id:        currentStudent.school_id || SCHOOL_ID,
+              game_name:        GAME_NAME,
+              raw_score:        rawScore,
+              completed:        true,
+              started_at:       now,
+              ended_at:         now,
+              duration_minutes: 0
+            })
+          });
+          console.log('[BhavaSession] Score posted to cloud (Android).');
+        }
         currentSessionId = null;
       } catch (e) {
         console.error('[BhavaSession] endSession failed:', e);
@@ -560,20 +627,18 @@
     showLogin:   showLoginModal,
     logout:      clearStudent,
 
-    // Called externally (e.g. from login page) to inject a student
     setStudent:  function (student) {
       persistStudent(student);
       _syncToNav();
     },
 
-    // Navigation helpers exposed for external use
     openReport:     _openReportModal,
     openReportPage: _openReportPage,
     goHome:         _goHome,
     goBack:         _goBack,
   };
 
-  // Also expose as BhavaNav for backward compat with any existing calls
+  // Also expose as BhavaNav for backward compat
   window.BhavaNav = {
     setStudent:     function (id) {
       window._bhavaStudentId = String(id);
@@ -592,17 +657,16 @@
   // ─────────────────────────────────────────────────────────────────────────
 
   function init() {
-    injectNavBar();                          // always inject nav bar in Electron
+    injectNavBar();
 
-    var alreadyLoggedIn = restoreStudent();  // try sessionStorage first
+    var alreadyLoggedIn = restoreStudent();
     if (alreadyLoggedIn) {
-      _syncToNav();                          // tell nav bar right away
-      startSession();                        // resume silently
+      _syncToNav();
+      startSession();
     } else {
-      showLoginModal();                      // block until Login or Guest
+      showLoginModal();
     }
 
-    // Retry _syncToNav after nav bar finishes mounting (handles load-order edge cases)
     setTimeout(function () { if (currentStudent) _syncToNav(); }, 300);
     setTimeout(function () { if (currentStudent) _syncToNav(); }, 1200);
   }

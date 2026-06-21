@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhāva Tech Certificate</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
+<style>
+  /* ── Save as: docs/certificate.html ──────────────────────────────────
+     Loaded by main.js generateCertificate handler via file:// URL.
+     Query params: studentName, rollNo, class, section, schoolName,
+                   level, title, emoji, code, issuedOn, badges (JSON array)
+     ──────────────────────────────────────────────────────────────────── */
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width:  297mm;
+    height: 210mm;
+    background: #fff;
+    font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  .cert-page {
+    width:  297mm;
+    height: 210mm;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16mm 20mm;
+    overflow: hidden;
+  }
+
+  /* ── Background decorative shapes ───────────────────────────────── */
+  .cert-bg-circle-1 {
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(1,105,111,0.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cert-bg-circle-2 {
+    position: absolute;
+    bottom: -80px; right: -80px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(194,138,0,0.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cert-bg-strip {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, #01696f 0%, #0c4e54 50%, #c28a00 100%);
+  }
+  .cert-bg-strip-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #c28a00 0%, #01696f 100%);
+  }
+
+  /* ── Border frame ─────────────────────────────────────────────── */
+  .cert-frame {
+    position: absolute;
+    inset: 14mm;
+    border: 1.5px solid rgba(1,105,111,0.20);
+    border-radius: 8px;
+    pointer-events: none;
+  }
+  .cert-frame-inner {
+    position: absolute;
+    inset: 16mm;
+    border: 0.5px solid rgba(1,105,111,0.10);
+    border-radius: 6px;
+    pointer-events: none;
+  }
+
+  /* ── Content ──────────────────────────────────────────────────── */
+  .cert-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 0;
+  }
+
+  .cert-logo-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .cert-logo-circle {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: #01696f;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .cert-org-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #01696f;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .cert-presents {
+    font-size: 10px;
+    color: #999;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .cert-main-emoji {
+    font-size: 52px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .cert-title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 28px;
+    color: #28251d;
+    text-align: center;
+    margin-bottom: 2px;
+    line-height: 1.2;
+  }
+
+  .cert-subtitle {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .cert-awarded-to {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .cert-student-name {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 34px;
+    color: #01696f;
+    margin-bottom: 2px;
+    text-align: center;
+  }
+
+  .cert-student-meta {
+    font-size: 11px;
+    color: #6b6963;
+    margin-bottom: 10px;
+  }
+
+  .cert-reason {
+    font-size: 11px;
+    color: #444;
+    text-align: center;
+    max-width: 420px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  /* Badge row */
+  .cert-badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 14px;
+    max-width: 480px;
+  }
+  .cert-badge-chip {
+    background: rgba(1,105,111,0.07);
+    border: 1px solid rgba(1,105,111,0.18);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 10px;
+    color: #01696f;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Bottom row: sig + code + date */
+  .cert-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10mm;
+    margin-top: 4px;
+    gap: 20px;
+  }
+  .cert-sig-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-width: 120px;
+  }
+  .cert-sig-line {
+    width: 120px;
+    height: 1px;
+    background: #ccc;
+    margin-bottom: 3px;
+  }
+  .cert-sig-label {
+    font-size: 9px;
+    color: #aaa;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .cert-code-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .cert-code-label {
+    font-size: 8px;
+    color: #bbb;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .cert-code-value {
+    font-family: monospace;
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 0.06em;
+    background: #f3f0ec;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .cert-date-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-width: 120px;
+  }
+  .cert-date-value {
+    font-size: 10px;
+    color: #6b6963;
+    font-weight: 600;
+  }
+  .cert-date-label {
+    font-size: 9px;
+    color: #aaa;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="cert-page" id="cert-page">
+
+  <!-- Decorative -->
+  <div class="cert-bg-strip"></div>
+  <div class="cert-bg-strip-bottom"></div>
+  <div class="cert-bg-circle-1"></div>
+  <div class="cert-bg-circle-2"></div>
+  <div class="cert-frame"></div>
+  <div class="cert-frame-inner"></div>
+
+  <!-- Main content -->
+  <div class="cert-content">
+
+    <div class="cert-logo-row">
+      <div class="cert-logo-circle">भ</div>
+      <div class="cert-org-name">Bhāva Tech</div>
+    </div>
+
+    <div class="cert-presents">Proudly presents</div>
+
+    <div class="cert-main-emoji" id="cert-emoji">🥉</div>
+    <div class="cert-title" id="cert-title">Bronze Bhāva Certificate</div>
+    <div class="cert-subtitle">Cognitive Development Achievement</div>
+
+    <div class="cert-awarded-to">This certificate is awarded to</div>
+    <div class="cert-student-name" id="cert-student-name">Student Name</div>
+    <div class="cert-student-meta" id="cert-student-meta">Class — · School Name</div>
+
+    <div class="cert-reason" id="cert-reason">
+      For demonstrating exceptional commitment to cognitive development through
+      the Bhāva Tech learning platform, earning domain badges in key areas of
+      intelligence, focus, and emotional growth.
+    </div>
+
+    <div class="cert-badges-row" id="cert-badges-row">
+      <!-- Badge chips filled by JS -->
+    </div>
+
+    <div class="cert-footer">
+      <div class="cert-sig-block">
+        <div class="cert-sig-line"></div>
+        <div class="cert-sig-label">Programme Director<br>Bhāva Tech</div>
+      </div>
+      <div class="cert-code-block">
+        <div class="cert-code-label">Certificate Code</div>
+        <div class="cert-code-value" id="cert-code">BHAVA-BRONZE-XXXX</div>
+      </div>
+      <div class="cert-date-block">
+        <div class="cert-date-value" id="cert-date">—</div>
+        <div class="cert-date-label">Date of Issue</div>
+      </div>
+    </div>
+
+  </div><!-- /cert-content -->
+</div><!-- /cert-page -->
+
+<script>
+  // Read query params and populate the certificate
+  const p = new URLSearchParams(window.location.search);
+
+  const studentName = p.get('studentName') || 'Student';
+  const rollNo      = p.get('rollNo')      || '';
+  const cls         = p.get('class')       || '';
+  const section     = p.get('section')     || '';
+  const schoolName  = p.get('schoolName')  || 'Bhāva Tech';
+  const emoji       = p.get('emoji')       || '🥉';
+  const title       = p.get('title')       || 'Bhāva Certificate';
+  const code        = p.get('code')        || '';
+  const issuedOn    = p.get('issuedOn')    || new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
+  const level       = p.get('level')       || 'bronze';
+
+  let badges = [];
+  try { badges = JSON.parse(p.get('badges') || '[]'); } catch (_) {}
+
+  document.getElementById('cert-emoji').textContent         = emoji;
+  document.getElementById('cert-title').textContent         = title;
+  document.getElementById('cert-student-name').textContent  = studentName;
+  document.getElementById('cert-code').textContent          = code;
+  document.getElementById('cert-date').textContent          = issuedOn;
+
+  // Meta line: Class 8-A · St. Xavier's School
+  const metaParts = [];
+  if (cls)        metaParts.push(`Class ${cls}${section ? '-' + section : ''}`);
+  if (rollNo)     metaParts.push(`Roll No. ${rollNo}`);
+  if (schoolName) metaParts.push(schoolName);
+  document.getElementById('cert-student-meta').textContent = metaParts.join(' · ');
+
+  // Reason text — varies by level
+  const reasons = {
+    bronze: `For demonstrating strong cognitive effort and earning 3 domain badges
+             through the Bhāva Tech learning platform — showing commitment to
+             focused, meaningful learning.`,
+    silver: `For achieving 6 domain badges across diverse cognitive areas through
+             the Bhāva Tech platform — demonstrating breadth of learning, focus,
+             and personal development.`,
+    gold:   `For achieving all 8 domain badges and at least one milestone badge
+             through the Bhāva Tech platform — demonstrating mastery across
+             memory, logic, language, empathy, creativity, and social intelligence.`,
+  };
+  const reasonEl = document.getElementById('cert-reason');
+  if (reasonEl) reasonEl.textContent = reasons[level] || reasons.bronze;
+
+  // Badge chips
+  const badgesRow = document.getElementById('cert-badges-row');
+  if (badgesRow && badges.length) {
+    badgesRow.innerHTML = badges.map(b =>
+      `<span class="cert-badge-chip">${b}</span>`
+    ).join('');
+  }
+</script>
+</body>
+</html>
