@@ -882,31 +882,83 @@ document.addEventListener('DOMContentLoaded', async function boot(){
     window.history.length>1?window.history.back():window.location.href='index.html';
   });
 
-  /* Resolve student ID from URL: ?sid=... */
+  /* Resolve student ID from URL: ?sid=... or from cached login */
   const params = new URLSearchParams(window.location.search);
-  const sid    = params.get('sid') || params.get('studentId') || params.get('roll') || null;
+  let sid = params.get('sid') || params.get('studentId') || params.get('roll') || null;
 
-  if(!sid){
-    showError('No student ID in URL. Use ?sid=ROLL_NUMBER to open a report.');
-    return;
+  /* If sid is missing or 'undefined', try to recover from localStorage cache */
+  if (!sid || sid === 'undefined') {
+    try {
+      const cached = localStorage.getItem('current_student');
+      if (cached) {
+        const obj = JSON.parse(cached);
+        sid = String(obj.roll_no || obj.id || '');
+      }
+    } catch(e) {}
   }
 
-  /* Check IPC availability */
-  if(!window.bhava || typeof window.bhava.getStudentReport !== 'function'){
-    showError('Bhāva IPC not available. Please open this report from inside the Electron app.');
+  if (!sid || sid === 'undefined') {
+    showError('No student ID found. Please log in first.');
     return;
   }
 
   let data;
-  try {
-    data = await window.bhava.getStudentReport(sid);
-  } catch(e){
-    showError('Failed to load report: ' + e.message);
-    return;
+
+  /* Try Electron IPC first */
+  if (window.bhava && typeof window.bhava.getStudentReport === 'function') {
+    try {
+      data = await window.bhava.getStudentReport(sid);
+    } catch(e) {
+      showError('Failed to load report: ' + e.message);
+      return;
+    }
+  } else {
+    /* Fallback: fetch from cloud using cached student info */
+    try {
+      const CLOUD = 'https://bhava-cloud.onrender.com';
+      const SYNC_KEY = '0042bfd36ef4a5a219e0bbb206e58ec7b84c7d9334b75c7e';
+
+      /* Get student record from cache */
+      let student = null;
+      try {
+        const cached = localStorage.getItem('current_student');
+        if (cached) student = JSON.parse(cached);
+      } catch(e) {}
+
+      if (!student) {
+        showError('Please log in first to view your report.');
+        return;
+      }
+
+      /* Fetch sessions from cloud */
+      const sessRes = await fetch(
+        CLOUD + '/sync/student-sessions?roll_no=' + encodeURIComponent(student.roll_no || sid)
+        + '&school_id=' + encodeURIComponent(student.school_id || 'BHAVA-SVN-001'),
+        { headers: { 'x-bhava-sync-key': SYNC_KEY } }
+      );
+      const sessions = sessRes.ok ? await sessRes.json() : [];
+
+      /* Build a minimal data object matching the report format */
+      data = {
+        student: {
+          id: student.id,
+          name: student.name,
+          roll_no: student.roll_no || sid,
+          class: student.class,
+          section: student.section,
+          school_id: student.school_id
+        },
+        sessions: Array.isArray(sessions) ? sessions : [],
+        quotients: {}
+      };
+    } catch(e) {
+      showError('Could not load report from cloud: ' + e.message);
+      return;
+    }
   }
 
-  if(!data || data.error || !data.student){
-    showError(data?.error || 'Student not found for ID: ' + sid);
+  if (!data || data.error || !data.student) {
+    showError(data?.error || 'Student not found.');
     return;
   }
 
