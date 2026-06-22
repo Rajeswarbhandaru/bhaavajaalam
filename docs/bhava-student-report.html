@@ -958,6 +958,11 @@ document.addEventListener('DOMContentLoaded', async function boot(){
         sessions = []; quotients = {};
       }
 
+      /* ── Compute quotients from sessions if cloud has none ── */
+      if (!quotients || Object.keys(quotients).length === 0) {
+        quotients = computeQuotientsFromSessions(sessions);
+      }
+
       /* Build a minimal data object matching the report format */
       const rows = sessions;
       data = {
@@ -1004,6 +1009,135 @@ function showReport(){
   document.getElementById('main').style.display='';
   document.getElementById('disclaimerBox').style.display='';
   document.getElementById('reportFooter').style.display='';
+}
+
+/* ═══════════════════════════════════════════════════
+   COMPUTE QUOTIENTS FROM RAW SESSIONS (client-side)
+   Same logic as Electron main.js recalcAndUpsertQuotients
+   ═══════════════════════════════════════════════════ */
+function computeQuotientsFromSessions(sessions) {
+  if (!sessions || sessions.length === 0) return {};
+
+  // Game name → IQ/EQ/SQ sub-dimension mapping (mirrors main.js GAME_MAP)
+  const GAME_MAP = {
+    'Memory Match Puzzle':        { iq: ['memory'] },
+    'Memory Zoo Puzzle':          { iq: ['memory'] },
+    'Memory Match Ultimate':      { iq: ['memory'] },
+    'Memory Match':               { iq: ['memory'] },
+    'Memory Zoo':                 { iq: ['memory'] },
+    'NeuroFlash Memory':          { iq: ['memory', 'processing_speed'] },
+    'Neuro Flash Memory':         { iq: ['memory', 'processing_speed'] },
+    'Neuroflash Memory Game':     { iq: ['memory', 'processing_speed'] },
+    'Logic Grid Puzzle':          { iq: ['logic'] },
+    'Logic':                      { iq: ['logic'] },
+    'Visual Difference Detector': { iq: ['attention', 'processing_speed'] },
+    'Mental Rotation':            { iq: ['processing_speed', 'attention'] },
+    'Mental Rotation Game':       { iq: ['processing_speed', 'attention'] },
+    'Grammar Galaxy':             { iq: ['processing_speed', 'attention'] },
+    'Grammar Pro':                { iq: ['processing_speed', 'attention'] },
+    'Imaginia Quest':             { iq: ['memory', 'attention'] },
+    'Telugu Script Game':         { iq: ['attention', 'memory'] },
+    'Math Blitz':                 { iq: ['processing_speed', 'logic'] },
+    'Number Garden Quest':        { iq: ['logic', 'processing_speed'] },
+    'Percentile Game':            { iq: ['logic', 'processing_speed'] },
+    'Empathy Quest':              { eq: ['empathy', 'communication'] },
+    'Empathical Conversation':    { eq: ['empathy', 'communication'] },
+    'Heart Heroes':               { eq: ['empathy', 'emotional_balance'] },
+    'Planet Guardians':           { sq: ['social_awareness', 'cooperation'] },
+    'Good Habits':                { eq: ['confidence', 'self_awareness'] },
+    'Focus Under Distraction':    { iq: ['attention', 'processing_speed'] },
+    'Calm Zone':                  { eq: ['emotional_balance', 'self_awareness'] },
+    'Day Super Hero':             { eq: ['confidence'], sq: ['cooperation'] },
+    'DayHero Game':               { eq: ['empathy', 'confidence'], sq: ['cooperation'] },
+    'Brain Garden':               { iq: ['memory', 'attention'] },
+    'Bhaava Brain Quest':         { iq: ['logic', 'memory'] },
+    'NeuroSpark':                 { iq: ['logic', 'memory'] },
+    'Neuro-Ascend IQ':            { iq: ['memory', 'processing_speed'] },
+    'MindScape Pro':              { iq: ['logic', 'memory'] },
+    'MindSpark IQ':               { iq: ['logic', 'attention'] },
+    'IQ Test Level 3':            { iq: ['logic', 'processing_speed'] },
+    'MathBlitz IQ Mode':          { iq: ['processing_speed', 'logic'] },
+  };
+
+  // raw_score (0-100) → scaled score (60-160)
+  function toScale(raw) {
+    return Math.min(160, Math.max(60, Math.round(60 + (raw / 100) * 100)));
+  }
+
+  // Collect scaled scores per sub-dimension
+  const dims = {};
+  sessions.forEach(s => {
+    const raw = typeof s.raw_score === 'number' ? s.raw_score : 0;
+    if (raw <= 0) return;
+    const scaled = toScale(raw);
+    // Try exact match first, then case-insensitive
+    const gameName = s.game_name || '';
+    const map = GAME_MAP[gameName] ||
+      GAME_MAP[Object.keys(GAME_MAP).find(k => k.toLowerCase() === gameName.toLowerCase())];
+    if (!map) return;
+    ['iq','eq','sq'].forEach(type => {
+      if (!map[type]) return;
+      map[type].forEach(dim => {
+        const key = type + '_' + dim;
+        if (!dims[key]) dims[key] = [];
+        dims[key].push(scaled);
+      });
+    });
+  });
+
+  // Weighted rolling average (α=0.85, newest = weight 1.0)
+  function weightedAvg(arr) {
+    if (!arr || arr.length === 0) return 0;
+    const ALPHA = 0.85;
+    const n = arr.length;
+    let wSum = 0, wTotal = 0;
+    arr.forEach((v, i) => {
+      const w = Math.pow(ALPHA, n - 1 - i);
+      wSum += w * v; wTotal += w;
+    });
+    return Math.min(160, Math.max(60, Math.round(wSum / wTotal)));
+  }
+
+  const iqLogic = weightedAvg(dims['iq_logic']);
+  const iqMem   = weightedAvg(dims['iq_memory']);
+  const iqAttn  = weightedAvg(dims['iq_attention']);
+  const iqSpeed = weightedAvg(dims['iq_processing_speed']);
+  const eqEmp   = weightedAvg(dims['eq_empathy']);
+  const eqComm  = weightedAvg(dims['eq_communication']);
+  const eqBal   = weightedAvg(dims['eq_emotional_balance']);
+  const eqConf  = weightedAvg(dims['eq_confidence']);
+  const eqSelf  = weightedAvg(dims['eq_self_awareness']);
+  const sqCoop  = weightedAvg(dims['sq_cooperation']);
+  const sqLead  = weightedAvg(dims['sq_leadership_basics']);
+  const sqSoc   = weightedAvg(dims['sq_social_awareness']);
+  const sqConfl = weightedAvg(dims['sq_conflict_resolution']);
+
+  function weightedTotal(pairs) {
+    const active = pairs.filter(x => x.v > 0);
+    if (!active.length) return 0;
+    const wTotal = active.reduce((s,x) => s + x.w, 0);
+    return Math.round(active.reduce((s,x) => s + x.v * x.w, 0) / wTotal);
+  }
+
+  const iqTotal = weightedTotal([
+    {v:iqLogic, w:0.30}, {v:iqMem, w:0.30}, {v:iqAttn, w:0.25}, {v:iqSpeed, w:0.15}
+  ]);
+  const eqTotal = weightedTotal([
+    {v:eqEmp, w:0.25}, {v:eqComm, w:0.20}, {v:eqBal, w:0.20}, {v:eqConf, w:0.20}, {v:eqSelf, w:0.15}
+  ]);
+  const sqTotal = weightedTotal([
+    {v:sqCoop, w:0.30}, {v:sqSoc, w:0.25}, {v:sqLead, w:0.25}, {v:sqConfl, w:0.20}
+  ]);
+
+  return {
+    iq_logic: iqLogic, iq_memory: iqMem, iq_attention: iqAttn, iq_processing_speed: iqSpeed, iq_total: iqTotal,
+    eq_empathy: eqEmp, eq_communication: eqComm, eq_emotional_balance: eqBal, eq_confidence: eqConf,
+    eq_self_awareness: eqSelf, eq_total: eqTotal,
+    sq_cooperation: sqCoop, sq_leadership: sqLead, sq_social_awareness: sqSoc,
+    sq_conflict_resolution: sqConfl, sq_total: sqTotal,
+    total_sessions: sessions.length,
+    total_raw_score: sessions.reduce((s,x) => s + (x.raw_score||0), 0)
+  };
 }
 
 /* ═══════════════════════════════
