@@ -183,7 +183,7 @@
       try {
         var student;
 
-        if (window.bhava) {
+        if (window.bhava && window.bhava._isElectron !== false) {
           // Electron — look up from local SQLite
           student = await window.bhava.login(rollNo, cls);
         } else {
@@ -231,7 +231,7 @@
   async function startSession() {
     if (!currentStudent) return;
     try {
-      if (window.bhava) {
+      if (window.bhava && window.bhava._isElectron !== false) {
         // Electron — create session in local SQLite via IPC
         currentSessionId = await window.bhava.startSession(
           currentStudent.id,
@@ -516,7 +516,7 @@
     try {
       var iq = '—', eq = '—', sq = '—', sessions = [];
 
-      if (window.bhava) {
+      if (window.bhava && window.bhava._isElectron !== false) {
         // Electron — use IPC
         var results = await Promise.allSettled([
           window.bhava.getIQScores(sid),
@@ -594,12 +594,12 @@
         return;
       }
       try {
-        if (window.bhava) {
+        if (window.bhava && window.bhava._isElectron !== false) {
           // Electron — save to local SQLite via IPC
           var result = await window.bhava.endSession(currentSessionId, rawScore);
           console.log('[BhavaSession] Score saved. Scaled:', result && result.scaled);
         } else {
-          // Android/Capacitor — post directly to cloud
+          // Android/Capacitor/Website — post directly to cloud
           var now = new Date().toISOString();
           await fetch(CLOUD_URL + '/sync/session', {
             method: 'POST',
