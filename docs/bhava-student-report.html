@@ -939,6 +939,7 @@ document.addEventListener('DOMContentLoaded', async function boot(){
       const sessions = sessRes.ok ? await sessRes.json() : [];
 
       /* Build a minimal data object matching the report format */
+      const rows = Array.isArray(sessions) ? sessions : [];
       data = {
         student: {
           id: student.id,
@@ -946,9 +947,12 @@ document.addEventListener('DOMContentLoaded', async function boot(){
           roll_no: student.roll_no || sid,
           class: student.class,
           section: student.section,
-          school_id: student.school_id
+          school_id: student.school_id,
+          school_name: student.school_id || ''
         },
-        sessions: Array.isArray(sessions) ? sessions : [],
+        sessions: rows,
+        trend: rows,
+        gameSummary: [],
         quotients: {}
       };
     } catch(e) {
