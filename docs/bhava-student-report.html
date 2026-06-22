@@ -1483,6 +1483,11 @@ async function renderCapacityProfile(studentId) {
   const sec = document.getElementById('capProfileSection');
   if (!sec) return;
 
+  // Only available in Electron — skip silently on web/Android
+  if (!window.bhava || !window.bhava.getCapacityScores || window.bhava._isElectron === false) {
+    return;
+  }
+
   let result;
   try {
     result = await window.bhava.getCapacityScores(studentId);
