@@ -1016,13 +1016,13 @@ function renderReport(data){
   const weakQ = [['IQ',iqTotal],['EQ',eqTotal],['SQ',sqTotal]].filter(x=>x[1]>0).sort((a,b)=>a[1]-b[1])[0];
   const summaryText = sessions.length === 0
     ? student.name.split(' ')[0] + ' has not played any games yet. Encourage them to start!'
-    : student.name.split(' ')[0] + ' has completed ' + q.total_sessions + ' game sessions.'
+    : student.name.split(' ')[0] + ' has completed ' + (q.total_sessions || sessions.length) + ' game sessions.'
       + (bestQ ? ' Strongest in ' + bestQ[0] + ' (' + bestQ[1] + ').' : '')
       + (weakQ && weakQ !== bestQ ? ' Room to grow in ' + weakQ[0] + ' (' + weakQ[1] + ').' : '');
   document.getElementById('studentSummary').textContent = summaryText;
 
   /* ── KPI row ── */
-  document.getElementById('kpiGamesPlayed').textContent = q.total_sessions||0;
+  document.getElementById('kpiGamesPlayed').textContent = q.total_sessions || sessions.length || 0;
   const avgRaw = sessions.length
     ? Math.round(sessions.reduce((s,x)=>s+x.raw_score,0)/sessions.length) : 0;
   document.getElementById('kpiAvgScore').textContent = avgRaw ? avgRaw + '%' : '—';
