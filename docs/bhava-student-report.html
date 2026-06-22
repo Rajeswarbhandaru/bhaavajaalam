@@ -938,22 +938,28 @@ document.addEventListener('DOMContentLoaded', async function boot(){
         const timer = setTimeout(() => controller.abort(), ms);
         return fetch(url, { ...opts, signal: controller.signal }).finally(() => clearTimeout(timer));
       };
-      let sessions = [];
+      const roll_no   = encodeURIComponent(student.roll_no || sid);
+      const school_id = encodeURIComponent(student.school_id || 'BHAVA-SVN-001');
+      const hdrs      = { headers: { 'x-bhava-sync-key': SYNC_KEY } };
+
+      /* Fetch sessions and quotients in parallel */
+      let sessions = [], quotients = {};
       try {
-        const sessRes = await fetchWithTimeout(
-          CLOUD + '/sync/student-sessions?roll_no=' + encodeURIComponent(student.roll_no || sid)
-          + '&school_id=' + encodeURIComponent(student.school_id || 'BHAVA-SVN-001'),
-          { headers: { 'x-bhava-sync-key': SYNC_KEY } }
-        );
-        sessions = sessRes.ok ? await sessRes.json() : [];
+        const [sessRes, quotRes] = await Promise.all([
+          fetchWithTimeout(CLOUD + '/sync/student-sessions?roll_no=' + roll_no + '&school_id=' + school_id, hdrs),
+          fetchWithTimeout(CLOUD + '/sync/student-quotients?roll_no=' + roll_no + '&school_id=' + school_id, hdrs)
+        ]);
+        sessions  = sessRes.ok  ? await sessRes.json()  : [];
+        quotients = quotRes.ok  ? await quotRes.json()  : {};
+        if (!Array.isArray(sessions))  sessions  = [];
+        if (typeof quotients !== 'object' || Array.isArray(quotients)) quotients = {};
       } catch(fetchErr) {
-        // Timeout or network error — show report with empty sessions rather than hanging
-        console.warn('Session fetch failed:', fetchErr.message);
-        sessions = [];
+        console.warn('Cloud fetch failed:', fetchErr.message);
+        sessions = []; quotients = {};
       }
 
       /* Build a minimal data object matching the report format */
-      const rows = Array.isArray(sessions) ? sessions : [];
+      const rows = sessions;
       data = {
         student: {
           id: student.id,
@@ -967,7 +973,7 @@ document.addEventListener('DOMContentLoaded', async function boot(){
         sessions: rows,
         trend: rows,
         gameSummary: [],
-        quotients: {}
+        quotients: quotients
       };
     } catch(e) {
       showError('Could not load report from cloud: ' + e.message);
