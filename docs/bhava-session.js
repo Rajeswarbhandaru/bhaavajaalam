@@ -67,6 +67,11 @@
       sessionStorage.setItem('bhava_student_id', String(student.id));
       sessionStorage.setItem('studentId',        String(student.id));
     } catch (e) {}
+    // Also write to localStorage so report page can read it after page navigation
+    // (sessionStorage is cleared on Android WebView when navigating to a new page)
+    try {
+      localStorage.setItem('bhava_current_student', JSON.stringify(student));
+    } catch (e) {}
   }
 
   function restoreStudent() {
