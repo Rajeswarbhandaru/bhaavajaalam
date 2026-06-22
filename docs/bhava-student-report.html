@@ -904,8 +904,8 @@ document.addEventListener('DOMContentLoaded', async function boot(){
 
   let data;
 
-  /* Try Electron IPC first */
-  if (window.bhava && typeof window.bhava.getStudentReport === 'function') {
+  /* Try Electron IPC first — only in Electron, not Capacitor/Web */
+  if (window.bhava && window.bhava._isElectron !== false && typeof window.bhava.getStudentReport === 'function') {
     try {
       data = await window.bhava.getStudentReport(sid);
     } catch(e) {
@@ -930,15 +930,30 @@ document.addEventListener('DOMContentLoaded', async function boot(){
         return;
       }
 
-      /* Fetch sessions from cloud */
-      const sessRes = await fetch(
-        CLOUD + '/sync/student-sessions?roll_no=' + encodeURIComponent(student.roll_no || sid)
-        + '&school_id=' + encodeURIComponent(student.school_id || 'BHAVA-SVN-001'),
-        { headers: { 'x-bhava-sync-key': SYNC_KEY } }
-      );
-      const sessions = sessRes.ok ? await sessRes.json() : [];
+      /* Fetch sessions from cloud — with timeout (Render free tier may be sleeping) */
+      const loadingP = document.querySelector('#loadingState p');
+      if (loadingP) loadingP.textContent = 'Connecting to Bhāva Cloud… (may take up to 30s on first load)';
+      const fetchWithTimeout = (url, opts, ms = 30000) => {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), ms);
+        return fetch(url, { ...opts, signal: controller.signal }).finally(() => clearTimeout(timer));
+      };
+      let sessions = [];
+      try {
+        const sessRes = await fetchWithTimeout(
+          CLOUD + '/sync/student-sessions?roll_no=' + encodeURIComponent(student.roll_no || sid)
+          + '&school_id=' + encodeURIComponent(student.school_id || 'BHAVA-SVN-001'),
+          { headers: { 'x-bhava-sync-key': SYNC_KEY } }
+        );
+        sessions = sessRes.ok ? await sessRes.json() : [];
+      } catch(fetchErr) {
+        // Timeout or network error — show report with empty sessions rather than hanging
+        console.warn('Session fetch failed:', fetchErr.message);
+        sessions = [];
+      }
 
       /* Build a minimal data object matching the report format */
+      const rows = Array.isArray(sessions) ? sessions : [];
       data = {
         student: {
           id: student.id,
@@ -946,9 +961,12 @@ document.addEventListener('DOMContentLoaded', async function boot(){
           roll_no: student.roll_no || sid,
           class: student.class,
           section: student.section,
-          school_id: student.school_id
+          school_id: student.school_id,
+          school_name: student.school_id || ''
         },
-        sessions: Array.isArray(sessions) ? sessions : [],
+        sessions: rows,
+        trend: rows,
+        gameSummary: [],
         quotients: {}
       };
     } catch(e) {
@@ -1012,13 +1030,13 @@ function renderReport(data){
   const weakQ = [['IQ',iqTotal],['EQ',eqTotal],['SQ',sqTotal]].filter(x=>x[1]>0).sort((a,b)=>a[1]-b[1])[0];
   const summaryText = sessions.length === 0
     ? student.name.split(' ')[0] + ' has not played any games yet. Encourage them to start!'
-    : student.name.split(' ')[0] + ' has completed ' + q.total_sessions + ' game sessions.'
+    : student.name.split(' ')[0] + ' has completed ' + (q.total_sessions || sessions.length) + ' game sessions.'
       + (bestQ ? ' Strongest in ' + bestQ[0] + ' (' + bestQ[1] + ').' : '')
       + (weakQ && weakQ !== bestQ ? ' Room to grow in ' + weakQ[0] + ' (' + weakQ[1] + ').' : '');
   document.getElementById('studentSummary').textContent = summaryText;
 
   /* ── KPI row ── */
-  document.getElementById('kpiGamesPlayed').textContent = q.total_sessions||0;
+  document.getElementById('kpiGamesPlayed').textContent = q.total_sessions || sessions.length || 0;
   const avgRaw = sessions.length
     ? Math.round(sessions.reduce((s,x)=>s+x.raw_score,0)/sessions.length) : 0;
   document.getElementById('kpiAvgScore').textContent = avgRaw ? avgRaw + '%' : '—';
@@ -1482,6 +1500,11 @@ function capLevel(score) {
 async function renderCapacityProfile(studentId) {
   const sec = document.getElementById('capProfileSection');
   if (!sec) return;
+
+  // Only available in Electron — skip silently on web/Android
+  if (!window.bhava || !window.bhava.getCapacityScores || window.bhava._isElectron === false) {
+    return;
+  }
 
   let result;
   try {
