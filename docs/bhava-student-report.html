@@ -889,7 +889,7 @@ document.addEventListener('DOMContentLoaded', async function boot(){
   /* If sid is missing or 'undefined', try to recover from localStorage cache */
   if (!sid || sid === 'undefined') {
     try {
-      const cached = localStorage.getItem('current_student');
+      const cached = localStorage.getItem('bhava_current_student');
       if (cached) {
         const obj = JSON.parse(cached);
         sid = String(obj.roll_no || obj.id || '');
@@ -921,7 +921,7 @@ document.addEventListener('DOMContentLoaded', async function boot(){
       /* Get student record from cache */
       let student = null;
       try {
-        const cached = localStorage.getItem('current_student');
+        const cached = localStorage.getItem('bhava_current_student');
         if (cached) student = JSON.parse(cached);
       } catch(e) {}
 
