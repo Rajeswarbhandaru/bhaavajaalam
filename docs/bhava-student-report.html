@@ -958,8 +958,9 @@ document.addEventListener('DOMContentLoaded', async function boot(){
         sessions = []; quotients = {};
       }
 
-      /* ── Compute quotients from sessions if cloud has none ── */
-      if (!quotients || Object.keys(quotients).length === 0) {
+      /* ── Compute quotients from sessions if cloud has none or all nulls ── */
+      const hasRealQuotients = quotients && Object.values(quotients).some(v => v !== null && v > 0);
+      if (!hasRealQuotients) {
         quotients = computeQuotientsFromSessions(sessions);
       }
 
