@@ -177,7 +177,7 @@
     <div class="header-right">
       <nav class="filter-bar" role="tablist" aria-label="Filter games">
         <button class="f-btn active" data-filter="all" role="tab" aria-selected="true">All Games</button>
-        <button class="f-btn" data-filter="early" role="tab" aria-selected="false">Ages 4–7</button>
+        <button class="f-btn" data-filter="early" role="tab" aria-selected="false">Ages 5–7</button>
         <button class="f-btn" data-filter="mid" role="tab" aria-selected="false">Ages 8–11</button>
         <button class="f-btn" data-filter="upper" role="tab" aria-selected="false">Ages 12+</button>
         <button class="f-btn" data-filter="lang" role="tab" aria-selected="false">Language</button>
@@ -202,7 +202,7 @@
       <div class="stats-row">
         <div class="stat"><div class="stat-num">31</div><div class="stat-label">Games</div></div>
         <div class="stat"><div class="stat-num">12+</div><div class="stat-label">Cognitive Skills</div></div>
-        <div class="stat"><div class="stat-num">4–16</div><div class="stat-label">Age Range</div></div>
+        <div class="stat"><div class="stat-num">5+</div><div class="stat-label">Age</div></div>
         <div class="stat"><div class="stat-num">3</div><div class="stat-label">Languages</div></div>
       </div>
     </section>
@@ -260,7 +260,7 @@ const GAMES = [
   {
     id:"memory-match-puzzle",file:"memory-match-puzzle.html",
     title:"Memory Match Puzzle",icon:"🃏",color:"#01696f",
-    age:"early",ageLabel:"Ages 5–8",ageCls:"ag-early",
+    age:"early",ageLabel:"Ages 5+",ageCls:"ag-early",
     short:"Flip picture cards and find matching pairs before time runs out.",
     full:"Memory Match Puzzle presents a grid of face-down illustrated cards. Players flip two cards at a time, trying to find identical pairs. Each correct match earns points and keeps the cards revealed; mismatches flip them back. The grid grows with each level, pushing working memory capacity further.",
     steps:["A grid of face-down cards appears on screen.","Tap any card to reveal its picture.","Tap a second card — if they match, both stay revealed!","If they don't match, both flip back — remember their positions.","Clear the full board to complete the level."],
@@ -270,7 +270,7 @@ const GAMES = [
   {
     id:"memory-match-ultimate",file:"memory-match-ultimate.html",
     title:"Memory Match Ultimate",icon:"🏆",color:"#0891b2",
-    age:"mid",ageLabel:"Ages 8–12",ageCls:"ag-mid",
+    age:"mid",ageLabel:"Ages 5+",ageCls:"ag-mid",
     short:"An advanced memory challenge with larger grids, themes, and time pressure.",
     full:"Memory Match Ultimate takes the classic match game to a competitive level. Larger grids, themed card sets (animals, flags, science symbols), and a countdown timer combine to challenge both short-term and long-term visual memory. Score multipliers reward rapid sequential matches.",
     steps:["Choose a theme and difficulty before starting.","Memorise card positions during the brief 'peek' phase.","Flip and match pairs against the countdown timer.","Chain consecutive matches for score multipliers.","Complete all levels to unlock the Ultimate trophy!"],
@@ -280,7 +280,7 @@ const GAMES = [
   {
     id:"memory-zoo-puzzle",file:"memory-zoo-puzzle.html",
     title:"Memory Zoo Puzzle",icon:"🦒",color:"#16a34a",
-    age:"early",ageLabel:"Ages 4–7",ageCls:"ag-early",
+    age:"early",ageLabel:"Ages 5+",ageCls:"ag-early",
     short:"Match adorable zoo animals hidden behind enclosure doors.",
     full:"Memory Zoo Puzzle wraps the memory card game in a lively zoo theme. Animals peek from behind enclosure doors; young players flip doors to find matching animal pairs. Cheerful animations and animal sounds provide instant positive reinforcement, making it ideal for early childhood cognitive warm-ups.",
     steps:["Enter the zoo — a grid of closed enclosure doors is shown.","Tap a door to reveal the animal inside.","Tap another door to find its match.","Matched pairs open permanently with a celebration animation.","Rescue all animal pairs to complete the zoo!"],
@@ -290,7 +290,7 @@ const GAMES = [
   {
     id:"neuroflash-memory",file:"neuroflash-memory.html",
     title:"NeuroFlash Memory",icon:"⚡",color:"#7c3aed",
-    age:"upper",ageLabel:"Ages 10–16",ageCls:"ag-upper",
+    age:"upper",ageLabel:"Ages 7+",ageCls:"ag-upper",
     short:"Lightning-fast sequential memory — recall longer and longer chains of stimuli.",
     full:"NeuroFlash Memory is a forward and backward digit/symbol span task presented at speed. A sequence of coloured flashes, symbols, or numbers appears briefly; the player must reproduce the exact sequence from memory. Both the length and the display speed increase as scores improve, directly measuring and training working memory span.",
     steps:["Watch the sequence of flashes or symbols carefully.","After the sequence ends, reproduce it in the correct order.","Use the on-screen grid or keyboard to enter your answer.","Correct → the sequence grows by one item next round.","Reach the highest span level to set your NeuroFlash record."],
@@ -302,7 +302,7 @@ const GAMES = [
   {
     id:"focus-under-distraction",file:"focus-under-distraction.html",
     title:"Focus Under Distraction",icon:"🎯",color:"#dc2626",
-    age:"mid",ageLabel:"Ages 8–14",ageCls:"ag-mid",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
     short:"Identify the target stimulus while ignoring a flood of distractors.",
     full:"Focus Under Distraction simulates real-world attention demands by surrounding the target stimulus with visually and cognitively competing distractors — moving objects, colour noise, and irrelevant text. Players must selectively attend to the correct target while filtering out interference. Both accuracy and response time are scored, rewarding calm, focused reactions over impulsive tapping.",
     steps:["A target object is shown to you at the start of the round.","A stream of stimuli — targets mixed with distractors — appears.","Tap only when you see the exact target.","Tapping a distractor reduces your score — stay selective!","Survive all waves to complete the focus challenge."],
@@ -312,7 +312,7 @@ const GAMES = [
   {
     id:"brain-quest",file:"brain-quest.html",
     title:"Brain Quest",icon:"🧩",color:"#0284c7",
-    age:"mid",ageLabel:"Ages 8–12",ageCls:"ag-mid",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
     short:"A multi-stage cognitive quest that tests attention, memory, and reasoning.",
     full:"Brain Quest is a structured multi-domain assessment game that cycles through short attention, memory, and reasoning challenges in a single adaptive session. The game tracks performance across domains and dynamically adjusts difficulty, giving a broad snapshot of a child's cognitive profile while keeping engagement high with quest-style progression.",
     steps:["Start your quest and meet your guide character.","Complete short timed challenges in each cognitive domain.","Earn 'brain gems' for each domain you master.","Between stages, your score is shown with a brief explainer.","Collect all gems to finish the quest and view your Brain Map."],
@@ -322,7 +322,7 @@ const GAMES = [
   {
     id:"neurospark",file:"neurospark.html",
     title:"NeuroSpark",icon:"✨",color:"#f59e0b",
-    age:"upper",ageLabel:"Ages 10–16",ageCls:"ag-upper",
+    age:"upper",ageLabel:"Ages 12+",ageCls:"ag-upper",
     short:"High-speed multi-tasking challenges that push executive function to the limit.",
     full:"NeuroSpark presents simultaneous or rapidly alternating cognitive tasks that demand flexible attention-switching and executive control. Players manage two or more rule sets at once — for example, sorting shapes by colour while counting sounds — directly training the dual-task processing and cognitive flexibility that underpin academic multitasking.",
     steps:["Two task streams are explained before the round begins.","Both streams run simultaneously on screen.","Switch your focus between tasks as prompted.","Errors in either stream count against your NeuroSpark score.","Reach the top tier to unlock the 'Spark Master' badge."],
@@ -334,7 +334,7 @@ const GAMES = [
   {
     id:"logic-game",file:"logic-game.html",
     title:"Logic Game",icon:"🔢",color:"#2563eb",
-    age:"mid",ageLabel:"Ages 8–12",ageCls:"ag-mid",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
     short:"Solve puzzles using deductive reasoning — who sits where, what belongs to whom?",
     full:"Logic Game presents classic grid-based deductive puzzles. Clues narrow down the possibilities cell by cell until only one arrangement is logically valid. Adapted from Einstein-style grid puzzles, the game systematically builds deductive reasoning, elimination strategies, and logical inference in an age-appropriate format.",
     steps:["Read the set of clues shown on the left.","Use the grid to mark what IS and is NOT possible.","Eliminate options step by step using each clue.","When only one option remains in a cell, it is the answer.","Fill in the complete grid correctly to solve the puzzle!"],
@@ -344,7 +344,7 @@ const GAMES = [
   {
     id:"logic-grid-puzzle",file:"logic-grid-puzzle.html",
     title:"Logic Grid Puzzle",icon:"📐",color:"#4f46e5",
-    age:"upper",ageLabel:"Ages 11–16",ageCls:"ag-upper",
+    age:"upper",ageLabel:"Ages 12+",ageCls:"ag-upper",
     short:"Multi-variable logic grids with increasing complexity — from 3×3 to 5×5.",
     full:"Logic Grid Puzzle offers a full progression from simple 3-variable grids to complex 5-category problems involving colours, names, professions, objects, and locations. Each puzzle has a unique solution derivable purely through logical elimination, providing a rigorous and satisfying workout for analytical thinking.",
     steps:["Study the attributes and clues provided.","Use ✓ and ✗ to mark the grid as you eliminate options.","Apply each clue systematically — order matters!","Chain your deductions until the grid is fully solved.","A perfect solve with no wrong marks earns a Gold Star."],
@@ -354,7 +354,7 @@ const GAMES = [
   {
     id:"mindspark-iq",file:"mindspark-iq.html",
     title:"MindSpark IQ",icon:"💡",color:"#0e7490",
-    age:"upper",ageLabel:"Ages 10–16",ageCls:"ag-upper",
+    age:"upper",ageLabel:"Ages 12+",ageCls:"ag-upper",
     short:"A structured IQ-style assessment covering pattern, spatial, verbal, and numerical reasoning.",
     full:"MindSpark IQ is a standardised cognitive assessment game that measures reasoning across four classic domains: figural patterns, spatial orientation, verbal analogies, and number series. Timed and adaptive, the game generates a domain-specific performance profile used in Bhāva's comprehensive student cognitive report.",
     steps:["Choose a domain or take the full combined assessment.","Each question is multiple-choice with a timer.","Answer as many as you can accurately — skip if unsure.","At the end, your domain scores are shown on a spider chart.","Retake any domain to track progress over time."],
@@ -364,7 +364,7 @@ const GAMES = [
   {
     id:"mindscape-pro",file:"mindscape-pro.html",
     title:"Mindscape Pro",icon:"🌌",color:"#6d28d9",
-    age:"upper",ageLabel:"Ages 12–16",ageCls:"ag-upper",
+    age:"upper",ageLabel:"Ages 12+",ageCls:"ag-upper",
     short:"Advanced abstract reasoning — matrices, analogies, and series at competitive level.",
     full:"Mindscape Pro targets fluid reasoning at an advanced level suitable for academic enrichment and gifted screening. It draws from matrix reasoning, abstract analogy, and number series formats, presenting items of increasing complexity. Performance data is used to compute a percentile score against the Bhāva normative sample.",
     steps:["Read the instructions for each reasoning type before starting.","Study the matrix or series shown.","Select the answer that best completes the pattern.","Work quickly — partial credit is given for unattempted items.","Review your Mindscape Score and percentile after the session."],
@@ -374,7 +374,7 @@ const GAMES = [
   {
     id:"iq-test-level-3",file:"iq-test-level-3.html",
     title:"IQ Test Level 3",icon:"🔬",color:"#0f766e",
-    age:"upper",ageLabel:"Ages 13–16",ageCls:"ag-upper",
+    age:"upper",ageLabel:"Ages 12+",ageCls:"ag-upper",
     short:"Senior-level cognitive reasoning assessment — the hardest tier in Bhāva's IQ suite.",
     full:"IQ Test Level 3 is the most demanding reasoning assessment in Bhāva's suite, targeting secondary-school students. Drawn from advanced Raven-style matrices, number series, and verbal analogies, this level benchmarks students against national-level difficulty norms and feeds directly into Bhāva's full cognitive report.",
     steps:["Confirm you have a quiet 20-minute window before starting.","Each item is strictly timed — answer or skip before the clock ends.","Patterns become significantly more abstract as you progress.","Do not guess randomly — unattempted items are marked separately.","A detailed breakdown of correct, incorrect, and skipped items is shown at the end."],
@@ -384,7 +384,7 @@ const GAMES = [
   {
     id:"percentile-game",file:"percentile-game.html",
     title:"Percentile Challenge",icon:"📊",color:"#b45309",
-    age:"upper",ageLabel:"Ages 10–16",ageCls:"ag-upper",
+    age:"upper",ageLabel:"Ages 10+",ageCls:"ag-upper",
     short:"Compete against the norm — where does your score rank among your peers?",
     full:"Percentile Challenge presents mixed cognitive items (reasoning, attention, memory) and, at the end, shows the student their percentile rank against the Bhāva normative database. It is designed to motivate self-improvement by giving students a meaningful comparison point rather than a raw score.",
     steps:["Answer the mixed cognitive items at your own pace.","Each item type is labelled so you know what skill is being measured.","Submit your answers when the timer ends.","Your raw score is converted to a percentile against age peers.","A personalised strengths and growth summary is displayed."],
@@ -396,7 +396,7 @@ const GAMES = [
   {
     id:"mental-rotation-game",file:"mental-rotation-game.html",
     title:"Mental Rotation",icon:"🔄",color:"#059669",
-    age:"mid",ageLabel:"Ages 8–14",ageCls:"ag-mid",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
     short:"Rotate 3-D shapes mentally and match them to the correct silhouette.",
     full:"Mental Rotation presents a three-dimensional object rendered on screen and asks the player to mentally rotate it to match one of four silhouette options. Difficulty increases from simple 2-D shapes to complex 3-D objects at compound rotation angles. This skill is strongly linked to mathematics, engineering thinking, and spatial navigation.",
     steps:["A 3-D object is shown at a particular rotation angle.","Four silhouette options appear below.","Mentally rotate the object to find which silhouette it matches.","Tap your answer — faster responses earn bonus points.","Consecutive correct answers unlock the next difficulty tier."],
@@ -406,7 +406,7 @@ const GAMES = [
   {
     id:"imaginia-quest",file:"imaginia-quest.html",
     title:"Imaginia Quest",icon:"🌈",color:"#7c3aed",
-    age:"early",ageLabel:"Ages 5–9",ageCls:"ag-early",
+    age:"early",ageLabel:"Ages 12+",ageCls:"ag-early",
     short:"Use your imagination to complete half-drawn pictures and create stories.",
     full:"Imaginia Quest combines spatial visualisation with creative thinking. Children are shown incomplete or abstract line drawings and asked to identify what the shape could be and then extend it into a full drawing or story scene. Research shows that this type of creative spatial play strengthens both divergent thinking and visual-spatial processing.",
     steps:["A partial or abstract drawing is shown on the canvas.","Tap on what you think it could be — or draw your own idea!","Add details to complete your picture.","Give your creation a name and a one-sentence story.","Share your Imaginia with the class gallery."],
@@ -418,7 +418,7 @@ const GAMES = [
   {
     id:"math-blitz",file:"math-blitz.html",
     title:"Math Blitz",icon:"🔢",color:"#ea580c",
-    age:"mid",ageLabel:"Ages 7–12",ageCls:"ag-mid",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
     short:"Rapid-fire arithmetic drills — push your mental math speed to the limit.",
     full:"Math Blitz is a speed-based arithmetic fluency game covering addition, subtraction, multiplication, and division. Problems appear one at a time with a strict time limit; players tap the correct answer from four options. Adaptive difficulty ensures problems stay just challenging enough to trigger improvement without causing frustration.",
     steps:["Select an operation or choose 'Mixed' for all four.","A problem appears with four answer options.","Tap the correct answer before the timer bar empties.","Correct answers extend the timer slightly.","Score as many correct answers as you can in 90 seconds."],
@@ -428,7 +428,7 @@ const GAMES = [
   {
     id:"number-garden-quest",file:"number-garden-quest.html",
     title:"Number Garden Quest",icon:"🌱",color:"#16a34a",
-    age:"early",ageLabel:"Ages 4–8",ageCls:"ag-early",
+    age:"early",ageLabel:"Ages 5–8",ageCls:"ag-early",
     short:"Water the right number of plants to help your garden grow!",
     full:"Number Garden Quest teaches early numeracy and number sense through a gardening metaphor. Children count objects, match quantities to numerals, and solve simple addition problems by 'planting' or 'watering' the correct number of seeds or plants. Concrete-to-abstract scaffolding makes this ideal for foundational maths learning.",
     steps:["A garden bed with a number label is shown.","Count the correct number of seeds or plants to add.","Drag and drop items into the garden bed.","Match the quantity to the numeral shown.","Grow all your gardens to unlock the harvest celebration!"],
@@ -438,7 +438,7 @@ const GAMES = [
   {
     id:"neuro-ascend-iq",file:"neuro-ascend-iq.html",
     title:"Neuro Ascend IQ",icon:"🚀",color:"#1d4ed8",
-    age:"upper",ageLabel:"Ages 10–16",ageCls:"ag-upper",
+    age:"upper",ageLabel:"Ages 12+",ageCls:"ag-upper",
     short:"Ascend through escalating cognitive levels — from basic processing to advanced reasoning.",
     full:"Neuro Ascend IQ structures cognitive challenges as a tower of ascending levels, each harder than the last. Lower levels test processing speed and attention; middle levels add working memory and pattern recognition; the peak tests fluid reasoning and complex problem-solving. The highest level reached becomes the student's Ascend Score.",
     steps:["Start at Level 1 — complete the challenge to unlock Level 2.","Each new level introduces a new or harder cognitive demand.","A brief rest screen appears every 5 levels.","If you fail a level, you may retry once before moving on.","Your final Ascend Score is the highest level completed correctly."],
@@ -450,7 +450,7 @@ const GAMES = [
   {
     id:"grammar-pro",file:"grammar-pro.html",
     title:"Grammar Pro",icon:"📝",color:"#0369a1",
-    age:"mid",ageLabel:"Ages 9–14",ageCls:"ag-mid",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
     short:"Master English grammar through interactive sentence-repair challenges.",
     full:"Grammar Pro presents grammatically incorrect sentences for players to identify and fix. The game covers subject-verb agreement, tense consistency, punctuation, and parts of speech. A detective-style theme frames errors as 'clues to crack', making grammar practice feel investigative rather than rote.",
     steps:["A sentence appears on screen with one or more errors.","Tap the word or punctuation mark that is incorrect.","Choose the correct replacement from the options shown.","Chain correct fixes to earn 'Grammar Detective' streak bonuses.","Complete a chapter to unlock the Grammar Galaxy map!"],
@@ -460,7 +460,7 @@ const GAMES = [
   {
     id:"grammar-galaxy",file:"grammar-galaxy.html",
     title:"Grammar Galaxy",icon:"🌟",color:"#7c3aed",
-    age:"mid",ageLabel:"Ages 8–13",ageCls:"ag-mid",
+    age:"mid",ageLabel:"Ages 23+",ageCls:"ag-mid",
     short:"Explore galaxies of words — parts of speech, sentence structure, and more.",
     full:"Grammar Galaxy is a visually rich language game where grammar concepts are mapped to an illustrated galaxy. Each planet represents a grammar topic (nouns, verbs, adjectives, conjunctions). Players travel to each planet and complete themed challenges — matching, gap-fill, sentence construction — before moving to the next world.",
     steps:["Choose a planet to visit on the Galaxy Map.","Read the grammar concept introduced for that planet.","Complete the planet's challenges to earn a star.","All five stars unlock the Galaxy Champion badge.","Revisit any planet to strengthen weak areas."],
@@ -470,7 +470,7 @@ const GAMES = [
   {
     id:"telugu-script-game",file:"telugu-script-game.html",
     title:"Telugu Script Game",icon:"అ",color:"#b45309",
-    age:"early",ageLabel:"Ages 5–10",ageCls:"ag-early",
+    age:"early",ageLabel:"Ages 5+",ageCls:"ag-early",
     short:"Learn to read and write Telugu script through tracing and recognition games.",
     full:"Telugu Script Game introduces the Telugu alphabet through multisensory engagement — children trace akshara letterforms with their finger, match syllables to pictures, and identify letters in simple words. The game is sequenced following standard Telugu varnamala order, making it ideal as a complement to classroom instruction.",
     steps:["Choose a letter or syllable group to practise.","Watch the stroke animation, then trace over the dotted guide.","A matching challenge shows the letter — tap the correct picture.","Listen to the pronunciation and repeat the sound.","Complete a row of the varnamala to earn a Telugu Tara (star)!"],
@@ -482,7 +482,7 @@ const GAMES = [
   {
     id:"empathy-quest",file:"empathy-quest.html",
     title:"Empathy Quest",icon:"💛",color:"#f59e0b",
-    age:"early",ageLabel:"Ages 5–9",ageCls:"ag-early",
+    age:"early",ageLabel:"Ages 8+",ageCls:"ag-early",
     short:"Walk in someone else's shoes — recognise feelings and choose kind responses.",
     full:"Empathy Quest builds emotional intelligence through illustrated story scenarios. Children observe a character experiencing a situation, identify the emotion being felt, and choose the most empathetic response from a set of options. Across levels, the emotional complexity increases — from basic happy/sad to nuanced emotions like embarrassment or loneliness.",
     steps:["A story scene is shown with a character and a situation.","Look carefully at the character's expression and body language.","Choose from four emotion labels — which best fits?","Now choose the kindest response to the character.","A short animation shows what happens next — and why it matters."],
@@ -492,7 +492,7 @@ const GAMES = [
   {
     id:"empathy-conversation",file:"empathy-conversation.html",
     title:"Empathy Conversation",icon:"💬",color:"#0891b2",
-    age:"mid",ageLabel:"Ages 8–13",ageCls:"ag-mid",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
     short:"Practice real conversations — navigate social situations with empathy and confidence.",
     full:"Empathy Conversation presents branching social scenarios as interactive dialogue trees. Students choose what to say at each step; their choices affect the emotional trajectory of the conversation. The game models active listening, non-judgmental language, and repair strategies, making it a powerful SEL tool for classroom use.",
     steps:["A social scenario is introduced — read the context carefully.","A character speaks to you — read their message and body language.","Choose your response from three options.","Each choice leads to a different branch of the conversation.","At the end, a reflection screen shows how your choices affected the outcome."],
@@ -502,7 +502,7 @@ const GAMES = [
   {
     id:"heart-heroes",file:"heart-heroes.html",
     title:"Heart Heroes",icon:"❤️",color:"#e11d48",
-    age:"early",ageLabel:"Ages 4–8",ageCls:"ag-early",
+    age:"early",ageLabel:"Ages 5–8",ageCls:"ag-early",
     short:"Help the Heart Heroes spread kindness — match kind actions to feelings.",
     full:"Heart Heroes is a values-based SEL game for young children. The Heart Heroes characters each represent a core value — kindness, courage, honesty, patience. Children help these heroes by choosing the right action in everyday scenarios, building a concrete vocabulary for prosocial behaviour and character development.",
     steps:["A Heart Hero presents a challenge situation.","Read or listen to what is happening.","Choose the action that matches the Hero's value.","Correct choices fill the Heart Hero's energy bar.","Complete all four Hero missions to light up the Heart Heroes map!"],
@@ -512,7 +512,7 @@ const GAMES = [
   {
     id:"calm-zone",file:"calm-zone.html",
     title:"Calm Zone",icon:"🌿",color:"#059669",
-    age:"early",ageLabel:"Ages 4–10",ageCls:"ag-early",
+    age:"early",ageLabel:"Ages 8+",ageCls:"ag-early",
     short:"Breathe, relax, and re-centre — guided calming activities for school and home.",
     full:"Calm Zone is a guided mindfulness and self-regulation tool rather than a competitive game. It offers breathing exercises (box breathing, 4-7-8), progressive muscle relaxation prompts, and visualisation journeys set in calming nature environments. Designed for use before assessments, during transitions, or after conflict resolution.",
     steps:["Choose an activity: Breathe, Relax, or Visualise.","Follow the animated guide — breathe in, hold, breathe out.","For Relax: tense and release each muscle group as guided.","For Visualise: close your eyes and follow the audio journey.","Rate how you feel before and after to track your calm score."],
@@ -534,7 +534,7 @@ const GAMES = [
   {
     id:"brain-garden",file:"brain-garden.html",
     title:"Brain Garden",icon:"🌻",color:"#16a34a",
-    age:"early",ageLabel:"Ages 5–10",ageCls:"ag-early",
+    age:"early",ageLabel:"Ages 8+",ageCls:"ag-early",
     short:"Grow your brain garden by completing cognitive mini-games every day.",
     full:"Brain Garden is a daily cognitive engagement platform wrapped in a gardening metaphor. Each mini-game waters, fertilises, or harvests a different plant in the child's personal garden — memory games grow sunflowers, attention games water ferns, reasoning puzzles ripen fruit. Daily play keeps the garden alive and growing, encouraging consistent cognitive engagement.",
     steps:["Visit your Brain Garden each day.","Choose a plant to tend — each one links to a different cognitive game.","Complete the mini-game to tend your plant.","Check the garden health bar to see which areas need more attention.","Reach a full, blooming garden to earn the Master Gardener award."],
@@ -564,7 +564,7 @@ const GAMES = [
   {
     id:"planet-guardians",file:"planet-guardians.html",
     title:"Planet Guardians",icon:"🌍",color:"#0369a1",
-    age:"mid",ageLabel:"Ages 7–12",ageCls:"ag-mid",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
     short:"Protect your planet — solve eco-challenges using science reasoning and teamwork.",
     full:"Planet Guardians frames environmental science within a problem-solving game. Players become guardians of a planet facing ecological threats and must apply reasoning, classification, and cause-effect thinking to solve challenges like reducing pollution, planting forests, or saving water. Science vocabulary and environmental literacy are woven throughout.",
     steps:["Choose a planet challenge from the Guardians map.","Read the threat briefing — understand what is causing the problem.","Select and apply solutions from your Guardian toolkit.","Use cause-and-effect reasoning to predict the outcome.","Save your planet's health score to earn Guardian status!"],
