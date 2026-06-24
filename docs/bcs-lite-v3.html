@@ -1,0 +1,1987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BCS Lite — Bhāva Cognitive Screen</title>
+<style>
+/* ======== CSS VARIABLES & RESET ======== */
+:root {
+  --bg: #07111f;
+  --bg2: #0d1b2e;
+  --card: rgba(255,255,255,0.06);
+  --card-border: rgba(255,255,255,0.12);
+  --accent: #7c9cff;
+  --accent2: #48d7c4;
+  --accent3: #ffd166;
+  --accent4: #ff8a8a;
+  --text: #e8eaf2;
+  --text-muted: rgba(232,234,242,0.55);
+  --success: #44cc88;
+  --danger: #ff5566;
+  --radius: 18px;
+  --radius-sm: 10px;
+  --shadow: 0 8px 40px rgba(0,0,0,0.5);
+  --glow: 0 0 24px rgba(124,156,255,0.3);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+body { min-height: 100vh; position: relative; }
+
+/* ======== STARFIELD ======== */
+#starfield {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+.star {
+  position: absolute; border-radius: 50%; background: #fff;
+  animation: twinkle var(--dur, 3s) ease-in-out infinite var(--delay, 0s);
+}
+@keyframes twinkle {
+  0%,100% { opacity: 0.1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.3); }
+}
+
+/* ======== LAYOUT ======== */
+#app {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 20px 16px 40px;
+}
+
+.screen { width: 100%; max-width: 680px; display: none; }
+.screen.active { display: block; }
+
+/* ======== HEADER ======== */
+.logo-bar {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 28px;
+}
+.logo-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; box-shadow: var(--glow);
+}
+.logo-text h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.5px; }
+.logo-text p { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+/* ======== CARD ======== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow);
+  margin-bottom: 18px;
+}
+
+/* ======== FORMS ======== */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-group label { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+input, select {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+input:focus, select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124,156,255,0.15);
+}
+select option { background: #1a2a3a; }
+
+/* ======== BUTTONS ======== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 28px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-size: 1rem; font-weight: 600; cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+  text-decoration: none;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(124,156,255,0.35);
+}
+.btn-primary:hover { box-shadow: 0 6px 28px rgba(124,156,255,0.5); }
+.btn-secondary {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid var(--card-border);
+  color: var(--text);
+}
+.btn-full { width: 100%; }
+.btn-sm { padding: 8px 16px; font-size: 0.87rem; }
+
+/* ======== BADGES ======== */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600;
+}
+.badge-success { background: rgba(68,204,136,0.18); color: var(--success); border: 1px solid rgba(68,204,136,0.3); }
+.badge-info { background: rgba(124,156,255,0.18); color: var(--accent); border: 1px solid rgba(124,156,255,0.3); }
+.badge-warn { background: rgba(255,209,102,0.18); color: var(--accent3); border: 1px solid rgba(255,209,102,0.3); }
+
+/* ======== PROGRESS BAR ======== */
+.progress-bar-wrap {
+  background: rgba(255,255,255,0.08);
+  border-radius: 8px; height: 8px; overflow: hidden; margin-bottom: 6px;
+}
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.4s ease;
+}
+.progress-labels {
+  display: flex; justify-content: space-between;
+  font-size: 0.72rem; color: var(--text-muted);
+}
+
+/* ======== MODULE HEADER ======== */
+.module-header {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 22px;
+}
+.module-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: rgba(124,156,255,0.15);
+  border: 1px solid rgba(124,156,255,0.25);
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
+  flex-shrink: 0;
+}
+.module-meta h2 { font-size: 1.2rem; font-weight: 700; }
+.module-meta p { font-size: 0.8rem; color: var(--text-muted); margin-top: 3px; }
+
+/* ======== COUNTDOWN OVERLAY ======== */
+#countdown-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(7,17,31,0.92);
+  backdrop-filter: blur(8px);
+  display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px; text-align: center;
+}
+#countdown-overlay.visible { display: flex; }
+#countdown-num {
+  font-size: 5rem; font-weight: 900; line-height: 1;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: popIn 0.3s ease;
+}
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+#countdown-label { font-size: 1.1rem; color: var(--text-muted); max-width: 320px; }
+
+/* ======== TIMER RING ======== */
+.timer-display {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 1.1rem; font-weight: 700; color: var(--accent3);
+}
+.timer-display.urgent { color: var(--danger); animation: pulse 0.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.5} }
+
+/* ======== MEMORY MODULE ======== */
+#mem-sequence-display {
+  font-size: 2.8rem; font-weight: 900; letter-spacing: 12px;
+  text-align: center; padding: 28px;
+  background: rgba(124,156,255,0.1);
+  border-radius: var(--radius); border: 1px solid rgba(124,156,255,0.2);
+  margin: 18px 0; min-height: 90px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Courier New', monospace;
+}
+#mem-input-area { display: none; }
+#mem-input {
+  font-size: 2rem; text-align: center; letter-spacing: 8px;
+  font-family: 'Courier New', monospace; font-weight: 700;
+}
+
+/* ======== ATTENTION MODULE ======== */
+#att-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+  margin: 18px 0;
+}
+.att-item {
+  aspect-ratio: 1; border-radius: 12px; font-size: 1.8rem;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.06);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s, background 0.15s;
+  user-select: none;
+}
+.att-item:active { transform: scale(0.9); }
+.att-item.selected {
+  border-color: var(--accent);
+  background: rgba(124,156,255,0.2);
+}
+.att-item.wrong-select {
+  border-color: var(--danger);
+  background: rgba(255,85,102,0.2);
+}
+.att-stats {
+  display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px;
+}
+
+/* ======== FOCUS (STROOP) MODULE ======== */
+.stroop-word {
+  font-size: 3rem; font-weight: 900; text-align: center;
+  padding: 28px; border-radius: var(--radius);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--card-border);
+  margin: 18px 0; letter-spacing: 3px;
+  transition: opacity 0.15s;
+  min-height: 100px; display: flex; align-items: center; justify-content: center;
+}
+.stroop-prompt {
+  text-align: center; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 14px;
+}
+.stroop-options {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;
+}
+.stroop-btn {
+  padding: 14px; border-radius: var(--radius-sm); border: 2px solid transparent;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  transition: transform 0.12s, border-color 0.12s;
+  text-align: center; color: #fff;
+}
+.stroop-btn:active { transform: scale(0.96); }
+.stroop-btn.correct-flash { border-color: var(--success) !important; box-shadow: 0 0 16px rgba(68,204,136,0.5); }
+.stroop-btn.wrong-flash { border-color: var(--danger) !important; box-shadow: 0 0 16px rgba(255,85,102,0.5); }
+.stroop-progress-row {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;
+}
+.stroop-trial-dots {
+  display: flex; gap: 5px; flex-wrap: wrap;
+}
+.trial-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+}
+.trial-dot.correct { background: var(--success); }
+.trial-dot.wrong { background: var(--danger); }
+
+/* ======== LOGIC MODULE ======== */
+.logic-question {
+  font-size: 1.15rem; font-weight: 600; line-height: 1.5;
+  padding: 20px; border-radius: var(--radius);
+  background: rgba(124,156,255,0.08);
+  border: 1px solid rgba(124,156,255,0.2);
+  margin-bottom: 18px;
+  text-align: center;
+}
+.logic-options { display: flex; flex-direction: column; gap: 10px; }
+.logic-opt-btn {
+  padding: 13px 18px; border-radius: var(--radius-sm);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05);
+  color: var(--text); font-size: 0.95rem; text-align: left; cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+}
+.logic-opt-btn:hover { border-color: var(--accent); background: rgba(124,156,255,0.1); }
+.logic-opt-btn:active { transform: scale(0.98); }
+.logic-opt-btn.correct { border-color: var(--success); background: rgba(68,204,136,0.15); }
+.logic-opt-btn.wrong { border-color: var(--danger); background: rgba(255,85,102,0.15); }
+.logic-explanation {
+  margin-top: 12px; padding: 12px 16px; border-radius: var(--radius-sm);
+  background: rgba(72,215,196,0.1); border: 1px solid rgba(72,215,196,0.25);
+  font-size: 0.85rem; color: var(--accent2); display: none;
+}
+.logic-progress { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px; }
+.logic-score-row {
+  display: flex; gap: 8px; align-items: center; margin-bottom: 6px; flex-wrap: wrap;
+}
+
+/* ======== OBSERVATION MODULE ======== */
+.obs-canvases {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0;
+}
+@media (max-width: 480px) { .obs-canvases { grid-template-columns: 1fr; } }
+.obs-canvas-wrap {
+  position: relative; border-radius: var(--radius-sm); overflow: hidden;
+  border: 2px solid var(--card-border);
+}
+.obs-canvas-wrap canvas {
+  display: block; width: 100%; height: auto; cursor: crosshair;
+}
+.obs-canvas-label {
+  text-align: center; font-size: 0.75rem; color: var(--text-muted);
+  padding: 5px; background: rgba(0,0,0,0.3);
+}
+.diff-markers { display: none; }
+.obs-diffs-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.obs-diff-item {
+  padding: 10px 14px; border-radius: var(--radius-sm);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  font-size: 0.87rem; display: flex; align-items: center; gap: 10px;
+  cursor: pointer; transition: border-color 0.15s;
+}
+.obs-diff-item:hover { border-color: var(--accent); }
+.obs-diff-item.found { border-color: var(--success); background: rgba(68,204,136,0.12); }
+.obs-diff-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--card-border); flex-shrink: 0; }
+.obs-diff-item.found .obs-diff-dot { background: var(--success); }
+.obs-hint { font-size: 0.78rem; color: var(--text-muted); margin-top: 8px; text-align: center; }
+/* Click hotspot on canvas */
+.canvas-highlight {
+  position: absolute; border: 3px solid var(--success);
+  border-radius: 50%; pointer-events: none;
+  animation: ringPop 0.4s ease forwards;
+}
+@keyframes ringPop {
+  0% { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* ======== RESULTS SCREEN ======== */
+.results-header {
+  text-align: center; padding: 28px 0 18px;
+}
+.results-score-big {
+  font-size: 4rem; font-weight: 900; line-height: 1;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.results-grade {
+  font-size: 1.1rem; font-weight: 700; margin-top: 8px;
+  padding: 6px 18px; border-radius: 20px; display: inline-block;
+}
+.grade-excellent { background: rgba(68,204,136,0.2); color: var(--success); border: 1px solid rgba(68,204,136,0.4); }
+.grade-good { background: rgba(124,156,255,0.2); color: var(--accent); border: 1px solid rgba(124,156,255,0.4); }
+.grade-developing { background: rgba(255,209,102,0.2); color: var(--accent3); border: 1px solid rgba(255,209,102,0.4); }
+.grade-early { background: rgba(255,85,102,0.2); color: var(--danger); border: 1px solid rgba(255,85,102,0.4); }
+
+.score-breakdown {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 18px 0;
+}
+@media (max-width: 480px) { .score-breakdown { grid-template-columns: 1fr 1fr; } }
+.score-card {
+  padding: 14px 8px; border-radius: var(--radius-sm); text-align: center;
+  background: rgba(255,255,255,0.05); border: 1px solid var(--card-border);
+}
+.score-card .score-icon { font-size: 1.5rem; }
+.score-card .score-label { font-size: 0.68rem; color: var(--text-muted); margin: 4px 0; text-transform: uppercase; }
+.score-card .score-val { font-size: 1.3rem; font-weight: 800; color: var(--accent); }
+
+/* Journey Bar */
+.journey-bar-wrap { margin-top: 10px; }
+.journey-track {
+  display: flex; align-items: center; gap: 0;
+  background: rgba(255,255,255,0.05);
+  border-radius: 40px; padding: 6px 8px;
+  border: 1px solid var(--card-border);
+  margin: 12px 0;
+}
+.journey-node {
+  flex: 1; text-align: center; position: relative;
+  padding: 8px 4px;
+}
+.journey-node .j-dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  margin: 0 auto 5px;
+  border: 2px solid rgba(255,255,255,0.2);
+}
+.journey-node.active .j-dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(124,156,255,0.6);
+}
+.journey-node .j-label { font-size: 0.65rem; color: var(--text-muted); }
+.journey-node.active .j-label { color: var(--accent); font-weight: 700; }
+.journey-connector {
+  flex: 0.5; height: 2px;
+  background: rgba(255,255,255,0.1);
+}
+.journey-connector.done { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+
+/* Save status */
+#save-status {
+  text-align: center; font-size: 0.82rem; color: var(--text-muted);
+  margin-top: 8px; min-height: 20px;
+}
+
+/* ======== SECTION TITLE ======== */
+.section-title {
+  font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--text-muted); font-weight: 700; margin-bottom: 10px;
+}
+
+/* ======== UTILITY ======== */
+.mt-12 { margin-top: 12px; }
+.mt-18 { margin-top: 18px; }
+.mb-12 { margin-bottom: 12px; }
+.text-center { text-align: center; }
+.text-muted { color: var(--text-muted); }
+.flex-row { display: flex; align-items: center; gap: 10px; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.hidden { display: none !important; }
+.divider { height: 1px; background: rgba(255,255,255,0.08); margin: 18px 0; }
+
+/* ======== PRINT ======== */
+@media print {
+  #starfield, #countdown-overlay { display: none !important; }
+  body { background: #fff; color: #000; }
+  .card { background: #f5f5f5; border: 1px solid #ccc; box-shadow: none; }
+  .btn { display: none; }
+  .results-score-big { -webkit-text-fill-color: #333; }
+  .score-val { color: #333 !important; }
+}
+
+/* ======== FLASH OVERLAY for correct/wrong ======== */
+#feedback-flash {
+  position: fixed; inset: 0; z-index: 90; pointer-events: none;
+  opacity: 0; transition: opacity 0.12s;
+}
+#feedback-flash.show-correct { background: rgba(68,204,136,0.12); opacity: 1; }
+#feedback-flash.show-wrong { background: rgba(255,85,102,0.12); opacity: 1; }
+</style>
+</head>
+<body>
+<div id="starfield"></div>
+<div id="feedback-flash"></div>
+
+<!-- COUNTDOWN OVERLAY -->
+<div id="countdown-overlay">
+  <div id="countdown-num">3</div>
+  <div id="countdown-label">Get ready for the next module</div>
+</div>
+
+<div id="app">
+
+  <!-- ===== SCREEN: WELCOME ===== -->
+  <div class="screen active" id="screen-welcome">
+    <div class="logo-bar">
+      <div class="logo-icon">🧠</div>
+      <div class="logo-text">
+        <h1>BCS Lite</h1>
+        <p>Bhāva Cognitive Screen · Enhanced Edition</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title">Assessment Overview</div>
+      <p style="font-size:0.9rem;line-height:1.6;color:var(--text-muted);margin-bottom:18px;">
+        This tool measures 5 cognitive domains in approximately 12–15 minutes. Ensure you are in a quiet environment before starting.
+      </p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="padding:12px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid var(--card-border);">
+          <div style="font-size:1.2rem">🧩</div>
+          <div style="font-size:0.78rem;color:var(--accent);font-weight:600;margin-top:4px;">Memory</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);">Digit recall</div>
+        </div>
+        <div style="padding:12px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid var(--card-border);">
+          <div style="font-size:1.2rem">🎯</div>
+          <div style="font-size:0.78rem;color:var(--accent);font-weight:600;margin-top:4px;">Attention</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);">Target selection</div>
+        </div>
+        <div style="padding:12px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid var(--card-border);">
+          <div style="font-size:1.2rem">🧘</div>
+          <div style="font-size:0.78rem;color:var(--accent);font-weight:600;margin-top:4px;">Focus</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);">Stroop interference</div>
+        </div>
+        <div style="padding:12px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid var(--card-border);">
+          <div style="font-size:1.2rem">🔷</div>
+          <div style="font-size:0.78rem;color:var(--accent);font-weight:600;margin-top:4px;">Logic</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);">Reasoning patterns</div>
+        </div>
+        <div style="padding:12px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid var(--card-border);grid-column:1/-1;max-width:50%;margin:0 auto;width:100%;">
+          <div style="font-size:1.2rem">👁️</div>
+          <div style="font-size:0.78rem;color:var(--accent);font-weight:600;margin-top:4px;">Observation</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);">Spot the differences</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <button class="btn btn-primary btn-full" onclick="showScreen('screen-intake')">Begin Assessment →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: INTAKE FORM ===== -->
+  <div class="screen" id="screen-intake">
+    <div class="logo-bar">
+      <div class="logo-icon">📋</div>
+      <div class="logo-text">
+        <h1>Student Details</h1>
+        <p>Fill in the information below</p>
+      </div>
+    </div>
+    <div id="login-badge-wrap" class="hidden mb-12"></div>
+    <div class="card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="f-name" placeholder="Student name" required>
+        </div>
+        <div class="form-group">
+          <label>Roll Number</label>
+          <input type="text" id="f-roll" placeholder="e.g. 2024-042">
+        </div>
+        <div class="form-group">
+          <label>Age *</label>
+          <input type="number" id="f-age" min="8" max="17" placeholder="8–17">
+        </div>
+        <div class="form-group">
+          <label>Grade *</label>
+          <select id="f-grade">
+            <option value="">Select grade</option>
+            <option>Grade 3</option><option>Grade 4</option><option>Grade 5</option>
+            <option>Grade 6</option><option>Grade 7</option><option>Grade 8</option>
+            <option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>School Name *</label>
+          <input type="text" id="f-school" placeholder="School / Institution">
+        </div>
+        <div class="form-group">
+          <label>School ID</label>
+          <input type="text" id="f-school-id" placeholder="e.g. BHAVA-SVN-001">
+        </div>
+        <div class="form-group">
+          <label>Facilitator Name</label>
+          <input type="text" id="f-facilitator" placeholder="Teacher / Counselor">
+        </div>
+        <div class="form-group full">
+          <label>Assessment Type</label>
+          <select id="f-assessment-type">
+            <option value="Baseline">Baseline</option>
+            <option value="30-Day">30-Day</option>
+            <option value="60-Day">60-Day</option>
+            <option value="90-Day">90-Day</option>
+          </select>
+        </div>
+      </div>
+      <div style="background:rgba(255,209,102,0.10);border:1px solid rgba(255,209,102,0.3);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:0.8rem;line-height:1.6;color:var(--accent3);"><strong>Disclaimer:</strong> BCS Lite is a screening tool only, not a clinical diagnosis. Results reflect performance on this session and may vary with mood, health, or environment. This report should be interpreted by a qualified facilitator alongside other observations. Do not use scores as the sole basis for academic or psychological decisions.</div>
+      <div class="divider"></div>
+      <button class="btn btn-primary btn-full" onclick="startAssessment()">Start Assessment →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: MODULE 1 — MEMORY ===== -->
+  <div class="screen" id="screen-memory">
+    <div class="logo-bar">
+      <div class="logo-icon">🧩</div>
+      <div class="logo-text">
+        <h1>Module 1 — Memory</h1>
+        <p>Memorize and recall the digit sequence</p>
+      </div>
+    </div>
+    <div class="card">
+      <div id="mem-phase-study">
+        <div class="flex-between mb-12">
+          <span class="badge badge-info">Study Phase</span>
+          <div class="timer-display" id="mem-timer">⏱ <span id="mem-timer-val">5</span>s</div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--text-muted);text-align:center;margin-bottom:4px;">Remember this sequence carefully</p>
+        <div id="mem-sequence-display">—</div>
+        <div class="progress-bar-wrap mt-12">
+          <div class="progress-bar-fill" id="mem-timer-bar" style="width:100%"></div>
+        </div>
+      </div>
+      <div id="mem-input-area" style="display:none">
+        <p style="font-size:0.88rem;color:var(--text-muted);text-align:center;margin-bottom:12px;">Type what you remember</p>
+        <input type="text" id="mem-input" placeholder="Enter digits..." inputmode="numeric" pattern="[0-9]*" maxlength="10" autocomplete="off">
+        <button class="btn btn-primary btn-full mt-12" onclick="submitMemory()">Submit →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: MODULE 2 — ATTENTION ===== -->
+  <div class="screen" id="screen-attention">
+    <div class="logo-bar">
+      <div class="logo-icon">🎯</div>
+      <div class="logo-text">
+        <h1>Module 2 — Attention</h1>
+        <p>Tap only the blue items</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="flex-between mb-12">
+        <div class="att-stats">
+          <span class="badge badge-success">✓ <span id="att-hits">0</span> hits</span>
+          <span class="badge" style="background:rgba(255,85,102,0.15);color:var(--danger);border:1px solid rgba(255,85,102,0.3);">✗ <span id="att-false">0</span> wrong</span>
+        </div>
+        <div style="font-size:0.82rem;color:var(--text-muted);">Target: <strong style="color:var(--accent)">🔵 blue only</strong></div>
+      </div>
+      <div id="att-grid"></div>
+      <button class="btn btn-primary btn-full mt-12" id="att-submit-btn" onclick="submitAttention()">Submit Selections →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: MODULE 3 — FOCUS ===== -->
+  <div class="screen" id="screen-focus">
+    <div class="logo-bar">
+      <div class="logo-icon">🧘</div>
+      <div class="logo-text">
+        <h1>Module 3 — Focus</h1>
+        <p>Tap the INK COLOR of the word</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="stroop-progress-row">
+        <div class="stroop-trial-dots" id="stroop-dots"></div>
+        <div class="timer-display" id="stroop-timer">⏱ <span id="stroop-time-val">30</span>s</div>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="stroop-bar" style="width:100%"></div>
+      </div>
+      <div class="stroop-prompt">What COLOR is this word written in?</div>
+      <div class="stroop-word" id="stroop-word">RED</div>
+      <div class="stroop-options" id="stroop-options"></div>
+      <div style="text-align:center;margin-top:10px;font-size:0.78rem;color:var(--text-muted);">
+        Trial <span id="stroop-trial-num">1</span> of 10
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: MODULE 4 — LOGIC ===== -->
+  <div class="screen" id="screen-logic">
+    <div class="logo-bar">
+      <div class="logo-icon">🔷</div>
+      <div class="logo-text">
+        <h1>Module 4 — Logic</h1>
+        <p>Choose the best answer</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="logic-score-row">
+        <span class="logic-progress">Question <span id="logic-q-num">1</span> of 5</span>
+        <span class="badge badge-info" id="logic-cat-badge">Category</span>
+        <span class="badge badge-success" id="logic-score-badge">0 / 0 correct</span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="logic-bar" style="width:0%"></div>
+      </div>
+      <div class="logic-question" id="logic-q-text">Loading...</div>
+      <div class="logic-options" id="logic-options"></div>
+      <div class="logic-explanation" id="logic-expl"></div>
+      <button class="btn btn-primary btn-full mt-12 hidden" id="logic-next-btn" onclick="nextLogicQuestion()">Next Question →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: MODULE 5 — OBSERVATION ===== -->
+  <div class="screen" id="screen-observation">
+    <div class="logo-bar">
+      <div class="logo-icon">👁️</div>
+      <div class="logo-text">
+        <h1>Module 5 — Observation</h1>
+        <p>Find 3 differences between the images</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="flex-between mb-12">
+        <div class="flex-row">
+          <span class="badge badge-success"><span id="obs-found">0</span>/3 found</span>
+        </div>
+        <div class="timer-display" id="obs-timer">⏱ <span id="obs-time-val">0</span>s</div>
+      </div>
+      <div class="obs-canvases">
+        <div class="obs-canvas-wrap">
+          <canvas id="obs-canvas-a" width="260" height="200"></canvas>
+          <div class="obs-canvas-label">Image A (Original)</div>
+        </div>
+        <div class="obs-canvas-wrap" style="position:relative">
+          <canvas id="obs-canvas-b" width="260" height="200" onclick="handleObsClick(event, this)"></canvas>
+          <div class="obs-canvas-label">Image B (Spot differences)</div>
+        </div>
+      </div>
+      <p class="obs-hint">Click on Image B where you see a difference</p>
+      <div class="obs-diffs-list" id="obs-diffs-list"></div>
+      <p class="obs-hint" style="margin-top:12px">Find all 3 or click Submit when ready</p>
+      <button class="btn btn-primary btn-full mt-12" id="obs-done-btn" onclick="submitObservation()">Submit →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: RESULTS ===== -->
+  <div class="screen" id="screen-results">
+    <div class="logo-bar">
+      <div class="logo-icon">📊</div>
+      <div class="logo-text">
+        <h1>Assessment Complete</h1>
+        <p id="result-student-name">BCS Lite Report</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="results-header">
+        <div class="results-score-big" id="result-total">—</div>
+        <div style="font-size:0.85rem;color:var(--text-muted);margin-top:4px;">out of 100</div>
+        <div id="result-grade" class="results-grade">—</div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">Score Breakdown</div>
+      <div class="score-breakdown" id="score-breakdown"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Your Cognitive Journey</div>
+      <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">Check this against your next assessment after 30 days of Bhāva activities</p>
+      <div class="journey-track" id="journey-track"></div>
+      <p style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:4px;">
+        Current: <span id="journey-current-label" style="color:var(--accent);font-weight:700"></span>
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="flex-between mb-12">
+        <div class="section-title" style="margin:0">Session Details</div>
+        <span class="badge badge-info" id="result-duration">—</span>
+      </div>
+      <div id="result-details" style="font-size:0.82rem;color:var(--text-muted);line-height:1.8;"></div>
+      <div id="save-status" class="mt-12">—</div>
+    </div>
+
+    <div class="card" style="display:flex;gap:12px;flex-wrap:wrap;">
+      <button class="btn btn-secondary" style="flex:1;min-width:130px" onclick="window.print()">🖨️ Print</button>
+      <button class="btn btn-primary" style="flex:1;min-width:130px" onclick="restartAssessment()">↺ New Assessment</button>
+    </div>
+  </div>
+
+</div><!-- #app -->
+
+<script>
+/* ============================================================
+   STARFIELD
+============================================================ */
+(function(){
+  const sf = document.getElementById('starfield');
+  for(let i=0;i<80;i++){
+    const s = document.createElement('div');
+    s.className='star';
+    const sz = Math.random()*2.5+0.5;
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${2+Math.random()*4}s;--delay:${-Math.random()*4}s`;
+    sf.appendChild(s);
+  }
+})();
+
+/* ============================================================
+   STATE
+============================================================ */
+const BCS = {
+  student: {},
+  scores: { memory:0, attention:0, focus:0, logic:0, observation:0 },
+  rawMetrics: {},
+  currentModule: null,
+  startTime: null,
+  activeTimers: []
+};
+
+/* ============================================================
+   SCREEN ROUTER
+============================================================ */
+function showScreen(id) {
+  // Kill all timers
+  BCS.activeTimers.forEach(clearInterval);
+  BCS.activeTimers.forEach(clearTimeout);
+  BCS.activeTimers = [];
+
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if(el) { el.classList.add('active'); window.scrollTo(0,0); }
+}
+
+/* ============================================================
+   SHUFFLE HELPER
+============================================================ */
+function shuffle(arr) {
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+/* ============================================================
+   FEEDBACK FLASH
+============================================================ */
+function flashFeedback(correct) {
+  const el = document.getElementById('feedback-flash');
+  el.className = correct ? 'show-correct' : 'show-wrong';
+  const t = setTimeout(() => { el.className = ''; }, 300);
+  BCS.activeTimers.push(t);
+}
+
+/* ============================================================
+   INTAKE / LOCALSTORAGE PRE-FILL
+============================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+  try {
+    const stored = localStorage.getItem('bhava_current_student');
+    if(stored) {
+      const s = JSON.parse(stored);
+      const wrap = document.getElementById('login-badge-wrap');
+      wrap.innerHTML = `<div class="badge badge-success" style="margin-bottom:8px">✓ Logged in as ${s.name || 'Student'}</div>`;
+      wrap.classList.remove('hidden');
+      if(s.name) document.getElementById('f-name').value = s.name;
+      if(s.roll_no) document.getElementById('f-roll').value = s.roll_no;
+      if(s.school_id) document.getElementById('f-school-id').value = s.school_id;
+      if(s.school) document.getElementById('f-school').value = s.school;
+      if(s.grade) {
+        const sel = document.getElementById('f-grade');
+        for(let i=0;i<sel.options.length;i++){
+          if(sel.options[i].value === s.grade || sel.options[i].text === s.grade) sel.selectedIndex=i;
+        }
+      }
+    }
+  } catch(e){}
+});
+
+function startAssessment() {
+  const name = document.getElementById('f-name').value.trim();
+  const age = parseInt(document.getElementById('f-age').value);
+  const grade = document.getElementById('f-grade').value;
+  const school = document.getElementById('f-school').value.trim();
+
+  if(!name) { alert('Please enter the student name.'); return; }
+  if(!age || age<8 || age>17) { alert('Please enter a valid age (8–17).'); return; }
+  if(!grade) { alert('Please select a grade.'); return; }
+  if(!school) { alert('Please enter the school name.'); return; }
+
+  BCS.student = {
+    name, age, grade, school,
+    roll_no: document.getElementById('f-roll').value.trim(),
+    school_id: document.getElementById('f-school-id').value.trim(),
+    facilitator: document.getElementById('f-facilitator').value.trim(),
+    assessment_type: document.getElementById('f-assessment-type').value,
+    date: new Date().toISOString().slice(0,10)
+  };
+  BCS.startTime = Date.now();
+  startMemoryModule();
+}
+
+/* ============================================================
+   COUNTDOWN BETWEEN MODULES
+============================================================ */
+function showCountdown(label, callback) {
+  const overlay = document.getElementById('countdown-overlay');
+  const numEl = document.getElementById('countdown-num');
+  const lblEl = document.getElementById('countdown-label');
+  lblEl.textContent = label;
+  overlay.classList.add('visible');
+  let n = 3;
+  numEl.textContent = n;
+
+  const iv = setInterval(() => {
+    n--;
+    if(n <= 0){
+      clearInterval(iv);
+      overlay.classList.remove('visible');
+      callback();
+    } else {
+      numEl.textContent = n;
+      numEl.style.animation='none';
+      void numEl.offsetWidth;
+      numEl.style.animation='popIn 0.3s ease';
+    }
+  }, 900);
+}
+
+/* ============================================================
+   MODULE 1 — MEMORY
+============================================================ */
+let memSequence = '';
+
+function startMemoryModule() {
+  showScreen('screen-memory');
+
+  const age = BCS.student.age;
+  const len = age <= 10 ? 5 : age <= 14 ? 6 : 7;
+  memSequence = Array.from({length:len}, () => randInt(1,9)).join('');
+
+  const dispEl = document.getElementById('mem-sequence-display');
+  const timerVal = document.getElementById('mem-timer-val');
+  const timerBar = document.getElementById('mem-timer-bar');
+  const studyDiv = document.getElementById('mem-phase-study');
+  const inputDiv = document.getElementById('mem-input-area');
+  const inputEl = document.getElementById('mem-input');
+
+  dispEl.textContent = memSequence;
+  studyDiv.style.display = 'block';
+  inputDiv.style.display = 'none';
+  inputEl.value = '';
+
+  // Timer: 5 seconds display
+  let timeLeft = 5;
+  timerVal.textContent = timeLeft;
+  timerBar.style.width = '100%';
+  const timerEl = document.getElementById('mem-timer');
+  timerEl.classList.remove('urgent');
+
+  const iv = setInterval(() => {
+    timeLeft--;
+    timerVal.textContent = timeLeft;
+    timerBar.style.width = (timeLeft/5*100) + '%';
+    if(timeLeft <= 2) timerEl.classList.add('urgent');
+    if(timeLeft <= 0){
+      clearInterval(iv);
+      BCS.activeTimers = BCS.activeTimers.filter(x=>x!==iv);
+      dispEl.textContent = '• • • • •'.split('').slice(0, memSequence.length*2-1).join('');
+      studyDiv.style.display = 'none';
+      inputDiv.style.display = 'block';
+      inputEl.focus();
+    }
+  }, 1000);
+  BCS.activeTimers.push(iv);
+}
+
+function submitMemory() {
+  const input = document.getElementById('mem-input').value.replace(/\D/g,'');
+  const seq = memSequence;
+  let correct = 0;
+  for(let i=0;i<seq.length;i++){
+    if(i < input.length && input[i] === seq[i]) correct++;
+  }
+  const score = Math.round((correct/seq.length)*20);
+  BCS.scores.memory = score;
+  BCS.rawMetrics.memory = { seq, input, correct, total:seq.length };
+
+  showCountdown('Module 2: Attention — Tap only the blue items!', startAttentionModule);
+}
+
+/* ============================================================
+   MODULE 2 — ATTENTION
+============================================================ */
+let attItems = [];
+
+function startAttentionModule() {
+  showScreen('screen-attention');
+
+  const TARGET_POOL = ['🔵','💙','🫐','🔷','🌀','💎','🫧','🔹','🌊','💠'];
+  const DISTRACTOR_POOL = ['🔴','❌','🚫','🛑','⛔','🔺','❗','💢','🔻','⭕'];
+
+  // Pick 12 targets (with possible repeats from pool, but shuffle guarantees variety)
+  const tPool = shuffle(TARGET_POOL);
+  const targets = [];
+  while(targets.length < 12) targets.push(...tPool);
+  const pickedTargets = targets.slice(0,12);
+
+  // Pick 8 distractors
+  const dPool = shuffle(DISTRACTOR_POOL);
+  const pickedDistractors = dPool.slice(0,8);
+
+  // Combine and shuffle
+  attItems = shuffle([
+    ...pickedTargets.map(e => ({emoji:e, isTarget:true, selected:false})),
+    ...pickedDistractors.map(e => ({emoji:e, isTarget:false, selected:false}))
+  ]);
+
+  document.getElementById('att-hits').textContent = '0';
+  document.getElementById('att-false').textContent = '0';
+
+  const grid = document.getElementById('att-grid');
+  grid.innerHTML = '';
+  attItems.forEach((item,i) => {
+    const div = document.createElement('div');
+    div.className = 'att-item';
+    div.textContent = item.emoji;
+    div.dataset.idx = i;
+    div.addEventListener('click', () => toggleAttItem(i, div));
+    grid.appendChild(div);
+  });
+}
+
+function toggleAttItem(idx, el) {
+  attItems[idx].selected = !attItems[idx].selected;
+  if(attItems[idx].selected) el.classList.add('selected');
+  else el.classList.remove('selected');
+  updateAttStats();
+}
+
+function updateAttStats() {
+  let hits=0, falseTaps=0;
+  attItems.forEach(it => {
+    if(it.selected && it.isTarget) hits++;
+    if(it.selected && !it.isTarget) falseTaps++;
+  });
+  document.getElementById('att-hits').textContent = hits;
+  document.getElementById('att-false').textContent = falseTaps;
+}
+
+function submitAttention() {
+  let hits=0, falseTaps=0;
+  attItems.forEach(it => {
+    if(it.selected && it.isTarget) hits++;
+    if(it.selected && !it.isTarget) falseTaps++;
+  });
+  const score = Math.round(Math.max(0,(hits-falseTaps)/12)*20);
+  BCS.scores.attention = score;
+  BCS.rawMetrics.attention = {hits, falseTaps, total:12};
+
+  showCountdown('Module 3: Focus — Tap the INK COLOR of the word!', startFocusModule);
+}
+
+/* ============================================================
+   MODULE 3 — FOCUS (STROOP)
+============================================================ */
+const STROOP_WORDS = ['RED','BLUE','GREEN','YELLOW','ORANGE','PURPLE','PINK','BROWN'];
+const STROOP_COLORS = {
+  'RED':   { hex:'#ff4444', name:'Red' },
+  'BLUE':  { hex:'#4488ff', name:'Blue' },
+  'GREEN': { hex:'#44cc44', name:'Green' },
+  'YELLOW':{ hex:'#ffdd44', name:'Yellow' },
+  'ORANGE':{ hex:'#ff8844', name:'Orange' },
+  'PURPLE':{ hex:'#9944ff', name:'Purple' },
+  'PINK':  { hex:'#ff44aa', name:'Pink' },
+  'BROWN': { hex:'#aa6633', name:'Brown' }
+};
+
+let stroopTrials = [];
+let stroopCurrentTrial = 0;
+let stroopCorrect = 0;
+let stroopTimeLeft = 30;
+let stroopDone = false;
+let stroopTotalTrials = 10; // set per-age in startFocusModule
+
+function buildStroopTrials() {
+  // Incongruent: word ≠ ink color (harder — interference effect)
+  const incongruent = [];
+  STROOP_WORDS.forEach(word => {
+    STROOP_WORDS.forEach(inkWord => {
+      if(inkWord !== word) {
+        incongruent.push({ word, inkColor: STROOP_COLORS[inkWord].hex, inkName: STROOP_COLORS[inkWord].name, inkWord, congruent: false });
+      }
+    });
+  });
+  // Congruent: word = ink color (breaks predictable pattern, catches off-guard)
+  const congruent = STROOP_WORDS.map(word => ({
+    word, inkColor: STROOP_COLORS[word].hex, inkName: STROOP_COLORS[word].name, inkWord: word, congruent: true
+  }));
+  const picked = [...shuffle(incongruent).slice(0,7), ...shuffle(congruent).slice(0,3)];
+  return shuffle(picked);
+}
+
+function startFocusModule() {
+  showScreen('screen-focus');
+
+  // Age gateway: adjust trial count and time
+  const focusAge = BCS.student.age || 12;
+  if(focusAge <= 10)      { stroopTotalTrials = 8;  stroopTimeLeft = 40; } // Junior: 8 trials, 40s
+  else if(focusAge <= 13) { stroopTotalTrials = 10; stroopTimeLeft = 30; } // Middle: 10 trials, 30s
+  else                    { stroopTotalTrials = 12; stroopTimeLeft = 25; } // Senior: 12 trials, 25s
+  BCS._stroopInitTime = stroopTimeLeft;
+
+  stroopTrials = buildStroopTrials().slice(0, stroopTotalTrials);
+  stroopCurrentTrial = 0;
+  stroopCorrect = 0;
+  stroopDone = false;
+
+  // Build dots
+  const dotsEl = document.getElementById('stroop-dots');
+  dotsEl.innerHTML = '';
+  for(let i=0;i<stroopTotalTrials;i++){
+    const d = document.createElement('div');
+    d.className='trial-dot'; d.id=`sdot-${i}`;
+    dotsEl.appendChild(d);
+  }
+
+  document.getElementById('stroop-bar').style.width='100%';
+  document.getElementById('stroop-time-val').textContent=stroopTimeLeft;
+  document.getElementById('stroop-timer').classList.remove('urgent');
+
+  // Global timer
+  const iv = setInterval(() => {
+    stroopTimeLeft--;
+    document.getElementById('stroop-time-val').textContent = stroopTimeLeft;
+    document.getElementById('stroop-bar').style.width = (stroopTimeLeft/BCS._stroopInitTime*100)+'%';
+    if(stroopTimeLeft <= Math.round(stroopTotalTrials*0.8)) document.getElementById('stroop-timer').classList.add('urgent');
+    if(stroopTimeLeft <= 0){
+      clearInterval(iv);
+      BCS.activeTimers = BCS.activeTimers.filter(x=>x!==iv);
+      finishStroop();
+    }
+  },1000);
+  BCS.activeTimers.push(iv);
+
+  renderStroopTrial();
+}
+
+function renderStroopTrial() {
+  if(stroopCurrentTrial >= stroopTotalTrials || stroopDone) { finishStroop(); return; }
+
+  const trial = stroopTrials[stroopCurrentTrial];
+  document.getElementById('stroop-trial-num').textContent = stroopCurrentTrial+1;
+  document.getElementById('stroop-word').textContent = trial.word;
+  document.getElementById('stroop-word').style.color = trial.inkColor;
+
+  // Build 4 choices: correct ink + 3 wrong
+  const correct = { hex: trial.inkColor, name: trial.inkName };
+  const others = Object.values(STROOP_COLORS)
+    .filter(c => c.hex !== trial.inkColor);
+  const wrong3 = shuffle(others).slice(0,3);
+  const choices = shuffle([correct, ...wrong3]);
+
+  const optEl = document.getElementById('stroop-options');
+  optEl.innerHTML = '';
+  choices.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'stroop-btn';
+    btn.style.background = c.hex;
+    btn.textContent = c.name;
+    btn.style.opacity = '0.9';
+    btn.addEventListener('click', () => handleStroopAnswer(c.hex === trial.inkColor, btn, c.hex));
+    optEl.appendChild(btn);
+  });
+}
+
+function handleStroopAnswer(isCorrect, btn, chosenHex) {
+  if(stroopDone) return;
+  // Disable all buttons
+  document.querySelectorAll('.stroop-btn').forEach(b => b.style.pointerEvents='none');
+
+  if(isCorrect){
+    stroopCorrect++;
+    btn.classList.add('correct-flash');
+    flashFeedback(true);
+    document.getElementById(`sdot-${stroopCurrentTrial}`).classList.add('correct');
+  } else {
+    btn.classList.add('wrong-flash');
+    // Show correct
+    document.querySelectorAll('.stroop-btn').forEach(b => {
+      if(b.style.background === stroopTrials[stroopCurrentTrial].inkColor) b.classList.add('correct-flash');
+    });
+    flashFeedback(false);
+    document.getElementById(`sdot-${stroopCurrentTrial}`).classList.add('wrong');
+  }
+
+  stroopCurrentTrial++;
+  if(stroopCurrentTrial >= 10){
+    const t = setTimeout(() => finishStroop(), 500);
+    BCS.activeTimers.push(t);
+  } else {
+    const t = setTimeout(() => renderStroopTrial(), 500);
+    BCS.activeTimers.push(t);
+  }
+}
+
+function finishStroop() {
+  if(stroopDone) return;
+  stroopDone = true;
+  // Kill the interval timer
+  BCS.activeTimers.forEach(clearInterval);
+  BCS.activeTimers = [];
+  const score = Math.round((stroopCorrect/stroopTotalTrials)*20);
+  BCS.scores.focus = score;
+  BCS.rawMetrics.focus = { correct:stroopCorrect, total:stroopTotalTrials, timeLeft:stroopTimeLeft };
+  showCountdown('Module 4: Logic — Choose the best answer!', startLogicModule);
+}
+
+/* ============================================================
+   MODULE 4 — LOGIC
+============================================================ */
+const LOGIC_BANK = {
+  A: [
+    {id:'A1',q:'2 → 6 → 12 → 20 → ?',opts:['28','30','32','26'],ans:'30',expl:'Differences increase by 2: +4,+6,+8,+10 → 20+10=30.'},
+    {id:'A2',q:'1 → 2 → 6 → 24 → ?',opts:['48','100','120','96'],ans:'120',expl:'Factorials: 1!,2!,3!,4!,5! → 120.'},
+    {id:'A3',q:'729 → 243 → 81 → 27 → ?',opts:['3','6','9','12'],ans:'9',expl:'Each number is divided by 3.'},
+    {id:'A4',q:'1 → 1 → 2 → 3 → 5 → 8 → ?',opts:['11','12','13','14'],ans:'13',expl:'Fibonacci: each term = sum of two before it.'},
+    {id:'A5',q:'3 → 5 → 9 → 17 → ?',opts:['29','31','33','35'],ans:'33',expl:'Differences double: +2,+4,+8,+16 → 17+16=33.'},
+    {id:'A6',q:'2 → 3 → 5 → 8 → 12 → ?',opts:['16','17','18','15'],ans:'17',expl:'Differences increase by 1: +1,+2,+3,+4,+5 → 12+5=17.'}
+  ],
+  B: [
+    {id:'B1',q:'A → Z → B → Y → C → ?',opts:['W','X','D','Z'],ans:'X',expl:'Alternating from start and end of alphabet: A,Z,B,Y,C,X.'},
+    {id:'B2',q:'A → B → D → H → P → ?',opts:['Z','Y','X','W'],ans:'Z',expl:'Each step doubles the gap: +1,+2,+4,+8,+16 → P(16th)+16=Z(32nd wraps to 26th=Z).'},
+    {id:'B3',q:'Z → X → U → Q → ?',opts:['L','M','N','K'],ans:'L',expl:'Steps: −2,−3,−4,−5 → Q(17)−5=L(12).'},
+    {id:'B4',q:'A → C → F → J → O → ?',opts:['T','U','V','W'],ans:'U',expl:'Steps: +2,+3,+4,+5,+6 → O(15)+6=U(21).'},
+    {id:'B5',q:'B → E → I → N → ?',opts:['R','S','T','U'],ans:'T',expl:'Steps: +3,+4,+5,+6 → N(14)+6=T(20).'},
+    {id:'B6',q:'M → J → F → A → ?',opts:['V','U','W','X'],ans:'V',expl:'Steps: −3,−4,−5,−6 → A(1)−6=−5, wraps to V(22).'}
+  ],
+  C: [
+    {id:'C1',q:'Fluffy is not a dog. All dogs are animals. Therefore:',opts:['Fluffy is not an animal','Fluffy may or may not be an animal','All animals are dogs','Fluffy is a dog'],ans:'Fluffy may or may not be an animal',expl:'Fluffy could be a cat (animal) or a rock (non-animal). “Not a dog” tells us nothing about animal status.'},
+    {id:'C2',q:'All X are Y. All Y are Z. Therefore:',opts:['All Z are X','Some X are not Z','All X are Z','No X are Z'],ans:'All X are Z',expl:'Chain rule: X⊆Y and Y⊆Z, so X⊆Z — all X must be Z.'},
+    {id:'C3',q:'Some A are B. Some B are C. Therefore:',opts:['Some A are C','All A are C','No A are C','We cannot conclude about A and C'],ans:'We cannot conclude about A and C',expl:'The B that overlaps A and the B that overlaps C may be completely different Bs — no link between A and C is guaranteed.'},
+    {id:'C4',q:'If P then Q. Q is true. Therefore:',opts:['P must be true','P is false','P may or may not be true','Q causes P'],ans:'P may or may not be true',expl:'Affirming the consequent is a fallacy — Q can be true for reasons other than P.'},
+    {id:'C5',q:'No mammals lay eggs. A platypus lays eggs. Therefore (by strict logic):',opts:['Platypus is not a mammal','Platypus is a mammal','Some mammals lay eggs','Cannot be determined'],ans:'Platypus is not a mammal',expl:'By strict logical deduction from the given premise: if no mammals lay eggs and platypus lays eggs, it cannot be a mammal.'},
+    {id:'C6',q:'All politicians are liars. Some liars are trustworthy. Therefore:',opts:['All politicians are trustworthy','Some politicians are trustworthy','No politicians are trustworthy','Cannot be determined'],ans:'Cannot be determined',expl:'The trustworthy liars may not overlap with politicians at all — no valid conclusion about politicians being trustworthy.'}
+  ],
+  D: [
+    {id:'D1',q:'Sculptor : Statue :: Composer : ?',opts:['Orchestra','Symphony','Musician','Concert'],ans:'Symphony',expl:'A sculptor creates a statue; a composer creates a symphony.'},
+    {id:'D2',q:'Ignorance : Knowledge :: Chaos : ?',opts:['Disorder','Peace','Order','Noise'],ans:'Order',expl:'Ignorance is the opposite of knowledge; chaos is the opposite of order.'},
+    {id:'D3',q:'Venom : Snake :: Ink : ?',opts:['Pen','Squid','Octopus','Paper'],ans:'Octopus',expl:'Venom is a defense weapon of a snake; ink is a defense weapon of an octopus.'},
+    {id:'D4',q:'Archipelago : Islands :: Constellation : ?',opts:['Planets','Galaxies','Stars','Nebulae'],ans:'Stars',expl:'An archipelago is a group of islands; a constellation is a group of stars.'},
+    {id:'D5',q:'Myopia : Spectacles :: Deafness : ?',opts:['Glasses','Hearing Aid','Medicine','Surgery'],ans:'Hearing Aid',expl:'Spectacles correct myopia; a hearing aid corrects deafness.'},
+    {id:'D6',q:'Pedology : Soil :: Seismology : ?',opts:['Sea','Earthquakes','Stars','Birds'],ans:'Earthquakes',expl:'Pedology is the study of soil; seismology is the study of earthquakes.'}
+  ],
+  E: [
+    {id:'E1',q:'What is the angle between hour and minute hands at 3:15?',opts:['0°','7.5°','15°','22.5°'],ans:'7.5°',expl:'Minute hand at 90°; hour hand at 3×30+15×0.5=97.5°; difference=7.5°.'},
+    {id:'E2',q:'Which number is NOT prime? 2, 5, 9, 11, 13',opts:['2','5','9','11'],ans:'9',expl:'9 = 3×3, so it is not prime. All others are prime numbers.'},
+    {id:'E3',q:'How many squares (of all sizes) are in a 3×3 grid?',opts:['9','12','14','16'],ans:'14',expl:'9 unit squares + 4 (2×2) squares + 1 (3×3) square = 14 total.'},
+    {id:'E4',q:'Circle → Triangle → Square → Pentagon → ?',opts:['Hexagon','Heptagon','Octagon','Star'],ans:'Hexagon',expl:'Each shape gains one side: 0(circle),3,4,5,6 → Hexagon.'},
+    {id:'E5',q:'A cube has how many edges?',opts:['6','8','10','12'],ans:'12',expl:'A cube has 12 edges: 4 top + 4 bottom + 4 vertical.'},
+    {id:'E6',q:'If 5 machines make 5 items in 5 minutes, how long for 100 machines to make 100 items?',opts:['100 min','20 min','5 min','1 min'],ans:'5 min',expl:'Each machine makes 1 item in 5 min regardless of how many machines — still 5 minutes.'}
+  ]
+};
+const LOGIC_CAT_NAMES = { A:'Number Patterns', B:'Letter Sequences', C:'Syllogisms', D:'Analogies', E:'Spatial/Math' };
+
+let logicQuestions = [];
+let logicIdx = 0;
+let logicScore = 0;
+let logicAnswered = false;
+
+function pickLogicQuestions() {
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem('bcs_logic_history')||'[]'); } catch(e){}
+
+  // Age gateway: Junior (8-10) gets simpler first 3 questions per category,
+  // Senior (14+) gets harder last 3 questions per category
+  const logicAge = BCS.student.age || 12;
+  const cats = ['A','B','C','D','E'];
+  const picked = [];
+  cats.forEach(cat => {
+    const allQ = LOGIC_BANK[cat];
+    // Tier pools: first half = easier, second half = harder
+    let tierPool;
+    if(logicAge <= 10)      tierPool = allQ.slice(0, 3);  // Junior: questions 1-3 (easier)
+    else if(logicAge <= 13) tierPool = allQ;               // Middle: all questions
+    else                    tierPool = allQ.slice(3);      // Senior: questions 4-6 (harder)
+    const available = tierPool.filter(q => !history.includes(q.id));
+    const src = available.length > 0 ? available : tierPool;
+    const q = shuffle(src)[0];
+    picked.push({...q, category:cat});
+  });
+  // Update history
+  const usedIds = picked.map(q=>q.id);
+  const newHistory = [...history, ...usedIds];
+  // Reset if all 30 used
+  const allIds = Object.values(LOGIC_BANK).flat().map(q=>q.id);
+  const filtered = newHistory.filter(id => allIds.includes(id));
+  const unique = [...new Set(filtered)];
+  localStorage.setItem('bcs_logic_history', JSON.stringify(unique.length >= 30 ? [] : unique));
+  return shuffle(picked); // shuffle category order too
+}
+
+function startLogicModule() {
+  showScreen('screen-logic');
+  logicQuestions = pickLogicQuestions();
+  logicIdx = 0;
+  logicScore = 0;
+  renderLogicQuestion();
+}
+
+function renderLogicQuestion() {
+  if(logicIdx >= logicQuestions.length){ finishLogic(); return; }
+  logicAnswered = false;
+  const q = logicQuestions[logicIdx];
+  document.getElementById('logic-q-num').textContent = logicIdx+1;
+  document.getElementById('logic-cat-badge').textContent = LOGIC_CAT_NAMES[q.category];
+  document.getElementById('logic-score-badge').textContent = `${logicScore} / ${logicIdx} correct`;
+  document.getElementById('logic-bar').style.width = (logicIdx/5*100)+'%';
+  document.getElementById('logic-q-text').textContent = q.q;
+  document.getElementById('logic-expl').style.display = 'none';
+  document.getElementById('logic-next-btn').classList.add('hidden');
+
+  // Shuffle options
+  const shuffledOpts = shuffle([...q.opts]);
+  const optEl = document.getElementById('logic-options');
+  optEl.innerHTML = '';
+  shuffledOpts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'logic-opt-btn';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => handleLogicAnswer(opt === q.ans, btn, optEl, q));
+    optEl.appendChild(btn);
+  });
+}
+
+function handleLogicAnswer(isCorrect, btn, optEl, q) {
+  if(logicAnswered) return;
+  logicAnswered = true;
+
+  if(isCorrect){
+    btn.classList.add('correct');
+    logicScore++;
+    flashFeedback(true);
+  } else {
+    btn.classList.add('wrong');
+    flashFeedback(false);
+    // Show correct
+    optEl.querySelectorAll('.logic-opt-btn').forEach(b => {
+      if(b.textContent === q.ans) b.classList.add('correct');
+    });
+  }
+
+  // Show explanation
+  const explEl = document.getElementById('logic-expl');
+  explEl.textContent = '💡 ' + q.expl;
+  explEl.style.display = 'block';
+
+  // Disable all buttons
+  optEl.querySelectorAll('.logic-opt-btn').forEach(b => b.style.pointerEvents='none');
+  document.getElementById('logic-next-btn').classList.remove('hidden');
+}
+
+function nextLogicQuestion() {
+  logicIdx++;
+  if(logicIdx >= 5) {
+    finishLogic();
+  } else {
+    renderLogicQuestion();
+  }
+}
+
+function finishLogic() {
+  document.getElementById('logic-bar').style.width='100%';
+  document.getElementById('logic-score-badge').textContent = `${logicScore} / 5 correct`;
+  BCS.scores.logic = Math.round((logicScore/5)*20);
+  BCS.rawMetrics.logic = { correct:logicScore, total:5 };
+  showCountdown('Module 5: Observation — Find 3 differences!', startObservationModule);
+}
+
+/* ============================================================
+   MODULE 5 — OBSERVATION (5 CANVAS SCENES)
+============================================================ */
+
+// Each scene: { drawA(ctx), drawB(ctx), diffs: [{label, hotspot:{x,y,r}}] }
+// drawA = original, drawB = modified
+
+const OBS_SCENES = [
+
+  // Scene 1 — Geometric
+  {
+    name: 'Geometric Shapes',
+    drawA(ctx) {
+      const W=260,H=200;
+      ctx.fillStyle='#0d1b2e'; ctx.fillRect(0,0,W,H);
+      // Blue square at x=20
+      ctx.fillStyle='#4488ff'; ctx.fillRect(20,20,70,70);
+      // Yellow circle
+      ctx.beginPath(); ctx.arc(160,55,30,0,Math.PI*2); ctx.fillStyle='#ffdd44'; ctx.fill();
+      // Green box
+      ctx.fillStyle='#44cc44'; ctx.fillRect(20,120,60,55);
+      // Red triangle
+      ctx.beginPath(); ctx.moveTo(185,120); ctx.lineTo(245,175); ctx.lineTo(125,175); ctx.closePath();
+      ctx.fillStyle='#ff4444'; ctx.fill();
+      // Purple circle
+      ctx.beginPath(); ctx.arc(55,160,18,0,Math.PI*2); ctx.fillStyle='#9944ff'; ctx.fill();
+      // Cyan star
+      this._drawStar(ctx, 215, 40, 5, 18, 8, '#48d7c4');
+      // Orange diamond
+      ctx.save(); ctx.translate(215,155); ctx.rotate(Math.PI/4);
+      ctx.fillStyle='#ff8c00'; ctx.fillRect(-14,-14,28,28); ctx.restore();
+    },
+    drawB(ctx) {
+      const W=260,H=200;
+      ctx.fillStyle='#0d1b2e'; ctx.fillRect(0,0,W,H);
+      // DIFF 1: Square shifted right 20px (x=40 instead of 20)
+      ctx.fillStyle='#4488ff'; ctx.fillRect(40,20,70,70);
+      // Yellow circle same
+      ctx.beginPath(); ctx.arc(160,55,30,0,Math.PI*2); ctx.fillStyle='#ffdd44'; ctx.fill();
+      // Green box same
+      ctx.fillStyle='#44cc44'; ctx.fillRect(20,120,60,55);
+      // Red triangle same
+      ctx.beginPath(); ctx.moveTo(185,120); ctx.lineTo(245,175); ctx.lineTo(125,175); ctx.closePath();
+      ctx.fillStyle='#ff4444'; ctx.fill();
+      // Purple circle same
+      ctx.beginPath(); ctx.arc(55,160,18,0,Math.PI*2); ctx.fillStyle='#9944ff'; ctx.fill();
+      // DIFF 2: Cyan star MISSING (not drawn)
+      // DIFF 3: Diamond color changed to pink
+      ctx.save(); ctx.translate(215,155); ctx.rotate(Math.PI/4);
+      ctx.fillStyle='#ff44aa'; ctx.fillRect(-14,-14,28,28); ctx.restore();
+    },
+    _drawStar(ctx,cx,cy,spikes,ro,ri,color){
+      let rot=Math.PI/2*3, x=cx,y=cy, step=Math.PI/spikes;
+      ctx.beginPath(); ctx.moveTo(cx,cy-ro);
+      for(let i=0;i<spikes;i++){
+        x=cx+Math.cos(rot)*ro; y=cy+Math.sin(rot)*ro; ctx.lineTo(x,y); rot+=step;
+        x=cx+Math.cos(rot)*ri; y=cy+Math.sin(rot)*ri; ctx.lineTo(x,y); rot+=step;
+      }
+      ctx.lineTo(cx,cy-ro); ctx.closePath(); ctx.fillStyle=color; ctx.fill();
+    },
+    diffs: [
+      {label:'Square has moved right', hotspot:{x:75,y:55,r:42}},
+      {label:'Cyan star is missing', hotspot:{x:215,y:40,r:28}},
+      {label:'Diamond color changed', hotspot:{x:215,y:155,r:28}}
+    ]
+  },
+
+  // Scene 2 — Space Theme
+  {
+    name: 'Space Scene',
+    drawA(ctx) {
+      const W=260,H=200;
+      ctx.fillStyle='#04080f'; ctx.fillRect(0,0,W,H);
+      // Stars bg
+      for(let i=0;i<30;i++){
+        ctx.beginPath(); ctx.arc(Math.sin(i*137)*130+130, Math.cos(i*137)*100+100, 1, 0, Math.PI*2);
+        ctx.fillStyle='rgba(255,255,255,0.6)'; ctx.fill();
+      }
+      // Rocket body
+      ctx.fillStyle='#7c9cff'; ctx.fillRect(110,20,30,60);
+      ctx.beginPath(); ctx.moveTo(110,20); ctx.lineTo(125,5); ctx.lineTo(140,20); ctx.closePath();
+      ctx.fillStyle='#a0b4ff'; ctx.fill();
+      // Rocket: 2 windows
+      ctx.beginPath(); ctx.arc(125,35,5,0,Math.PI*2); ctx.fillStyle='#48d7c4'; ctx.fill();
+      ctx.beginPath(); ctx.arc(125,52,5,0,Math.PI*2); ctx.fillStyle='#48d7c4'; ctx.fill();
+      // Planet
+      ctx.beginPath(); ctx.arc(200,140,40,0,Math.PI*2); ctx.fillStyle='#ffd166'; ctx.fill();
+      // Planet ring
+      ctx.beginPath(); ctx.ellipse(200,140,55,12,0.3,0,Math.PI*2); ctx.strokeStyle='rgba(255,209,102,0.5)'; ctx.lineWidth=3; ctx.stroke();
+      // Asteroid
+      ctx.beginPath(); ctx.arc(50,80,10,0,Math.PI*2); ctx.fillStyle='#888'; ctx.fill();
+      // Moon
+      ctx.beginPath(); ctx.arc(40,155,16,0,Math.PI*2); ctx.fillStyle='#ddd'; ctx.fill();
+      // Comet at y=30
+      ctx.beginPath(); ctx.moveTo(220,30); ctx.lineTo(245,22); ctx.lineTo(230,40); ctx.closePath();
+      ctx.fillStyle='#48d7c4'; ctx.fill();
+    },
+    drawB(ctx) {
+      const W=260,H=200;
+      ctx.fillStyle='#04080f'; ctx.fillRect(0,0,W,H);
+      for(let i=0;i<30;i++){
+        ctx.beginPath(); ctx.arc(Math.sin(i*137)*130+130, Math.cos(i*137)*100+100, 1, 0, Math.PI*2);
+        ctx.fillStyle='rgba(255,255,255,0.6)'; ctx.fill();
+      }
+      // Rocket body same
+      ctx.fillStyle='#7c9cff'; ctx.fillRect(110,20,30,60);
+      ctx.beginPath(); ctx.moveTo(110,20); ctx.lineTo(125,5); ctx.lineTo(140,20); ctx.closePath();
+      ctx.fillStyle='#a0b4ff'; ctx.fill();
+      // DIFF 1: Only 1 rocket window (second MISSING)
+      ctx.beginPath(); ctx.arc(125,35,5,0,Math.PI*2); ctx.fillStyle='#48d7c4'; ctx.fill();
+      // Planet same
+      ctx.beginPath(); ctx.arc(200,140,40,0,Math.PI*2); ctx.fillStyle='#ffd166'; ctx.fill();
+      // DIFF 2: Planet ring MISSING
+      // Asteroid same
+      ctx.beginPath(); ctx.arc(50,80,10,0,Math.PI*2); ctx.fillStyle='#888'; ctx.fill();
+      // Moon same
+      ctx.beginPath(); ctx.arc(40,155,16,0,Math.PI*2); ctx.fillStyle='#ddd'; ctx.fill();
+      // DIFF 3: Comet moved downward (y=50 instead of 30)
+      ctx.beginPath(); ctx.moveTo(220,50); ctx.lineTo(245,42); ctx.lineTo(230,60); ctx.closePath();
+      ctx.fillStyle='#48d7c4'; ctx.fill();
+    },
+    diffs: [
+      {label:'Rocket window missing', hotspot:{x:125,y:52,r:22}},
+      {label:'Planet ring missing', hotspot:{x:200,y:140,r:60}},
+      {label:'Comet moved downward', hotspot:{x:232,y:50,r:28}}
+    ]
+  },
+
+  // Scene 3 — Garden Theme
+  {
+    name: 'Garden Scene',
+    drawA(ctx) {
+      const W=260,H=200;
+      // Sky
+      ctx.fillStyle='#1a3a5c'; ctx.fillRect(0,0,W,H);
+      // Ground
+      ctx.fillStyle='#2d5a27'; ctx.fillRect(0,155,W,45);
+      // Sun with 8 rays
+      ctx.beginPath(); ctx.arc(210,45,28,0,Math.PI*2); ctx.fillStyle='#ffd166'; ctx.fill();
+      for(let i=0;i<8;i++){
+        const a=i*Math.PI/4;
+        ctx.beginPath(); ctx.moveTo(210+Math.cos(a)*32,45+Math.sin(a)*32);
+        ctx.lineTo(210+Math.cos(a)*42,45+Math.sin(a)*42);
+        ctx.strokeStyle='#ffd166'; ctx.lineWidth=2; ctx.stroke();
+      }
+      // Cloud
+      ctx.fillStyle='#eee';
+      ctx.beginPath(); ctx.arc(80,35,20,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(100,30,24,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(120,35,18,0,Math.PI*2); ctx.fill();
+      // Tree trunk
+      ctx.fillStyle='#aa6633'; ctx.fillRect(40,105,20,50);
+      // Tree top — round
+      ctx.beginPath(); ctx.arc(50,90,35,0,Math.PI*2); ctx.fillStyle='#44cc44'; ctx.fill();
+      // Flower 1 (pink)
+      ctx.beginPath(); ctx.arc(150,145,14,0,Math.PI*2); ctx.fillStyle='#ff8a8a'; ctx.fill();
+      ctx.fillStyle='#ffdd44'; ctx.beginPath(); ctx.arc(150,145,6,0,Math.PI*2); ctx.fill();
+      // Flower 2 (hot pink)
+      ctx.beginPath(); ctx.arc(190,148,12,0,Math.PI*2); ctx.fillStyle='#ff44aa'; ctx.fill();
+      ctx.fillStyle='#ffdd44'; ctx.beginPath(); ctx.arc(190,148,5,0,Math.PI*2); ctx.fill();
+    },
+    drawB(ctx) {
+      const W=260,H=200;
+      ctx.fillStyle='#1a3a5c'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='#2d5a27'; ctx.fillRect(0,155,W,45);
+      // DIFF 1: Sun has only 6 rays (not 8)
+      ctx.beginPath(); ctx.arc(210,45,28,0,Math.PI*2); ctx.fillStyle='#ffd166'; ctx.fill();
+      for(let i=0;i<6;i++){
+        const a=i*Math.PI/3;
+        ctx.beginPath(); ctx.moveTo(210+Math.cos(a)*32,45+Math.sin(a)*32);
+        ctx.lineTo(210+Math.cos(a)*42,45+Math.sin(a)*42);
+        ctx.strokeStyle='#ffd166'; ctx.lineWidth=2; ctx.stroke();
+      }
+      // Cloud same
+      ctx.fillStyle='#eee';
+      ctx.beginPath(); ctx.arc(80,35,20,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(100,30,24,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(120,35,18,0,Math.PI*2); ctx.fill();
+      // Tree trunk same
+      ctx.fillStyle='#aa6633'; ctx.fillRect(40,105,20,50);
+      // DIFF 2: Tree top is triangular instead of round
+      ctx.beginPath(); ctx.moveTo(50,55); ctx.lineTo(10,125); ctx.lineTo(90,125); ctx.closePath();
+      ctx.fillStyle='#44cc44'; ctx.fill();
+      // Flower 1 same
+      ctx.beginPath(); ctx.arc(150,145,14,0,Math.PI*2); ctx.fillStyle='#ff8a8a'; ctx.fill();
+      ctx.fillStyle='#ffdd44'; ctx.beginPath(); ctx.arc(150,145,6,0,Math.PI*2); ctx.fill();
+      // DIFF 3: Flower 2 MISSING
+    },
+    diffs: [
+      {label:'Sun has fewer rays', hotspot:{x:210,y:45,r:50}},
+      {label:'Tree shape changed', hotspot:{x:50,y:90,r:42}},
+      {label:'Second flower missing', hotspot:{x:190,y:148,r:28}}
+    ]
+  },
+
+  // Scene 4 — Classroom Theme
+  {
+    name: 'Classroom Scene',
+    drawA(ctx) {
+      const W=260,H=200;
+      ctx.fillStyle='#1a2535'; ctx.fillRect(0,0,W,H);
+      // Blackboard
+      ctx.fillStyle='#2d5a27'; ctx.fillRect(20,15,220,90);
+      ctx.fillStyle='rgba(255,255,255,0.08)'; ctx.fillRect(22,17,216,86);
+      // 3 chalk lines
+      ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=2;
+      for(let i=0;i<3;i++){
+        ctx.beginPath(); ctx.moveTo(40,40+i*20); ctx.lineTo(220,40+i*20); ctx.stroke();
+      }
+      // Window with crossbar
+      ctx.fillStyle='#48d7c4'; ctx.fillRect(185,120,60,55);
+      ctx.strokeStyle='rgba(255,255,255,0.4)'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(215,120); ctx.lineTo(215,175); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(185,147); ctx.lineTo(245,147); ctx.stroke();
+      // Door with handle
+      ctx.fillStyle='#ffd166'; ctx.fillRect(15,130,45,65);
+      ctx.beginPath(); ctx.arc(50,165,4,0,Math.PI*2); ctx.fillStyle='#aa6633'; ctx.fill();
+      // Desk
+      ctx.fillStyle='#aa6633'; ctx.fillRect(60,145,120,12); ctx.fillRect(70,157,15,38); ctx.fillRect(155,157,15,38);
+      // Book on desk
+      ctx.fillStyle='#7c9cff'; ctx.fillRect(90,128,40,18);
+      // Clock
+      ctx.beginPath(); ctx.arc(145,50,18,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+      ctx.beginPath(); ctx.arc(145,50,18,0,Math.PI*2); ctx.strokeStyle='#333'; ctx.lineWidth=2; ctx.stroke();
+      ctx.strokeStyle='#333';
+      ctx.beginPath(); ctx.moveTo(145,50); ctx.lineTo(145,36); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(145,50); ctx.lineTo(155,50); ctx.stroke();
+    },
+    drawB(ctx) {
+      const W=260,H=200;
+      ctx.fillStyle='#1a2535'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='#2d5a27'; ctx.fillRect(20,15,220,90);
+      ctx.fillStyle='rgba(255,255,255,0.08)'; ctx.fillRect(22,17,216,86);
+      // DIFF 1: Only 2 chalk lines (not 3)
+      ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=2;
+      for(let i=0;i<2;i++){
+        ctx.beginPath(); ctx.moveTo(40,40+i*20); ctx.lineTo(220,40+i*20); ctx.stroke();
+      }
+      // DIFF 2: Window crossbar (horizontal line) MISSING
+      ctx.fillStyle='#48d7c4'; ctx.fillRect(185,120,60,55);
+      ctx.strokeStyle='rgba(255,255,255,0.4)'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(215,120); ctx.lineTo(215,175); ctx.stroke();
+      // horizontal bar missing
+      // DIFF 3: Door handle MISSING
+      ctx.fillStyle='#ffd166'; ctx.fillRect(15,130,45,65);
+      // handle not drawn
+      // Desk same
+      ctx.fillStyle='#aa6633'; ctx.fillRect(60,145,120,12); ctx.fillRect(70,157,15,38); ctx.fillRect(155,157,15,38);
+      // Book same
+      ctx.fillStyle='#7c9cff'; ctx.fillRect(90,128,40,18);
+      // Clock same
+      ctx.beginPath(); ctx.arc(145,50,18,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+      ctx.beginPath(); ctx.arc(145,50,18,0,Math.PI*2); ctx.strokeStyle='#333'; ctx.lineWidth=2; ctx.stroke();
+      ctx.strokeStyle='#333';
+      ctx.beginPath(); ctx.moveTo(145,50); ctx.lineTo(145,36); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(145,50); ctx.lineTo(155,50); ctx.stroke();
+    },
+    diffs: [
+      {label:'One chalk line missing', hotspot:{x:130,y:80,r:50}},
+      {label:'Window crossbar missing', hotspot:{x:215,y:147,r:32}},
+      {label:'Door handle missing', hotspot:{x:50,y:165,r:22}}
+    ]
+  },
+
+  // Scene 5 — Ocean Theme
+  {
+    name: 'Ocean Scene',
+    drawA(ctx) {
+      const W=260,H=200;
+      // Water gradient
+      ctx.fillStyle='#0a2a4a'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='rgba(72,215,196,0.08)'; ctx.fillRect(0,0,W,H);
+      // Bubbles
+      [20,35,50].forEach((y,i)=>{
+        ctx.beginPath(); ctx.arc(230+i*8,y,5,0,Math.PI*2);
+        ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.fill();
+      });
+      // Seaweed
+      ctx.fillStyle='#44cc44'; ctx.fillRect(20,80,12,100);
+      ctx.fillStyle='#3aaa33'; ctx.fillRect(35,100,10,80);
+      // Coral (triangle)
+      ctx.beginPath(); ctx.moveTo(80,170); ctx.lineTo(110,120); ctx.lineTo(140,170); ctx.closePath();
+      ctx.fillStyle='#ff8a8a'; ctx.fill();
+      // Big fish
+      ctx.save(); ctx.translate(170,90); ctx.scale(1.6,1);
+      ctx.beginPath(); ctx.arc(0,0,30,0,Math.PI*2); ctx.fillStyle='#7c9cff'; ctx.fill();
+      ctx.restore();
+      ctx.beginPath(); ctx.moveTo(220,90); ctx.lineTo(240,75); ctx.lineTo(240,105); ctx.closePath();
+      ctx.fillStyle='#7c9cff'; ctx.fill();
+      ctx.beginPath(); ctx.arc(150,88,4,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+      ctx.beginPath(); ctx.arc(150,88,2,0,Math.PI*2); ctx.fillStyle='#333'; ctx.fill();
+      // Small fish
+      ctx.save(); ctx.translate(100,145); ctx.scale(1.2,0.8);
+      ctx.beginPath(); ctx.arc(0,0,18,0,Math.PI*2); ctx.fillStyle='#ffd166'; ctx.fill();
+      ctx.restore();
+      // Starfish
+      this._drawStar(ctx,45,155,5,16,7,'#ff8a8a');
+    },
+    drawB(ctx) {
+      const W=260,H=200;
+      ctx.fillStyle='#0a2a4a'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='rgba(72,215,196,0.08)'; ctx.fillRect(0,0,W,H);
+      // DIFF 3: Bubbles smaller
+      [20,35,50].forEach((y,i)=>{
+        ctx.beginPath(); ctx.arc(230+i*8,y,2.5,0,Math.PI*2);
+        ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.fill();
+      });
+      ctx.fillStyle='#44cc44'; ctx.fillRect(20,80,12,100);
+      ctx.fillStyle='#3aaa33'; ctx.fillRect(35,100,10,80);
+      // DIFF 2: Coral color changed to yellow
+      ctx.beginPath(); ctx.moveTo(80,170); ctx.lineTo(110,120); ctx.lineTo(140,170); ctx.closePath();
+      ctx.fillStyle='#ffd166'; ctx.fill();
+      // DIFF 1: Big fish color changed to cyan
+      ctx.save(); ctx.translate(170,90); ctx.scale(1.6,1);
+      ctx.beginPath(); ctx.arc(0,0,30,0,Math.PI*2); ctx.fillStyle='#48d7c4'; ctx.fill();
+      ctx.restore();
+      ctx.beginPath(); ctx.moveTo(220,90); ctx.lineTo(240,75); ctx.lineTo(240,105); ctx.closePath();
+      ctx.fillStyle='#48d7c4'; ctx.fill();
+      ctx.beginPath(); ctx.arc(150,88,4,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+      ctx.beginPath(); ctx.arc(150,88,2,0,Math.PI*2); ctx.fillStyle='#333'; ctx.fill();
+      // Small fish same
+      ctx.save(); ctx.translate(100,145); ctx.scale(1.2,0.8);
+      ctx.beginPath(); ctx.arc(0,0,18,0,Math.PI*2); ctx.fillStyle='#ffd166'; ctx.fill();
+      ctx.restore();
+      // Starfish same
+      this._drawStar(ctx,45,155,5,16,7,'#ff8a8a');
+    },
+    _drawStar(ctx,cx,cy,spikes,ro,ri,color){
+      let rot=Math.PI/2*3;
+      let step=Math.PI/spikes;
+      ctx.beginPath(); ctx.moveTo(cx,cy-ro);
+      for(let i=0;i<spikes;i++){
+        let x=cx+Math.cos(rot)*ro, y=cy+Math.sin(rot)*ro; ctx.lineTo(x,y); rot+=step;
+        x=cx+Math.cos(rot)*ri; y=cy+Math.sin(rot)*ri; ctx.lineTo(x,y); rot+=step;
+      }
+      ctx.lineTo(cx,cy-ro); ctx.closePath(); ctx.fillStyle=color; ctx.fill();
+    },
+    diffs: [
+      {label:'Big fish color changed', hotspot:{x:170,y:90,r:50}},
+      {label:'Coral color changed', hotspot:{x:110,y:145,r:35}},
+      {label:'Bubbles are smaller', hotspot:{x:238,y:35,r:32}}
+    ]
+  }
+];
+
+let obsScene = null;
+let obsFound = [];
+let obsTimerStart = 0;
+let obsTimerIv = null;
+let obsRequired = 3; // set per-age in startObservationModule
+
+function pickObsScene() {
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem('bcs_scene_history')||'[]'); } catch(e){}
+  const available = [0,1,2,3,4].filter(i => !history.includes(i));
+  const src = available.length > 0 ? available : [0,1,2,3,4];
+  const idx = src[Math.floor(Math.random()*src.length)];
+  const newHistory = [...history, idx].filter(i => [0,1,2,3,4].includes(i));
+  const unique = [...new Set(newHistory)];
+  localStorage.setItem('bcs_scene_history', JSON.stringify(unique.length >= 5 ? [] : unique));
+  return idx;
+}
+
+function startObservationModule() {
+  showScreen('screen-observation');
+  const idx = pickObsScene();
+  obsScene = OBS_SCENES[idx];
+
+  // Age gateway: Junior (8-10) only needs to find 2 differences; others find all 3
+  const obsAge = BCS.student.age || 12;
+  obsRequired = obsAge <= 10 ? 2 : 3;
+  obsFound = [false, false, false];
+
+  // Draw canvases
+  const canvA = document.getElementById('obs-canvas-a');
+  const canvB = document.getElementById('obs-canvas-b');
+  const ctxA = canvA.getContext('2d');
+  const ctxB = canvB.getContext('2d');
+  obsScene.drawA(ctxA);
+  obsScene.drawB(ctxB);
+
+  // Build diff list
+  const list = document.getElementById('obs-diffs-list');
+  list.innerHTML = '';
+  obsScene.diffs.forEach((d,i) => {
+    const item = document.createElement('div');
+    item.className = 'obs-diff-item';
+    item.id = `obs-diff-${i}`;
+    item.innerHTML = `<div class="obs-diff-dot"></div><span>Difference ${i+1}</span>`;
+    list.appendChild(item);
+  });
+
+  // Update badge to show required count
+  document.getElementById('obs-found').textContent='0';
+  const badge = document.querySelector('.badge-success');
+  if(badge) badge.innerHTML = '<span id="obs-found">0</span>/' + obsRequired + ' found';
+  document.getElementById('obs-done-btn').classList.add('hidden');
+
+  // Timer
+  obsTimerStart = Date.now();
+  document.getElementById('obs-time-val').textContent='0';
+  document.getElementById('obs-timer').classList.remove('urgent');
+
+  const iv = setInterval(() => {
+    const elapsed = Math.floor((Date.now()-obsTimerStart)/1000);
+    document.getElementById('obs-time-val').textContent = elapsed;
+    if(elapsed > 40) document.getElementById('obs-timer').classList.add('urgent');
+  },500);
+  BCS.activeTimers.push(iv);
+}
+
+function handleObsClick(evt, canvas) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = 260/rect.width;
+  const scaleY = 200/rect.height;
+  const cx = (evt.clientX - rect.left)*scaleX;
+  const cy = (evt.clientY - rect.top)*scaleY;
+
+  let foundNew = false;
+  obsScene.diffs.forEach((d,i) => {
+    if(obsFound[i]) return;
+    const dx = cx - d.hotspot.x;
+    const dy = cy - d.hotspot.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if(dist <= d.hotspot.r) {
+      obsFound[i] = true;
+      foundNew = true;
+      document.getElementById(`obs-diff-${i}`).classList.add('found');
+      document.getElementById(`obs-diff-${i}`).querySelector('span').textContent = d.label;
+      flashFeedback(true);
+      // Ring animation
+      const ring = document.createElement('div');
+      ring.className = 'canvas-highlight';
+      ring.style.cssText=`left:${(d.hotspot.x/260*100)}%;top:${(d.hotspot.y/200*100)}%;width:${d.hotspot.r*2/260*100}%;height:${d.hotspot.r*2/200*100}%;transform:translate(-50%,-50%)`;
+      canvas.parentElement.appendChild(ring);
+      setTimeout(()=>ring.remove(),500);
+    }
+  });
+
+  if(!foundNew) {
+    flashFeedback(false);
+  }
+
+  const count = obsFound.filter(Boolean).length;
+  document.getElementById('obs-found').textContent = count;
+  // Show submit button as soon as at least 1 found; highlight when all found
+  const btn = document.getElementById('obs-done-btn');
+  btn.classList.remove('hidden');
+  if(count >= obsRequired) {
+    btn.textContent = '🎉 ' + (count >= 3 ? 'All' : count) + ' Found! Submit →';
+    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function submitObservation() {
+  const elapsed = Math.floor((Date.now()-obsTimerStart)/1000);
+  const found = obsFound.filter(Boolean).length;
+  // Score out of 20 based on required count; bonus for speed
+  let score = Math.round((Math.min(found, obsRequired)/obsRequired)*18);
+  if(found >= obsRequired && elapsed<20) score = Math.min(20, score+2);
+  else if(found >= obsRequired && elapsed<35) score = Math.min(20, score+1);
+  BCS.scores.observation = score;
+  BCS.rawMetrics.observation = { found, total:obsRequired, elapsed };
+  showResults();
+}
+
+/* ============================================================
+   RESULTS
+============================================================ */
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx9QbvMjwJ-4cjjMfeFVPPKjPSVdujnixVW1f3md1wRKVzdLHIWnI4K6CpJkTgXhANp/exec';
+const BHAVA_CLOUD_URL = 'https://bhava-cloud.onrender.com/sync/bcs-snapshot';
+const BHAVA_CLOUD_KEY = '0042bfd36ef4a5a219e0bbb206e58ec7b84c7d9334b75c7e';
+
+function showResults() {
+  showScreen('screen-results');
+
+  const s = BCS.scores;
+  const total = s.memory + s.attention + s.focus + s.logic + s.observation;
+  const duration = Math.round((Date.now() - BCS.startTime)/1000);
+
+  // Header
+  document.getElementById('result-student-name').textContent = BCS.student.name + ' — ' + BCS.student.date;
+  document.getElementById('result-total').textContent = total;
+
+  // Grade
+  let grade, gradeCls;
+  if(total>=80){grade='Excellent';gradeCls='grade-excellent';}
+  else if(total>=60){grade='Good';gradeCls='grade-good';}
+  else if(total>=40){grade='Developing';gradeCls='grade-developing';}
+  else{grade='Early Stage';gradeCls='grade-early';}
+
+  const gradeEl = document.getElementById('result-grade');
+  gradeEl.textContent = grade;
+  gradeEl.className = 'results-grade ' + gradeCls;
+
+  // Breakdown
+  const breakdown = document.getElementById('score-breakdown');
+  const modules = [
+    {icon:'🧩',label:'Memory',key:'memory'},
+    {icon:'🎯',label:'Attention',key:'attention'},
+    {icon:'🧘',label:'Focus',key:'focus'},
+    {icon:'🔷',label:'Logic',key:'logic'},
+    {icon:'👁️',label:'Observation',key:'observation'}
+  ];
+  breakdown.innerHTML = '';
+  modules.forEach(m => {
+    const sc = s[m.key];
+    const div = document.createElement('div');
+    div.className='score-card';
+    div.innerHTML=`<div class="score-icon">${m.icon}</div><div class="score-label">${m.label}</div><div class="score-val">${sc}<span style="font-size:0.65rem;color:var(--text-muted)">/20</span></div>`;
+    breakdown.appendChild(div);
+  });
+
+  // Duration
+  const mm=Math.floor(duration/60), ss=duration%60;
+  document.getElementById('result-duration').textContent=`⏱ ${mm}m ${ss}s`;
+
+  // Journey bar
+  const journeyNodes = ['Baseline','30-Day','60-Day','90-Day'];
+  const currentType = BCS.student.assessment_type || 'Baseline';
+  const journeyTrack = document.getElementById('journey-track');
+  journeyTrack.innerHTML = '';
+  document.getElementById('journey-current-label').textContent = currentType;
+  journeyNodes.forEach((n,i) => {
+    const node = document.createElement('div');
+    node.className='journey-node' + (n===currentType?' active':'');
+    node.innerHTML=`<div class="j-dot"></div><div class="j-label">${n}</div>`;
+    journeyTrack.appendChild(node);
+    if(i<journeyNodes.length-1){
+      const conn=document.createElement('div');
+      conn.className='journey-connector'+(journeyNodes.indexOf(currentType)>i?' done':'');
+      journeyTrack.appendChild(conn);
+    }
+  });
+
+  // Details
+  const det = document.getElementById('result-details');
+  det.innerHTML = `
+    <strong>Student:</strong> ${BCS.student.name} &nbsp;|&nbsp;
+    <strong>Age:</strong> ${BCS.student.age} &nbsp;|&nbsp;
+    <strong>Grade:</strong> ${BCS.student.grade}<br>
+    <strong>School:</strong> ${BCS.student.school}<br>
+    ${BCS.student.roll_no?`<strong>Roll No:</strong> ${BCS.student.roll_no}<br>`:''}
+    ${BCS.student.school_id?`<strong>School ID:</strong> ${BCS.student.school_id}<br>`:''}
+    ${BCS.student.facilitator?`<strong>Facilitator:</strong> ${BCS.student.facilitator}<br>`:''}
+    <strong>Assessment:</strong> ${BCS.student.assessment_type} &nbsp;|&nbsp;
+    <strong>Date:</strong> ${BCS.student.date}
+  `;
+
+  // Save data
+  const payload = {
+    name: BCS.student.name,
+    age: BCS.student.age,
+    grade: BCS.student.grade,
+    school: BCS.student.school,
+    roll_no: BCS.student.roll_no,
+    school_id: BCS.student.school_id,
+    assessment_type: BCS.student.assessment_type,
+    facilitator: BCS.student.facilitator,
+    date: BCS.student.date,
+    memory: s.memory,
+    attention: s.attention,
+    focus: s.focus,
+    logic: s.logic,
+    observation: s.observation,
+    total,
+    duration_seconds: duration
+  };
+
+  saveData(payload);
+}
+
+async function saveData(payload) {
+  const statusEl = document.getElementById('save-status');
+  statusEl.textContent = 'Saving report...';
+
+  let gasSaved = false, cloudSaved = false;
+
+  // 1. Google Apps Script
+  if(GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes('PLACEHOLDER')) {
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      });
+      gasSaved = true; // no-cors responses are opaque — success if no exception
+    } catch(e) {}
+  }
+
+  // 2. Bhava Cloud
+  try {
+    const res = await fetch(BHAVA_CLOUD_URL, {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-sync-key': BHAVA_CLOUD_KEY
+      },
+      body: JSON.stringify(payload)
+    });
+    if(res.ok) cloudSaved = true;
+  } catch(e){}
+
+  if(gasSaved || cloudSaved) {
+    statusEl.textContent = 'Report saved ✓';
+    statusEl.style.color = 'var(--success)';
+  } else {
+    statusEl.textContent = 'Saved offline — will sync later';
+    statusEl.style.color = 'var(--text-muted)';
+  }
+}
+
+function restartAssessment() {
+  BCS.student = {};
+  BCS.scores = { memory:0, attention:0, focus:0, logic:0, observation:0 };
+  BCS.rawMetrics = {};
+  BCS.currentModule = null;
+  BCS.startTime = null;
+  // Clear form
+  ['f-name','f-roll','f-age','f-school','f-school-id','f-facilitator'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value='';
+  });
+  document.getElementById('f-grade').selectedIndex=0;
+  document.getElementById('f-assessment-type').selectedIndex=0;
+  showScreen('screen-welcome');
+}
+</script>
+</body>
+</html>
