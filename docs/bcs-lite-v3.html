@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -474,6 +474,14 @@ select option { background: #1a2a3a; }
 </div>
 
 <div id="app">
+  <!-- ===== PERSISTENT NAV BAR ===== -->
+  <div id="bcs-nav" style="position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:rgba(10,18,40,0.85);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.08);">
+    <button onclick="goBack()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#fff;font-family:inherit;font-size:0.82rem;font-weight:700;padding:7px 18px;border-radius:20px;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,0.18)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">&#8592; Back</button>
+    <span style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;color:rgba(255,255,255,0.35);text-transform:uppercase;">BCS Lite</span>
+    <button onclick="goHome()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#fff;font-family:inherit;font-size:0.82rem;font-weight:700;padding:7px 18px;border-radius:20px;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,0.18)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">&#127968; Home</button>
+  </div>
+  <div style="height:48px;"></div>
+
 
   <!-- ===== SCREEN: WELCOME ===== -->
   <div class="screen active" id="screen-welcome">
@@ -1967,6 +1975,17 @@ async function saveData(payload) {
   }
 }
 
+
+function goBack() {
+  if (window.history.length > 1) { window.history.back(); } else { goHome(); }
+}
+
+function goHome() {
+  var isElectron = window._isElectron || navigator.userAgent.toLowerCase().includes('electron');
+  var isCapacitor = window.Capacitor !== undefined;
+  if (isElectron || isCapacitor) { window.location.href = 'index.html'; }
+  else { window.location.href = '/'; }
+}
 function restartAssessment() {
   BCS.student = {};
   BCS.scores = { memory:0, attention:0, focus:0, logic:0, observation:0 };
