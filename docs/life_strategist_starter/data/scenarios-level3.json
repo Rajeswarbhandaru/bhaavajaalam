@@ -1,0 +1,3221 @@
+[
+  {
+    "id": "ls-03-001",
+    "meta": {
+      "title": "Principal Simulator",
+      "level": 3,
+      "theme": "master",
+      "duration": "20 min",
+      "difficulty": 3,
+      "tags": [
+        "systems",
+        "leadership",
+        "budget",
+        "ethics",
+        "conflict"
+      ]
+    },
+    "intro": "You are the student council president for a week. Real problems arrive daily.",
+    "objective": "Balance student needs, teacher requests, budget limits, and fairness.",
+    "resources": {
+      "money": 5000,
+      "time": 7,
+      "energy": 90,
+      "trust": 70,
+      "knowledge": 80,
+      "confidence": 65,
+      "health": 95
+    },
+    "relationships": {
+      "parents": 60,
+      "friends": 55,
+      "teachers": 65,
+      "students": 50,
+      "staff": 55
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Day 1: Students want longer break. Teachers want shorter. What do you decide?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Survey both sides and propose a compromise",
+            "description": "Data-driven middle ground with feedback.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "trust": 8,
+                "knowledge": 5
+              },
+              "relationships": {
+                "teachers": 6,
+                "students": 6
+              },
+              "hidden": {
+                "leadership": 10,
+                "ethics": 8,
+                "planning": 6
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Side with teachers for discipline",
+            "description": "Order first, comfort later.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": -3
+              },
+              "relationships": {
+                "teachers": 10,
+                "students": -8
+              },
+              "hidden": {
+                "leadership": 4,
+                "ethics": -2
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Side with students for happiness",
+            "description": "Comfort first, but lose teacher respect.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": -2
+              },
+              "relationships": {
+                "teachers": -8,
+                "students": 10
+              },
+              "hidden": {
+                "leadership": -2,
+                "ethics": 2
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "Day 2: A teacher reports broken lab equipment. Replacement costs 2000. Budget is tight.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Repair what is possible, replace critical only",
+            "description": "Smart prioritization.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -1200,
+                "knowledge": 4
+              },
+              "relationships": {
+                "teachers": 6
+              },
+              "hidden": {
+                "resource_optimization": 10,
+                "planning": 8
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Buy new equipment immediately",
+            "description": "Full replacement, but budget strain.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -2000,
+                "trust": 3
+              },
+              "relationships": {
+                "teachers": 8
+              },
+              "hidden": {
+                "resource_optimization": -4,
+                "leadership": 4
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Delay and use theory classes instead",
+            "description": "Save money, lose practical learning.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": -200,
+                "knowledge": -4
+              },
+              "relationships": {
+                "teachers": -4,
+                "students": -4
+              },
+              "hidden": {
+                "planning": -4,
+                "ethics": -3
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "decision",
+        "text": "Day 3: A student is caught bullying. Parents demand no punishment. Victim is scared.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Counseling for both, clear school policy",
+            "description": "Restorative justice with structure.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "trust": 10,
+                "time": -2
+              },
+              "relationships": {
+                "parents": 4,
+                "students": 6
+              },
+              "hidden": {
+                "ethics": 12,
+                "leadership": 8,
+                "patience": 6
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c2",
+            "title": "Suspend the bully immediately",
+            "description": "Punishment, but no deeper healing.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": 2
+              },
+              "relationships": {
+                "parents": -6
+              },
+              "hidden": {
+                "ethics": 2,
+                "leadership": 4
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c3",
+            "title": "Ignore and let them sort it out",
+            "description": "Avoid conflict, but enable future harm.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -10
+              },
+              "relationships": {
+                "students": -8
+              },
+              "hidden": {
+                "ethics": -15,
+                "leadership": -10
+              }
+            },
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "type": "random",
+        "text": "Day 4: A water pipe bursts. School may close tomorrow.",
+        "effects": {
+          "resources": {
+            "money": -800,
+            "time": -1
+          }
+        },
+        "next": "n5"
+      },
+      {
+        "id": "n5",
+        "type": "decision",
+        "text": "Day 4 continued: How do you handle the crisis?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Coordinate staff, shift classes, arrange water",
+            "description": "System response, keep school running.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -300,
+                "energy": -6,
+                "trust": 8
+              },
+              "relationships": {
+                "staff": 10,
+                "teachers": 6
+              },
+              "hidden": {
+                "adaptability": 12,
+                "leadership": 10,
+                "resource_optimization": 8
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c2",
+            "title": "Declare holiday and fix properly",
+            "description": "Pause everything, solve fully.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "knowledge": -3,
+                "time": -1
+              },
+              "relationships": {
+                "parents": 4
+              },
+              "hidden": {
+                "planning": 6,
+                "risk_management": 6
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c3",
+            "title": "Ask students to bring water bottles",
+            "description": "Patch solution, avoid real cost.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -6
+              },
+              "relationships": {
+                "students": -6
+              },
+              "hidden": {
+                "resource_optimization": -8,
+                "leadership": -6
+              }
+            },
+            "next": "n6"
+          }
+        ]
+      },
+      {
+        "id": "n6",
+        "type": "decision",
+        "text": "Day 5: Final review. A parent offers a donation for preferential treatment of their child.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Decline politely, explain fairness",
+            "description": "Ethical boundary, long-term trust.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "trust": 12,
+                "confidence": 6
+              },
+              "relationships": {
+                "parents": -4
+              },
+              "hidden": {
+                "ethics": 15,
+                "leadership": 8,
+                "risk_management": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Accept but treat everyone equally",
+            "description": "Take money, hope no one notices.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": 2000,
+                "trust": -8
+              },
+              "relationships": {
+                "parents": 6
+              },
+              "hidden": {
+                "ethics": -10,
+                "risk_management": -8
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Accept and give their child privileges",
+            "description": "Corruption for short-term gain.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": 2000,
+                "trust": -15
+              },
+              "relationships": {
+                "students": -10,
+                "teachers": -8
+              },
+              "hidden": {
+                "ethics": -20,
+                "leadership": -15
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "Your week ends. The school still stands. Some decisions echo longer than others.",
+        "reflection": [
+          "Which decision was hardest because it had no perfect answer?",
+          "What is the relationship between fairness and leadership?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-03-002",
+    "meta": {
+      "title": "Village Management",
+      "level": 3,
+      "theme": "master",
+      "duration": "25 min",
+      "difficulty": 3,
+      "tags": [
+        "agriculture",
+        "water",
+        "community",
+        "systems",
+        "long-term"
+      ]
+    },
+    "intro": "You are the youth coordinator for a small village. Water, crops, school, and health all need attention.",
+    "objective": "Improve the village over a full season without breaking any single system.",
+    "resources": {
+      "money": 8000,
+      "time": 90,
+      "energy": 85,
+      "trust": 60,
+      "knowledge": 75,
+      "confidence": 60,
+      "health": 90
+    },
+    "relationships": {
+      "parents": 70,
+      "friends": 60,
+      "teachers": 55,
+      "neighbors": 50,
+      "elders": 55
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Season 1: Water is scarce. How do you manage it?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Build a rainwater harvesting system",
+            "description": "Long-term investment, community effort.",
+            "risk": "medium",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -3000,
+                "time": -20,
+                "knowledge": 8
+              },
+              "relationships": {
+                "neighbors": 8,
+                "elders": 10
+              },
+              "hidden": {
+                "planning": 12,
+                "resource_optimization": 10,
+                "prediction": 10
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Dig deeper wells immediately",
+            "description": "Quick water, but unsustainable.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -2000,
+                "time": -10
+              },
+              "relationships": {
+                "elders": 4
+              },
+              "hidden": {
+                "resource_optimization": -4,
+                "prediction": -4
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Ration water strictly by household",
+            "description": "Immediate control, but creates conflict.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": -6,
+                "time": -5
+              },
+              "relationships": {
+                "neighbors": -6
+              },
+              "hidden": {
+                "leadership": 4,
+                "ethics": 2
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "Season 2: Crops are failing. Pests are spreading. What is your priority?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Introduce mixed cropping and organic pest control",
+            "description": "Sustainable agriculture training.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -1500,
+                "time": -15,
+                "knowledge": 10
+              },
+              "relationships": {
+                "neighbors": 6
+              },
+              "hidden": {
+                "planning": 10,
+                "creativity": 8,
+                "resource_optimization": 8
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Buy chemical pesticides and fertilizers",
+            "description": "Fast yield, soil damage later.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -1000,
+                "time": -5
+              },
+              "hidden": {
+                "resource_optimization": 2,
+                "ethics": -4,
+                "prediction": -6
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Focus on one crop and maximize it",
+            "description": "Specialization, but risk if it fails.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": -500
+              },
+              "hidden": {
+                "risk_management": -6,
+                "planning": -3
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "decision",
+        "text": "Season 3: The school needs a teacher. The clinic needs a nurse. You have funds for one.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Fund the teacher, train a local health volunteer",
+            "description": "Education official, health unofficial.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -2500,
+                "knowledge": 8
+              },
+              "relationships": {
+                "teachers": 8,
+                "elders": 6
+              },
+              "hidden": {
+                "resource_optimization": 10,
+                "leadership": 8,
+                "ethics": 6
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c2",
+            "title": "Fund the nurse, use older students to teach younger",
+            "description": "Health official, education peer-based.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -2500,
+                "health": 8
+              },
+              "relationships": {
+                "elders": 6
+              },
+              "hidden": {
+                "creativity": 8,
+                "leadership": 6,
+                "resource_optimization": 6
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c3",
+            "title": "Split the money and hire both part-time",
+            "description": "Both get attention, but neither is full.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -2500,
+                "knowledge": 3,
+                "health": 3
+              },
+              "hidden": {
+                "resource_optimization": -4,
+                "planning": -2
+              }
+            },
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "type": "random",
+        "text": "Unexpected drought: The harvest is 40% below expectation.",
+        "effects": {
+          "resources": {
+            "money": -1000,
+            "trust": -5
+          },
+          "relationships": {
+            "neighbors": -3
+          }
+        },
+        "next": "n5"
+      },
+      {
+        "id": "n5",
+        "type": "decision",
+        "text": "Drought impact: Food shortage is real. What do you do?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Request government aid and organize community kitchens",
+            "description": "Systematic relief, community solidarity.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": 500,
+                "trust": 8,
+                "time": -10
+              },
+              "relationships": {
+                "neighbors": 10,
+                "elders": 8
+              },
+              "hidden": {
+                "leadership": 12,
+                "adaptability": 10,
+                "ethics": 8
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c2",
+            "title": "Buy food from neighboring village",
+            "description": "Market solution, but expensive.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -2000,
+                "time": -5
+              },
+              "hidden": {
+                "adaptability": 6,
+                "resource_optimization": 4
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c3",
+            "title": "Let families handle their own shortage",
+            "description": "Individual survival, community weakens.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -10
+              },
+              "relationships": {
+                "neighbors": -8
+              },
+              "hidden": {
+                "leadership": -10,
+                "ethics": -8
+              }
+            },
+            "next": "n6"
+          }
+        ]
+      },
+      {
+        "id": "n6",
+        "type": "decision",
+        "text": "Season 4: You have one remaining project. What do you invest in for the future?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Solar-powered irrigation",
+            "description": "Energy and water independence.",
+            "risk": "medium",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -2000,
+                "knowledge": 10
+              },
+              "relationships": {
+                "elders": 8
+              },
+              "hidden": {
+                "prediction": 12,
+                "planning": 10,
+                "creativity": 8
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Village library and internet",
+            "description": "Education and connectivity.",
+            "risk": "medium",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -1500,
+                "knowledge": 12
+              },
+              "relationships": {
+                "teachers": 10
+              },
+              "hidden": {
+                "creativity": 10,
+                "leadership": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Save the money for emergencies",
+            "description": "Safety buffer, but no new growth.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": 1000,
+                "trust": 4
+              },
+              "hidden": {
+                "risk_management": 8,
+                "prediction": 6,
+                "planning": 4
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "One year passes. The village is different. Some systems are stronger. Some are still fragile. That is management.",
+        "reflection": [
+          "Which system was most connected to all others?",
+          "Why is saving sometimes more strategic than spending?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-03-003",
+    "meta": {
+      "title": "Island Survival",
+      "level": 3,
+      "theme": "master",
+      "duration": "25 min",
+      "difficulty": 3,
+      "tags": [
+        "survival",
+        "resource",
+        "priority",
+        "risk",
+        "systems"
+      ]
+    },
+    "intro": "You and a small team are stranded on an island. Resources are limited. Weather is unpredictable.",
+    "objective": "Survive, signal for rescue, and maintain team health and morale.",
+    "resources": {
+      "money": 0,
+      "time": 30,
+      "energy": 80,
+      "trust": 60,
+      "knowledge": 70,
+      "confidence": 55,
+      "health": 85
+    },
+    "relationships": {
+      "friends": 65,
+      "team": 60,
+      "strangers": 50
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Hour 1: You find a small amount of fresh water, some food, and basic tools. What do you prioritize?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Water first, then shelter, then food",
+            "description": "Survival rule of three: 3 days without water.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "energy": -4,
+                "health": 4,
+                "knowledge": 4
+              },
+              "hidden": {
+                "planning": 12,
+                "resource_optimization": 10,
+                "prediction": 8
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Build a large signal fire first",
+            "description": "Rescue priority, but neglect immediate needs.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": -10,
+                "health": -2
+              },
+              "hidden": {
+                "risk_management": 4,
+                "planning": -4
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Search the island for more resources",
+            "description": "Explore before settling, but risk energy loss.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": -12,
+                "time": -3
+              },
+              "hidden": {
+                "creativity": 6,
+                "adaptability": 6,
+                "risk_management": -2
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "Day 2: A team member is injured. Another is panicking. You can only address one well.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Tend the injury first, calm the panicker with tasks",
+            "description": "Medical priority, give the anxious person a job.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "health": 6,
+                "energy": -6,
+                "trust": 6
+              },
+              "relationships": {
+                "team": 8
+              },
+              "hidden": {
+                "leadership": 10,
+                "adaptability": 8,
+                "ethics": 8
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Calm the panicker first, bandage the injury quickly",
+            "description": "Mental health priority, but wound may worsen.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": 4,
+                "health": -2
+              },
+              "relationships": {
+                "team": 6
+              },
+              "hidden": {
+                "leadership": 6,
+                "patience": 6
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Tell them both to handle it themselves",
+            "description": "Save your energy for the group.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -8,
+                "health": -4
+              },
+              "relationships": {
+                "team": -10
+              },
+              "hidden": {
+                "ethics": -10,
+                "leadership": -10
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "decision",
+        "text": "Day 5: Food is running low. You see fish, unknown berries, and birds. What do you eat?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Fish only, berries tested in small amounts",
+            "description": "Known food sources, cautious approach.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "health": 4,
+                "energy": 4
+              },
+              "hidden": {
+                "risk_management": 10,
+                "prediction": 8,
+                "resource_optimization": 6
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c2",
+            "title": "Eat the berries, they look familiar",
+            "description": "Risk unknown food to save energy.",
+            "risk": "high",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "health": -8,
+                "energy": -4
+              },
+              "hidden": {
+                "risk_management": -10,
+                "prediction": -6
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c3",
+            "title": "Eat everything available",
+            "description": "Maximize intake, ignore danger.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "health": -12,
+                "energy": -6
+              },
+              "hidden": {
+                "risk_management": -15,
+                "planning": -6
+              }
+            },
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "type": "random",
+        "text": "Day 7: A storm destroys your shelter and half your food supply.",
+        "effects": {
+          "resources": {
+            "energy": -8,
+            "health": -4,
+            "time": -3
+          }
+        },
+        "next": "n5"
+      },
+      {
+        "id": "n5",
+        "type": "decision",
+        "text": "After the storm: Low on food, no shelter, team morale is breaking. What now?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Rebuild shelter together, ration food strictly, maintain hope",
+            "description": "System recovery with discipline.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "energy": -6,
+                "trust": 8,
+                "health": 2
+              },
+              "relationships": {
+                "team": 10
+              },
+              "hidden": {
+                "adaptability": 12,
+                "leadership": 12,
+                "resource_optimization": 10
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c2",
+            "title": "Send the strongest to search for rescue while others rest",
+            "description": "Divide labor, risk the few.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": -4,
+                "time": -2
+              },
+              "relationships": {
+                "team": 4
+              },
+              "hidden": {
+                "risk_management": 4,
+                "leadership": 4
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c3",
+            "title": "Give up and wait for rescue",
+            "description": "Passive survival, morale collapses.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -10,
+                "health": -4
+              },
+              "relationships": {
+                "team": -8
+              },
+              "hidden": {
+                "adaptability": -8,
+                "leadership": -10
+              }
+            },
+            "next": "n6"
+          }
+        ]
+      },
+      {
+        "id": "n6",
+        "type": "decision",
+        "text": "Day 10: A ship is visible on the horizon. You have one signal. What do you use?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Large smoke signal during the day",
+            "description": "Most visible, reliable signal.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "confidence": 8,
+                "trust": 8
+              },
+              "hidden": {
+                "prediction": 8,
+                "planning": 6,
+                "resource_optimization": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Fire signal at night",
+            "description": "Visible at night, but wait is risky.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": -4,
+                "confidence": 4
+              },
+              "hidden": {
+                "patience": 6,
+                "risk_management": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Send the fastest swimmer",
+            "description": "Direct contact, but dangerous.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "health": -6,
+                "energy": -6
+              },
+              "hidden": {
+                "risk_management": -6,
+                "prediction": -4
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "Rescue comes, or survival continues. Either way, you understand what keeps people alive.",
+        "reflection": [
+          "What was more important than any single resource?",
+          "How did team trust affect survival?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-03-004",
+    "meta": {
+      "title": "Business Startup",
+      "level": 3,
+      "theme": "master",
+      "duration": "20 min",
+      "difficulty": 3,
+      "tags": [
+        "business",
+        "market",
+        "investment",
+        "ethics",
+        "systems"
+      ]
+    },
+    "intro": "You have a small startup idea and a limited investment. Market, competition, and cash flow are real.",
+    "objective": "Build a sustainable small business without compromising values.",
+    "resources": {
+      "money": 10000,
+      "time": 60,
+      "energy": 85,
+      "trust": 65,
+      "knowledge": 78,
+      "confidence": 62,
+      "health": 95
+    },
+    "relationships": {
+      "parents": 68,
+      "friends": 60,
+      "neighbors": 55,
+      "team": 50
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Phase 1: You have 10,000. What is your first investment?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Product quality and small test market",
+            "description": "Build strong base, validate demand.",
+            "risk": "medium",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -4000,
+                "knowledge": 8,
+                "trust": 4
+              },
+              "hidden": {
+                "planning": 10,
+                "prediction": 10,
+                "resource_optimization": 8
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Big marketing campaign first",
+            "description": "Create buzz before product is perfect.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -6000,
+                "trust": 2
+              },
+              "hidden": {
+                "creativity": 8,
+                "risk_management": -4,
+                "planning": -4
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Hire employees immediately",
+            "description": "Team first, but burn cash fast.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": -7000,
+                "time": -5
+              },
+              "relationships": {
+                "team": 6
+              },
+              "hidden": {
+                "resource_optimization": -8,
+                "planning": -6
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "Phase 2: A competitor copies your idea and prices lower. What do you do?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Improve quality and customer service",
+            "description": "Differentiate, do not compete on price.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -1500,
+                "knowledge": 6
+              },
+              "hidden": {
+                "creativity": 8,
+                "leadership": 6,
+                "ethics": 6
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Lower your price to match",
+            "description": "Price war, thinner margins.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -500,
+                "trust": -2
+              },
+              "hidden": {
+                "resource_optimization": -4,
+                "risk_management": -3
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Copy their features and add more",
+            "description": "Reactive competition, lose identity.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": -2000,
+                "knowledge": 2
+              },
+              "hidden": {
+                "creativity": -4,
+                "ethics": -4
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "decision",
+        "text": "Phase 3: A supplier offers cheaper materials if you hide quality issues from customers.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Reject the offer, find ethical suppliers",
+            "description": "Values over short-term profit.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -800,
+                "trust": 10
+              },
+              "hidden": {
+                "ethics": 15,
+                "leadership": 8,
+                "risk_management": 6
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c2",
+            "title": "Accept but improve quality later",
+            "description": "Temporary compromise, future fix.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": 500,
+                "trust": -6
+              },
+              "hidden": {
+                "ethics": -8,
+                "prediction": -4
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c3",
+            "title": "Accept and keep silent",
+            "description": "Profit at customer expense.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": 1500,
+                "trust": -15
+              },
+              "hidden": {
+                "ethics": -20,
+                "leadership": -10,
+                "risk_management": -8
+              }
+            },
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "type": "random",
+        "text": "Phase 4: A major customer delays payment. Cash flow is critical.",
+        "effects": {
+          "resources": {
+            "money": -2000,
+            "time": -3
+          }
+        },
+        "next": "n5"
+      },
+      {
+        "id": "n5",
+        "type": "decision",
+        "text": "Cash flow crisis: You cannot pay all bills. What do you prioritize?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Pay employees first, negotiate with suppliers",
+            "description": "People first, trust with partners.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -1500,
+                "trust": 8
+              },
+              "relationships": {
+                "team": 10
+              },
+              "hidden": {
+                "leadership": 12,
+                "ethics": 10,
+                "resource_optimization": 8
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c2",
+            "title": "Pay suppliers first, delay employee salaries",
+            "description": "Keep supply chain, risk team morale.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -1000
+              },
+              "relationships": {
+                "team": -8
+              },
+              "hidden": {
+                "leadership": -4,
+                "ethics": -4
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c3",
+            "title": "Borrow from a high-interest lender",
+            "description": "Quick cash, dangerous future.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": 1000,
+                "trust": -4
+              },
+              "hidden": {
+                "risk_management": -10,
+                "planning": -6
+              }
+            },
+            "next": "n6"
+          }
+        ]
+      },
+      {
+        "id": "n6",
+        "type": "decision",
+        "text": "Phase 5: The business is stable. Where do you invest profits?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Research and development for better product",
+            "description": "Innovation, future growth.",
+            "risk": "medium",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -2000,
+                "knowledge": 10
+              },
+              "hidden": {
+                "creativity": 10,
+                "prediction": 10,
+                "planning": 8
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Expand to new markets",
+            "description": "Growth, but stretched resources.",
+            "risk": "medium",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -3000,
+                "time": -10
+              },
+              "hidden": {
+                "creativity": 8,
+                "risk_management": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Take profits and keep the business small",
+            "description": "Stability, but no growth.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": 2000,
+                "trust": 4
+              },
+              "hidden": {
+                "risk_management": 8,
+                "patience": 6
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The business lives. The choices made were not just about money. They were about what kind of business you built.",
+        "reflection": [
+          "What was more valuable than profit?",
+          "How did early ethics decisions shape the ending?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-03-005",
+    "meta": {
+      "title": "Hospital Management",
+      "level": 3,
+      "theme": "master",
+      "duration": "25 min",
+      "difficulty": 3,
+      "tags": [
+        "healthcare",
+        "triage",
+        "ethics",
+        "systems",
+        "crisis"
+      ]
+    },
+    "intro": "You are managing a small rural clinic for a day. Patients, supplies, staff, and emergencies all arrive.",
+    "objective": "Save lives, maintain staff health, and manage resources ethically.",
+    "resources": {
+      "money": 3000,
+      "time": 12,
+      "energy": 80,
+      "trust": 70,
+      "knowledge": 82,
+      "confidence": 60,
+      "health": 95
+    },
+    "relationships": {
+      "parents": 55,
+      "friends": 50,
+      "staff": 60,
+      "patients": 50,
+      "neighbors": 55
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Morning: Three patients arrive. One critical, two stable. You have one nurse. What do you do?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Treat critical first, assign nurse to stable patients for monitoring",
+            "description": "Triage with attention to all.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "time": -2,
+                "energy": -4,
+                "trust": 6
+              },
+              "relationships": {
+                "patients": 8,
+                "staff": 6
+              },
+              "hidden": {
+                "leadership": 10,
+                "ethics": 10,
+                "resource_optimization": 8
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Treat critical first, make stable patients wait",
+            "description": "Correct triage, but wait may worsen.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "time": -1,
+                "trust": 2
+              },
+              "relationships": {
+                "patients": 2
+              },
+              "hidden": {
+                "ethics": 4,
+                "risk_management": 4
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Treat stable patients first because they are easier",
+            "description": "Avoid hard cases, critical dies.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -10
+              },
+              "relationships": {
+                "patients": -10,
+                "staff": -4
+              },
+              "hidden": {
+                "ethics": -20,
+                "leadership": -15
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "Midday: Medicine supply is low. You can order now (expensive) or wait for government supply (delayed).",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Order emergency stock, absorb cost",
+            "description": "Patient safety over budget.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -1500,
+                "trust": 8
+              },
+              "relationships": {
+                "staff": 6
+              },
+              "hidden": {
+                "ethics": 10,
+                "resource_optimization": 6,
+                "leadership": 6
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Wait for government supply, ration current stock",
+            "description": "Budget safe, but risk shortage.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -300,
+                "time": -2
+              },
+              "hidden": {
+                "resource_optimization": 4,
+                "risk_management": -3
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Buy cheap unverified medicine from local seller",
+            "description": "Save money, but quality unknown.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": -500,
+                "trust": -8
+              },
+              "relationships": {
+                "patients": -6
+              },
+              "hidden": {
+                "ethics": -15,
+                "risk_management": -10
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "decision",
+        "text": "Afternoon: A wealthy patient offers a large donation if treated first tomorrow. Others are waiting.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Decline and maintain first-come-first-served",
+            "description": "Equity over money.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "trust": 12,
+                "confidence": 6
+              },
+              "relationships": {
+                "patients": 8
+              },
+              "hidden": {
+                "ethics": 15,
+                "leadership": 10,
+                "risk_management": 6
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c2",
+            "title": "Accept but treat them within normal queue",
+            "description": "Take money, keep fairness.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": 2000,
+                "trust": -4
+              },
+              "hidden": {
+                "ethics": -2,
+                "resource_optimization": 4
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c3",
+            "title": "Accept and give them priority",
+            "description": "Wealth buys health.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": 2000,
+                "trust": -15
+              },
+              "relationships": {
+                "patients": -10
+              },
+              "hidden": {
+                "ethics": -20,
+                "leadership": -10
+              }
+            },
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "type": "random",
+        "text": "Evening: A car accident brings three injured people. Staff is exhausted.",
+        "effects": {
+          "resources": {
+            "energy": -6,
+            "time": -2
+          },
+          "relationships": {
+            "staff": -3
+          }
+        },
+        "next": "n5"
+      },
+      {
+        "id": "n5",
+        "type": "decision",
+        "text": "Emergency: Staff is exhausted, but three lives are at risk. What do you do?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Call all staff in, including off-duty, share the burden",
+            "description": "Team mobilization, rotate rest.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "energy": -8,
+                "trust": 10
+              },
+              "relationships": {
+                "staff": 10,
+                "patients": 10
+              },
+              "hidden": {
+                "leadership": 15,
+                "adaptability": 10,
+                "ethics": 10
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c2",
+            "title": "Transfer stable cases to nearest hospital, focus on critical",
+            "description": "Triage with referral.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "time": -1,
+                "money": -500
+              },
+              "relationships": {
+                "patients": 4
+              },
+              "hidden": {
+                "resource_optimization": 6,
+                "risk_management": 6
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c3",
+            "title": "Ask families to help care for their own",
+            "description": "Reduce clinic load, but unprofessional.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -8
+              },
+              "relationships": {
+                "patients": -6
+              },
+              "hidden": {
+                "ethics": -10,
+                "leadership": -8
+              }
+            },
+            "next": "n6"
+          }
+        ]
+      },
+      {
+        "id": "n6",
+        "type": "decision",
+        "text": "Night: The day is over. One final resource remains. What do you improve?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Staff rest area and training",
+            "description": "Invest in people who save lives.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -800,
+                "knowledge": 6
+              },
+              "relationships": {
+                "staff": 10
+              },
+              "hidden": {
+                "leadership": 10,
+                "resource_optimization": 8,
+                "planning": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Better equipment for faster diagnosis",
+            "description": "Technology investment.",
+            "risk": "medium",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -1200,
+                "knowledge": 8
+              },
+              "hidden": {
+                "creativity": 6,
+                "planning": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Save the money for future emergencies",
+            "description": "Buffer fund.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": 500,
+                "trust": 4
+              },
+              "hidden": {
+                "risk_management": 8,
+                "prediction": 6
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The clinic sleeps. Some patients recover. Some scars remain. You managed a system where every choice is a life.",
+        "reflection": [
+          "What was the heaviest decision?",
+          "How does resource scarcity test ethics?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-03-006",
+    "meta": {
+      "title": "Family Economy",
+      "level": 3,
+      "theme": "master",
+      "duration": "20 min",
+      "difficulty": 3,
+      "tags": [
+        "finance",
+        "family",
+        "planning",
+        "tradeoff",
+        "ethics"
+      ]
+    },
+    "intro": "You are helping manage your family finances for a year. Income is limited. Needs are many.",
+    "objective": "Balance savings, education, health, and emergencies over 12 months.",
+    "resources": {
+      "money": 50000,
+      "time": 12,
+      "energy": 80,
+      "trust": 75,
+      "knowledge": 72,
+      "confidence": 65,
+      "health": 92
+    },
+    "relationships": {
+      "parents": 80,
+      "friends": 55,
+      "neighbors": 50,
+      "siblings": 70
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Month 1: Annual budget. What gets the largest share?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Education and health first, then savings, then wants",
+            "description": "Future-first budgeting.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -5000,
+                "knowledge": 6,
+                "health": 4
+              },
+              "relationships": {
+                "parents": 8,
+                "siblings": 6
+              },
+              "hidden": {
+                "planning": 12,
+                "resource_optimization": 10,
+                "ethics": 6
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Equal share for everything",
+            "description": "Fair distribution, but no priority.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -3000,
+                "trust": 2
+              },
+              "hidden": {
+                "planning": 2,
+                "resource_optimization": -2
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Spend on immediate comfort and hope for more income",
+            "description": "Short-term happiness, no buffer.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": -8000,
+                "trust": -4
+              },
+              "hidden": {
+                "planning": -8,
+                "risk_management": -6,
+                "patience": -6
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "Month 3: A sibling needs a course for career growth. It costs 15,000. Budget is tight.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Support the course, reduce discretionary spending",
+            "description": "Invest in family potential.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -15000,
+                "knowledge": 8,
+                "trust": 6
+              },
+              "relationships": {
+                "siblings": 12,
+                "parents": 6
+              },
+              "hidden": {
+                "ethics": 10,
+                "leadership": 6,
+                "planning": 6
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Suggest a loan they repay later",
+            "description": "Help with responsibility.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -5000,
+                "trust": 2
+              },
+              "relationships": {
+                "siblings": 4
+              },
+              "hidden": {
+                "resource_optimization": 4,
+                "ethics": 4
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Say no, family needs come first",
+            "description": "Conservative, but sibling loses opportunity.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": 0,
+                "trust": -2
+              },
+              "relationships": {
+                "siblings": -8
+              },
+              "hidden": {
+                "ethics": -4,
+                "leadership": -2
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "decision",
+        "text": "Month 6: A health emergency needs 20,000. You have savings, but it empties the buffer.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Use savings, then rebuild buffer with small monthly cuts",
+            "description": "Health is wealth, plan recovery.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -20000,
+                "health": 10,
+                "trust": 8
+              },
+              "relationships": {
+                "parents": 10
+              },
+              "hidden": {
+                "planning": 10,
+                "ethics": 10,
+                "adaptability": 6
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c2",
+            "title": "Borrow from relatives",
+            "description": "Keep savings, but create debt.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -5000,
+                "trust": -4
+              },
+              "relationships": {
+                "parents": 2
+              },
+              "hidden": {
+                "risk_management": -4,
+                "resource_optimization": -2
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c3",
+            "title": "Delay treatment and hope it improves",
+            "description": "Gamble with health.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "health": -8,
+                "trust": -8
+              },
+              "relationships": {
+                "parents": -6
+              },
+              "hidden": {
+                "ethics": -15,
+                "risk_management": -12
+              }
+            },
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "type": "random",
+        "text": "Month 9: Income drops by 30% due to unexpected job loss.",
+        "effects": {
+          "resources": {
+            "money": -5000,
+            "trust": -5
+          }
+        },
+        "next": "n5"
+      },
+      {
+        "id": "n5",
+        "type": "decision",
+        "text": "Income is lower. How do you adapt the budget?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Cut wants completely, protect education and health",
+            "description": "Core priorities survive.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -2000,
+                "trust": 6
+              },
+              "relationships": {
+                "parents": 6
+              },
+              "hidden": {
+                "resource_optimization": 12,
+                "planning": 10,
+                "adaptability": 8
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c2",
+            "title": "Everyone reduces equally including education",
+            "description": "Shared pain, but future suffers.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -1000,
+                "knowledge": -3
+              },
+              "hidden": {
+                "resource_optimization": 2,
+                "planning": -2
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c3",
+            "title": "Use credit cards and worry later",
+            "description": "Debt trap.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": 2000,
+                "trust": -8
+              },
+              "hidden": {
+                "risk_management": -15,
+                "planning": -10,
+                "ethics": -4
+              }
+            },
+            "next": "n6"
+          }
+        ]
+      },
+      {
+        "id": "n6",
+        "type": "decision",
+        "text": "Month 12: Year end. You have a small surplus. What do you do?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Start an emergency fund for the family",
+            "description": "Future protection.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -3000,
+                "trust": 8
+              },
+              "relationships": {
+                "parents": 8
+              },
+              "hidden": {
+                "planning": 12,
+                "prediction": 10,
+                "resource_optimization": 8
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Celebrate together and share joy",
+            "description": "Morale and bonding.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -2000,
+                "health": 4,
+                "trust": 4
+              },
+              "relationships": {
+                "siblings": 8
+              },
+              "hidden": {
+                "ethics": 6,
+                "patience": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Invest in a small side income source",
+            "description": "Growth, but risk.",
+            "risk": "medium",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -3000,
+                "knowledge": 4
+              },
+              "hidden": {
+                "creativity": 8,
+                "risk_management": 6
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The year ends. The family is together. Money was managed, but love was the real budget.",
+        "reflection": [
+          "What was the most important financial decision?",
+          "How do family tradeoffs differ from individual ones?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-03-007",
+    "meta": {
+      "title": "Environmental Conservation",
+      "level": 3,
+      "theme": "master",
+      "duration": "20 min",
+      "difficulty": 3,
+      "tags": [
+        "environment",
+        "community",
+        "long-term",
+        "systems",
+        "ethics"
+      ]
+    },
+    "intro": "You are leading a local environmental initiative. Pollution, waste, and community habits are the enemies.",
+    "objective": "Create sustainable change without alienating the community.",
+    "resources": {
+      "money": 6000,
+      "time": 60,
+      "energy": 82,
+      "trust": 60,
+      "knowledge": 76,
+      "confidence": 62,
+      "health": 94
+    },
+    "relationships": {
+      "parents": 65,
+      "friends": 60,
+      "neighbors": 55,
+      "teachers": 58,
+      "elders": 50
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Phase 1: The river is polluted. Where do you start?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Community cleanup drives and awareness",
+            "description": "People first, problem second.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -800,
+                "time": -10,
+                "knowledge": 6
+              },
+              "relationships": {
+                "neighbors": 8,
+                "elders": 6
+              },
+              "hidden": {
+                "leadership": 10,
+                "ethics": 8,
+                "planning": 6
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Report to government and wait for action",
+            "description": "Official route, but slow.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "time": -5,
+                "trust": 2
+              },
+              "relationships": {
+                "elders": 2
+              },
+              "hidden": {
+                "patience": 6,
+                "leadership": -2
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Install filters on your own",
+            "description": "Local fix, but not systemic.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": -2000,
+                "knowledge": 2
+              },
+              "hidden": {
+                "resource_optimization": -4,
+                "planning": -2
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "Phase 2: A factory is the main polluter. They offer sponsorship for your project if you stay silent.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Reject and publicly advocate for cleaner production",
+            "description": "Truth over money.",
+            "risk": "medium",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -500,
+                "trust": 10
+              },
+              "relationships": {
+                "neighbors": 8
+              },
+              "hidden": {
+                "ethics": 15,
+                "leadership": 10,
+                "creativity": 6
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Accept but use the money for green projects",
+            "description": "Compromise, but conflicted.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": 2000,
+                "trust": -6
+              },
+              "relationships": {
+                "elders": 4
+              },
+              "hidden": {
+                "ethics": -8,
+                "resource_optimization": 4
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Accept and stay silent",
+            "description": "Betrayal of the cause.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": 2000,
+                "trust": -15
+              },
+              "relationships": {
+                "neighbors": -10
+              },
+              "hidden": {
+                "ethics": -20,
+                "leadership": -15
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "decision",
+        "text": "Phase 3: Waste segregation is failing. People mix everything. What do you change?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Design simple color-coded bins and educate children",
+            "description": "Education and infrastructure.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -1200,
+                "knowledge": 8,
+                "time": -10
+              },
+              "relationships": {
+                "neighbors": 6,
+                "teachers": 8
+              },
+              "hidden": {
+                "creativity": 10,
+                "planning": 8,
+                "leadership": 6
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c2",
+            "title": "Fine households who do not segregate",
+            "description": "Punishment, but builds resentment.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": -4,
+                "money": 200
+              },
+              "relationships": {
+                "neighbors": -6
+              },
+              "hidden": {
+                "leadership": -4,
+                "ethics": -2
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c3",
+            "title": "Do nothing, habits change slowly",
+            "description": "Passive acceptance.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -2
+              },
+              "hidden": {
+                "leadership": -6,
+                "adaptability": -4
+              }
+            },
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "type": "random",
+        "text": "Phase 4: A flood damages your newly planted green belt.",
+        "effects": {
+          "resources": {
+            "money": -800,
+            "time": -5,
+            "energy": -6
+          }
+        },
+        "next": "n5"
+      },
+      {
+        "id": "n5",
+        "type": "decision",
+        "text": "Flood damage: The green belt is destroyed. What is your response?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Replant with flood-resistant species, involve community",
+            "description": "Adapt and rebuild stronger.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -1000,
+                "time": -10,
+                "knowledge": 6
+              },
+              "relationships": {
+                "neighbors": 10
+              },
+              "hidden": {
+                "adaptability": 12,
+                "prediction": 10,
+                "creativity": 8
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c2",
+            "title": "Rebuild exactly as before",
+            "description": "Same design, same risk.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -800,
+                "time": -5
+              },
+              "hidden": {
+                "planning": 2,
+                "adaptability": -2
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c3",
+            "title": "Abandon the green belt project",
+            "description": "Give up on the area.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -6
+              },
+              "relationships": {
+                "neighbors": -6
+              },
+              "hidden": {
+                "patience": -6,
+                "leadership": -8
+              }
+            },
+            "next": "n6"
+          }
+        ]
+      },
+      {
+        "id": "n6",
+        "type": "decision",
+        "text": "Phase 5: One year later. What is your legacy project?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Community-run compost and garden system",
+            "description": "Self-sustaining, educational.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -1000,
+                "knowledge": 10
+              },
+              "relationships": {
+                "neighbors": 10,
+                "teachers": 8
+              },
+              "hidden": {
+                "creativity": 12,
+                "leadership": 10,
+                "planning": 10
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Solar energy for the community center",
+            "description": "Technology, but expensive.",
+            "risk": "medium",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -2500,
+                "knowledge": 8
+              },
+              "relationships": {
+                "elders": 8
+              },
+              "hidden": {
+                "creativity": 10,
+                "prediction": 8
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Annual awareness festival",
+            "description": "Culture of green, but event-driven.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -500,
+                "trust": 6
+              },
+              "relationships": {
+                "friends": 8
+              },
+              "hidden": {
+                "creativity": 6,
+                "patience": 4
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The river is cleaner. The children know. The community remembers. Systems change slowly, but they change.",
+        "reflection": [
+          "What was the hardest habit to change?",
+          "How does one person influence a system?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-03-008",
+    "meta": {
+      "title": "Disaster Management",
+      "level": 3,
+      "theme": "master",
+      "duration": "25 min",
+      "difficulty": 3,
+      "tags": [
+        "crisis",
+        "coordination",
+        "safety",
+        "systems",
+        "leadership"
+      ]
+    },
+    "intro": "A cyclone warning is issued. You have 24 hours to prepare your neighborhood.",
+    "objective": "Save lives, protect property, and maintain order before and after the storm.",
+    "resources": {
+      "money": 4000,
+      "time": 24,
+      "energy": 85,
+      "trust": 65,
+      "knowledge": 74,
+      "confidence": 60,
+      "health": 95
+    },
+    "relationships": {
+      "parents": 70,
+      "friends": 65,
+      "neighbors": 60,
+      "elders": 55,
+      "strangers": 50
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Hour 1: Warning received. What is your first action?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Map vulnerable houses and assign volunteers",
+            "description": "Systematic preparation, community coordination.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "time": -3,
+                "energy": -4,
+                "knowledge": 6
+              },
+              "relationships": {
+                "neighbors": 8,
+                "elders": 6
+              },
+              "hidden": {
+                "leadership": 12,
+                "planning": 12,
+                "prediction": 10
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Warn everyone by loudspeaker and social media",
+            "description": "Information blast, but no coordination.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "time": -1,
+                "energy": -2
+              },
+              "relationships": {
+                "neighbors": 4
+              },
+              "hidden": {
+                "adaptability": 6,
+                "leadership": 4
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Pack your own house first",
+            "description": "Self-preservation, ignore others.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -8
+              },
+              "relationships": {
+                "neighbors": -8
+              },
+              "hidden": {
+                "ethics": -10,
+                "leadership": -10
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "Hour 6: Some families refuse to evacuate. Elders are stubborn. Children are scared.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Send respected elders to convince them, offer support",
+            "description": "Peer influence, gentle pressure.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "time": -2,
+                "trust": 6
+              },
+              "relationships": {
+                "elders": 8,
+                "neighbors": 6
+              },
+              "hidden": {
+                "leadership": 10,
+                "ethics": 8,
+                "patience": 8
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Force evacuation with community volunteers",
+            "description": "Safety over choice, but conflict.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": -6,
+                "trust": -2
+              },
+              "relationships": {
+                "neighbors": -4
+              },
+              "hidden": {
+                "leadership": 6,
+                "ethics": 2
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Leave them and focus on willing families",
+            "description": "Efficiency, but abandon the vulnerable.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -10
+              },
+              "relationships": {
+                "elders": -8
+              },
+              "hidden": {
+                "ethics": -15,
+                "leadership": -10
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "decision",
+        "text": "Hour 12: Supplies are short. You have food, water, medicine, but not enough for everyone.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Prioritize children, elderly, and pregnant women",
+            "description": "Triage by vulnerability.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "trust": 10,
+                "energy": -4
+              },
+              "relationships": {
+                "neighbors": 10
+              },
+              "hidden": {
+                "ethics": 15,
+                "leadership": 10,
+                "resource_optimization": 8
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c2",
+            "title": "Distribute equally to all households",
+            "description": "Fair share, but vulnerable get less.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": 2
+              },
+              "hidden": {
+                "ethics": 4,
+                "resource_optimization": -4
+              }
+            },
+            "next": "n4"
+          },
+          {
+            "id": "c3",
+            "title": "Give more to families who helped in preparation",
+            "description": "Reward effort, but punish others.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -6
+              },
+              "relationships": {
+                "neighbors": -6
+              },
+              "hidden": {
+                "ethics": -8,
+                "leadership": -6
+              }
+            },
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "type": "random",
+        "text": "Hour 18: The storm hits harder than predicted. A roof collapses.",
+        "effects": {
+          "resources": {
+            "health": -6,
+            "energy": -6,
+            "time": -2
+          }
+        },
+        "next": "n5"
+      },
+      {
+        "id": "n5",
+        "type": "decision",
+        "text": "Crisis: Roof collapse, people injured, storm ongoing. What do you do?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Organize rescue team, move injured to safe shelter, continue monitoring",
+            "description": "Multi-thread crisis response.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "energy": -8,
+                "trust": 10
+              },
+              "relationships": {
+                "neighbors": 10,
+                "friends": 8
+              },
+              "hidden": {
+                "adaptability": 15,
+                "leadership": 15,
+                "ethics": 10
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c2",
+            "title": "Focus only on rescue, ignore storm monitoring",
+            "description": "Rescue priority, but new danger.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": -6,
+                "health": -4
+              },
+              "relationships": {
+                "neighbors": 6
+              },
+              "hidden": {
+                "risk_management": -4,
+                "adaptability": 6
+              }
+            },
+            "next": "n6"
+          },
+          {
+            "id": "c3",
+            "title": "Wait for official rescue teams",
+            "description": "Pass responsibility, delay help.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -8,
+                "health": -4
+              },
+              "relationships": {
+                "neighbors": -8
+              },
+              "hidden": {
+                "leadership": -12,
+                "ethics": -10
+              }
+            },
+            "next": "n6"
+          }
+        ]
+      },
+      {
+        "id": "n6",
+        "type": "decision",
+        "text": "Aftermath: Rebuilding begins. What is your first focus?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Build a community emergency fund and stronger shelter",
+            "description": "Future resilience.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -2000,
+                "knowledge": 8
+              },
+              "relationships": {
+                "neighbors": 10,
+                "elders": 8
+              },
+              "hidden": {
+                "prediction": 12,
+                "planning": 12,
+                "resource_optimization": 10
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Rebuild exactly as before",
+            "description": "Restore normality, ignore future risk.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -1500
+              },
+              "hidden": {
+                "prediction": -4,
+                "planning": -2
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Leave the neighborhood and move elsewhere",
+            "description": "Personal survival, abandon community.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -10
+              },
+              "relationships": {
+                "neighbors": -10,
+                "friends": -8
+              },
+              "hidden": {
+                "ethics": -15,
+                "leadership": -15
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The storm passes. The community is scarred but standing. Some leaders are made in crisis.",
+        "reflection": [
+          "What was the most urgent versus the most important decision?",
+          "How does preparation reduce panic?"
+        ]
+      }
+    ]
+  }
+]

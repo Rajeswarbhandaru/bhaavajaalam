@@ -1,0 +1,517 @@
+/* ============================================
+   HIDDEN MATHS — script.js
+   Production-ready vanilla JavaScript
+   Tech: HTML5 + CSS3 + Vanilla JS
+   ============================================ */
+
+(function() {
+  'use strict';
+
+  // ============================================
+  // DATA
+  // ============================================
+  const mysteries = [
+    {
+      id: '001',
+      icon: '🏏',
+      title: 'Cricket Ball Speed',
+      question: 'How fast is that ball really travelling — and how do they measure it without a radar gun?',
+      difficulty: 'easy',
+      time: '8 min',
+      topics: 'Speed, Distance, Time',
+      color: 'var(--accent-cyan)',
+      borderAccent: 'rgba(0, 217, 255, 0.3)',
+      bgAccent: 'rgba(0, 217, 255, 0.06)'
+    },
+    {
+      id: '002',
+      icon: '🚲',
+      title: 'Bike Gears',
+      question: 'Why do you change gears going uphill — and what does that have to do with multiplication?',
+      difficulty: 'easy',
+      time: '10 min',
+      topics: 'Ratios, Multiplication',
+      color: 'var(--accent-lime)',
+      borderAccent: 'rgba(92, 255, 133, 0.3)',
+      bgAccent: 'rgba(92, 255, 133, 0.06)'
+    },
+    {
+      id: '003',
+      icon: '❄️',
+      title: 'Air Conditioner',
+      question: 'How does the AC know when to stop — and why is 24 degrees not just a guess?',
+      difficulty: 'medium',
+      time: '12 min',
+      topics: 'Temperature, Thermodynamics',
+      color: 'var(--accent-gold)',
+      borderAccent: 'rgba(255, 200, 87, 0.3)',
+      bgAccent: 'rgba(255, 200, 87, 0.06)'
+    },
+    {
+      id: '004',
+      icon: '🚿',
+      title: 'Washing Machine',
+      question: 'How does the drum spin your clothes dry — and what shape is hiding in the motion?',
+      difficulty: 'medium',
+      time: '11 min',
+      topics: 'Circles, Rotation, Force',
+      color: 'var(--accent-pink)',
+      borderAccent: 'rgba(255, 92, 171, 0.3)',
+      bgAccent: 'rgba(255, 92, 171, 0.06)'
+    },
+    {
+      id: '005',
+      icon: '📱',
+      title: 'GPS Navigation',
+      question: 'How does your phone know exactly where you are — using invisible signals from space?',
+      difficulty: 'medium',
+      time: '14 min',
+      topics: 'Coordinates, Triangulation',
+      color: 'var(--accent-violet)',
+      borderAccent: 'rgba(124, 92, 255, 0.3)',
+      bgAccent: 'rgba(124, 92, 255, 0.06)'
+    },
+    {
+      id: '006',
+      icon: '🚀',
+      title: 'Rocket Launch',
+      question: 'Why do rockets need stages — and how much fuel is needed to escape Earth?',
+      difficulty: 'hard',
+      time: '16 min',
+      topics: 'Exponents, Mass, Velocity',
+      color: 'var(--accent-cyan)',
+      borderAccent: 'rgba(0, 217, 255, 0.3)',
+      bgAccent: 'rgba(0, 217, 255, 0.06)'
+    },
+    {
+      id: '007',
+      icon: '🌈',
+      title: 'Rainbow Formation',
+      question: 'Why are there exactly seven colours — and what angle does sunlight need to bend?',
+      difficulty: 'medium',
+      time: '10 min',
+      topics: 'Angles, Refraction, Wavelength',
+      color: 'var(--accent-pink)',
+      borderAccent: 'rgba(255, 92, 171, 0.3)',
+      bgAccent: 'rgba(255, 92, 171, 0.06)'
+    },
+    {
+      id: '008',
+      icon: '🏦',
+      title: 'ATM Machine',
+      question: 'How does the ATM give you the exact notes — and never make a counting mistake?',
+      difficulty: 'easy',
+      time: '9 min',
+      topics: 'Division, Combinations',
+      color: 'var(--accent-gold)',
+      borderAccent: 'rgba(255, 200, 87, 0.3)',
+      bgAccent: 'rgba(255, 200, 87, 0.06)'
+    },
+    {
+      id: '009',
+      icon: '⚙️',
+      title: 'Electric Fan',
+      question: 'How does the fan push air without moving forward — and what shape is the blade?',
+      difficulty: 'easy',
+      time: '8 min',
+      topics: 'Angles, Spirals, Airflow',
+      color: 'var(--accent-lime)',
+      borderAccent: 'rgba(92, 255, 133, 0.3)',
+      bgAccent: 'rgba(92, 255, 133, 0.06)'
+    }
+  ];
+
+  const mathSymbols = ['∑', 'π', '√', '∞', '∫', 'Δ', 'θ', 'λ', '≈', '≠', '±', '÷', '×', '²', '³', '∂', '∇', '∴', '∵', '∠', '⊥', '∥', '∪', '∩', '⊂', '∈', '∀', '∃', '∅', 'ℵ'];
+
+  // ============================================
+  // DOM REFERENCES
+  // ============================================
+  const mysteriesGrid = document.getElementById('mysteriesGrid');
+  const floatingSymbolsContainer = document.getElementById('floatingSymbols');
+  const particleContainer = document.getElementById('particleContainer');
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const navLinks = document.getElementById('navLinks');
+  const todaysCard = document.getElementById('todaysCard');
+  const startBtn = document.getElementById('startExploringBtn');
+
+  // ============================================
+  // UTILITY FUNCTIONS
+  // ============================================
+  function randomBetween(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  // ============================================
+  // FLOATING MATHEMATICAL SYMBOLS
+  // ============================================
+  function spawnFloatingSymbol() {
+    const symbol = document.createElement('span');
+    symbol.className = 'floating-symbol';
+    symbol.textContent = mathSymbols[Math.floor(Math.random() * mathSymbols.length)];
+    symbol.style.left = randomBetween(0, 100) + '%';
+    symbol.style.fontSize = randomBetween(0.9, 2.2) + 'rem';
+    symbol.style.animationDuration = randomBetween(15, 35) + 's';
+    symbol.style.animationDelay = randomBetween(0, 5) + 's';
+    symbol.style.opacity = randomBetween(0.08, 0.22);
+    floatingSymbolsContainer.appendChild(symbol);
+
+    const duration = parseFloat(symbol.style.animationDuration) + parseFloat(symbol.style.animationDelay);
+    setTimeout(() => {
+      if (symbol.parentNode) symbol.remove();
+    }, duration * 1000);
+  }
+
+  function initFloatingSymbols() {
+    const initialCount = window.innerWidth < 768 ? 8 : 15;
+    for (let i = 0; i < initialCount; i++) {
+      const symbol = document.createElement('span');
+      symbol.className = 'floating-symbol';
+      symbol.textContent = mathSymbols[Math.floor(Math.random() * mathSymbols.length)];
+      symbol.style.left = randomBetween(0, 100) + '%';
+      symbol.style.fontSize = randomBetween(0.9, 2.2) + 'rem';
+      symbol.style.animationDuration = randomBetween(15, 35) + 's';
+      symbol.style.animationDelay = randomBetween(-20, 0) + 's';
+      symbol.style.opacity = randomBetween(0.08, 0.22);
+      floatingSymbolsContainer.appendChild(symbol);
+    }
+    setInterval(spawnFloatingSymbol, 3000);
+  }
+
+  // ============================================
+  // PARTICLE SYSTEM
+  // ============================================
+  function createParticle() {
+    const particle = document.createElement('div');
+    const size = randomBetween(2, 5);
+    const isGlow = Math.random() > 0.7;
+    particle.style.cssText = `
+      position: absolute;
+      width: ${size}px;
+      height: ${size}px;
+      border-radius: 50%;
+      background: ${isGlow ? 'rgba(0, 217, 255, 0.6)' : 'rgba(255, 255, 255, 0.15)'};
+      ${isGlow ? 'box-shadow: 0 0 6px rgba(0, 217, 255, 0.4);' : ''}
+      left: ${randomBetween(0, 100)}%;
+      top: ${randomBetween(0, 100)}%;
+      pointer-events: none;
+      animation: particleFloat ${randomBetween(20, 40)}s ease-in-out infinite;
+      animation-delay: ${randomBetween(-20, 0)}s;
+    `;
+    particleContainer.appendChild(particle);
+  }
+
+  function initParticles() {
+    const count = window.innerWidth < 768 ? 25 : 50;
+    for (let i = 0; i < count; i++) {
+      createParticle();
+    }
+  }
+
+  // Add particle float keyframes dynamically
+  const particleStyle = document.createElement('style');
+  particleStyle.textContent = `
+    @keyframes particleFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+      25% { transform: translate(${randomBetween(20, 60)}px, ${randomBetween(-40, -10)}px) scale(1.2); opacity: 0.8; }
+      50% { transform: translate(${randomBetween(-30, 30)}px, ${randomBetween(-60, -20)}px) scale(0.8); opacity: 0.5; }
+      75% { transform: translate(${randomBetween(-60, -20)}px, ${randomBetween(-30, 10)}px) scale(1.1); opacity: 0.6; }
+    }
+  `;
+  document.head.appendChild(particleStyle);
+
+  // ============================================
+  // MYSTERY CARDS GENERATION
+  // ============================================
+  function renderMysteryCard(mystery) {
+    const card = document.createElement('div');
+    card.className = 'mystery-card glass';
+    card.setAttribute('role', 'listitem');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', 'Mystery ' + mystery.id + ': ' + mystery.title + '. ' + mystery.question + ' Difficulty: ' + mystery.difficulty + '. Time: ' + mystery.time);
+    card.style.setProperty('--card-accent', mystery.color);
+    card.style.borderColor = mystery.borderAccent;
+    card.style.background = mystery.bgAccent;
+
+    const diffClass = mystery.difficulty;
+    const diffLabel = mystery.difficulty.charAt(0).toUpperCase() + mystery.difficulty.slice(1);
+
+    card.innerHTML = `
+      <div class="mystery-card-header">
+        <span class="mystery-icon" aria-hidden="true">${mystery.icon}</span>
+        <span class="difficulty-badge ${diffClass}">${diffLabel}</span>
+      </div>
+      <div class="mystery-card-body">
+        <span class="mystery-id" style="font-size:0.75rem;font-weight:700;color:${mystery.color};margin-bottom:0.25rem;display:block;">Mystery ${mystery.id}</span>
+        <h3 class="mystery-card-title">${mystery.title}</h3>
+        <p class="mystery-card-question">${mystery.question}</p>
+      </div>
+      <div class="mystery-card-footer">
+        <div class="mystery-meta">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+            </svg>
+            ${mystery.time}
+          </span>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+            ${mystery.topics}
+          </span>
+        </div>
+        <button class="mystery-play" aria-label="Start Mystery ${mystery.id} ${mystery.title}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+      </div>
+    `;
+
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.mystery-play')) {
+        e.stopPropagation();
+        launchMystery(mystery.id);
+      } else {
+        launchMystery(mystery.id);
+      }
+    });
+
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        launchMystery(mystery.id);
+      }
+    });
+
+    return card;
+  }
+
+  function renderMysteries() {
+    mysteriesGrid.innerHTML = '';
+    mysteries.forEach(mystery => {
+      mysteriesGrid.appendChild(renderMysteryCard(mystery));
+    });
+  }
+
+  function launchMystery(id) {
+    window.location.href = 'mystery-001.html';
+  }
+
+  // ============================================
+  // CARD TILT EFFECT
+  // ============================================
+  function initCardTilt() {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
+    document.addEventListener('mousemove', (e) => {
+      const cards = document.querySelectorAll('.mystery-card');
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -4;
+        const rotateY = ((x - centerX) / centerX) * 4;
+
+        if (x >= -20 && x <= rect.width + 20 && y >= -20 && y <= rect.height + 20) {
+          card.style.transform = 'translateY(-8px) perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
+        } else {
+          card.style.transform = '';
+        }
+      });
+    });
+  }
+
+  // ============================================
+  // BUTTON RIPPLE EFFECT
+  // ============================================
+  function initButtonRipple() {
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const ripple = document.createElement('span');
+        ripple.style.cssText = `
+          position: absolute;
+          background: rgba(255, 255, 255, 0.35);
+          border-radius: 50%;
+          transform: scale(0);
+          animation: rippleAnim 0.6s ease-out forwards;
+          pointer-events: none;
+          width: ${Math.max(rect.width, rect.height) * 2}px;
+          height: ${Math.max(rect.width, rect.height) * 2}px;
+          left: ${x - Math.max(rect.width, rect.height)}px;
+          top: ${y - Math.max(rect.height, rect.height)}px;
+        `;
+        this.style.position = 'relative';
+        this.style.overflow = 'hidden';
+        this.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+  }
+
+  const rippleStyle = document.createElement('style');
+  rippleStyle.textContent = `
+    @keyframes rippleAnim {
+      to { transform: scale(1); opacity: 0; }
+    }
+  `;
+  document.head.appendChild(rippleStyle);
+
+  // ============================================
+  // MOBILE MENU
+  // ============================================
+  function initMobileMenu() {
+    if (!mobileMenuToggle) return;
+    mobileMenuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      mobileMenuToggle.classList.toggle('active', isOpen);
+      mobileMenuToggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    navLinks.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        mobileMenuToggle.classList.remove('active');
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.main-nav') && navLinks.classList.contains('open')) {
+        navLinks.classList.remove('open');
+        mobileMenuToggle.classList.remove('active');
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // ============================================
+  // SCROLL REVEAL
+  // ============================================
+  function initScrollReveal() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.mystery-card, .section-header, .discovery-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+      observer.observe(el);
+    });
+
+    const revealStyle = document.createElement('style');
+    revealStyle.textContent = `
+      .revealed { opacity: 1 !important; transform: translateY(0) !important; }
+    `;
+    document.head.appendChild(revealStyle);
+  }
+
+  // ============================================
+  // NAVBAR SCROLL EFFECT
+  // ============================================
+  function initNavbarScroll() {
+    const nav = document.querySelector('.main-nav');
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (window.scrollY > 40) {
+            nav.style.background = 'rgba(10, 14, 39, 0.85)';
+            nav.style.backdropFilter = 'blur(20px)';
+          } else {
+            nav.style.background = '';
+            nav.style.backdropFilter = '';
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+
+  // ============================================
+  // TODAY'S CARD
+  // ============================================
+  function initTodaysCard() {
+    if (!todaysCard) return;
+    todaysCard.addEventListener('click', () => launchMystery('001'));
+    todaysCard.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        launchMystery('001');
+      }
+    });
+  }
+
+  // ============================================
+  // START BUTTON
+  // ============================================
+  function initStartButton() {
+    if (!startBtn) return;
+    startBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById('explore');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
+  // ============================================
+  // KEYBOARD NAV
+  // ============================================
+  function initKeyboardNav() {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+        navLinks.classList.remove('open');
+        mobileMenuToggle.classList.remove('active');
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // ============================================
+  // PERFORMANCE
+  // ============================================
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      document.querySelectorAll('.floating-symbol').forEach(el => el.style.animationPlayState = 'paused');
+    } else {
+      document.querySelectorAll('.floating-symbol').forEach(el => el.style.animationPlayState = 'running');
+    }
+  });
+
+  // ============================================
+  // INIT
+  // ============================================
+  function init() {
+    initFloatingSymbols();
+    initParticles();
+    renderMysteries();
+    initCardTilt();
+    initButtonRipple();
+    initMobileMenu();
+    initScrollReveal();
+    initNavbarScroll();
+    initTodaysCard();
+    initStartButton();
+    initKeyboardNav();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mystery 003: Air Conditioner — Discover how the thermostat knows exactly when to stop.">
+    <title>Mystery 003 — Air Conditioner | Hidden Maths</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mystery-003.css">
+</head>
+<body>
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="gradient-layer"></div>
+        <div class="particle-container" id="particleContainer"></div>
+        <div class="floating-symbols" id="floatingSymbols"></div>
+    </div>
+
+    <nav class="mystery-nav glass" role="navigation" aria-label="Mystery navigation">
+        <div class="nav-container">
+            <a href="index.html" class="nav-back" aria-label="Return to home screen">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back</span>
+            </a>
+            <div class="mystery-progress">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-label" id="progressLabel">Step 1 of 9</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="mystery-main" id="mysteryMain">
+        <section class="mystery-step active" id="step-curiosity" aria-labelledby="step1-title">
+            <div class="step-content">
+                <span class="mystery-tag">Mystery 003</span>
+                <h1 class="step-title" id="step1-title">Air Conditioner</h1>
+                <p class="step-hook">How does the AC know when to stop — and why is 24 degrees not just a guess?</p>
+                <div class="curiosity-visual" aria-hidden="true">
+                    <div class="ac-scene">
+                        <div class="ac-unit">
+                            <div class="ac-body"></div>
+                            <div class="ac-vents"></div>
+                            <div class="ac-display" id="acDisplay">24°C</div>
+                        </div>
+                        <div class="ac-airflow">
+                            <div class="air-particle"></div>
+                            <div class="air-particle"></div>
+                            <div class="air-particle"></div>
+                            <div class="air-particle"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="step-hint">The thermostat hides a secret buffer zone that keeps the room from wobbling.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-observation" aria-labelledby="step2-title">
+            <div class="step-content">
+                <span class="step-tag">Observation</span>
+                <h2 class="step-title" id="step2-title">Watch the Temperature</h2>
+                <p class="step-desc">You set the AC to 24°C. The room cools down. But the AC does not stop exactly at 24°C. It stops before.</p>
+                <div class="observation-stage" id="observationStage" aria-hidden="true">
+                    <div class="temp-timeline">
+                        <div class="temp-marker start">30°C</div>
+                        <div class="temp-marker mid">26°C</div>
+                        <div class="temp-marker target">24°C</div>
+                        <div class="temp-marker stop">23°C</div>
+                        <div class="temp-arrow"></div>
+                    </div>
+                    <div class="ac-status-indicator">
+                        <div class="status-light on" id="statusOn">AC ON</div>
+                        <div class="status-light off" id="statusOff">AC OFF</div>
+                    </div>
+                </div>
+                <div class="obs-facts" id="obsFacts">
+                    <div class="fact-card glass">
+                        <span class="fact-number">24°C</span>
+                        <span class="fact-label">Set point</span>
+                    </div>
+                    <div class="fact-card glass">
+                        <span class="fact-number">±1°C</span>
+                        <span class="fact-label">Dead band</span>
+                    </div>
+                    <div class="fact-card glass">
+                        <span class="fact-number">23–25°C</span>
+                        <span class="fact-label">Control range</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-experiment" aria-labelledby="step3-title">
+            <div class="step-content">
+                <span class="step-tag">Experiment</span>
+                <h2 class="step-title" id="step3-title">Run the Thermostat</h2>
+                <p class="step-desc">Set your target temperature and dead band. Watch the room cool. The AC will stop early — then wait.</p>
+                <div class="experiment-stage glass" id="experimentStage">
+                    <div class="thermostat-panel">
+                        <div class="thermostat-display">
+                            <div class="room-temp" id="roomTemp">30.0</div>
+                            <span class="temp-unit">°C</span>
+                            <div class="ac-state" id="acState">AC: ON</div>
+                        </div>
+                        <div class="thermostat-controls">
+                            <div class="control-group">
+                                <label>Set Point</label>
+                                <div class="control-value" id="setPointDisplay">24°C</div>
+                                <input type="range" class="thermo-slider" id="setPointSlider" min="20" max="28" value="24" step="1">
+                            </div>
+                            <div class="control-group">
+                                <label>Dead Band</label>
+                                <div class="control-value" id="deadBandDisplay">±1°C</div>
+                                <input type="range" class="thermo-slider" id="deadBandSlider" min="0.5" max="2" value="1" step="0.5">
+                            </div>
+                        </div>
+                        <div class="thermostat-visual" id="thermostatVisual">
+                            <div class="temp-bar">
+                                <div class="temp-fill" id="tempFill"></div>
+                                <div class="temp-target-line" id="targetLine"></div>
+                                <div class="temp-band" id="tempBand"></div>
+                            </div>
+                            <div class="temp-labels">
+                                <span>20°C</span>
+                                <span>24°C</span>
+                                <span>28°C</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-readout">
+                        <div class="readout-item"><span class="readout-label">Room Temp</span><span class="readout-value" id="readoutTemp">30.0°C</span></div>
+                        <div class="readout-item"><span class="readout-label">Status</span><span class="readout-value" id="readoutStatus">Cooling</span></div>
+                        <div class="readout-item"><span class="readout-label">Cycles</span><span class="readout-value" id="readoutCycles">0</span></div>
+                    </div>
+                    <div class="exp-actions">
+                        <button class="btn btn-primary" id="btnStartSim">Start</button>
+                        <button class="btn btn-primary" id="btnStopSim" disabled>Stop</button>
+                        <button class="btn btn-secondary" id="btnResetSim">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-prediction" aria-labelledby="step4-title">
+            <div class="step-content">
+                <span class="step-tag">Prediction</span>
+                <h2 class="step-title" id="step4-title">Where Does It Stop?</h2>
+                <p class="step-desc">You set the AC to 24°C. The dead band is 1°C. At what temperature does the compressor shut off?</p>
+                <div class="prediction-gauge glass">
+                    <div class="gauge-display">
+                        <span class="gauge-value" id="gaugeValue">24</span>
+                        <span class="gauge-unit">°C</span>
+                    </div>
+                    <input type="range" class="gauge-slider" id="gaugeSlider" min="20" max="28" value="24" step="0.5" aria-label="Temperature prediction slider">
+                    <div class="gauge-labels"><span>20</span><span>24</span><span>28</span></div>
+                </div>
+                <p class="step-hint">Most people guess exactly 24°C. The engineers programmed it differently.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-discovery" aria-labelledby="step5-title">
+            <div class="step-content">
+                <span class="step-tag">Discovery</span>
+                <h2 class="step-title" id="step5-title">The Hidden Formula</h2>
+                <p class="step-desc">The thermostat does not aim for a single number. It aims for a comfortable zone.</p>
+                <div class="discovery-reveal glass" id="discoveryReveal">
+                    <div class="reveal-line">
+                        <span class="reveal-label">Set Point</span>
+                        <span class="reveal-arrow">±</span>
+                        <span class="reveal-label">Dead Band</span>
+                        <span class="reveal-arrow">=</span>
+                        <span class="reveal-label highlight">Control Zone</span>
+                    </div>
+                    <div class="reveal-formula" id="revealFormula">
+                        <span class="formula-num" id="formulaSet">24</span>
+                        <span class="formula-op">±</span>
+                        <span class="formula-num" id="formulaBand">1</span>
+                        <span class="formula-op">=</span>
+                        <span class="formula-res" id="formulaRes">23–25</span>
+                        <span class="formula-unit">°C</span>
+                    </div>
+                </div>
+                <p class="step-desc">This tiny buffer prevents the compressor from turning on and off every few seconds. It saves electricity and reduces wear.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-explanation" aria-labelledby="step6-title">
+            <div class="step-content">
+                <span class="step-tag">Explanation</span>
+                <h2 class="step-title" id="step6-title">How the Numbers Work</h2>
+                <div class="explanation-cards">
+                    <div class="explanation-card glass" id="explCard1">
+                        <div class="expl-number">1</div>
+                        <h3>The Set Point</h3>
+                        <p>You dial in <strong>24°C</strong> on the remote. This is the target temperature — the center of the comfort zone.</p>
+                        <div class="expl-visual setpoint-visual"><span class="setpoint-display">24°C</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard2">
+                        <div class="expl-number">2</div>
+                        <h3>The Dead Band</h3>
+                        <p>Engineers add a buffer of <strong>±1°C</strong>. The AC ignores tiny fluctuations inside this band. It is tolerance, not laziness.</p>
+                        <div class="expl-visual band-visual"><span class="band-display">±1°C</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard3">
+                        <div class="expl-number">3</div>
+                        <h3>Turn Off</h3>
+                        <p>When room temp drops to <strong>23°C</strong> (set point minus dead band), the compressor stops. The fan may still run.</p>
+                        <div class="expl-visual calc-visual">24 − 1 = 23</div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard4">
+                        <div class="expl-number">4</div>
+                        <h3>Turn On</h3>
+                        <p>When room temp rises to <strong>25°C</strong> (set point plus dead band), the compressor restarts. The cycle repeats.</p>
+                        <div class="expl-visual calc-visual">24 + 1 = 25</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-applications" aria-labelledby="step7-title">
+            <div class="step-content">
+                <span class="step-tag">Applications</span>
+                <h2 class="step-title" id="step7-title">Where Else Is This Hiding?</h2>
+                <p class="step-desc">The same control zone logic keeps every temperature-sensitive device from oscillating wildly.</p>
+                <div class="apps-grid">
+                    <div class="app-card glass"><div class="app-icon">🧊</div><h3>Refrigerator</h3><p>The fridge stops at 3°C and restarts at 6°C. The dead band keeps your food safe without burning out the motor.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🍳</div><h3>Oven</h3><p>An oven overshoots its target by a few degrees, then waits. The average temperature inside is what matters, not the exact moment.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🚿</div><h3>Water Heater</h3><p>Your geyser heats to 65°C, then waits until 55°C before reheating. That 10°C buffer saves massive energy.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🌡️</div><h3>Incubator</h3><p>Hospital baby incubators use dead bands as small as 0.1°C. Precision depends on the tolerance the patient can survive.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🧹</div><h3>Electric Iron</h3><p>The thermostat in an iron cycles on and off around the set temperature. The dead band stops the relay from chattering.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🌿</div><h3>Greenhouses</h3><p>Climate-controlled farms use the same zone logic. A 2°C buffer prevents heaters and coolers from fighting each other.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-challenge" aria-labelledby="step8-title">
+            <div class="step-content">
+                <span class="step-tag">Challenge</span>
+                <h2 class="step-title" id="step8-title">Thermostat Challenge</h2>
+                <p class="step-desc">Three questions. Use the control zone formula you discovered.</p>
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-question active" id="quizQ1">
+                        <p class="quiz-text">Set point is 24°C. Dead band is 1°C. At what temperature does the AC turn ON?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">23°C</button>
+                            <button class="quiz-option glass" data-correct="false">24°C</button>
+                            <button class="quiz-option glass" data-correct="true">25°C</button>
+                            <button class="quiz-option glass" data-correct="false">26°C</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ1"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ2">
+                        <p class="quiz-text">Room temperature is 23.5°C. Set point is 24°C. Dead band is 1°C. What is the AC doing?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">Cooling</button>
+                            <button class="quiz-option glass" data-correct="true">Off</button>
+                            <button class="quiz-option glass" data-correct="false">Heating</button>
+                            <button class="quiz-option glass" data-correct="false">Blasting</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ2"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ3">
+                        <p class="quiz-text">AC turns off at 22°C and turns on at 26°C. What is the set point and dead band?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">24°C, ±1°C</button>
+                            <button class="quiz-option glass" data-correct="true">24°C, ±2°C</button>
+                            <button class="quiz-option glass" data-correct="false">22°C, ±4°C</button>
+                            <button class="quiz-option glass" data-correct="false">26°C, ±2°C</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ3"></div>
+                    </div>
+                </div>
+                <div class="quiz-score glass" id="quizScore" style="display:none;">
+                    <span class="score-label">Your Score</span>
+                    <span class="score-value" id="scoreValue">0/3</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-celebration" aria-labelledby="step9-title">
+            <div class="step-content">
+                <div class="celebration-visual" id="celebrationVisual" aria-hidden="true"></div>
+                <div class="celebration-badge glass">
+                    <div class="badge-icon">🏆</div>
+                    <div class="badge-text">
+                        <span class="badge-title">Thermostat Expert</span>
+                        <span class="badge-desc">Mystery 003 Complete</span>
+                    </div>
+                </div>
+                <h2 class="step-title" id="step9-title">Mystery Solved!</h2>
+                <p class="step-desc">You started with a room. You ended with a formula that controls every temperature on the planet.</p>
+                <div class="celebration-stats">
+                    <div class="cstat glass"><span class="cstat-label">Mystery</span><span class="cstat-value">003</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Formula</span><span class="cstat-value">Set Point ± Dead Band</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Discovery</span><span class="cstat-value">23–25°C</span></div>
+                </div>
+                <div class="celebration-actions">
+                    <a href="index.html" class="btn btn-primary">Return to Home</a>
+                    <a href="mystery-003.html" class="btn btn-secondary">Play Again</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="mystery-controls glass" id="mysteryControls">
+        <button class="btn btn-secondary" id="prevBtn" style="display:none">Back</button>
+        <button class="btn btn-primary" id="nextBtn">Begin</button>
+    </div>
+
+    <script src="mystery-003.js"></script>
+</body>
+</html>

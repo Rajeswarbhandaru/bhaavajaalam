@@ -1,0 +1,3 @@
+window.Render={
+  el(tag,attrs={},children=[]){const node=document.createElement(tag);Object.entries(attrs).forEach(([k,v])=>{if(k==='class')node.className=v;else if(k.startsWith('on'))node.addEventListener(k.slice(2).toLowerCase(),v);else node.setAttribute(k,v)});(Array.isArray(children)?children:[children]).forEach(child=>{if(child==null)return;node.append(child.nodeType?child:document.createTextNode(String(child)))});return node;}
+};

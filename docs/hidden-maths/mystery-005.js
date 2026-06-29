@@ -1,0 +1,371 @@
+(function() {
+  'use strict';
+
+  const steps = [
+    'step-curiosity', 'step-observation', 'step-experiment',
+    'step-prediction', 'step-discovery', 'step-explanation',
+    'step-applications', 'step-challenge', 'step-celebration'
+  ];
+
+  const mathSymbols = ['∑', 'π', '√', '∞', '∫', 'Δ', 'θ', 'λ', '≈', '≠', '±', '÷', '×', '²', '³', '∂', '∇', '∴', '∵', '∠', '⊥', '∥', '∪', '∩', '⊂', '∈', '∀', '∃', '∅', 'ℵ'];
+  let currentStep = 0;
+  let quizScore = 0;
+  let quizAnswered = 0;
+
+  const progressFill = document.getElementById('progressFill');
+  const progressLabel = document.getElementById('progressLabel');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const floatingSymbolsContainer = document.getElementById('floatingSymbols');
+  const particleContainer = document.getElementById('particleContainer');
+  const quizScoreEl = document.getElementById('quizScore');
+  const scoreValue = document.getElementById('scoreValue');
+
+  function randomBetween(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function spawnFloatingSymbol() {
+    const symbol = document.createElement('span');
+    symbol.className = 'floating-symbol';
+    symbol.textContent = mathSymbols[Math.floor(Math.random() * mathSymbols.length)];
+    symbol.style.left = randomBetween(0, 100) + '%';
+    symbol.style.fontSize = randomBetween(0.9, 2.2) + 'rem';
+    symbol.style.animationDuration = randomBetween(15, 35) + 's';
+    symbol.style.animationDelay = randomBetween(0, 5) + 's';
+    symbol.style.opacity = randomBetween(0.08, 0.22);
+    floatingSymbolsContainer.appendChild(symbol);
+    const duration = parseFloat(symbol.style.animationDuration) + parseFloat(symbol.style.animationDelay);
+    setTimeout(() => { if (symbol.parentNode) symbol.remove(); }, duration * 1000);
+  }
+
+  function initFloatingSymbols() {
+    const count = window.innerWidth < 768 ? 6 : 12;
+    for (let i = 0; i < count; i++) {
+      const symbol = document.createElement('span');
+      symbol.className = 'floating-symbol';
+      symbol.textContent = mathSymbols[Math.floor(Math.random() * mathSymbols.length)];
+      symbol.style.left = randomBetween(0, 100) + '%';
+      symbol.style.fontSize = randomBetween(0.9, 2.2) + 'rem';
+      symbol.style.animationDuration = randomBetween(15, 35) + 's';
+      symbol.style.animationDelay = randomBetween(-20, 0) + 's';
+      symbol.style.opacity = randomBetween(0.08, 0.22);
+      floatingSymbolsContainer.appendChild(symbol);
+    }
+    setInterval(spawnFloatingSymbol, 4000);
+  }
+
+  function createParticle() {
+    const particle = document.createElement('div');
+    const size = randomBetween(2, 5);
+    const isGlow = Math.random() > 0.7;
+    particle.style.cssText = `
+      position: absolute;
+      width: ${size}px;
+      height: ${size}px;
+      border-radius: 50%;
+      background: ${isGlow ? 'rgba(157, 0, 255, 0.6)' : 'rgba(255, 255, 255, 0.15)'};
+      ${isGlow ? 'box-shadow: 0 0 6px rgba(157, 0, 255, 0.4);' : ''}
+      left: ${randomBetween(0, 100)}%;
+      top: ${randomBetween(0, 100)}%;
+      pointer-events: none;
+      animation: particleFloat ${randomBetween(20, 40)}s ease-in-out infinite;
+      animation-delay: ${randomBetween(-20, 0)}s;
+    `;
+    particleContainer.appendChild(particle);
+  }
+
+  function initParticles() {
+    const count = window.innerWidth < 768 ? 20 : 40;
+    for (let i = 0; i < count; i++) createParticle();
+  }
+
+  function updateProgress() {
+    const pct = ((currentStep + 1) / steps.length) * 100;
+    progressFill.style.width = pct + '%';
+    progressLabel.textContent = 'Step ' + (currentStep + 1) + ' of ' + steps.length;
+    prevBtn.style.display = currentStep === 0 ? 'none' : 'inline-flex';
+    nextBtn.textContent = currentStep === steps.length - 1 ? 'Finish' : 'Next';
+  }
+
+  function showStep(index) {
+    document.querySelectorAll('.mystery-step').forEach((el, i) => {
+      el.classList.remove('active');
+      if (i === index) {
+        el.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+    updateProgress();
+ }
+
+  function nextStep() {
+    if (currentStep < steps.length - 1) {
+      currentStep++;
+      showStep(currentStep);
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 0) {
+      currentStep--;
+      showStep(currentStep);
+    }
+  }
+
+  // ============================================
+  // MAP / TRILATERATION EXPERIMENT
+  // ============================================
+  const canvas = document.getElementById('mapCanvas');
+  const ctx = canvas.getContext('2d');
+  const satA = document.getElementById('satA');
+  const satB = document.getElementById('satB');
+  const satC = document.getElementById('satC');
+  const satARead = document.getElementById('satARead');
+  const satBRead = document.getElementById('satBRead');
+  const satCRead = document.getElementById('satCRead');
+  const btnLocate = document.getElementById('btnLocate');
+  const btnResetMap = document.getElementById('btnResetMap');
+  const locResult = document.getElementById('locResult');
+  const locCoords = document.getElementById('locCoords');
+
+  const W = 400;
+  const H = 400;
+
+  // Satellite positions (fixed on canvas)
+  const sats = [
+    { x: 100, y: 100, color: '#00d9ff', label: 'A' },
+    { x: 300, y: 100, color: '#ffc857', label: 'B' },
+    { x: 200, y: 300, color: '#5cff85', label: 'C' }
+  ];
+
+  function drawMap() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+    ctx.fillRect(0, 0, W, H);
+
+    // Grid lines
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= W; i += 40) {
+      ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, H); ctx.stroke();
+    }
+    for (let i = 0; i <= H; i += 40) {
+      ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(W, i); ctx.stroke();
+    }
+
+    // Draw satellite circles
+    const rA = parseInt(satA.value, 10);
+    const rB = parseInt(satB.value, 10);
+    const rC = parseInt(satC.value, 10);
+
+    ctx.lineWidth = 2;
+    ctx.setLineDash([6, 4]);
+
+    // Circle A
+    ctx.strokeStyle = sats[0].color;
+    ctx.beginPath(); ctx.arc(sats[0].x, sats[0].y, rA, 0, Math.PI * 2); ctx.stroke();
+
+    // Circle B
+    ctx.strokeStyle = sats[1].color;
+    ctx.beginPath(); ctx.arc(sats[1].x, sats[1].y, rB, 0, Math.PI * 2); ctx.stroke();
+
+    // Circle C
+    ctx.strokeStyle = sats[2].color;
+    ctx.beginPath(); ctx.arc(sats[2].x, sats[2].y, rC, 0, Math.PI * 2); ctx.stroke();
+
+    ctx.setLineDash([]);
+
+    // Draw satellites
+    sats.forEach(s => {
+      ctx.fillStyle = s.color;
+      ctx.beginPath(); ctx.arc(s.x, s.y, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(s.label, s.x, s.y);
+    });
+
+    // Calculate intersection (simple approximation)
+    // We'll find the point that minimizes the difference between
+    // distance to each sat and the reported radius
+    let bestX = 0, bestY = 0, bestErr = Infinity;
+    for (let x = 0; x < W; x += 2) {
+      for (let y = 0; y < H; y += 2) {
+        const dA = Math.sqrt((x - sats[0].x) ** 2 + (y - sats[0].y) ** 2);
+        const dB = Math.sqrt((x - sats[1].x) ** 2 + (y - sats[1].y) ** 2);
+        const dC = Math.sqrt((x - sats[2].x) ** 2 + (y - sats[2].y) ** 2);
+        const err = Math.abs(dA - rA) + Math.abs(dB - rB) + Math.abs(dC - rC);
+        if (err < bestErr) {
+          bestErr = err;
+          bestX = x;
+          bestY = y;
+        }
+      }
+    }
+
+    // Draw intersection point (hidden unless located)
+    if (locResult.style.display !== 'none') {
+      ctx.fillStyle = '#ff5cab';
+      ctx.beginPath(); ctx.arc(bestX, bestY, 10, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 14px sans-serif';
+      ctx.fillText('You', bestX, bestY - 15);
+      locCoords.textContent = 'X: ' + bestX + ', Y: ' + bestY;
+    }
+  }
+
+  function updateSatReadouts() {
+    satARead.textContent = satA.value + ' km';
+    satBRead.textContent = satB.value + ' km';
+    satCRead.textContent = satC.value + ' km';
+    drawMap();
+  }
+
+  satA.addEventListener('input', updateSatReadouts);
+  satB.addEventListener('input', updateSatReadouts);
+  satC.addEventListener('input', updateSatReadouts);
+
+  btnLocate.addEventListener('click', () => {
+    locResult.style.display = 'inline-flex';
+    drawMap();
+  });
+
+  btnResetMap.addEventListener('click', () => {
+    locResult.style.display = 'none';
+    satA.value = 120;
+    satB.value = 100;
+    satC.value = 110;
+    updateSatReadouts();
+  });
+
+  // ============================================
+  // PREDICTION
+  // ============================================
+  const gaugeSlider = document.getElementById('gaugeSlider');
+  const gaugeValue = document.getElementById('gaugeValue');
+
+  function updateGauge() {
+    gaugeValue.textContent = gaugeSlider.value;
+  }
+
+  gaugeSlider.addEventListener('input', function() {
+    AudioEngine.tick();
+    updateGauge();
+  });
+
+  // ============================================
+  // QUIZ
+  // ============================================
+  const quizQuestions = [
+    { id: 'quizQ1', feedback: 'feedbackQ1', correct: 2 },
+    { id: 'quizQ2', feedback: 'feedbackQ2', correct: 2 },
+    { id: 'quizQ3', feedback: 'feedbackQ3', correct: 2 }
+  ];
+
+  function initQuiz() {
+    quizQuestions.forEach((q, idx) => {
+      const container = document.getElementById(q.id);
+      const options = container.querySelectorAll('.quiz-option');
+      const feedback = document.getElementById(q.feedback);
+
+      options.forEach((opt, optIdx) => {
+        opt.addEventListener('click', () => {
+          if (opt.classList.contains('disabled')) return;
+          const isCorrect = optIdx === q.correct;
+          options.forEach(o => o.classList.add('disabled'));
+          opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+          AudioEngine.correct();
+          feedback.className = 'quiz-feedback ' + (isCorrect ? 'correct' : 'incorrect');
+          if (!isCorrect) {
+            AudioEngine.incorrect();
+            options[q.correct].classList.add('correct');
+          }
+          feedback.textContent = isCorrect ? 'Correct! Well done.' : 'Not quite. The answer is highlighted.';
+          feedback.className = 'quiz-feedback ' + (isCorrect ? 'correct' : 'incorrect');
+          quizAnswered++;
+          if (quizAnswered >= quizQuestions.length) {
+            showScore();
+          } else {
+            setTimeout(() => nextQuizQuestion(idx), 1200);
+          }
+        });
+      });
+    });
+  }
+
+  function nextQuizQuestion(currentIdx) {
+    const current = document.getElementById(quizQuestions[currentIdx].id);
+    current.classList.remove('active');
+    if (currentIdx + 1 < quizQuestions.length) {
+      document.getElementById(quizQuestions[currentIdx + 1].id).classList.add('active');
+    }
+  }
+
+  function showScore() {
+    quizScoreEl.style.display = 'inline-flex';
+    scoreValue.textContent = quizScore + '/' + quizQuestions.length;
+  }
+
+  // ============================================
+  // CELEBRATION
+  // ============================================
+  const celebrationVisual = document.getElementById('celebrationVisual');
+
+  function initCelebration() {
+    AudioEngine.celebrate();
+    const colors = ['var(--accent-violet)', 'var(--accent-gold)', 'var(--accent-cyan)', 'var(--accent-lime)', 'var(--accent-pink)'];
+    for (let i = 0; i < 40; i++) {
+      const p = document.createElement('div');
+      p.className = 'celebration-particle';
+      p.style.left = randomBetween(0, 100) + '%';
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.width = randomBetween(6, 12) + 'px';
+      p.style.height = p.style.width;
+      p.style.animationDelay = randomBetween(0, 2) + 's';
+      p.style.animationDuration = randomBetween(2, 4) + 's';
+      celebrationVisual.appendChild(p);
+   }
+  }
+
+  // ============================================
+  // BUTTON LISTENERS
+  // ============================================
+  nextBtn.addEventListener('click', function() {
+    var lbl = nextBtn.textContent.trim().toLowerCase();
+    if (lbl === 'begin') { AudioEngine.begin(); }
+    else if (lbl === 'finish') { AudioEngine.celebrate(); }
+    else { AudioEngine.next(); }
+    nextStep();
+  });
+  nextBtn.addEventListener('mouseenter', AudioEngine.hover);
+  prevBtn.addEventListener('click', function() {
+    AudioEngine.back();
+    prevStep();
+  });
+  prevBtn.addEventListener('mouseenter', AudioEngine.hover);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'Enter') nextStep();
+    if (e.key === 'ArrowLeft') prevStep();
+  });
+
+  // ============================================
+  // INIT
+  // ============================================
+  function init() {
+    initFloatingSymbols();
+    initParticles();
+    drawMap();
+    initQuiz();
+    initCelebration();
+    updateProgress();
+ }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

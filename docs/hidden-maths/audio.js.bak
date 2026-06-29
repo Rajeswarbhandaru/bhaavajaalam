@@ -1,0 +1,228 @@
+/**
+ * HIDDEN MATHS — Audio Engine
+ * Unique synthesized sound for every action
+ */
+
+const AudioEngine = (function() {
+  'use strict';
+
+  let ctx = null;
+  let masterGain = null;
+  let isMuted = false;
+  let isInitialized = false;
+  const MASTER_VOLUME = 0.35;
+
+  function init() {
+    if (isInitialized) return;
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      ctx = new AudioContext();
+      masterGain = ctx.createGain();
+      masterGain.gain.value = MASTER_VOLUME;
+      masterGain.connect(ctx.destination);
+      isInitialized = true;
+    } catch (e) {
+      console.warn('Web Audio API not supported');
+    }
+  }
+
+  function ensureInit() {
+    if (!isInitialized) init();
+    if (ctx && ctx.state === 'suspended') ctx.resume();
+  }
+
+  // Helper: play a single note with envelope
+  function note({ freq, type = 'sine', duration, volume = 1, attack = 0.01, decay, slideTo = null, delay = 0 }) {
+    if (!ctx || isMuted) return;
+    const t = ctx.currentTime + delay;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, t);
+    if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, t + duration);
+
+    const rel = decay !== undefined ? decay : duration * 0.7;
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(volume, t + attack);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + attack + rel);
+
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start(t);
+    osc.stop(t + attack + rel + 0.05);
+
+    setTimeout(() => { osc.disconnect(); gain.disconnect(); }, (attack + rel + delay + 0.1) * 1000);
+  }
+
+  // Helper: play multiple notes
+  function chord(notes) {
+    notes.forEach(n => note(n));
+  }
+
+  // ============================================
+  // UNIQUE SOUNDS FOR EACH ACTION
+  // ============================================
+
+  // 1. NEXT — Ascending confidence, like unlocking
+  function soundNext() {
+    ensureInit();
+    note({ freq: 440, type: 'sine', duration: 0.12, volume: 0.5, attack: 0.005, decay: 0.1, slideTo: 660, delay: 0 });
+    note({ freq: 660, type: 'sine', duration: 0.18, volume: 0.4, attack: 0.005, decay: 0.15, delay: 0.08 });
+  }
+
+  // 2. BACK — Descending, soft undo
+  function soundBack() {
+    ensureInit();
+    note({ freq: 400, type: 'sine', duration: 0.14, volume: 0.4, attack: 0.005, decay: 0.12, slideTo: 280, delay: 0 });
+  }
+
+  // 3. SELECT ANSWER — Crisp mechanical switch
+  function soundSelect() {
+    ensureInit();
+    note({ freq: 900, type: 'square', duration: 0.04, volume: 0.2, attack: 0.002, decay: 0.03 });
+    note({ freq: 1200, type: 'sine', duration: 0.05, volume: 0.3, attack: 0.002, decay: 0.04, delay: 0.02 });
+  }
+
+  // 4. CORRECT — Bright major triad (C-E-G)
+  function soundCorrect() {
+    ensureInit();
+    const now = 0;
+    note({ freq: 523.25, type: 'sine', duration: 0.18, volume: 0.45, attack: 0.005, decay: 0.15, delay: now });
+    note({ freq: 659.25, type: 'sine', duration: 0.18, volume: 0.45, attack: 0.005, decay: 0.15, delay: now + 0.06 });
+    note({ freq: 783.99, type: 'sine', duration: 0.25, volume: 0.45, attack: 0.005, decay: 0.2, delay: now + 0.12 });
+    note({ freq: 1046.50, type: 'sine', duration: 0.35, volume: 0.4, attack: 0.01, decay: 0.3, delay: now + 0.2 });
+  }
+
+  // 5. INCORRECT — Dissonant buzz, low
+  function soundIncorrect() {
+    ensureInit();
+    note({ freq: 180, type: 'sawtooth', duration: 0.2, volume: 0.25, attack: 0.01, decay: 0.18, slideTo: 100, delay: 0 });
+    note({ freq: 185, type: 'sawtooth', duration: 0.22, volume: 0.2, attack: 0.01, decay: 0.18, delay: 0 });
+  }
+
+  // 6. HOVER — Tiny glass ping
+  function soundHover() {
+    if (!ctx || isMuted) return;
+    note({ freq: 1600, type: 'sine', duration: 0.03, volume: 0.08, attack: 0.002, decay: 0.025 });
+  }
+
+  // 7. SLIDER TICK — Short tick-tock
+  function soundTick() {
+    ensureInit();
+    note({ freq: 700, type: 'triangle', duration: 0.03, volume: 0.2, attack: 0.002, decay: 0.025 });
+  }
+
+  // 8. CALCULATE DONE — Processing complete
+  function soundConfirm() {
+    ensureInit();
+    note({ freq: 880, type: 'sine', duration: 0.08, volume: 0.4, attack: 0.005, decay: 0.07 });
+    note({ freq: 1100, type: 'sine', duration: 0.1, volume: 0.3, attack: 0.005, decay: 0.08, delay: 0.06 });
+  }
+
+  // 9. CELEBRATION — Full 4-note fanfare + harmony
+  function soundCelebrate() {
+    ensureInit();
+    const base = [523.25, 659.25, 783.99, 1046.50];
+    base.forEach((f, i) => {
+      note({ freq: f, type: 'sine', duration: 0.4, volume: 0.4, attack: 0.01, decay: 0.35, delay: i * 0.12 });
+    });
+    // Add harmony layer after
+    setTimeout(() => {
+      note({ freq: 659.25, type: 'sine', duration: 0.5, volume: 0.3, attack: 0.01, decay: 0.45 });
+      note({ freq: 783.99, type: 'sine', duration: 0.5, volume: 0.3, attack: 0.01, decay: 0.45 });
+      note({ freq: 1046.50, type: 'sine', duration: 0.6, volume: 0.3, attack: 0.01, decay: 0.55, delay: 0.1 });
+    }, 400);
+  }
+
+  // 10. HOME CARD HOVER — Sparkle
+  function soundCardHover() {
+    if (!ctx || isMuted) return;
+    note({ freq: 2000, type: 'sine', duration: 0.04, volume: 0.06, attack: 0.002, decay: 0.03 });
+  }
+
+  // 11. BEGIN / START — Power-up
+  function soundBegin() {
+    ensureInit();
+    note({ freq: 330, type: 'sine', duration: 0.15, volume: 0.4, attack: 0.01, decay: 0.12, slideTo: 550, delay: 0 });
+    note({ freq: 550, type: 'sine', duration: 0.2, volume: 0.4, attack: 0.01, decay: 0.15, delay: 0.1 });
+    note({ freq: 880, type: 'sine', duration: 0.3, volume: 0.4, attack: 0.01, decay: 0.25, delay: 0.2 });
+  }
+
+  // ============================================
+  // AUTO-HOOK BY ELEMENT ID / CLASS
+  // ============================================
+  function autoHook() {
+    // Initialize audio on first user gesture anywhere
+    document.addEventListener('click', function firstClick() {
+      ensureInit();
+      document.removeEventListener('click', firstClick);
+    }, { once: true });
+
+    // NEXT button
+    const nextBtn = document.getElementById('nextBtn');
+    if (nextBtn) {
+      nextBtn.addEventListener('mouseenter', soundHover);
+      nextBtn.addEventListener('click', () => {
+        ensureInit();
+        // If text says "Begin" or "Finish" use different sound
+        if (nextBtn.textContent.trim().toLowerCase() === 'begin') {
+          soundBegin();
+        } else if (nextBtn.textContent.trim().toLowerCase() === 'finish') {
+          soundCelebrate();
+        } else {
+          soundNext();
+        }
+      });
+    }
+
+    // BACK button
+    const prevBtn = document.getElementById('prevBtn');
+    if (prevBtn) {
+      prevBtn.addEventListener('mouseenter', soundHover);
+      prevBtn.addEventListener('click', soundBack);
+    }
+
+    // ALL buttons hover sound
+    document.querySelectorAll('.btn, .quiz-option, .shape-opt').forEach(btn => {
+      if (btn !== nextBtn && btn !== prevBtn) {
+        btn.addEventListener('mouseenter', soundHover);
+      }
+    });
+
+    // Sliders
+    document.querySelectorAll('input[type="range"]').forEach(sl => {
+      sl.addEventListener('input', soundTick);
+    });
+  }
+
+  // ============================================
+  // MUTE
+  // ============================================
+  function toggleMute() {
+    isMuted = !isMuted;
+    if (masterGain) {
+      masterGain.gain.setTargetAtTime(isMuted ? 0 : MASTER_VOLUME, ctx.currentTime, 0.1);
+    }
+    return isMuted;
+  }
+
+  return {
+    init,
+    ensureInit,
+    next: soundNext,
+    back: soundBack,
+    select: soundSelect,
+    correct: soundCorrect,
+    incorrect: soundIncorrect,
+    hover: soundHover,
+    tick: soundTick,
+    confirm: soundConfirm,
+    celebrate: soundCelebrate,
+    cardHover: soundCardHover,
+    begin: soundBegin,
+    autoHook,
+    toggleMute,
+    get muted() { return isMuted; }
+  };
+})();

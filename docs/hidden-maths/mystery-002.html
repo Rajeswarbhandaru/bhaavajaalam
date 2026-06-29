@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mystery 002: Bike Gears — Discover why changing gears makes hills easier.">
+    <title>Mystery 002 — Bike Gears | Hidden Maths</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mystery-002.css">
+</head>
+<body>
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="gradient-layer"></div>
+        <div class="particle-container" id="particleContainer"></div>
+        <div class="floating-symbols" id="floatingSymbols"></div>
+    </div>
+
+    <nav class="mystery-nav glass" role="navigation" aria-label="Mystery navigation">
+        <div class="nav-container">
+            <a href="index.html" class="nav-back" aria-label="Return to home screen">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back</span>
+            </a>
+            <div class="mystery-progress">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-label" id="progressLabel">Step 1 of 9</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="mystery-main" id="mysteryMain">
+        <section class="mystery-step active" id="step-curiosity" aria-labelledby="step1-title">
+            <div class="step-content">
+                <span class="mystery-tag">Mystery 002</span>
+                <h1 class="step-title" id="step1-title">Bike Gears</h1>
+                <p class="step-hook">Why do you change gears going uphill — and what does that have to do with multiplication?</p>
+                <div class="curiosity-visual" aria-hidden="true">
+                    <div class="bike-scene">
+                        <div class="bike-frame">
+                            <div class="bike-triangle"></div>
+                            <div class="bike-wheel rear"></div>
+                            <div class="bike-wheel front"></div>
+                        </div>
+                        <div class="gear-system">
+                            <div class="gear-chainring" id="chainring"></div>
+                            <div class="gear-chain"></div>
+                            <div class="gear-cassette" id="cassette"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="step-hint">Every time you shift, you are doing a math problem with your legs.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-observation" aria-labelledby="step2-title">
+            <div class="step-content">
+                <span class="step-tag">Observation</span>
+                <h2 class="step-title" id="step2-title">Look at the Gears</h2>
+                <p class="step-desc">The front gear is big. The rear gear is small. But when you shift, something changes that has nothing to do with the wheel size.</p>
+                <div class="observation-stage" id="observationStage" aria-hidden="true">
+                    <div class="gear-comparison">
+                        <div class="gear-demo" id="gearDemoLarge">
+                            <div class="demo-gear large"></div>
+                            <span class="demo-label">Front<br>42 teeth</span>
+                        </div>
+                        <div class="gear-demo" id="gearDemoSmall">
+                            <div class="demo-gear small"></div>
+                            <span class="demo-label">Rear<br>14 teeth</span>
+                        </div>
+                    </div>
+                    <div class="obs-facts" id="obsFacts">
+                        <div class="fact-card glass">
+                            <span class="fact-number">3:1</span>
+                            <span class="fact-label">Typical gear ratio</span>
+                        </div>
+                        <div class="fact-card glass">
+                            <span class="fact-number">2.5m</span>
+                            <span class="fact-label">Distance per wheel turn</span>
+                        </div>
+                        <div class="fact-card glass">
+                            <span class="fact-number">7.5m</span>
+                            <span class="fact-label">Distance per pedal stroke</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-experiment" aria-labelledby="step3-title">
+            <div class="step-content">
+                <span class="step-tag">Experiment</span>
+                <h2 class="step-title" id="step3-title">Build Your Gear</h2>
+                <p class="step-desc">Pick a front gear and a rear gear. Then pedal once and watch what happens.</p>
+                <div class="experiment-stage glass" id="experimentStage">
+                    <div class="gear-builder">
+                        <div class="gear-select-row">
+                            <div class="gear-select-group">
+                                <label>Front Gear (Teeth)</label>
+                                <div class="gear-buttons" id="frontGearButtons">
+                                    <button class="gear-btn" data-teeth="28">28</button>
+                                    <button class="gear-btn" data-teeth="32">32</button>
+                                    <button class="gear-btn active" data-teeth="42">42</button>
+                                    <button class="gear-btn" data-teeth="52">52</button>
+                                </div>
+                            </div>
+                            <div class="gear-select-group">
+                                <label>Rear Gear (Teeth)</label>
+                                <div class="gear-buttons" id="rearGearButtons">
+                                    <button class="gear-btn" data-teeth="11">11</button>
+                                    <button class="gear-btn active" data-teeth="14">14</button>
+                                    <button class="gear-btn" data-teeth="24">24</button>
+                                    <button class="gear-btn" data-teeth="32">32</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gear-visual-exp" id="gearVisualExp">
+                            <div class="exp-gear front-gear" id="expFrontGear">
+                                <div class="gear-inner" id="frontGearInner"></div>
+                            </div>
+                            <div class="exp-chain-line"></div>
+                            <div class="exp-gear rear-gear" id="expRearGear">
+                                <div class="gear-inner" id="rearGearInner"></div>
+                            </div>
+                        </div>
+                        <div class="exp-readout">
+                            <div class="readout-item">
+                                <span class="readout-label">Ratio</span>
+                                <span class="readout-value" id="expRatio">3.0</span>
+                            </div>
+                            <div class="readout-item">
+                                <span class="readout-label">Feeling</span>
+                                <span class="readout-value" id="expFeeling">Hard</span>
+                            </div>
+                            <div class="readout-item">
+                                <span class="readout-label">Wheel turns</span>
+                                <span class="readout-value" id="expTurns">3.0</span>
+                            </div>
+                        </div>
+                        <div class="exp-actions">
+                            <button class="btn btn-primary" id="btnPedal">Pedal Once</button>
+                            <button class="btn btn-secondary" id="btnResetExp">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-prediction" aria-labelledby="step4-title">
+            <div class="step-content">
+                <span class="step-tag">Prediction</span>
+                <h2 class="step-title" id="step4-title">Guess the Ratio</h2>
+                <p class="step-desc">Front gear has 36 teeth. Rear gear has 12 teeth. How many times does the rear wheel spin for every one pedal turn?</p>
+                <div class="prediction-gauge glass">
+                    <div class="gauge-display">
+                        <span class="gauge-value" id="gaugeValue">2</span>
+                        <span class="gauge-unit">wheel turns</span>
+                    </div>
+                    <input type="range" class="gauge-slider" id="gaugeSlider" min="1" max="5" step="0.5" value="2" aria-label="Wheel turns prediction slider">
+                    <div class="gauge-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+                </div>
+                <p class="step-hint">Most beginners guess 2. The correct answer is hidden in the tooth count.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-discovery" aria-labelledby="step5-title">
+            <div class="step-content">
+                <span class="step-tag">Discovery</span>
+                <h2 class="step-title" id="step5-title">The Hidden Formula</h2>
+                <p class="step-desc">You have been shifting gears your whole life. The math was hiding in the teeth.</p>
+                <div class="discovery-reveal glass" id="discoveryReveal">
+                    <div class="reveal-line">
+                        <span class="reveal-label">Front Teeth</span>
+                        <span class="reveal-arrow">÷</span>
+                        <span class="reveal-label">Rear Teeth</span>
+                        <span class="reveal-arrow">=</span>
+                        <span class="reveal-label highlight">Gear Ratio</span>
+                    </div>
+                    <div class="reveal-formula" id="revealFormula">
+                        <span class="formula-num" id="formulaFront">42</span>
+                        <span class="formula-op">÷</span>
+                        <span class="formula-num" id="formulaRear">14</span>
+                        <span class="formula-op">=</span>
+                        <span class="formula-res" id="formulaRes">3</span>
+                        <span class="formula-unit">ratio</span>
+                    </div>
+                </div>
+                <p class="step-desc">This ratio decides how far you travel with each push of the pedal. It is multiplication in disguise.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-explanation" aria-labelledby="step6-title">
+            <div class="step-content">
+                <span class="step-tag">Explanation</span>
+                <h2 class="step-title" id="step6-title">How the Numbers Work</h2>
+                <div class="explanation-cards">
+                    <div class="explanation-card glass" id="explCard1">
+                        <div class="expl-number">1</div>
+                        <h3>The Chain</h3>
+                        <p>The chain connects the front and rear gears. One full chain link passes for every tooth on either gear.</p>
+                        <div class="expl-visual chain-visual"></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard2">
+                        <div class="expl-number">2</div>
+                        <h3>Front Gear</h3>
+                        <p>When you pedal once, the front gear turns once. If it has <strong>42 teeth</strong>, it pulls 42 links of chain.</p>
+                        <div class="expl-visual teeth-visual"><span class="teeth-display">42T</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard3">
+                        <div class="expl-number">3</div>
+                        <h3>Rear Gear</h3>
+                        <p>The rear gear must take all 42 links. If it has <strong>14 teeth</strong>, it turns <strong>3 times</strong> to swallow them.</p>
+                        <div class="expl-visual calc-visual">42 ÷ 14 = 3</div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard4">
+                        <div class="expl-number">4</div>
+                        <h3>Mechanical Advantage</h3>
+                        <p>A big ratio (3:1) gives speed on flat roads. A small ratio (1:1) gives easy power on hills. You choose.</p>
+                        <div class="expl-visual advantage-visual"><span class="adv-result">3:1 = Fast</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-applications" aria-labelledby="step7-title">
+            <div class="step-content">
+                <span class="step-tag">Applications</span>
+                <h2 class="step-title" id="step7-title">Where Else Is This Hiding?</h2>
+                <p class="step-desc">Gears are everywhere. Once you know the ratio, you see them in every machine.</p>
+                <div class="apps-grid">
+                    <div class="app-card glass"><div class="app-icon">🚗</div><h3>Car Gearbox</h3><p>First gear is low ratio for power. Fifth gear is high ratio for speed. The clutch just changes the gear pair.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🚛</div><h3>Truck Differentials</h3><p>Heavy trucks use tiny gears to multiply engine force. Without ratios, trucks could not move from a standstill.</p></div>
+                    <div class="app-card glass"><div class="app-icon">⌚</div><h3>Mechanical Watches</h3><p>A watch hand turns once per hour. The gears between the spring and the hand divide that by 60, then 60 again.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🎡</div><h3>Ferris Wheels</h3><p>A small motor spins a tiny gear that drives a massive wheel. The ratio lets a small motor lift thousands of kilograms.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🌬️</div><h3>Wind Turbines</h3><p>The blades spin slowly. A gearbox inside multiplies that to thousands of RPM for the generator. Same ratio math.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🚴</div><h3>All Bicycles</h3><p>Road bikes use 52:11 for speed. Mountain bikes use 28:42 for climbing. The ratio is the only difference that matters.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-challenge" aria-labelledby="step8-title">
+            <div class="step-content">
+                <span class="step-tag">Challenge</span>
+                <h2 class="step-title" id="step8-title">Gear Ratio Challenge</h2>
+                <p class="step-desc">Three questions. Use the formula you discovered.</p>
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-question active" id="quizQ1">
+                        <p class="quiz-text">Front gear has 48 teeth. Rear gear has 12 teeth. What is the gear ratio?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">3</button>
+                            <button class="quiz-option glass" data-correct="false">6</button>
+                            <button class="quiz-option glass" data-correct="true">4</button>
+                            <button class="quiz-option glass" data-correct="false">2</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ1"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ2">
+                        <p class="quiz-text">You are climbing a steep hill. Which gear makes it easiest?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">Front 42T + Rear 11T</button>
+                            <button class="quiz-option glass" data-correct="true">Front 32T + Rear 32T</button>
+                            <button class="quiz-option glass" data-correct="false">Front 52T + Rear 14T</button>
+                            <button class="quiz-option glass" data-correct="false">Front 42T + Rear 14T</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ2"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ3">
+                        <p class="quiz-text">Gear ratio is 3.5. You pedal 20 times. How many times does the rear wheel turn?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">20</button>
+                            <button class="quiz-option glass" data-correct="false">23.5</button>
+                            <button class="quiz-option glass" data-correct="true">70</button>
+                            <button class="quiz-option glass" data-correct="false">3.5</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ3"></div>
+                    </div>
+                </div>
+                <div class="quiz-score glass" id="quizScore" style="display:none;">
+                    <span class="score-label">Your Score</span>
+                    <span class="score-value" id="scoreValue">0/3</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-celebration" aria-labelledby="step9-title">
+            <div class="step-content">
+                <div class="celebration-visual" id="celebrationVisual" aria-hidden="true"></div>
+                <div class="celebration-badge glass">
+                    <div class="badge-icon">🏆</div>
+                    <div class="badge-text">
+                        <span class="badge-title">Gear Master</span>
+                        <span class="badge-desc">Mystery 002 Complete</span>
+                    </div>
+                </div>
+                <h2 class="step-title" id="step9-title">Mystery Solved!</h2>
+                <p class="step-desc">You started with a bike. You ended with a formula that drives every machine on Earth.</p>
+                <div class="celebration-stats">
+                    <div class="cstat glass"><span class="cstat-label">Mystery</span><span class="cstat-value">002</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Formula</span><span class="cstat-value">Ratio = Front ÷ Rear</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Discovery</span><span class="cstat-value">42 ÷ 14 = 3</span></div>
+                </div>
+                <div class="celebration-actions">
+                    <a href="index.html" class="btn btn-primary">Return to Home</a>
+                    <a href="mystery-002.html" class="btn btn-secondary">Play Again</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="mystery-controls glass" id="mysteryControls">
+        <button class="btn btn-secondary" id="prevBtn" style="display:none">Back</button>
+        <button class="btn btn-primary" id="nextBtn">Begin</button>
+    </div>
+    <script src="audio.js"></script>
+    <script src="mystery-002.js"></script>
+</body>
+</html>

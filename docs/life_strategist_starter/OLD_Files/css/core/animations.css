@@ -1,0 +1,4 @@
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.fade-up{animation:fadeUp .45s ease both}.floaty{animation:floaty 4s ease-in-out infinite}.pulse{animation:pulse 2s ease-in-out infinite}

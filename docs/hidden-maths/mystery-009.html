@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mystery 009: Electric Fan — Discover how the fan splits a circle into equal sectors and why the blade count changes everything.">
+    <title>Mystery 009 — Electric Fan | Hidden Maths</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mystery-009.css">
+</head>
+<body>
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="gradient-layer"></div>
+        <div class="particle-container" id="particleContainer"></div>
+        <div class="floating-symbols" id="floatingSymbols"></div>
+    </div>
+
+    <nav class="mystery-nav glass" role="navigation" aria-label="Mystery navigation">
+        <div class="nav-container">
+            <a href="index.html" class="nav-back" aria-label="Return to home screen">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back</span>
+            </a>
+            <div class="mystery-progress">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-label" id="progressLabel">Step 1 of 9</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="mystery-main" id="mysteryMain">
+        <section class="mystery-step active" id="step-curiosity" aria-labelledby="step1-title">
+            <div class="step-content">
+                <span class="mystery-tag">Mystery 009</span>
+                <h1 class="step-title" id="step1-title">Electric Fan</h1>
+                <p class="step-hook">Why does a 3-blade fan cool differently than a 5-blade fan — and what shape is hiding in the spinning circle?</p>
+                <div class="curiosity-visual" aria-hidden="true">
+                    <div class="fan-scene">
+                        <div class="fan-hub" id="fanHub">
+                            <div class="fan-blade" id="blade1"></div>
+                            <div class="fan-blade" id="blade2"></div>
+                            <div class="fan-blade" id="blade3"></div>
+                        </div>
+                        <div class="fan-air"></div>
+                    </div>
+                </div>
+                <p class="step-hint">The answer is not the motor speed. It is the exact angle between blades — and how the circle is sliced.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-observation" aria-labelledby="step2-title">
+            <div class="step-content">
+                <span class="step-tag">Observation</span>
+                <h2 class="step-title" id="step2-title">Count the Blades</h2>
+                <p class="step-desc">The fan is a circle. The blades cut it into equal slices. Each slice has the same angle at the center. That angle determines how much air each blade catches.</p>
+                <div class="observation-stage" id="observationStage" aria-hidden="true">
+                    <div class="sector-diagram">
+                        <div class="sector-label">360° ÷ 3 = 120°</div>
+                        <div class="circle-div">
+                            <div class="div-circle">
+                                <div class="div-line"></div>
+                                <div class="div-line"></div>
+                                <div class="div-line"></div>
+                            </div>
+                        </div>
+                        <div class="sector-markers">
+                            <div class="s-marker">120°</div>
+                            <div class="s-marker">120°</div>
+                            <div class="s-marker">120°</div>
+                        </div>
+                    </div>
+                    <div class="obs-facts" id="obsFacts">
+                        <div class="fact-card glass">
+                            <span class="fact-number">360°</span>
+                            <span class="fact-label">Full circle</span>
+                        </div>
+                        <div class="fact-card glass">
+                            <span class="fact-number">3</span>
+                            <span class="fact-label">Blades</span>
+                        </div>
+                        <div class="fact-card glass">
+                            <span class="fact-number">120°</span>
+                            <span class="fact-label">Each sector</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-experiment" aria-labelledby="step3-title">
+            <div class="step-content">
+                <span class="step-tag">Experiment</span>
+                <h2 class="step-title" id="step3-title">Slice the Circle</h2>
+                <p class="step-desc">Pick the number of blades. The fan will recalculate the exact angle between each blade, the arc length at the rim, and the area of every sector.</p>
+                <div class="experiment-stage glass" id="experimentStage">
+                    <div class="fan-preview">
+                        <canvas id="fanCanvas" width="400" height="400"></canvas>
+                    </div>
+                    <div class="fan-controls">
+                        <div class="control-group">
+                            <label>Number of Blades</label>
+                            <div class="control-value" id="bladeDisplay">3</div>
+                            <input type="range" class="fan-slider" id="bladeSlider" min="2" max="8" value="3" step="1">
+                            <div class="blade-dots" id="bladeDots">
+                                <div class="b-dot active"></div>
+                                <div class="b-dot active"></div>
+                                <div class="b-dot active"></div>
+                                <div class="b-dot"></div>
+                                <div class="b-dot"></div>
+                                <div class="b-dot"></div>
+                                <div class="b-dot"></div>
+                                <div class="b-dot"></div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label>Fan Radius</label>
+                            <div class="control-value" id="radiusDisplay">25 cm</div>
+                            <input type="range" class="fan-slider" id="radiusSlider" min="15" max="40" value="25" step="5">
+                        </div>
+                    </div>
+                    <div class="fan-readout">
+                        <div class="readout-item">
+                            <span class="readout-label">Sector Angle</span>
+                            <span class="readout-value" id="readoutAngle">120°</span>
+                        </div>
+                        <div class="readout-item">
+                            <span class="readout-label">Arc Length</span>
+                            <span class="readout-value" id="readoutArc">52 cm</span>
+                        </div>
+                        <div class="readout-item">
+                            <span class="readout-label">Sector Area</span>
+                            <span class="readout-value" id="readoutArea">654 cm²</span>
+                        </div>
+                    </div>
+                    <div class="exp-actions">
+                        <button class="btn btn-primary" id="btnSpin">Spin</button>
+                        <button class="btn btn-secondary" id="btnStop">Stop</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-prediction" aria-labelledby="step4-title">
+            <div class="step-content">
+                <span class="step-tag">Prediction</span>
+                <h2 class="step-title" id="step4-title">How Many Degrees Between Blades?</h2>
+                <p class="step-desc">A fan has 5 blades. The motor spins the full circle. How many degrees sit between the center of each blade?</p>
+                <div class="prediction-gauge glass">
+                    <div class="gauge-display">
+                        <span class="gauge-value" id="gaugeValue">60</span>
+                        <span class="gauge-unit">degrees</span>
+                    </div>
+                    <input type="range" class="gauge-slider" id="gaugeSlider" min="30" max="90" value="60" step="5" aria-label="Blade angle prediction slider">
+                    <div class="gauge-labels"><span>30°</span><span>45°</span><span>60°</span><span>72°</span><span>90°</span></div>
+                </div>
+                <p class="step-hint">Most people guess 60° or 72°. The exact answer is 360 ÷ 5.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-discovery" aria-labelledby="step5-title">
+            <div class="step-content">
+                <span class="step-tag">Discovery</span>
+                <h2 class="step-title" id="step5-title">The Hidden Formula</h2>
+                <p class="step-desc">The fan does not just spin. It divides the circle into equal parts. Every part is a sector with a precise angle, arc, and area.</p>
+                <div class="discovery-reveal glass" id="discoveryReveal">
+                    <div class="reveal-line">
+                        <span class="reveal-label">360°</span>
+                        <span class="reveal-arrow">÷</span>
+                        <span class="reveal-label">Blades</span>
+                        <span class="reveal-arrow">=</span>
+                        <span class="reveal-label highlight">Sector Angle</span>
+                    </div>
+                    <div class="reveal-formula" id="revealFormula">
+                        <span class="formula-num">360</span>
+                        <span class="formula-op">÷</span>
+                        <span class="formula-num">3</span>
+                        <span class="formula-op">=</span>
+                        <span class="formula-res">120°</span>
+                    </div>
+                </div>
+                <p class="step-desc">Once you know the sector angle, one multiplication gives you the arc length and the exact pie slice of air each blade commands.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-explanation" aria-labelledby="step6-title">
+            <div class="step-content">
+                <span class="step-tag">Explanation</span>
+                <h2 class="step-title" id="step6-title">How the Numbers Work</h2>
+                <div class="explanation-cards">
+                    <div class="explanation-card glass" id="explCard1">
+                        <div class="expl-number">1</div>
+                        <h3>The Circle</h3>
+                        <p>The fan is a circle with <strong>360°</strong> at the center. The blades are evenly spaced like spokes. The number of blades decides how many slices the circle is cut into.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">360° ÷ n</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard2">
+                        <div class="expl-number">2</div>
+                        <h3>The Sector Angle</h3>
+                        <p>Each blade sits in a sector. For 3 blades, the angle is <strong>120°</strong>. For 5 blades, it is <strong>72°</strong>. Smaller sectors mean more blades but less space for each to push air.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">3 blades = 120°</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard3">
+                        <div class="expl-number">3</div>
+                        <h3>The Arc Length</h3>
+                        <p>The curved path between two blade tips is an arc. Its length is a fraction of the full circumference. The formula is <strong>2πr × (θ ÷ 360)</strong>.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">Arc = 2πr × θ/360</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard4">
+                        <div class="expl-number">4</div>
+                        <h3>The Sector Area</h3>
+                        <p>Each blade commands a sector of air. The area is <strong>πr² × (θ ÷ 360)</strong>. More blades = smaller sectors = smoother airflow but less power per blade.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">Area = πr² × θ/360</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-applications" aria-labelledby="step7-title">
+            <div class="step-content">
+                <span class="step-tag">Applications</span>
+                <h2 class="step-title" id="step7-title">Where Else Is the Sector Hiding?</h2>
+                <p class="step-desc">Dividing a circle into equal sectors is one of geometry's oldest jobs. It appears everywhere rotation meets structure.</p>
+                <div class="apps-grid">
+                    <div class="app-card glass"><div class="app-icon">🌻</div><h3>Flower Petals</h3><p>Many flowers arrange seeds in sectors following the golden angle. The pattern is a spiral sector division — same geometry as the fan.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🍕</div><h3>Pizza Slices</h3><p>Cutting a pizza into 8 slices is exactly 360° ÷ 8 = 45° per sector. Every slice is a congruent sector — same math, same formula.</p></div>
+                    <div class="app-card glass"><div class="app-icon">⚙️</div><h3>Gears</h3><p>Gear teeth are spaced in equal sectors around the pitch circle. The tooth spacing angle determines how smoothly the gear meshes.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🎡</div><h3>Ferris Wheel</h3><p>Each gondola is spaced at equal sector angles. The arc length between seats is calculated the same way as the fan blade spacing.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🕐</div><h3>Clock Face</h3><p>Each hour mark is 30° apart. The clock is a circle divided into 12 equal sectors — 360° ÷ 12 = 30°. Same formula as the fan.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🎯</div><h3>Dartboard</h3><p>A dartboard has 20 equal sectors. Each scoring region is 18° wide. The geometry is identical to a 20-blade fan.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-challenge" aria-labelledby="step8-title">
+            <div class="step-content">
+                <span class="step-tag">Challenge</span>
+                <h2 class="step-title" id="step8-title">Sector Challenge</h2>
+                <p class="step-desc">Three questions. Use the sector logic you discovered.</p>
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-question active" id="quizQ1">
+                        <p class="quiz-text">A fan has 6 blades. What is the central angle of each sector?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">45°</button>
+                            <button class="quiz-option glass" data-correct="false">72°</button>
+                            <button class="quiz-option glass" data-correct="true">60°</button>
+                            <button class="quiz-option glass" data-correct="false">90°</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ1"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ2">
+                        <p class="quiz-text">Sector angle is 72°. Radius is 50 cm. What is the arc length? (Use π ≈ 3.14)</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">31 cm</button>
+                            <button class="quiz-option glass" data-correct="true">62.8 cm</button>
+                            <button class="quiz-option glass" data-correct="false">72 cm</button>
+                            <button class="quiz-option glass" data-correct="false">314 cm</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ2"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ3">
+                        <p class="quiz-text">A pizza is cut into 8 equal slices. What is the sector angle of one slice?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">60°</button>
+                            <button class="quiz-option glass" data-correct="false">30°</button>
+                            <button class="quiz-option glass" data-correct="true">45°</button>
+                            <button class="quiz-option glass" data-correct="false">90°</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ3"></div>
+                    </div>
+                </div>
+                <div class="quiz-score glass" id="quizScore" style="display:none;">
+                    <span class="score-label">Your Score</span>
+                    <span class="score-value" id="scoreValue">0/3</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-celebration" aria-labelledby="step9-title">
+            <div class="step-content">
+                <div class="celebration-visual" id="celebrationVisual" aria-hidden="true"></div>
+                <div class="celebration-badge glass">
+                    <div class="badge-icon">🏆</div>
+                    <div class="badge-text">
+                        <span class="badge-title">Sector Master</span>
+                        <span class="badge-desc">Mystery 009 Complete</span>
+                    </div>
+                </div>
+                <h2 class="step-title" id="step9-title">Mystery Solved!</h2>
+                <p class="step-desc">You started with a fan. You ended with the formula that divides every wheel, clock, and flower in nature.</p>
+                <div class="celebration-stats">
+                    <div class="cstat glass"><span class="cstat-label">Mystery</span><span class="cstat-value">009</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Formula</span><span class="cstat-value">θ = 360° ÷ n</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Discovery</span><span class="cstat-value">Sector Geometry</span></div>
+                </div>
+                <div class="celebration-actions">
+                    <a href="index.html" class="btn btn-primary">Return to Home</a>
+                    <a href="mystery-009.html" class="btn btn-secondary">Play Again</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="mystery-controls glass" id="mysteryControls">
+        <button class="btn btn-secondary" id="prevBtn" style="display:none">Back</button>
+        <button class="btn btn-primary" id="nextBtn">Begin</button>
+    </div>
+    <script src="audio.js"></script>
+    <script src="mystery-009.js"></script>
+</body>
+</html>

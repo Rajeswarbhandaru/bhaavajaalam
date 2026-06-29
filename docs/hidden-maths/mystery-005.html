@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mystery 005: GPS Navigation — Discover how satellites use circles to pinpoint your exact location.">
+    <title>Mystery 005 — GPS Navigation | Hidden Maths</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mystery-005.css">
+</head>
+<body>
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="gradient-layer"></div>
+        <div class="particle-container" id="particleContainer"></div>
+        <div class="floating-symbols" id="floatingSymbols"></div>
+    </div>
+
+    <nav class="mystery-nav glass" role="navigation" aria-label="Mystery navigation">
+        <div class="nav-container">
+            <a href="index.html" class="nav-back" aria-label="Return to home screen">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back</span>
+            </a>
+            <div class="mystery-progress">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-label" id="progressLabel">Step 1 of 9</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="mystery-main" id="mysteryMain">
+        <section class="mystery-step active" id="step-curiosity" aria-labelledby="step1-title">
+            <div class="step-content">
+                <span class="mystery-tag">Mystery 005</span>
+                <h1 class="step-title" id="step1-title">GPS Navigation</h1>
+                <p class="step-hook">How does your phone know exactly where you are — without asking anyone nearby?</p>
+                <div class="curiosity-visual" aria-hidden="true">
+                    <div class="gps-scene">
+                        <div class="phone">
+                            <div class="phone-screen">
+                                <div class="map-pin"></div>
+                            </div>
+                        </div>
+                        <div class="satellites">
+                            <div class="satellite" id="sat1"></div>
+                            <div class="satellite" id="sat2"></div>
+                            <div class="satellite" id="sat3"></div>
+                        </div>
+                        <div class="signal-lines">
+                            <div class="signal-line"></div>
+                            <div class="signal-line"></div>
+                            <div class="signal-line"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="step-hint">The answer is not a map. It is geometry — happening invisibly in your pocket.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-observation" aria-labelledby="step2-title">
+            <div class="step-content">
+                <span class="step-tag">Observation</span>
+                <h2 class="step-title" id="step2-title">Three Satellites</h2>
+                <p class="step-desc">Your phone receives signals from satellites orbiting Earth. It does not know where it is yet. It only knows how far away each satellite is.</p>
+                <div class="observation-stage" id="observationStage" aria-hidden="true">
+                    <div class="sat-observation">
+                        <div class="sat-orbit">
+                            <div class="sat-obj" id="satObj1"></div>
+                            <div class="sat-obj" id="satObj2"></div>
+                            <div class="sat-obj" id="satObj3"></div>
+                        </div>
+                        <div class="phone-obj">
+                            <div class="phone-icon">📱</div>
+                        </div>
+                    </div>
+                    <div class="sat-distances">
+                        <div class="dist-row"><span class="dist-label">Satellite A</span><span class="dist-value">20,200 km</span></div>
+                        <div class="dist-row"><span class="dist-label">Satellite B</span><span class="dist-value">21,500 km</span></div>
+                        <div class="dist-row"><span class="dist-label">Satellite C</span><span class="dist-value">19,800 km</span></div>
+                    </div>
+                </div>
+                <div class="obs-facts" id="obsFacts">
+                    <div class="fact-card glass">
+                        <span class="fact-number">4</span>
+                        <span class="fact-label">Minimum satellites</span>
+                    </div>
+                    <div class="fact-card glass">
+                        <span class="fact-number">20,200 km</span>
+                        <span class="fact-label">Typical distance</span>
+                    </div>
+                    <div class="fact-card glass">
+                        <span class="fact-number">3</span>
+                        <span class="fact-label">Dimensions to solve</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-experiment" aria-labelledby="step3-title">
+            <div class="step-content">
+                <span class="step-tag">Experiment</span>
+                <h2 class="step-title" id="step3-title">Find Yourself on the Map</h2>
+                <p class="step-desc">Three satellites show their distances. Draw circles around them. Only one spot on Earth fits all three.</p>
+                <div class="experiment-stage glass" id="experimentStage">
+                    <div class="map-container" id="mapContainer">
+                        <canvas id="mapCanvas" width="400" height="400"></canvas>
+                        <div class="map-overlay">
+                            <div class="map-legend">
+                                <div class="legend-item"><span class="legend-dot sat-a"></span>Satellite A</div>
+                                <div class="legend-item"><span class="legend-dot sat-b"></span>Satellite B</div>
+                                <div class="legend-item"><span class="legend-dot sat-c"></span>Satellite C</div>
+                                <div class="legend-item"><span class="legend-dot you"></span>You</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sat-controls">
+                        <div class="sat-control">
+                            <label>Satellite A Distance</label>
+                            <input type="range" class="sat-slider" id="satA" min="80" max="180" value="120">
+                            <span class="sat-readout" id="satARead">120 km</span>
+                        </div>
+                        <div class="sat-control">
+                            <label>Satellite B Distance</label>
+                            <input type="range" class="sat-slider" id="satB" min="80" max="180" value="100">
+                            <span class="sat-readout" id="satBRead">100 km</span>
+                        </div>
+                        <div class="sat-control">
+                            <label>Satellite C Distance</label>
+                            <input type="range" class="sat-slider" id="satC" min="80" max="180" value="110">
+                            <span class="sat-readout" id="satCRead">110 km</span>
+                        </div>
+                    </div>
+                    <div class="exp-actions">
+                        <button class="btn btn-primary" id="btnLocate">Find Position</button>
+                        <button class="btn btn-secondary" id="btnResetMap">Reset</button>
+                    </div>
+                    <div class="loc-result" id="locResult" style="display:none;">
+                        <span class="loc-label">Your Position</span>
+                        <span class="loc-coords" id="locCoords">X: 145, Y: 210</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-prediction" aria-labelledby="step4-title">
+            <div class="step-content">
+                <span class="step-tag">Prediction</span>
+                <h2 class="step-title" id="step4-title">How Many Satellites?</h2>
+                <p class="step-desc">You are standing on a flat field. One satellite says you are 100 metres away. How many possible spots could you be standing?</p>
+                <div class="prediction-gauge glass">
+                    <div class="gauge-display">
+                        <span class="gauge-value" id="gaugeValue">1</span>
+                        <span class="gauge-unit">spot</span>
+                    </div>
+                    <input type="range" class="gauge-slider" id="gaugeSlider" min="1" max="10" value="1" step="1" aria-label="Spot prediction slider">
+                    <div class="gauge-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>10</span></div>
+                </div>
+                <p class="step-hint">Most people guess 1. But a single distance creates a circle of possibilities.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-discovery" aria-labelledby="step5-title">
+            <div class="step-content">
+                <span class="step-tag">Discovery</span>
+                <h2 class="step-title" id="step5-title">The Hidden Formula</h2>
+                <p class="step-desc">The phone does not look at a map. It solves a geometry puzzle where three circles must cross at one point.</p>
+                <div class="discovery-reveal glass" id="discoveryReveal">
+                    <div class="reveal-line">
+                        <span class="reveal-label">Distance A</span>
+                        <span class="reveal-arrow">+</span>
+                        <span class="reveal-label">Distance B</span>
+                        <span class="reveal-arrow">+</span>
+                        <span class="reveal-label">Distance C</span>
+                        <span class="reveal-arrow">→</span>
+                        <span class="reveal-label highlight">One Intersection</span>
+                    </div>
+                    <div class="reveal-formula" id="revealFormula">
+                        <span class="formula-num">Circle</span>
+                        <span class="formula-op">∩</span>
+                        <span class="formula-num">Circle</span>
+                        <span class="formula-op">∩</span>
+                        <span class="formula-num">Circle</span>
+                        <span class="formula-op">=</span>
+                        <span class="formula-res">You</span>
+                    </div>
+                </div>
+                <p class="step-desc">This is called trilateration. Every GPS device in the world runs this math silently, thousands of times per second.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-explanation" aria-labelledby="step6-title">
+            <div class="step-content">
+                <span class="step-tag">Explanation</span>
+                <h2 class="step-title" id="step6-title">How the Numbers Work</h2>
+                <div class="explanation-cards">
+                    <div class="explanation-card glass" id="explCard1">
+                        <div class="expl-number">1</div>
+                        <h3>One Satellite</h3>
+                        <p>One distance means you are somewhere on a <strong>circle</strong> around the satellite. Millions of possibilities.</p>
+                        <div class="expl-visual circle-exp"><span class="circle-text">Infinite points</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard2">
+                        <div class="expl-number">2</div>
+                        <h3>Two Satellites</h3>
+                        <p>Two circles cross at <strong>two points</strong>. You are at one of them. But which one? The Earth blocks the false point.</p>
+                        <div class="expl-visual two-points"><span class="two-text">2 intersections</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard3">
+                        <div class="expl-number">3</div>
+                        <h3>Three Satellites</h3>
+                        <p>Three circles cross at exactly <strong>one point</strong>. That is you. The phone now knows your latitude and longitude.</p>
+                        <div class="expl-visual one-point"><span class="one-text">1 intersection</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard4">
+                        <div class="expl-number">4</div>
+                        <h3>The Clock Fix</h3>
+                        <p>A fourth satellite fixes your phone's clock error. Without it, the distance measurements would be slightly wrong.</p>
+                        <div class="expl-visual clock-fix"><span class="clock-text">Time sync</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-applications" aria-labelledby="step7-title">
+            <div class="step-content">
+                <span class="step-tag">Applications</span>
+                <h2 class="step-title" id="step7-title">Where Else Is This Hiding?</h2>
+                <p class="step-desc">Trilateration is not just for satellites. Any system that measures distance from known points uses the same logic.</p>
+                <div class="apps-grid">
+                    <div class="app-card glass"><div class="app-icon">📡</div><h3>Mobile Towers</h3><p>Your phone connects to multiple cell towers. The network uses signal timing to estimate your position when GPS is weak.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🚢</div><h3>Ship Navigation</h3><p>Before GPS, sailors used radio beacons at known locations. They drew circles on charts — the same trilateration math.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🚁</div><h3>Drone Landing</h3><p>Drones use ground markers or GPS satellites to calculate their exact position before landing. Three references minimum.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🏭</div><h3>Earthquake Monitoring</h3><p>Seismologists measure distance from a quake to three stations. The intersection tells them the exact epicentre.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🎮</div><h3>VR Tracking</h3><p>VR headsets use base stations at known corners. The headset calculates its position by measuring distances to each base.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🐕</div><h3>Pet Trackers</h3><p>GPS collars on animals use the same satellite trilateration. Researchers track migration routes without following the animal.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-challenge" aria-labelledby="step8-title">
+            <div class="step-content">
+                <span class="step-tag">Challenge</span>
+                <h2 class="step-title" id="step8-title">Navigation Challenge</h2>
+                <p class="step-desc">Three questions. Use the circle logic you discovered.</p>
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-question active" id="quizQ1">
+                        <p class="quiz-text">One satellite tells you the distance. How many possible positions could you be?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">1</button>
+                            <button class="quiz-option glass" data-correct="false">2</button>
+                            <button class="quiz-option glass" data-correct="true">Infinite</button>
+                            <button class="quiz-option glass" data-correct="false">0</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ1"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ2">
+                        <p class="quiz-text">How many satellites are needed to find your exact position on a flat map?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">1</button>
+                            <button class="quiz-option glass" data-correct="false">2</button>
+                            <button class="quiz-option glass" data-correct="true">3</button>
+                            <button class="quiz-option glass" data-correct="false">4</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ2"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ3">
+                        <p class="quiz-text">Two circles cross at two points. What helps GPS eliminate the wrong point?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">A faster processor</button>
+                            <button class="quiz-option glass" data-correct="false">A bigger map</button>
+                            <button class="quiz-option glass" data-correct="true">The Earth is in the way</button>
+                            <button class="quiz-option glass" data-correct="false">Luck</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ3"></div>
+                    </div>
+                </div>
+                <div class="quiz-score glass" id="quizScore" style="display:none;">
+                    <span class="score-label">Your Score</span>
+                    <span class="score-value" id="scoreValue">0/3</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-celebration" aria-labelledby="step9-title">
+            <div class="step-content">
+                <div class="celebration-visual" id="celebrationVisual" aria-hidden="true"></div>
+                <div class="celebration-badge glass">
+                    <div class="badge-icon">🏆</div>
+                    <div class="badge-text">
+                        <span class="badge-title">Navigator</span>
+                        <span class="badge-desc">Mystery 005 Complete</span>
+                    </div>
+                </div>
+                <h2 class="step-title" id="step9-title">Mystery Solved!</h2>
+                <p class="step-desc">You started with a signal. You ended with the geometry that guides every driver, pilot, and explorer on Earth.</p>
+                <div class="celebration-stats">
+                    <div class="cstat glass"><span class="cstat-label">Mystery</span><span class="cstat-value">005</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Formula</span><span class="cstat-value">Circle ∩ Circle ∩ Circle</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Discovery</span><span class="cstat-value">Trilateration</span></div>
+                </div>
+                <div class="celebration-actions">
+                    <a href="index.html" class="btn btn-primary">Return to Home</a>
+                    <a href="mystery-005.html" class="btn btn-secondary">Play Again</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="mystery-controls glass" id="mysteryControls">
+        <button class="btn btn-secondary" id="prevBtn" style="display:none">Back</button>
+        <button class="btn btn-primary" id="nextBtn">Begin</button>
+    </div>
+    <script src="audio.js"></script>
+    <script src="mystery-005.js"></script>
+</body>
+</html>

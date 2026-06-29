@@ -1,0 +1,363 @@
+/* ============================================
+   LIFE STRATEGIST - VISUAL ENHANCEMENTS
+   For kids aged 10-18: vibrant, animated, fun
+   ============================================ */
+
+/* Floating particles background */
+@keyframes floatUp {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+@keyframes floatSideways {
+  0%, 100% { transform: translateX(-20px); }
+  50% { transform: translateX(20px); }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+  50% { box-shadow: 0 0 40px rgba(255,255,255,0.3); }
+}
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+@keyframes shine {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+@keyframes progressFill {
+  0% { width: 0%; }
+  100% { width: var(--target-width); }
+}
+@keyframes starPop {
+  0% { transform: scale(0) rotate(-180deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes cardHoverLift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+@keyframes glowPulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.2); }
+}
+@keyframes wobble {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(-5deg); }
+  30% { transform: rotate(3deg); }
+  45% { transform: rotate(-3deg); }
+  60% { transform: rotate(2deg); }
+  75% { transform: rotate(-1deg); }
+}
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+/* Particle background */
+#particles-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: floatUp linear infinite;
+}
+.particle.star {
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+/* Confetti overlay */
+#confetti-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+.confetti-piece {
+  position: absolute;
+  width: 10px; height: 10px;
+  animation: confettiFall linear forwards;
+}
+
+/* Progress bar */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--theme-color), var(--theme-light));
+  transition: width 0.6s ease;
+  animation: progressFill 1s ease forwards;
+  box-shadow: 0 0 10px var(--theme-color);
+}
+
+/* Level card themes */
+.level-card[data-theme="green"] { --theme-color: #4ade80; --theme-light: #86efac; --theme-glow: rgba(74,222,128,0.3); }
+.level-card[data-theme="blue"] { --theme-color: #60a5fa; --theme-light: #93c5fd; --theme-glow: rgba(96,165,250,0.3); }
+.level-card[data-theme="gold"] { --theme-color: #fbbf24; --theme-light: #fcd34d; --theme-glow: rgba(251,191,36,0.3); }
+
+.level-card {
+  border: 1px solid var(--theme-glow);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.level-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px var(--theme-glow), 0 0 60px var(--theme-glow);
+  border-color: var(--theme-color);
+}
+.level-card.locked {
+  opacity: 0.6;
+  filter: grayscale(0.4);
+}
+.level-card.locked::after {
+  content: "🔒";
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  opacity: 0.3;
+  pointer-events: none;
+}
+.level-card .level-icon {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  display: block;
+  animation: wobble 3s ease-in-out infinite;
+}
+
+/* Buttons with ripple and glow */
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+.btn:active {
+  transform: translateY(0);
+}
+.btn.ripple::after {
+  content: "";
+  position: absolute;
+  width: 20px; height: 20px;
+  background: rgba(255,255,255,0.4);
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 0.6s ease-out;
+  pointer-events: none;
+}
+
+/* Pulse glow for primary buttons */
+.btn-primary.pulse {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Choice cards */
+.choice-card {
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.choice-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  border-color: rgba(255,255,255,0.3);
+}
+.choice-card:active {
+  transform: scale(0.98);
+}
+
+/* HUD resource icons */
+.hud .mini {
+  transition: all 0.3s ease;
+}
+.hud .mini.changed {
+  animation: shake 0.5s ease;
+}
+.hud .mini.positive {
+  color: var(--green);
+  text-shadow: 0 0 10px var(--green);
+}
+.hud .mini.negative {
+  color: var(--red);
+  text-shadow: 0 0 10px var(--red);
+}
+
+/* Star rating with animation */
+.star-rating {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin: 12px 0;
+}
+.star {
+  font-size: 2rem;
+  animation: starPop 0.5s ease backwards;
+}
+.star:nth-child(1) { animation-delay: 0s; }
+.star:nth-child(2) { animation-delay: 0.2s; }
+.star:nth-child(3) { animation-delay: 0.4s; }
+
+/* Screen transitions */
+.screen.fade-up {
+  animation: fadeInUp 0.5s ease;
+}
+
+/* Floating orbs on home */
+.orb {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Badges with shine */
+.badge {
+  position: relative;
+  overflow: hidden;
+}
+.badge::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: shine 3s ease-in-out infinite;
+}
+
+/* Narrative text typing effect */
+.typing-text {
+  overflow: hidden;
+  border-right: 2px solid rgba(255,255,255,0.5);
+  white-space: nowrap;
+  animation: typing 2s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+@keyframes typing { from { width: 0; } to { width: 100%; } }
+@keyframes blink-caret { 50% { border-color: transparent; } }
+
+/* Consequence panel animation */
+.consequence-panel {
+  animation: bounceIn 0.5s ease;
+}
+
+/* Resource change numbers floating up */
+.float-number {
+  position: absolute;
+  font-size: 1.2rem;
+  font-weight: bold;
+  animation: floatUp 1s ease forwards;
+  pointer-events: none;
+  z-index: 100;
+}
+.float-number.positive { color: var(--green); }
+.float-number.negative { color: var(--red); }
+
+/* Locked level overlay */
+.locked-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  z-index: 10;
+}
+
+/* Mission card hover effect */
+.scenario-card {
+  transition: all 0.3s ease;
+}
+.scenario-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+/* Animated background gradient */
+body {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Neon glow text for headings */
+.neon-text {
+  text-shadow: 0 0 10px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.1), 0 0 30px rgba(255,255,255,0.05);
+}
+
+/* Success/failure flash */
+.flash-success {
+  animation: flashGreen 0.5s ease;
+}
+@keyframes flashGreen {
+  0%, 100% { background: transparent; }
+  50% { background: rgba(74,222,128,0.1); }
+}
+.flash-danger {
+  animation: flashRed 0.5s ease;
+}
+@keyframes flashRed {
+  0%, 100% { background: transparent; }
+  50% { background: rgba(248,113,113,0.1); }
+}
+
+/* Story card with image placeholder */
+.story-card {
+  position: relative;
+}
+.story-card .story-image {
+  width: 100%;
+  height: 120px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+/* Responsive grid */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }

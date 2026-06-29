@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mystery 008: ATM — Discover the checksum algorithm that protects every card number and the hash that hides your PIN.">
+    <title>Mystery 008 — ATM | Hidden Maths</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mystery-008.css">
+</head>
+<body>
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="gradient-layer"></div>
+        <div class="particle-container" id="particleContainer"></div>
+        <div class="floating-symbols" id="floatingSymbols"></div>
+    </div>
+
+    <nav class="mystery-nav glass" role="navigation" aria-label="Mystery navigation">
+        <div class="nav-container">
+            <a href="index.html" class="nav-back" aria-label="Return to home screen">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back</span>
+            </a>
+            <div class="mystery-progress">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-label" id="progressLabel">Step 1 of 9</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="mystery-main" id="mysteryMain">
+        <section class="mystery-step active" id="step-curiosity" aria-labelledby="step1-title">
+            <div class="step-content">
+                <span class="mystery-tag">Mystery 008</span>
+                <h1 class="step-title" id="step1-title">ATM</h1>
+                <p class="step-hook">How does the machine know your card is real — and your PIN is correct — without ever remembering either?</p>
+                <div class="curiosity-visual" aria-hidden="true">
+                    <div class="atm-scene">
+                        <div class="atm-machine">
+                            <div class="atm-screen">
+                                <div class="screen-text">Enter PIN</div>
+                            </div>
+                            <div class="card-slot">
+                                <div class="card" id="atmCard"></div>
+                            </div>
+                            <div class="keypad">
+                                <div class="key-row"><div class="key">1</div><div class="key">2</div><div class="key">3</div></div>
+                                <div class="key-row"><div class="key">4</div><div class="key">5</div><div class="key">6</div></div>
+                                <div class="key-row"><div class="key">7</div><div class="key">8</div><div class="key">9</div></div>
+                                <div class="key-row"><div class="key">*</div><div class="key">0</div><div class="key">#</div></div>
+                            </div>
+                        </div>
+                        <div class="lock-icon" id="lockIcon">🔒</div>
+                    </div>
+                </div>
+                <p class="step-hint">The answer is not a secret vault. It is a checksum — a formula that catches fake cards in milliseconds.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-observation" aria-labelledby="step2-title">
+            <div class="step-content">
+                <span class="step-tag">Observation</span>
+                <h2 class="step-title" id="step2-title">Look at the Card Number</h2>
+                <p class="step-desc">Your card has 16 digits. The last digit is special. It is not random. It is a mathematically calculated guard that catches every typo.</p>
+                <div class="observation-stage" id="observationStage" aria-hidden="true">
+                    <div class="card-number">
+                        <div class="digit-group"><span class="dig">4</span><span class="dig">5</span><span class="dig">3</span><span class="dig">2</span></div>
+                        <div class="digit-group"><span class="dig">0</span><span class="dig">1</span><span class="dig">2</span><span class="dig">3</span></div>
+                        <div class="digit-group"><span class="dig">4</span><span class="dig">5</span><span class="dig">6</span><span class="dig">7</span></div>
+                        <div class="digit-group"><span class="dig">8</span><span class="dig">9</span><span class="dig">1</span><span class="dig guard">3</span></div>
+                    </div>
+                    <div class="card-labels">
+                        <div class="c-label">First 15 digits</div>
+                        <div class="arrow">→</div>
+                        <div class="c-label highlight">Check digit</div>
+                    </div>
+                </div>
+                <div class="obs-facts" id="obsFacts">
+                    <div class="fact-card glass">
+                        <span class="fact-number">16</span>
+                        <span class="fact-label">Digits on card</span>
+                    </div>
+                    <div class="fact-card glass">
+                        <span class="fact-number">Mod 10</span>
+                        <span class="fact-label">Luhn algorithm</span>
+                    </div>
+                    <div class="fact-card glass">
+                        <span class="fact-number">1</span>
+                        <span class="fact-label">Fake caught instantly</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-experiment" aria-labelledby="step3-title">
+            <div class="step-content">
+                <span class="step-tag">Experiment</span>
+                <h2 class="step-title" id="step3-title">Build the Check Digit</h2>
+                <p class="step-desc">Enter 15 digits. The machine will calculate the 16th digit using the same math every ATM uses — the Luhn algorithm.</p>
+                <div class="experiment-stage glass" id="experimentStage">
+                    <div class="luhn-builder">
+                        <div class="luhn-input">
+                            <label>Enter 15 digits</label>
+                            <input type="text" class="luhn-field" id="luhnInput" maxlength="15" placeholder="453201234567890" value="453201234567890">
+                            <div class="luhn-status" id="luhnStatus">Validating...</div>
+                        </div>
+                        <div class="luhn-calc">
+                            <div class="calc-step">
+                                <span class="step-num">1</span>
+                                <div class="step-detail">
+                                    <span class="step-label">Double every second digit from right</span>
+                                    <span class="step-result" id="step1Result">8 5 6 2 0 1 4 3 8 5 2 7 4 9 0</span>
+                                </div>
+                            </div>
+                            <div class="calc-step">
+                                <span class="step-num">2</span>
+                                <div class="step-detail">
+                                    <span class="step-label">If > 9, subtract 9</span>
+                                    <span class="step-result" id="step2Result">8 5 6 2 0 1 4 3 8 5 2 7 4 9 0</span>
+                                </div>
+                            </div>
+                            <div class="calc-step">
+                                <span class="step-num">3</span>
+                                <div class="step-detail">
+                                    <span class="step-label">Sum all digits</span>
+                                    <span class="step-result" id="step3Result">Total = 67</span>
+                                </div>
+                            </div>
+                            <div class="calc-step">
+                                <span class="step-num">4</span>
+                                <div class="step-detail">
+                                    <span class="step-label">Check digit = (10 − (sum mod 10)) mod 10</span>
+                                    <span class="step-result highlight" id="step4Result">Check digit = 3</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="luhn-card">
+                            <div class="final-card">
+                                <span class="fc-digits" id="fcDigits">4532 0123 4567 890</span>
+                                <span class="fc-check" id="fcCheck">3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-actions">
+                        <button class="btn btn-primary" id="btnCalc">Calculate</button>
+                        <button class="btn btn-secondary" id="btnRandom">Random Card</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-prediction" aria-labelledby="step4-title">
+            <div class="step-content">
+                <span class="step-tag">Prediction</span>
+                <h2 class="step-title" id="step4-title">How Many Fake Numbers Get Through?</h2>
+                <p class="step-desc">A thief guesses a random 16-digit card number. The ATM runs the Luhn check. What percentage of random guesses pass?</p>
+                <div class="prediction-gauge glass">
+                    <div class="gauge-display">
+                        <span class="gauge-value" id="gaugeValue">10</span>
+                        <span class="gauge-unit">percent</span>
+                    </div>
+                    <input type="range" class="gauge-slider" id="gaugeSlider" min="0" max="50" value="10" step="1" aria-label="Prediction slider">
+                    <div class="gauge-labels"><span>0%</span><span>10%</span><span>20%</span><span>30%</span><span>50%</span></div>
+                </div>
+                <p class="step-hint">Most people guess 10%. The Luhn check blocks roughly 90% of random guesses — only about 1 in 10 passes.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-discovery" aria-labelledby="step5-title">
+            <div class="step-content">
+                <span class="step-tag">Discovery</span>
+                <h2 class="step-title" id="step5-title">The Hidden Formula</h2>
+                <p class="step-desc">The Luhn algorithm is not encryption. It is a checksum. It proves the number is structured correctly — but does not prove it is yours.</p>
+                <div class="discovery-reveal glass" id="discoveryReveal">
+                    <div class="reveal-line">
+                        <span class="reveal-label">Digits</span>
+                        <span class="reveal-arrow">×</span>
+                        <span class="reveal-label">Weights</span>
+                        <span class="reveal-arrow">+</span>
+                        <span class="reveal-label">Sum</span>
+                        <span class="reveal-arrow">≡</span>
+                        <span class="reveal-label highlight">0 (mod 10)</span>
+                    </div>
+                    <div class="reveal-formula" id="revealFormula">
+                        <span class="formula-num">Σ</span>
+                        <span class="formula-op">(</span>
+                        <span class="formula-num">dᵢ</span>
+                        <span class="formula-op">×</span>
+                        <span class="formula-num">wᵢ</span>
+                        <span class="formula-op">)</span>
+                        <span class="formula-op">≡</span>
+                        <span class="formula-res">0</span>
+                        <span class="formula-unit">mod 10</span>
+                    </div>
+                </div>
+                <p class="step-desc">Once the weighted sum is divisible by 10, the card number is valid. The ATM runs this in a thousandth of a second.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-explanation" aria-labelledby="step6-title">
+            <div class="step-content">
+                <span class="step-tag">Explanation</span>
+                <h2 class="step-title" id="step6-title">How the Numbers Work</h2>
+                <div class="explanation-cards">
+                    <div class="explanation-card glass" id="explCard1">
+                        <div class="expl-number">1</div>
+                        <h3>Double Every Second</h3>
+                        <p>Starting from the right, double every second digit. This catches adjacent transposition errors — if two digits swap, the check usually fails.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">... 8 7 6 5 → 16 7 12 5</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard2">
+                        <div class="expl-number">2</div>
+                        <h3>Subtract 9</h3>
+                        <p>If doubling gives 10 or more, subtract 9. This keeps every digit as a single digit. The math is equivalent to summing the digits of the product.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">16 → 7, 12 → 3</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard3">
+                        <div class="expl-number">3</div>
+                        <h3>Sum and Mod 10</h3>
+                        <p>Add all digits. Take the remainder when divided by 10. The check digit makes this remainder exactly zero. That is the validation.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">Sum mod 10 = 0</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard4">
+                        <div class="expl-number">4</div>
+                        <h3>PIN Hash</h3>
+                        <p>The ATM does not store your PIN. It stores a <strong>hash</strong> — a scrambled number that cannot be reversed. Even the bank cannot read your PIN.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">PIN → Hash → Compare</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-applications" aria-labelledby="step7-title">
+            <div class="step-content">
+                <span class="step-tag">Applications</span>
+                <h2 class="step-title" id="step7-title">Where Else Is the Check Digit Hiding?</h2>
+                <p class="step-desc">Checksums are everywhere. They protect long numbers from the small errors humans make every day.</p>
+                <div class="apps-grid">
+                    <div class="app-card glass"><div class="app-icon">📦</div><h3>Barcodes</h3><p>Every retail barcode ends with a check digit. The scanner recalculates it from the product code. If the laser misreads, the beep fails.</p></div>
+                    <div class="app-card glass"><div class="app-icon">📖</div><h3>ISBN Books</h3><p>Every book's ISBN ends with a digit that validates the publisher and title code. It catches ordering errors before the book is shelved.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🏥</div><h3>Medical IDs</h3><p>Hospital patient numbers and medication codes use check digits. A wrong digit prevents a drug from reaching the wrong patient.</p></div>
+                    <div class="app-card glass"><div class="app-icon">✈️</div><h3>Airline Tickets</h3><p>Ticket numbers and boarding pass codes contain checksums. The gate scanner rejects invalid tickets before the plane loads.</p></div>
+                    <div class="app-card glass"><div class="app-icon">📱</div><h3>IMEI Numbers</h3><p>Your phone's IMEI has a check digit. Networks verify it before connecting the device. Stolen phones are blocked by invalidating the checksum.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🌐</div><h3>IP & MAC Addresses</h3><p>Network packets carry checksums. If a wire flips a bit, the receiver detects the error and requests the packet again.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-challenge" aria-labelledby="step8-title">
+            <div class="step-content">
+                <span class="step-tag">Challenge</span>
+                <h2 class="step-title" id="step8-title">Checksum Challenge</h2>
+                <p class="step-desc">Three questions. Use the Luhn logic you discovered.</p>
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-question active" id="quizQ1">
+                        <p class="quiz-text">In the Luhn algorithm, what happens when a doubled digit is 10 or more?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">Ignore it</button>
+                            <button class="quiz-option glass" data-correct="false">Add 10</button>
+                            <button class="quiz-option glass" data-correct="true">Subtract 9</button>
+                            <button class="quiz-option glass" data-correct="false">Divide by 2</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ1"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ2">
+                        <p class="quiz-text">What does the ATM store instead of your actual PIN?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">Your PIN in plain text</button>
+                            <button class="quiz-option glass" data-correct="false">A secret code</button>
+                            <button class="quiz-option glass" data-correct="true">A hash (scrambled number)</button>
+                            <button class="quiz-option glass" data-correct="false">Nothing at all</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ2"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ3">
+                        <p class="quiz-text">If the weighted sum of all 16 digits is 70, is the card number valid?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">No</button>
+                            <button class="quiz-option glass" data-correct="true">Yes</button>
+                            <button class="quiz-option glass" data-correct="false">Maybe</button>
+                            <button class="quiz-option glass" data-correct="false">Not enough info</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ3"></div>
+                    </div>
+                </div>
+                <div class="quiz-score glass" id="quizScore" style="display:none;">
+                    <span class="score-label">Your Score</span>
+                    <span class="score-value" id="scoreValue">0/3</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-celebration" aria-labelledby="step9-title">
+            <div class="step-content">
+                <div class="celebration-visual" id="celebrationVisual" aria-hidden="true"></div>
+                <div class="celebration-badge glass">
+                    <div class="badge-icon">🏆</div>
+                    <div class="badge-text">
+                        <span class="badge-title">Security Expert</span>
+                        <span class="badge-desc">Mystery 008 Complete</span>
+                    </div>
+                </div>
+                <h2 class="step-title" id="step9-title">Mystery Solved!</h2>
+                <p class="step-desc">You started with a card swipe. You ended with the modular arithmetic that protects every transaction, barcode, and password in the world.</p>
+                <div class="celebration-stats">
+                    <div class="cstat glass"><span class="cstat-label">Mystery</span><span class="cstat-value">008</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Formula</span><span class="cstat-value">Σ(dᵢ×wᵢ) ≡ 0 mod 10</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Discovery</span><span class="cstat-value">Luhn Algorithm</span></div>
+                </div>
+                <div class="celebration-actions">
+                    <a href="index.html" class="btn btn-primary">Return to Home</a>
+                    <a href="mystery-008.html" class="btn btn-secondary">Play Again</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="mystery-controls glass" id="mysteryControls">
+        <button class="btn btn-secondary" id="prevBtn" style="display:none">Back</button>
+        <button class="btn btn-primary" id="nextBtn">Begin</button>
+    </div>
+    <script src="audio.js"></script>
+    <script src="mystery-008.js"></script>
+</body>
+</html>

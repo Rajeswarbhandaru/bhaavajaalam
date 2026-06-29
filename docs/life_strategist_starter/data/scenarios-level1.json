@@ -1,0 +1,1420 @@
+[
+  {
+    "id": "ls-01-001",
+    "meta": {
+      "title": "Forgot Homework",
+      "level": 1,
+      "theme": "everyday",
+      "duration": "2 min",
+      "difficulty": 1,
+      "tags": [
+        "school",
+        "honesty",
+        "planning"
+      ]
+    },
+    "intro": "You reach school and suddenly remember your homework is still at home.",
+    "objective": "Handle the situation wisely before class starts.",
+    "resources": {
+      "money": 20,
+      "time": 10,
+      "energy": 80,
+      "trust": 60,
+      "knowledge": 65,
+      "confidence": 55,
+      "health": 90
+    },
+    "relationships": {
+      "parents": 70,
+      "friends": 60,
+      "teacher": 50
+    },
+    "nodes": [
+      {
+        "id": "intro",
+        "type": "story",
+        "text": "You reach school and suddenly remember your homework is still at home.",
+        "next": "decision-1"
+      },
+      {
+        "id": "decision-1",
+        "type": "decision",
+        "text": "Handle the situation wisely before class starts.",
+        "choices": [
+          {
+            "id": "truth",
+            "title": "Tell the truth",
+            "description": "Explain honestly to the teacher.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "confidence": 8,
+                "trust": 10,
+                "time": -1
+              },
+              "relationships": {
+                "teacher": 12
+              },
+              "hidden": {
+                "ethics": 12,
+                "planning": 1,
+                "risk_management": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "run_home",
+            "title": "Run back home",
+            "description": "Try to get it before class fully begins.",
+            "risk": "high",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": -20,
+                "time": -7,
+                "health": -3
+              },
+              "relationships": {},
+              "hidden": {
+                "adaptability": 7,
+                "risk_management": 2,
+                "planning": -4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "copy_friend",
+            "title": "Copy from a friend",
+            "description": "Finish it quickly before submission.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "confidence": -6,
+                "trust": -8
+              },
+              "relationships": {
+                "friends": -8,
+                "teacher": -5
+              },
+              "hidden": {
+                "ethics": -15,
+                "risk_management": -4
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The situation resolves. Some lessons are learned.",
+        "reflection": [
+          "How could planning the previous night change this day?",
+          "Does honesty help in the long term even when it hurts now?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-01-002",
+    "meta": {
+      "title": "Lost Pencil",
+      "level": 1,
+      "theme": "everyday",
+      "duration": "2 min",
+      "difficulty": 1,
+      "tags": [
+        "resource",
+        "friendship",
+        "responsibility"
+      ]
+    },
+    "intro": "Your pencil is missing during a class test.",
+    "objective": "Find a solution without creating a bigger problem.",
+    "resources": {
+      "money": 10,
+      "time": 6,
+      "energy": 75,
+      "trust": 55,
+      "knowledge": 70,
+      "confidence": 52,
+      "health": 95
+    },
+    "relationships": {
+      "parents": 65,
+      "friends": 62,
+      "teacher": 54
+    },
+    "nodes": [
+      {
+        "id": "intro",
+        "type": "story",
+        "text": "Your pencil is missing during a class test.",
+        "next": "decision-1"
+      },
+      {
+        "id": "decision-1",
+        "type": "decision",
+        "text": "Find a solution without creating a bigger problem.",
+        "choices": [
+          {
+            "id": "borrow_politely",
+            "title": "Borrow politely",
+            "description": "Ask a classmate for help respectfully.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "confidence": 5,
+                "time": -1
+              },
+              "relationships": {
+                "friends": 8
+              },
+              "hidden": {
+                "leadership": 3,
+                "ethics": 6,
+                "adaptability": 5
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "tell_teacher",
+            "title": "Inform the teacher",
+            "description": "Request a temporary pencil from school supplies.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": 7,
+                "confidence": 4
+              },
+              "relationships": {
+                "teacher": 10
+              },
+              "hidden": {
+                "ethics": 7,
+                "risk_management": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "take_without_asking",
+            "title": "Use one without asking",
+            "description": "Pick a spare pencil from a nearby desk.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -10,
+                "confidence": -4
+              },
+              "relationships": {
+                "friends": -10,
+                "teacher": -4
+              },
+              "hidden": {
+                "ethics": -14,
+                "risk_management": -6
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The situation resolves. Some lessons are learned.",
+        "reflection": [
+          "What is the smart difference between urgent action and careless action?",
+          "Why do small respectful actions matter?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-01-003",
+    "meta": {
+      "title": "Late to School",
+      "level": 1,
+      "theme": "everyday",
+      "duration": "2 min",
+      "difficulty": 1,
+      "tags": [
+        "time",
+        "honesty",
+        "routine"
+      ]
+    },
+    "intro": "You are late and the school gate is about to close.",
+    "objective": "Choose the response that protects both today and tomorrow.",
+    "resources": {
+      "money": 15,
+      "time": 5,
+      "energy": 70,
+      "trust": 58,
+      "knowledge": 68,
+      "confidence": 50,
+      "health": 92
+    },
+    "relationships": {
+      "parents": 60,
+      "friends": 60,
+      "teacher": 55
+    },
+    "nodes": [
+      {
+        "id": "intro",
+        "type": "story",
+        "text": "You are late and the school gate is about to close.",
+        "next": "decision-1"
+      },
+      {
+        "id": "decision-1",
+        "type": "decision",
+        "text": "Choose the response that protects both today and tomorrow.",
+        "choices": [
+          {
+            "id": "accept_responsibility",
+            "title": "Accept responsibility",
+            "description": "Apologize and explain briefly.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": 8,
+                "confidence": 6
+              },
+              "relationships": {
+                "teacher": 10
+              },
+              "hidden": {
+                "ethics": 10,
+                "planning": 2
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "blame_traffic",
+            "title": "Blame the traffic",
+            "description": "Use an excuse to avoid trouble.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -7,
+                "confidence": -2
+              },
+              "relationships": {
+                "teacher": -5
+              },
+              "hidden": {
+                "ethics": -9,
+                "risk_management": -3
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "jump_side_gate",
+            "title": "Sneak through a side gate",
+            "description": "Try to get in unseen.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "health": -4,
+                "confidence": -6
+              },
+              "relationships": {
+                "teacher": -8
+              },
+              "hidden": {
+                "risk_management": -10,
+                "ethics": -8
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The situation resolves. Some lessons are learned.",
+        "reflection": [
+          "Which choice protects your reputation over time?",
+          "What morning habit would prevent this?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-01-004",
+    "meta": {
+      "title": "Dog Chasing",
+      "level": 1,
+      "theme": "everyday",
+      "duration": "2 min",
+      "difficulty": 1,
+      "tags": [
+        "safety",
+        "calm",
+        "prediction"
+      ]
+    },
+    "intro": "A dog starts barking and running toward you on the road.",
+    "objective": "Stay safe without making the situation worse.",
+    "resources": {
+      "money": 12,
+      "time": 4,
+      "energy": 72,
+      "trust": 55,
+      "knowledge": 62,
+      "confidence": 53,
+      "health": 96
+    },
+    "relationships": {
+      "parents": 66,
+      "friends": 59,
+      "teacher": 50
+    },
+    "nodes": [
+      {
+        "id": "intro",
+        "type": "story",
+        "text": "A dog starts barking and running toward you on the road.",
+        "next": "decision-1"
+      },
+      {
+        "id": "decision-1",
+        "type": "decision",
+        "text": "Stay safe without making the situation worse.",
+        "choices": [
+          {
+            "id": "stay_calm",
+            "title": "Stay calm and step back slowly",
+            "description": "Avoid sudden movements.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "confidence": 7,
+                "health": 1
+              },
+              "relationships": {},
+              "hidden": {
+                "prediction": 8,
+                "risk_management": 10,
+                "patience": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "run_fast",
+            "title": "Run as fast as possible",
+            "description": "Try to escape immediately.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "energy": -12,
+                "health": -5,
+                "confidence": -3
+              },
+              "relationships": {},
+              "hidden": {
+                "risk_management": -7,
+                "prediction": -5
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "throw_stone",
+            "title": "Throw a stone",
+            "description": "Try to scare the dog away.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -2,
+                "confidence": -1
+              },
+              "relationships": {},
+              "hidden": {
+                "ethics": -5,
+                "risk_management": -6
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The situation resolves. Some lessons are learned.",
+        "reflection": [
+          "Why is calm sometimes the fastest strategy?",
+          "How does prediction help in danger?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-01-005",
+    "meta": {
+      "title": "Rain Started",
+      "level": 1,
+      "theme": "everyday",
+      "duration": "2 min",
+      "difficulty": 1,
+      "tags": [
+        "weather",
+        "resource",
+        "adaptability"
+      ]
+    },
+    "intro": "Rain starts suddenly while you are walking home with books.",
+    "objective": "Protect yourself and your belongings intelligently.",
+    "resources": {
+      "money": 25,
+      "time": 8,
+      "energy": 74,
+      "trust": 56,
+      "knowledge": 66,
+      "confidence": 51,
+      "health": 94
+    },
+    "relationships": {
+      "parents": 68,
+      "friends": 58,
+      "teacher": 52
+    },
+    "nodes": [
+      {
+        "id": "intro",
+        "type": "story",
+        "text": "Rain starts suddenly while you are walking home with books.",
+        "next": "decision-1"
+      },
+      {
+        "id": "decision-1",
+        "type": "decision",
+        "text": "Protect yourself and your belongings intelligently.",
+        "choices": [
+          {
+            "id": "use_bag_cover",
+            "title": "Protect the books first",
+            "description": "Cover books using the bag and move to shelter.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "knowledge": 5,
+                "health": -1,
+                "confidence": 5
+              },
+              "relationships": {},
+              "hidden": {
+                "planning": 7,
+                "resource_optimization": 9,
+                "prediction": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "wait_shop",
+            "title": "Wait under a shop shade",
+            "description": "Pause and restart once rain slows.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "time": -4,
+                "health": 2
+              },
+              "relationships": {},
+              "hidden": {
+                "patience": 8,
+                "risk_management": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "run_home_rain",
+            "title": "Run home in the rain",
+            "description": "Rush without planning.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "energy": -10,
+                "health": -6
+              },
+              "relationships": {},
+              "hidden": {
+                "risk_management": -3,
+                "adaptability": 2
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The situation resolves. Some lessons are learned.",
+        "reflection": [
+          "What should you carry during rainy days?",
+          "How do you balance time and protection?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-01-006",
+    "meta": {
+      "title": "Bus Missed",
+      "level": 1,
+      "theme": "everyday",
+      "duration": "2 min",
+      "difficulty": 1,
+      "tags": [
+        "transport",
+        "safety",
+        "communication"
+      ]
+    },
+    "intro": "You miss the school bus and now need a safe backup plan.",
+    "objective": "Reach school or return home using a trusted decision.",
+    "resources": {
+      "money": 30,
+      "time": 12,
+      "energy": 71,
+      "trust": 60,
+      "knowledge": 64,
+      "confidence": 54,
+      "health": 95
+    },
+    "relationships": {
+      "parents": 72,
+      "friends": 55,
+      "teacher": 51
+    },
+    "nodes": [
+      {
+        "id": "intro",
+        "type": "story",
+        "text": "You miss the school bus and now need a safe backup plan.",
+        "next": "decision-1"
+      },
+      {
+        "id": "decision-1",
+        "type": "decision",
+        "text": "Reach school or return home using a trusted decision.",
+        "choices": [
+          {
+            "id": "call_parent",
+            "title": "Call a parent",
+            "description": "Inform them and ask for the safest next step.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "trust": 8,
+                "confidence": 4
+              },
+              "relationships": {
+                "parents": 10
+              },
+              "hidden": {
+                "risk_management": 10,
+                "planning": 5,
+                "ethics": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "share_auto_friend",
+            "title": "Go with a known friend",
+            "description": "Travel together in a verified vehicle.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -10,
+                "time": -5
+              },
+              "relationships": {
+                "friends": 7
+              },
+              "hidden": {
+                "adaptability": 7,
+                "risk_management": 5
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "go_alone_unknown",
+            "title": "Go alone with a stranger",
+            "description": "Take the quickest unknown ride.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "confidence": -8,
+                "trust": -5
+              },
+              "relationships": {
+                "parents": -8
+              },
+              "hidden": {
+                "risk_management": -15,
+                "prediction": -8
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The situation resolves. Some lessons are learned.",
+        "reflection": [
+          "What makes a backup transport option safe?",
+          "Why does communication matter in emergencies?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-01-007",
+    "meta": {
+      "title": "Pocket Money",
+      "level": 1,
+      "theme": "everyday",
+      "duration": "2 min",
+      "difficulty": 1,
+      "tags": [
+        "budget",
+        "self-control",
+        "planning"
+      ]
+    },
+    "intro": "You receive pocket money for the week and want to use it well.",
+    "objective": "Balance enjoyment, savings, and future needs.",
+    "resources": {
+      "money": 50,
+      "time": 7,
+      "energy": 76,
+      "trust": 58,
+      "knowledge": 67,
+      "confidence": 56,
+      "health": 96
+    },
+    "relationships": {
+      "parents": 70,
+      "friends": 57,
+      "teacher": 49
+    },
+    "nodes": [
+      {
+        "id": "intro",
+        "type": "story",
+        "text": "You receive pocket money for the week and want to use it well.",
+        "next": "decision-1"
+      },
+      {
+        "id": "decision-1",
+        "type": "decision",
+        "text": "Balance enjoyment, savings, and future needs.",
+        "choices": [
+          {
+            "id": "split_budget",
+            "title": "Split into spend-save-help",
+            "description": "Use a simple budget plan.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": 5,
+                "confidence": 6
+              },
+              "relationships": {
+                "parents": 5
+              },
+              "hidden": {
+                "planning": 12,
+                "resource_optimization": 10,
+                "patience": 8
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "spend_fun",
+            "title": "Spend most on fun today",
+            "description": "Enjoy now and think later.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -25,
+                "confidence": 2
+              },
+              "relationships": {},
+              "hidden": {
+                "patience": -7,
+                "resource_optimization": -8
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "lend_all",
+            "title": "Lend almost all to a friend",
+            "description": "Help emotionally without a plan.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": -30,
+                "trust": 2
+              },
+              "relationships": {
+                "friends": 6
+              },
+              "hidden": {
+                "ethics": 5,
+                "planning": -6,
+                "resource_optimization": -10
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The situation resolves. Some lessons are learned.",
+        "reflection": [
+          "Why is balance smarter than pure saving or pure spending?",
+          "How can a child start budgeting early?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-01-008",
+    "meta": {
+      "title": "Broken Toy",
+      "level": 1,
+      "theme": "everyday",
+      "duration": "2 min",
+      "difficulty": 1,
+      "tags": [
+        "ownership",
+        "repair",
+        "honesty"
+      ]
+    },
+    "intro": "You accidentally break a friend's toy while playing.",
+    "objective": "Respond in a way that protects trust and fairness.",
+    "resources": {
+      "money": 35,
+      "time": 6,
+      "energy": 73,
+      "trust": 61,
+      "knowledge": 63,
+      "confidence": 50,
+      "health": 96
+    },
+    "relationships": {
+      "parents": 67,
+      "friends": 64,
+      "teacher": 50
+    },
+    "nodes": [
+      {
+        "id": "intro",
+        "type": "story",
+        "text": "You accidentally break a friend's toy while playing.",
+        "next": "decision-1"
+      },
+      {
+        "id": "decision-1",
+        "type": "decision",
+        "text": "Respond in a way that protects trust and fairness.",
+        "choices": [
+          {
+            "id": "admit_repair",
+            "title": "Admit and offer repair",
+            "description": "Be honest and try to fix or replace it.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -10,
+                "trust": 10,
+                "confidence": 7
+              },
+              "relationships": {
+                "friends": 12
+              },
+              "hidden": {
+                "ethics": 12,
+                "leadership": 4,
+                "resource_optimization": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "hide_damage",
+            "title": "Hide the damage",
+            "description": "Put it back and hope nobody notices.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -12,
+                "confidence": -5
+              },
+              "relationships": {
+                "friends": -10
+              },
+              "hidden": {
+                "ethics": -15,
+                "prediction": -4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "blame_others",
+            "title": "Blame someone else",
+            "description": "Try to avoid consequences by lying.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -15,
+                "confidence": -7
+              },
+              "relationships": {
+                "friends": -14
+              },
+              "hidden": {
+                "ethics": -18,
+                "leadership": -6
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The situation resolves. Some lessons are learned.",
+        "reflection": [
+          "Why is repair better than hiding?",
+          "How does trust break and rebuild?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-01-009",
+    "meta": {
+      "title": "Argument with Friend",
+      "level": 1,
+      "theme": "everyday",
+      "duration": "3 min",
+      "difficulty": 1,
+      "tags": [
+        "emotion",
+        "friendship",
+        "conflict"
+      ]
+    },
+    "intro": "A friend says something hurtful during a game and both of you get angry.",
+    "objective": "Protect self-respect without damaging the friendship unnecessarily.",
+    "resources": {
+      "money": 15,
+      "time": 7,
+      "energy": 69,
+      "trust": 57,
+      "knowledge": 65,
+      "confidence": 53,
+      "health": 97
+    },
+    "relationships": {
+      "parents": 65,
+      "friends": 66,
+      "teacher": 52
+    },
+    "nodes": [
+      {
+        "id": "intro",
+        "type": "story",
+        "text": "A friend says something hurtful during a game and both of you get angry.",
+        "next": "decision-1"
+      },
+      {
+        "id": "decision-1",
+        "type": "decision",
+        "text": "Protect self-respect without damaging the friendship unnecessarily.",
+        "choices": [
+          {
+            "id": "cool_talk",
+            "title": "Pause and talk later",
+            "description": "Calm down first, then discuss clearly.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "confidence": 6,
+                "trust": 6
+              },
+              "relationships": {
+                "friends": 10
+              },
+              "hidden": {
+                "patience": 10,
+                "ethics": 8,
+                "leadership": 5
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "shout_back",
+            "title": "Shout back immediately",
+            "description": "Win the moment emotionally.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "energy": -8,
+                "confidence": -3
+              },
+              "relationships": {
+                "friends": -8
+              },
+              "hidden": {
+                "patience": -8,
+                "risk_management": -4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "leave_group",
+            "title": "Walk away permanently",
+            "description": "End the friendship without clarity.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -4,
+                "confidence": -2
+              },
+              "relationships": {
+                "friends": -10
+              },
+              "hidden": {
+                "adaptability": -3,
+                "leadership": -4
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The situation resolves. Some lessons are learned.",
+        "reflection": [
+          "How is calm different from weakness?",
+          "When should a conversation happen after conflict?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-01-010",
+    "meta": {
+      "title": "Forgot Water Bottle",
+      "level": 1,
+      "theme": "everyday",
+      "duration": "2 min",
+      "difficulty": 1,
+      "tags": [
+        "health",
+        "planning",
+        "resource"
+      ]
+    },
+    "intro": "You realize you forgot your water bottle on a hot day at school.",
+    "objective": "Stay healthy and solve the problem responsibly.",
+    "resources": {
+      "money": 20,
+      "time": 6,
+      "energy": 68,
+      "trust": 58,
+      "knowledge": 64,
+      "confidence": 52,
+      "health": 90
+    },
+    "relationships": {
+      "parents": 66,
+      "friends": 61,
+      "teacher": 53
+    },
+    "nodes": [
+      {
+        "id": "intro",
+        "type": "story",
+        "text": "You realize you forgot your water bottle on a hot day at school.",
+        "next": "decision-1"
+      },
+      {
+        "id": "decision-1",
+        "type": "decision",
+        "text": "Stay healthy and solve the problem responsibly.",
+        "choices": [
+          {
+            "id": "use_school_water",
+            "title": "Refill from safe school water",
+            "description": "Use the available clean source.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "health": 5,
+                "confidence": 4
+              },
+              "relationships": {},
+              "hidden": {
+                "resource_optimization": 10,
+                "planning": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "share_friend",
+            "title": "Share with a friend carefully",
+            "description": "Use small portions until lunch.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "health": 2,
+                "trust": 3
+              },
+              "relationships": {
+                "friends": 6
+              },
+              "hidden": {
+                "adaptability": 6,
+                "ethics": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "ignore_thirst",
+            "title": "Ignore it till the end",
+            "description": "Do nothing and keep going.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "health": -8,
+                "energy": -5
+              },
+              "relationships": {},
+              "hidden": {
+                "prediction": -6,
+                "risk_management": -5
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The situation resolves. Some lessons are learned.",
+        "reflection": [
+          "Why is prevention easier than emergency solving?",
+          "What daily checklist could help?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-01-011",
+    "meta": {
+      "title": "Library Book Due",
+      "level": 1,
+      "theme": "everyday",
+      "duration": "3 min",
+      "difficulty": 1,
+      "tags": [
+        "responsibility",
+        "time",
+        "communication"
+      ]
+    },
+    "intro": "A library book is due today, but you are not finished reading it.",
+    "objective": "Decide how to respect the system and your own learning.",
+    "resources": {
+      "money": 18,
+      "time": 9,
+      "energy": 75,
+      "trust": 59,
+      "knowledge": 72,
+      "confidence": 53,
+      "health": 97
+    },
+    "relationships": {
+      "parents": 65,
+      "friends": 55,
+      "teacher": 54
+    },
+    "nodes": [
+      {
+        "id": "intro",
+        "type": "story",
+        "text": "A library book is due today, but you are not finished reading it.",
+        "next": "decision-1"
+      },
+      {
+        "id": "decision-1",
+        "type": "decision",
+        "text": "Decide how to respect the system and your own learning.",
+        "choices": [
+          {
+            "id": "renew_book",
+            "title": "Ask to renew it",
+            "description": "Communicate before the deadline passes.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "knowledge": 4,
+                "trust": 6
+              },
+              "relationships": {
+                "teacher": 5
+              },
+              "hidden": {
+                "planning": 9,
+                "ethics": 8,
+                "resource_optimization": 5
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "return_on_time",
+            "title": "Return it on time",
+            "description": "Respect the shared resource system.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": 5,
+                "knowledge": -2
+              },
+              "relationships": {},
+              "hidden": {
+                "ethics": 8,
+                "patience": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "keep_silent",
+            "title": "Keep it silently",
+            "description": "Return it late and hope it is ignored.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -8,
+                "confidence": -3
+              },
+              "relationships": {
+                "teacher": -4
+              },
+              "hidden": {
+                "ethics": -10,
+                "planning": -4
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The situation resolves. Some lessons are learned.",
+        "reflection": [
+          "Why do systems depend on individual responsibility?",
+          "What was the most respectful option here?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-01-012",
+    "meta": {
+      "title": "Group Project Delay",
+      "level": 1,
+      "theme": "everyday",
+      "duration": "3 min",
+      "difficulty": 1,
+      "tags": [
+        "teamwork",
+        "leadership",
+        "planning"
+      ]
+    },
+    "intro": "Your group project is due tomorrow, but one member has not finished their part.",
+    "objective": "Save the project without humiliating anyone.",
+    "resources": {
+      "money": 12,
+      "time": 10,
+      "energy": 70,
+      "trust": 60,
+      "knowledge": 74,
+      "confidence": 57,
+      "health": 97
+    },
+    "relationships": {
+      "parents": 62,
+      "friends": 63,
+      "teacher": 56
+    },
+    "nodes": [
+      {
+        "id": "intro",
+        "type": "story",
+        "text": "Your group project is due tomorrow, but one member has not finished their part.",
+        "next": "decision-1"
+      },
+      {
+        "id": "decision-1",
+        "type": "decision",
+        "text": "Save the project without humiliating anyone.",
+        "choices": [
+          {
+            "id": "redistribute_work",
+            "title": "Redistribute tasks calmly",
+            "description": "Help the group finish with a clear plan.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "energy": -6,
+                "trust": 6,
+                "confidence": 7
+              },
+              "relationships": {
+                "friends": 8,
+                "teacher": 5
+              },
+              "hidden": {
+                "leadership": 12,
+                "planning": 10,
+                "adaptability": 7
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "complain_teacher",
+            "title": "Complain immediately",
+            "description": "Ask the teacher to handle the member.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "time": -1,
+                "trust": 1
+              },
+              "relationships": {
+                "teacher": 4,
+                "friends": -4
+              },
+              "hidden": {
+                "leadership": 1,
+                "risk_management": 4,
+                "ethics": 3
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "do_nothing",
+            "title": "Do nothing and hope",
+            "description": "Avoid conflict and wait.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -6,
+                "confidence": -4
+              },
+              "relationships": {
+                "friends": -5,
+                "teacher": -3
+              },
+              "hidden": {
+                "planning": -10,
+                "prediction": -7
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The situation resolves. Some lessons are learned.",
+        "reflection": [
+          "What is the difference between leadership and control?",
+          "How can teamwork recover after a delay?"
+        ]
+      }
+    ]
+  }
+]

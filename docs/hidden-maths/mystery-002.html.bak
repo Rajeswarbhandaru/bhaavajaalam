@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mystery 001: Cricket Ball Speed — Discover how speed is measured without a radar gun.">
+    <title>Mystery 001 — Cricket Ball Speed | Hidden Maths</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mystery-001.css">
+</head>
+<body>
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="gradient-layer"></div>
+        <div class="particle-container" id="particleContainer"></div>
+        <div class="floating-symbols" id="floatingSymbols"></div>
+    </div>
+
+    <nav class="mystery-nav glass" role="navigation" aria-label="Mystery navigation">
+        <div class="nav-container">
+            <a href="index.html" class="nav-back" aria-label="Return to home screen">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back</span>
+            </a>
+            <div class="mystery-progress">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-label" id="progressLabel">Step 1 of 9</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="mystery-main" id="mysteryMain">
+        <section class="mystery-step active" id="step-curiosity" aria-labelledby="step1-title">
+            <div class="step-content">
+                <span class="mystery-tag">Mystery 001</span>
+                <h1 class="step-title" id="step1-title">Cricket Ball Speed</h1>
+                <p class="step-hook">How fast is that ball really travelling — and how do they measure it without a radar gun?</p>
+                <div class="curiosity-visual" aria-hidden="true">
+                    <div class="cricket-scene">
+                        <div class="pitch">
+                            <div class="pitch-line"></div>
+                            <div class="pitch-mark crease-bowler"></div>
+                            <div class="pitch-mark crease-batsman"></div>
+                        </div>
+                        <div class="cricket-figure bowler">
+                            <div class="figure-body"></div>
+                            <div class="figure-arm"></div>
+                        </div>
+                        <div class="cricket-ball" id="curiosityBall"></div>
+                        <div class="cricket-figure batsman">
+                            <div class="figure-body"></div>
+                            <div class="figure-bat"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="step-hint">You have seen this hundreds of times. But have you ever looked at the numbers hiding in plain sight?</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-observation" aria-labelledby="step2-title">
+            <div class="step-content">
+                <span class="step-tag">Observation</span>
+                <h2 class="step-title" id="step2-title">Watch the Delivery</h2>
+                <p class="step-desc">The bowler runs in and releases the ball. The batsman stands 20 meters away. Nothing special — until you start counting.</p>
+                <div class="observation-stage" id="observationStage" aria-hidden="true">
+                    <div class="obs-track">
+                        <div class="obs-bowler" id="obsBowler"><span class="obs-emoji">🏃</span></div>
+                        <div class="obs-ball" id="obsBall"></div>
+                        <div class="obs-batsman"><span class="obs-emoji">🏏</span></div>
+                        <div class="obs-distance">20 m</div>
+                    </div>
+                    <div class="obs-timeline" id="obsTimeline">
+                        <span class="time-marker">0.0s</span>
+                        <span class="time-marker">0.2s</span>
+                        <span class="time-marker">0.4s</span>
+                        <span class="time-marker">0.6s</span>
+                    </div>
+                </div>
+                <div class="obs-facts" id="obsFacts" style="display:none;">
+                    <div class="fact-card glass">
+                        <span class="fact-number">20.12 m</span>
+                        <span class="fact-label">Standard pitch length</span>
+                    </div>
+                    <div class="fact-card glass">
+                        <span class="fact-number">0.45 s</span>
+                        <span class="fact-label">Average delivery time</span>
+                    </div>
+                    <div class="fact-card glass">
+                        <span class="fact-number">144 km/h</span>
+                        <span class="fact-label">Fast bowler speed</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-experiment" aria-labelledby="step3-title">
+            <div class="step-content">
+                <span class="step-tag">Experiment</span>
+                <h2 class="step-title" id="step3-title">Be the Timer</h2>
+                <p class="step-desc">You are the stopwatch. Press <strong>Bowl</strong> when the ball is released. Press <strong>Hit</strong> when it reaches the batsman. We will calculate the speed.</p>
+                <div class="experiment-stage glass" id="experimentStage">
+                    <div class="exp-track">
+                        <div class="exp-marker start">Bowler</div>
+                        <div class="exp-marker end">Batsman</div>
+                        <div class="exp-ball" id="expBall"></div>
+                    </div>
+                    <div class="exp-readout">
+                        <div class="readout-item"><span class="readout-label">Distance</span><span class="readout-value">20 m</span></div>
+                        <div class="readout-item"><span class="readout-label">Time</span><span class="readout-value" id="expTime">--.-- s</span></div>
+                        <div class="readout-item"><span class="readout-label">Speed</span><span class="readout-value" id="expSpeed">-- m/s</span></div>
+                    </div>
+                    <div class="exp-actions">
+                        <button class="btn btn-primary" id="btnBowl">Bowl</button>
+                        <button class="btn btn-primary" id="btnHit" disabled>Ball Reaches Batsman</button>
+                        <button class="btn btn-secondary" id="btnResetExp">Reset</button>
+                    </div>
+                    <p class="exp-instruction" id="expInstruction">Press <strong>Bowl</strong> to start</p>
+                </div>
+                <div class="exp-history" id="expHistory"></div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-prediction" aria-labelledby="step4-title">
+            <div class="step-content">
+                <span class="step-tag">Prediction</span>
+                <h2 class="step-title" id="step4-title">What Do You Think?</h2>
+                <p class="step-desc">Before we reveal the formula, guess the speed of a professional fast bowler in kilometres per hour.</p>
+                <div class="prediction-gauge glass">
+                    <div class="gauge-display">
+                        <span class="gauge-value" id="gaugeValue">120</span>
+                        <span class="gauge-unit">km/h</span>
+                    </div>
+                    <input type="range" class="gauge-slider" id="gaugeSlider" min="60" max="200" value="120" aria-label="Speed prediction slider">
+                    <div class="gauge-labels"><span>Slow</span><span>Fast</span><span>Express</span></div>
+                    <div class="gauge-visual" id="gaugeVisual"><div class="gauge-ball"></div></div>
+                </div>
+                <p class="step-hint">Drag the slider. The average guess by other players is <strong>135 km/h</strong>.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-discovery" aria-labelledby="step5-title">
+            <div class="step-content">
+                <span class="step-tag">Discovery</span>
+                <h2 class="step-title" id="step5-title">The Hidden Formula</h2>
+                <p class="step-desc">You have been measuring speed all along — without knowing the formula.</p>
+                <div class="discovery-reveal glass" id="discoveryReveal">
+                    <div class="reveal-line">
+                        <span class="reveal-label">Distance</span>
+                        <span class="reveal-arrow">÷</span>
+                        <span class="reveal-label">Time</span>
+                        <span class="reveal-arrow">=</span>
+                        <span class="reveal-label highlight">Speed</span>
+                    </div>
+                    <div class="reveal-formula" id="revealFormula">
+                        <span class="formula-num" id="formulaDist">20</span>
+                        <span class="formula-op">÷</span>
+                        <span class="formula-num" id="formulaTime">0.5</span>
+                        <span class="formula-op">=</span>
+                        <span class="formula-res" id="formulaRes">40</span>
+                        <span class="formula-unit">m/s</span>
+                    </div>
+                </div>
+                <p class="step-desc">This simple relationship is hiding inside every moving object on Earth. You just discovered it yourself.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-explanation" aria-labelledby="step6-title">
+            <div class="step-content">
+                <span class="step-tag">Explanation</span>
+                <h2 class="step-title" id="step6-title">How the Numbers Work</h2>
+                <div class="explanation-cards">
+                    <div class="explanation-card glass" id="explCard1">
+                        <div class="expl-number">1</div>
+                        <h3>The Pitch</h3>
+                        <p>A standard cricket pitch is exactly <strong>20.12 metres</strong> long. This is the distance the ball must travel.</p>
+                        <div class="expl-visual pitch-visual"></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard2">
+                        <div class="expl-number">2</div>
+                        <h3>The Time</h3>
+                        <p>From release to batsman, the ball takes roughly <strong>0.45 seconds</strong>. Time it yourself and you will see.</p>
+                        <div class="expl-visual timer-visual"><span class="timer-display" id="explTimer">0.45</span><span class="timer-unit">s</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard3">
+                        <div class="expl-number">3</div>
+                        <h3>Speed in m/s</h3>
+                        <p>Divide distance by time: <strong>20.12 ÷ 0.45 = 44.7 m/s</strong></p>
+                        <div class="expl-visual calc-visual" id="calcVisual"></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard4">
+                        <div class="expl-number">4</div>
+                        <h3>Convert to km/h</h3>
+                        <p>Multiply by 3.6: <strong>44.7 × 3.6 = 161 km/h</strong>. That is why a fast bowler is terrifying.</p>
+                        <div class="expl-visual convert-visual"><span class="convert-result">161 km/h</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-applications" aria-labelledby="step7-title">
+            <div class="step-content">
+                <span class="step-tag">Applications</span>
+                <h2 class="step-title" id="step7-title">Where Else Is This Hiding?</h2>
+                <p class="step-desc">The same formula is everywhere. Once you see it, you cannot unsee it.</p>
+                <div class="apps-grid">
+                    <div class="app-card glass"><div class="app-icon">🚗</div><h3>Car Speedometers</h3><p>Your car measures how many kilometres it covers in one hour. Same formula, different scale.</p></div>
+                    <div class="app-card glass"><div class="app-icon">✈️</div><h3>Aircraft Landing</h3><p>Pilots need exact speed to touch down safely. Radar and distance sensors do the same math.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🌊</div><h3>Tsunami Warnings</h3><p>Scientists track how fast the wave travels across the ocean to predict arrival time on shore.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🚀</div><h3>Rocket Launches</h3><p>Escape velocity is the speed needed to break free from Earth. It is still just distance over time.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🔊</div><h3>Sound and Light</h3><p>The speed of sound is 343 m/s. The speed of light is 300,000,000 m/s. Same formula, different speeds.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🏃</div><h3>Sprint Records</h3><p>Usain Bolt ran 100m in 9.58s. That makes his average speed 10.4 m/s or 37.6 km/h.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-challenge" aria-labelledby="step8-title">
+            <div class="step-content">
+                <span class="step-tag">Challenge</span>
+                <h2 class="step-title" id="step8-title">Speed Sleuth Challenge</h2>
+                <p class="step-desc">Three questions. No pressure. Use what you discovered.</p>
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-question active" id="quizQ1">
+                        <p class="quiz-text">A bowler delivers from 20m away. The ball takes 0.5 seconds. What is the speed?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">10 m/s</button>
+                            <button class="quiz-option glass" data-correct="false">20 m/s</button>
+                            <button class="quiz-option glass" data-correct="true">40 m/s</button>
+                            <button class="quiz-option glass" data-correct="false">80 m/s</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ1"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ2">
+                        <p class="quiz-text">A ball travels at 30 m/s. How long to cross a 15m pitch?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">0.25 s</button>
+                            <button class="quiz-option glass" data-correct="true">0.5 s</button>
+                            <button class="quiz-option glass" data-correct="false">0.75 s</button>
+                            <button class="quiz-option glass" data-correct="false">1 s</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ2"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ3">
+                        <p class="quiz-text">Convert 45 m/s to kilometres per hour.</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">120 km/h</button>
+                            <button class="quiz-option glass" data-correct="false">150 km/h</button>
+                            <button class="quiz-option glass" data-correct="true">162 km/h</button>
+                            <button class="quiz-option glass" data-correct="false">180 km/h</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ3"></div>
+                    </div>
+                </div>
+                <div class="quiz-score glass" id="quizScore" style="display:none;">
+                    <span class="score-label">Your Score</span>
+                    <span class="score-value" id="scoreValue">0/3</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-celebration" aria-labelledby="step9-title">
+            <div class="step-content">
+                <div class="celebration-visual" id="celebrationVisual" aria-hidden="true"></div>
+                <div class="celebration-badge glass">
+                    <div class="badge-icon">🏆</div>
+                    <div class="badge-text">
+                        <span class="badge-title">Speed Sleuth</span>
+                        <span class="badge-desc">Mystery 001 Complete</span>
+                    </div>
+                </div>
+                <h2 class="step-title" id="step9-title">Mystery Solved!</h2>
+                <p class="step-desc">You started with a question. You ended with a formula that explains the entire world in motion.</p>
+                <div class="celebration-stats">
+                    <div class="cstat glass"><span class="cstat-label">Mystery</span><span class="cstat-value">001</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Formula</span><span class="cstat-value">Speed = Distance ÷ Time</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Discovery</span><span class="cstat-value">161 km/h</span></div>
+                </div>
+                <div class="celebration-actions">
+                    <a href="index.html" class="btn btn-primary">Return to Home</a>
+                    <a href="mystery-001.html" class="btn btn-secondary">Play Again</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="mystery-controls glass" id="mysteryControls">
+        <button class="btn btn-secondary" id="prevBtn" style="display:none">Back</button>
+        <button class="btn btn-primary" id="nextBtn">Begin</button>
+    </div>
+
+    <script src="mystery-001.js"></script>
+</body>
+</html>

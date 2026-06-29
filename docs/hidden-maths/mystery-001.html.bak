@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hidden Maths - Discover the Mathematics Behind Everyday Life. An exploration game for curious minds.">
+    <title>Hidden Maths - Discover the Mathematics Behind Everyday Life</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="gradient-layer"></div>
+        <div class="particle-container" id="particleContainer"></div>
+        <div class="floating-symbols" id="floatingSymbols"></div>
+    </div>
+
+    <nav class="main-nav glass" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="#" class="nav-logo" aria-label="Hidden Maths Home">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect x="2" y="2" width="32" height="32" rx="8" stroke="rgba(255,255,255,0.6)" stroke-width="2" fill="none"/>
+                    <text x="18" y="24" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="16" font-weight="700" font-family="system-ui, sans-serif">∑</text>
+                </svg>
+                <span>Hidden Maths</span>
+            </a>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <ul class="nav-links" id="navLinks" role="menubar">
+                <li role="none"><a href="#explore" class="nav-link" role="menuitem">Explore</a></li>
+                <li role="none"><a href="#today" class="nav-link" role="menuitem">Today's Discovery</a></li>
+                <li role="none"><a href="#about" class="nav-link" role="menuitem">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero" id="hero" aria-label="Hero section">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span class="badge-text">9 Mysteries Waiting</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="title-line">Hidden Maths</span>
+                </h1>
+                <p class="hero-subtitle">Discover the Mathematics Behind Everyday Life</p>
+                <p class="hero-description">You never knew mathematics was hiding here. Explore the numbers, patterns, and formulas hidden inside the things you use every single day.</p>
+                <div class="hero-actions">
+                    <a href="#explore" class="btn btn-primary" id="startExploringBtn">
+                        <span class="btn-text">Start Exploring</span>
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="#today" class="btn btn-secondary">
+                        <span class="btn-text">See Today's Discovery</span>
+                    </a>
+                </div>
+                <div class="hero-stats glass">
+                    <div class="stat-item">
+                        <span class="stat-number">9</span>
+                        <span class="stat-label">Mysteries</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">45+</span>
+                        <span class="stat-label">Experiments</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">∞</span>
+                        <span class="stat-label">Curiosity</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-scroll-indicator" aria-hidden="true">
+                <div class="scroll-mouse">
+                    <div class="scroll-wheel"></div>
+                </div>
+                <span class="scroll-text">Scroll to explore</span>
+            </div>
+        </section>
+
+        <section class="todays-discovery" id="today" aria-labelledby="todayHeading">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Featured</span>
+                    <h2 class="section-title" id="todayHeading">Today's Discovery</h2>
+                    <p class="section-subtitle">A fresh mystery picked for your curious mind today</p>
+                </div>
+                <div class="discovery-card glass featured" id="todaysCard" tabindex="0" role="article" aria-label="Today's featured mystery: Cricket Ball Speed">
+                    <div class="discovery-visual">
+                        <div class="discovery-icon">
+                            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <circle cx="32" cy="32" r="28" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="4 4"/>
+                                <circle cx="32" cy="32" r="14" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+                                <path d="M32 18L32 14M32 50L32 46M18 32L14 32M50 32L46 32" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M24 24L21 21M43 43L40 40M43 21L40 24M24 43L21 40" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="discovery-glow"></div>
+                    </div>
+                    <div class="discovery-content">
+                        <div class="discovery-meta">
+                            <span class="mystery-id">Mystery 001</span>
+                            <span class="difficulty-badge easy">Easy</span>
+                        </div>
+                        <h3 class="discovery-title">Cricket Ball Speed</h3>
+                        <p class="discovery-question">"How fast is that ball really travelling — and how do they measure it without a radar gun?"</p>
+                        <div class="discovery-details">
+                            <span class="detail-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                8 min
+                            </span>
+                            <span class="detail-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                Speed, Distance, Time
+                            </span>
+                        </div>
+                        <button class="btn btn-play" aria-label="Start Mystery 001 Cricket Ball Speed">
+                            <span class="btn-play-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            </span>
+                            <span class="btn-play-text">Start Mystery</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mysteries" id="explore" aria-labelledby="exploreHeading">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="section-tag">Explore</span>
+                    <h2 class="section-title" id="exploreHeading">The Mysteries</h2>
+                    <p class="section-subtitle">Pick any mystery. Each one hides a secret formula inside something ordinary.</p>
+                </div>
+                <div class="mysteries-grid" id="mysteriesGrid" role="list">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer" id="about">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect x="2" y="2" width="32" height="32" rx="8" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"/>
+                    <text x="18" y="24" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="16" font-weight="700" font-family="system-ui, sans-serif">∑</text>
+                </svg>
+                <p class="footer-tagline">Mathematics is not a subject. It is a hidden language of the universe.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy</a>
+                <a href="#" class="footer-link">Accessibility</a>
+                <a href="#" class="footer-link">Contact</a>
+            </div>
+            <p class="footer-credit">Built for curious minds. No formulas. Just wonder.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

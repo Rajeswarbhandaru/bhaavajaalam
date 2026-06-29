@@ -1,0 +1,2464 @@
+[
+  {
+    "id": "ls-02-001",
+    "meta": {
+      "title": "School Exhibition",
+      "level": 2,
+      "theme": "planner",
+      "duration": "8 min",
+      "difficulty": 2,
+      "tags": [
+        "planning",
+        "teamwork",
+        "budget",
+        "time"
+      ]
+    },
+    "intro": "Your class must organize a science exhibition in two weeks.",
+    "objective": "Plan exhibits, budget, team roles, and handle surprises.",
+    "resources": {
+      "money": 500,
+      "time": 14,
+      "energy": 85,
+      "trust": 65,
+      "knowledge": 72,
+      "confidence": 58,
+      "health": 95
+    },
+    "relationships": {
+      "parents": 70,
+      "friends": 68,
+      "teacher": 62,
+      "team": 50
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "First, how do you divide the team?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Assign roles based on strengths",
+            "description": "Let each member choose what they do best.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "energy": -5,
+                "trust": 5
+              },
+              "relationships": {
+                "team": 10
+              },
+              "hidden": {
+                "leadership": 10,
+                "planning": 6
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "You decide everything",
+            "description": "Take full control to save time.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": -12,
+                "confidence": 3
+              },
+              "relationships": {
+                "team": -6
+              },
+              "hidden": {
+                "leadership": -3,
+                "planning": 4
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "No roles, just work together",
+            "description": "Keep it flexible and informal.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "time": -3,
+                "energy": -4
+              },
+              "relationships": {
+                "team": 2
+              },
+              "hidden": {
+                "planning": -4,
+                "creativity": 5
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "With a week left, you are over budget. What now?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Cut non-essential items",
+            "description": "Remove decorations, keep core science.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": 40,
+                "knowledge": 5
+              },
+              "hidden": {
+                "resource_optimization": 10,
+                "risk_management": 6
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Ask parents for extra funds",
+            "description": "Request a small contribution.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": 60,
+                "trust": -3
+              },
+              "relationships": {
+                "parents": -4
+              },
+              "hidden": {
+                "ethics": -3,
+                "adaptability": 4
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Use cheaper but risky materials",
+            "description": "Compromise on quality to save.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": 20,
+                "knowledge": -3
+              },
+              "hidden": {
+                "risk_management": -6,
+                "ethics": -2
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "random",
+        "text": "The day before, a teammate falls sick.",
+        "effects": {
+          "relationships": {
+            "team": -5
+          },
+          "resources": {
+            "energy": -5
+          }
+        },
+        "next": "n4"
+      },
+      {
+        "id": "n4",
+        "type": "decision",
+        "text": "One day left. How do you cover the missing work?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Redistribute the work fairly",
+            "description": "Divide tasks among remaining members.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "energy": -8,
+                "confidence": 4
+              },
+              "relationships": {
+                "team": 6
+              },
+              "hidden": {
+                "leadership": 8,
+                "adaptability": 8
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Simplify the exhibit",
+            "description": "Reduce scope and focus on essentials.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "knowledge": 2,
+                "confidence": 2
+              },
+              "hidden": {
+                "planning": 4,
+                "resource_optimization": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Ignore it and present as-is",
+            "description": "Hope the missing part goes unnoticed.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -6
+              },
+              "relationships": {
+                "teacher": -4
+              },
+              "hidden": {
+                "risk_management": -8,
+                "ethics": -4
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The exhibition is complete. The crowd learns. The team learns. You learn.",
+        "reflection": [
+          "How did early role choices affect the final crisis?",
+          "What was the most important preparation step?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-02-002",
+    "meta": {
+      "title": "Trip Planning",
+      "level": 2,
+      "theme": "planner",
+      "duration": "7 min",
+      "difficulty": 2,
+      "tags": [
+        "budget",
+        "prediction",
+        "safety",
+        "time"
+      ]
+    },
+    "intro": "You are planning a one-day educational trip with friends.",
+    "objective": "Plan transport, food, budget, and a backup plan.",
+    "resources": {
+      "money": 800,
+      "time": 10,
+      "energy": 80,
+      "trust": 60,
+      "knowledge": 68,
+      "confidence": 55,
+      "health": 93
+    },
+    "relationships": {
+      "parents": 72,
+      "friends": 70,
+      "teacher": 55
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Transport choice:",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Public bus with backup route",
+            "description": "Cheap and reliable, with a backup plan.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -120,
+                "trust": 6
+              },
+              "hidden": {
+                "planning": 8,
+                "risk_management": 8
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Private hired vehicle",
+            "description": "Comfortable but more expensive.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -300
+              },
+              "hidden": {
+                "resource_optimization": -4,
+                "planning": 2
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Cycle with friends",
+            "description": "Healthy and free, but unpredictable.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": -10,
+                "health": 5
+              },
+              "hidden": {
+                "adaptability": 6,
+                "risk_management": 2
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "It is hot midday. How do you manage food and hydration?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Pre-pack meals and extra water",
+            "description": "Plan ahead and carry supplies.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -60,
+                "health": 5,
+                "energy": 3
+              },
+              "hidden": {
+                "planning": 8,
+                "resource_optimization": 6
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Buy food at the destination",
+            "description": "Less to carry, but unpredictable cost.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -150,
+                "time": -2
+              },
+              "hidden": {
+                "prediction": 3,
+                "risk_management": -2
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Skip food to save money",
+            "description": "Reduce cost, increase risk.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "health": -6,
+                "energy": -8
+              },
+              "hidden": {
+                "risk_management": -6,
+                "ethics": -2
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "random",
+        "text": "Unexpected heavy rain in the afternoon.",
+        "effects": {
+          "resources": {
+            "time": -2,
+            "energy": -4
+          }
+        },
+        "next": "n4"
+      },
+      {
+        "id": "n4",
+        "type": "decision",
+        "text": "Rain continues. What is your next move?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Activate shelter plan",
+            "description": "Move to the pre-identified covered area.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "trust": 5,
+                "confidence": 5
+              },
+              "hidden": {
+                "adaptability": 8,
+                "planning": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Shorten the trip and return",
+            "description": "Safety first, cut the itinerary.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "time": -1
+              },
+              "relationships": {
+                "friends": 2
+              },
+              "hidden": {
+                "risk_management": 6,
+                "leadership": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Continue in the rain",
+            "description": "Stick to the original plan.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "health": -8,
+                "confidence": -4
+              },
+              "hidden": {
+                "risk_management": -8,
+                "adaptability": -2
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "You return home. Everyone is safe. Some plans changed. That is planning.",
+        "reflection": [
+          "Why did the backup plan matter more than the main plan?",
+          "What would you pack differently next time?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-02-003",
+    "meta": {
+      "title": "Garden Management",
+      "level": 2,
+      "theme": "planner",
+      "duration": "6 min",
+      "difficulty": 2,
+      "tags": [
+        "long-term",
+        "resource",
+        "patience",
+        "systems"
+      ]
+    },
+    "intro": "You are given responsibility for the school garden for one month.",
+    "objective": "Balance watering, weeding, planting, and pest control.",
+    "resources": {
+      "money": 200,
+      "time": 30,
+      "energy": 78,
+      "trust": 62,
+      "knowledge": 70,
+      "confidence": 56,
+      "health": 96
+    },
+    "relationships": {
+      "parents": 65,
+      "friends": 58,
+      "teacher": 64
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Week 1: How do you start?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Observe soil and weather first",
+            "description": "Study before acting.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "knowledge": 8,
+                "time": -2
+              },
+              "hidden": {
+                "planning": 8,
+                "prediction": 8
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Plant immediately with enthusiasm",
+            "description": "Start fast, fix later.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": -8,
+                "time": -1
+              },
+              "hidden": {
+                "creativity": 5,
+                "planning": -3
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Plant only what is easiest",
+            "description": "Minimize effort.",
+            "risk": "low",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "knowledge": -2
+              },
+              "hidden": {
+                "patience": -3,
+                "resource_optimization": -2
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "Week 2: Pests appear. What do you do?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Use organic neem spray",
+            "description": "Safe but needs repeated application.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -30,
+                "time": -3
+              },
+              "hidden": {
+                "resource_optimization": 6,
+                "ethics": 6
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Strong chemical pesticide",
+            "description": "Fast but may harm soil.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -20,
+                "time": -1
+              },
+              "hidden": {
+                "ethics": -4,
+                "risk_management": -4
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Remove infected plants only",
+            "description": "Accept loss, protect the rest.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "knowledge": 4
+              },
+              "hidden": {
+                "adaptability": 6,
+                "patience": 4
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "random",
+        "text": "A heatwave hits in Week 3. Water supply is limited.",
+        "effects": {
+          "resources": {
+            "time": -3,
+            "energy": -5
+          }
+        },
+        "next": "n4"
+      },
+      {
+        "id": "n4",
+        "type": "decision",
+        "text": "Water is limited. How do you save the garden?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Water only critical plants",
+            "description": "Prioritize survival over growth.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "time": -4,
+                "knowledge": 4
+              },
+              "hidden": {
+                "resource_optimization": 10,
+                "prediction": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Request school water tank",
+            "description": "Ask for institutional support.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": 4
+              },
+              "relationships": {
+                "teacher": 6
+              },
+              "hidden": {
+                "leadership": 6,
+                "adaptability": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Water everything equally",
+            "description": "Equal share, but may not be enough.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "energy": -6
+              },
+              "hidden": {
+                "resource_optimization": -6,
+                "planning": -2
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The garden survives. Some plants thrive. Some fade. You learned what a month teaches.",
+        "reflection": [
+          "How did early observation help in the crisis?",
+          "What is the cost of quick fixes?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-02-004",
+    "meta": {
+      "title": "Monthly Budget",
+      "level": 2,
+      "theme": "planner",
+      "duration": "5 min",
+      "difficulty": 2,
+      "tags": [
+        "budget",
+        "saving",
+        "tradeoff",
+        "math"
+      ]
+    },
+    "intro": "You have a monthly allowance and real expenses ahead.",
+    "objective": "Survive the month with health, studies, and friendships intact.",
+    "resources": {
+      "money": 1000,
+      "time": 30,
+      "energy": 82,
+      "trust": 60,
+      "knowledge": 74,
+      "confidence": 58,
+      "health": 98
+    },
+    "relationships": {
+      "parents": 70,
+      "friends": 65,
+      "teacher": 54
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Week 1: You receive allowance. First action?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Divide into needs, savings, wants",
+            "description": "Classic budget split first.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": 0,
+                "confidence": 6
+              },
+              "hidden": {
+                "planning": 10,
+                "resource_optimization": 10,
+                "patience": 6
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Spend a little on celebration first",
+            "description": "Reward yourself, then plan.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -120,
+                "energy": 4
+              },
+              "hidden": {
+                "patience": -4,
+                "resource_optimization": -4
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Keep everything in pocket and decide daily",
+            "description": "No plan, reactive spending.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": -50
+              },
+              "hidden": {
+                "planning": -6,
+                "risk_management": -3
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "Mid-month: A friend asks for a loan. What do you do?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Lend a small, safe amount",
+            "description": "Help without risking your survival.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -60,
+                "trust": 4
+              },
+              "relationships": {
+                "friends": 8
+              },
+              "hidden": {
+                "ethics": 6,
+                "resource_optimization": 4
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Lend whatever is asked",
+            "description": "Be generous, but endanger yourself.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": -200,
+                "trust": -3
+              },
+              "relationships": {
+                "friends": 4
+              },
+              "hidden": {
+                "ethics": 3,
+                "risk_management": -8
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Decline politely",
+            "description": "Protect your budget honestly.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": 2
+              },
+              "relationships": {
+                "friends": -2
+              },
+              "hidden": {
+                "ethics": 4,
+                "leadership": 2
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "random",
+        "text": "Unexpected: School fees notice arrives for a small activity.",
+        "effects": {
+          "resources": {
+            "money": -80,
+            "time": -1
+          }
+        },
+        "next": "n4"
+      },
+      {
+        "id": "n4",
+        "type": "decision",
+        "text": "Last week: You are short. How do you finish?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Cut non-essentials strictly",
+            "description": "Eat simple, skip entertainment.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": 40,
+                "health": -2
+              },
+              "hidden": {
+                "resource_optimization": 8,
+                "planning": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Ask parents for extra",
+            "description": "Request a bailout.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": 100,
+                "trust": -5
+              },
+              "relationships": {
+                "parents": -4
+              },
+              "hidden": {
+                "adaptability": 4,
+                "ethics": -2
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Skip lunch for three days",
+            "description": "Save money, harm health.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": 60,
+                "health": -8,
+                "energy": -6
+              },
+              "hidden": {
+                "risk_management": -8,
+                "ethics": -3
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The month ends. Some money remains. Some lessons remain.",
+        "reflection": [
+          "What was the most important budget decision?",
+          "How does planning early reduce crisis?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-02-005",
+    "meta": {
+      "title": "Festival Preparation",
+      "level": 2,
+      "theme": "planner",
+      "duration": "8 min",
+      "difficulty": 2,
+      "tags": [
+        "coordination",
+        "culture",
+        "budget",
+        "teamwork"
+      ]
+    },
+    "intro": "Your family is hosting a small festival event at home.",
+    "objective": "Coordinate tasks, budget, guests, and handle last-minute changes.",
+    "resources": {
+      "money": 1500,
+      "time": 7,
+      "energy": 80,
+      "trust": 66,
+      "knowledge": 68,
+      "confidence": 60,
+      "health": 95
+    },
+    "relationships": {
+      "parents": 75,
+      "friends": 62,
+      "neighbors": 55,
+      "teacher": 50
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Three days before: What do you prepare first?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Guest list and food plan",
+            "description": "Plan who comes and what is cooked.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "knowledge": 6,
+                "confidence": 4
+              },
+              "hidden": {
+                "planning": 10,
+                "resource_optimization": 6
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Decorations and music",
+            "description": "Focus on atmosphere first.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -200,
+                "energy": -6
+              },
+              "hidden": {
+                "creativity": 8,
+                "planning": -2
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Wait and do everything on the day",
+            "description": "No preparation, maximum effort later.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "energy": -10,
+                "confidence": -3
+              },
+              "hidden": {
+                "planning": -8,
+                "risk_management": -6
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "Day before: A key ingredient is not available. What now?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Substitute smartly",
+            "description": "Use an alternative dish with available items.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -30,
+                "knowledge": 4
+              },
+              "hidden": {
+                "adaptability": 8,
+                "resource_optimization": 6
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Buy from expensive nearby store",
+            "description": "Pay more for convenience.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -80,
+                "time": -1
+              },
+              "hidden": {
+                "risk_management": 3,
+                "resource_optimization": -3
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Skip that dish entirely",
+            "description": "Accept the menu gap.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": 2
+              },
+              "hidden": {
+                "adaptability": 4,
+                "patience": 3
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "random",
+        "text": "Festival day: More guests arrive than expected.",
+        "effects": {
+          "resources": {
+            "time": -2,
+            "energy": -4
+          }
+        },
+        "next": "n4"
+      },
+      {
+        "id": "n4",
+        "type": "decision",
+        "text": "Extra guests are here. What do you do?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Serve smaller portions and share joy",
+            "description": "Welcome all with generosity.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "trust": 8,
+                "confidence": 6
+              },
+              "relationships": {
+                "neighbors": 8,
+                "friends": 6
+              },
+              "hidden": {
+                "leadership": 8,
+                "resource_optimization": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Order extra food quickly",
+            "description": "Spend more, satisfy everyone.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -120,
+                "time": -1
+              },
+              "hidden": {
+                "adaptability": 5,
+                "resource_optimization": -3
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Ask some guests to wait",
+            "description": "Manage the overflow.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -4
+              },
+              "relationships": {
+                "neighbors": -4
+              },
+              "hidden": {
+                "risk_management": -2,
+                "leadership": -3
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The festival is complete. Music fades. Guests leave. The house is warm.",
+        "reflection": [
+          "How did preparation affect the unexpected guest moment?",
+          "What is the real purpose of celebration?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-02-006",
+    "meta": {
+      "title": "Family Shopping",
+      "level": 2,
+      "theme": "planner",
+      "duration": "6 min",
+      "difficulty": 2,
+      "tags": [
+        "list",
+        "budget",
+        "negotiation",
+        "efficiency"
+      ]
+    },
+    "intro": "You are sent to buy groceries for the family with a list and a budget.",
+    "objective": "Buy everything, stay within budget, and handle store surprises.",
+    "resources": {
+      "money": 600,
+      "time": 4,
+      "energy": 78,
+      "trust": 68,
+      "knowledge": 66,
+      "confidence": 57,
+      "health": 96
+    },
+    "relationships": {
+      "parents": 72,
+      "friends": 55,
+      "neighbors": 50
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "At the store: Some items are more expensive than expected.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Compare brands and choose cheaper",
+            "description": "Smart substitution without losing quality.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -40,
+                "knowledge": 4
+              },
+              "hidden": {
+                "resource_optimization": 10,
+                "planning": 4
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Buy the usual brands anyway",
+            "description": "Stick to familiar quality.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -120
+              },
+              "hidden": {
+                "risk_management": 2,
+                "resource_optimization": -4
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Skip some items to save",
+            "description": "Come back without everything.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -4
+              },
+              "relationships": {
+                "parents": -3
+              },
+              "hidden": {
+                "planning": -4,
+                "ethics": -2
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "You see a big discount on a non-essential item your sibling wants.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Buy it as a gift",
+            "description": "Surprise your sibling, but spend extra.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -80,
+                "trust": 3
+              },
+              "relationships": {
+                "parents": 2
+              },
+              "hidden": {
+                "ethics": 4,
+                "patience": 3
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Stick to the list strictly",
+            "description": "No impulse, stay disciplined.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": 5,
+                "confidence": 4
+              },
+              "hidden": {
+                "planning": 6,
+                "patience": 6
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Buy it but ask for extra money later",
+            "description": "Hide the real cost.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": -80,
+                "trust": -6
+              },
+              "hidden": {
+                "ethics": -8,
+                "risk_management": -4
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "random",
+        "text": "Carrying heavy bags, the handle breaks halfway.",
+        "effects": {
+          "resources": {
+            "energy": -6,
+            "time": -1
+          }
+        },
+        "next": "n4"
+      },
+      {
+        "id": "n4",
+        "type": "decision",
+        "text": "Bags are heavy and one broke. How do you reach home?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Rest and redistribute weight",
+            "description": "Take a break, then continue smartly.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "time": -1,
+                "energy": -2
+              },
+              "hidden": {
+                "adaptability": 6,
+                "risk_management": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Ask a neighbor for help",
+            "description": "Use community support.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": 2
+              },
+              "relationships": {
+                "neighbors": 8
+              },
+              "hidden": {
+                "leadership": 4,
+                "adaptability": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Leave some items behind",
+            "description": "Sacrifice goods to save effort.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": -30,
+                "trust": -3
+              },
+              "hidden": {
+                "resource_optimization": -6,
+                "risk_management": -3
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "You reach home. The list is mostly complete. The family eats. You learn.",
+        "reflection": [
+          "When is flexibility better than strict discipline?",
+          "How do surprises test preparation?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-02-007",
+    "meta": {
+      "title": "Science Project",
+      "level": 2,
+      "theme": "planner",
+      "duration": "10 min",
+      "difficulty": 2,
+      "tags": [
+        "research",
+        "build",
+        "present",
+        "teamwork"
+      ]
+    },
+    "intro": "You have two weeks to build a working model for the science fair.",
+    "objective": "Research, build, test, and present. Manage time and failures.",
+    "resources": {
+      "money": 400,
+      "time": 14,
+      "energy": 82,
+      "trust": 60,
+      "knowledge": 76,
+      "confidence": 58,
+      "health": 95
+    },
+    "relationships": {
+      "parents": 68,
+      "friends": 60,
+      "teacher": 65,
+      "team": 55
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Week 1: How do you start research?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Library + online + mentor advice",
+            "description": "Thorough multi-source research.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "knowledge": 12,
+                "time": -3,
+                "energy": -4
+              },
+              "hidden": {
+                "planning": 8,
+                "prediction": 8
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Online only, quick and fast",
+            "description": "Fast but shallow.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "knowledge": 4,
+                "time": -1
+              },
+              "hidden": {
+                "planning": 2,
+                "prediction": 1
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Skip research and start building",
+            "description": "Learn while building.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "time": -1,
+                "energy": -6
+              },
+              "hidden": {
+                "planning": -6,
+                "risk_management": -4
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "Week 2: Your first prototype fails completely.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Analyze failure, rebuild",
+            "description": "Study what went wrong and fix it.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "knowledge": 6,
+                "time": -3,
+                "energy": -6
+              },
+              "hidden": {
+                "adaptability": 8,
+                "prediction": 6,
+                "creativity": 4
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Simplify the model",
+            "description": "Reduce ambition, increase reliability.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "time": -1,
+                "knowledge": 2
+              },
+              "hidden": {
+                "resource_optimization": 6,
+                "planning": 4
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Present the failed model anyway",
+            "description": "Be honest about the experiment.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "confidence": -4,
+                "trust": 2
+              },
+              "relationships": {
+                "teacher": 4
+              },
+              "hidden": {
+                "ethics": 6,
+                "risk_management": -2
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "random",
+        "text": "The night before: Your display board tears.",
+        "effects": {
+          "resources": {
+            "time": -2,
+            "energy": -3
+          }
+        },
+        "next": "n4"
+      },
+      {
+        "id": "n4",
+        "type": "decision",
+        "text": "Display board is damaged. One night left.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Make a simpler handmade board",
+            "description": "Create a clean, minimal board.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "energy": -6,
+                "time": -2
+              },
+              "hidden": {
+                "creativity": 8,
+                "adaptability": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Use digital presentation instead",
+            "description": "Adapt to a tablet-based display.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "knowledge": 4,
+                "time": -1
+              },
+              "hidden": {
+                "adaptability": 6,
+                "creativity": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Ignore the board and focus on speech",
+            "description": "Talk more, display less.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "confidence": 3,
+                "energy": -4
+              },
+              "hidden": {
+                "leadership": 4,
+                "risk_management": 3
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The fair opens. Your model works. Your board tells a story. Your voice carries it.",
+        "reflection": [
+          "How did failure improve the final result?",
+          "What mattered more: the model or the explanation?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-02-008",
+    "meta": {
+      "title": "Birthday Organization",
+      "level": 2,
+      "theme": "planner",
+      "duration": "8 min",
+      "difficulty": 2,
+      "tags": [
+        "guests",
+        "budget",
+        "activities",
+        "time"
+      ]
+    },
+    "intro": "You are organizing a surprise birthday for a close friend.",
+    "objective": "Plan guest list, food, games, and keep the secret.",
+    "resources": {
+      "money": 700,
+      "time": 5,
+      "energy": 80,
+      "trust": 62,
+      "knowledge": 64,
+      "confidence": 59,
+      "health": 95
+    },
+    "relationships": {
+      "parents": 66,
+      "friends": 72,
+      "neighbors": 52
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Guest list: Who do you invite?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Close friends only",
+            "description": "Small, meaningful, manageable.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -120,
+                "trust": 6
+              },
+              "relationships": {
+                "friends": 10
+              },
+              "hidden": {
+                "planning": 6,
+                "resource_optimization": 6
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Large group, everyone",
+            "description": "Big party, more complexity.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -300,
+                "energy": -6,
+                "time": -2
+              },
+              "hidden": {
+                "leadership": 4,
+                "risk_management": -3
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Only family and one friend",
+            "description": "Very intimate, very safe.",
+            "risk": "low",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "money": -60,
+                "trust": 2
+              },
+              "relationships": {
+                "friends": -2
+              },
+              "hidden": {
+                "ethics": 3,
+                "planning": 2
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "The friend almost discovers the plan. What do you do?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Create a believable cover story",
+            "description": "Distract with a different plan.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "knowledge": 4,
+                "trust": 4
+              },
+              "hidden": {
+                "creativity": 8,
+                "prediction": 6
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Cancel the surprise, tell them",
+            "description": "Lose the surprise, keep the event.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": 5,
+                "confidence": 2
+              },
+              "hidden": {
+                "ethics": 6,
+                "adaptability": 3
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Lie completely",
+            "description": "Make up an elaborate false story.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -6
+              },
+              "hidden": {
+                "ethics": -10,
+                "risk_management": -4
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "random",
+        "text": "Party day: The cake delivery is late.",
+        "effects": {
+          "resources": {
+            "time": -1,
+            "energy": -3
+          }
+        },
+        "next": "n4"
+      },
+      {
+        "id": "n4",
+        "type": "decision",
+        "text": "Cake is late. Guests are arriving.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Start games and activities first",
+            "description": "Delay cake cutting, keep energy high.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "energy": 2,
+                "confidence": 4
+              },
+              "hidden": {
+                "adaptability": 8,
+                "leadership": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Send someone to pick it up",
+            "description": "Solve the logistics problem.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -20,
+                "time": -1
+              },
+              "relationships": {
+                "friends": 3
+              },
+              "hidden": {
+                "resource_optimization": 4,
+                "planning": 3
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Wait and do nothing",
+            "description": "Hope the cake arrives.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -2,
+                "energy": -2
+              },
+              "hidden": {
+                "adaptability": -3,
+                "planning": -2
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The friend is surprised. The room is warm. The secret was worth it.",
+        "reflection": [
+          "What was the hardest part to plan?",
+          "How did secrecy change the joy?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-02-009",
+    "meta": {
+      "title": "Sports Day Prep",
+      "level": 2,
+      "theme": "planner",
+      "duration": "7 min",
+      "difficulty": 2,
+      "tags": [
+        "practice",
+        "nutrition",
+        "gear",
+        "health"
+      ]
+    },
+    "intro": "You are preparing for an inter-school sports day in two weeks.",
+    "objective": "Balance training, rest, diet, and equipment.",
+    "resources": {
+      "money": 300,
+      "time": 14,
+      "energy": 85,
+      "trust": 60,
+      "knowledge": 68,
+      "confidence": 55,
+      "health": 92
+    },
+    "relationships": {
+      "parents": 70,
+      "friends": 64,
+      "teacher": 60
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Training plan: How do you practice?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Structured daily practice with rest",
+            "description": "Planned sessions, recovery days, balanced.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "energy": -6,
+                "health": 4,
+                "knowledge": 6
+              },
+              "hidden": {
+                "planning": 10,
+                "resource_optimization": 6,
+                "patience": 6
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Practice hard every day",
+            "description": "Maximum effort, no rest.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": -12,
+                "health": -4
+              },
+              "hidden": {
+                "risk_management": -6,
+                "patience": -4
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "Practice only on weekends",
+            "description": "Minimal but focused.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "energy": -3,
+                "knowledge": -2
+              },
+              "hidden": {
+                "planning": -4,
+                "prediction": -3
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "You need better shoes but have limited budget.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Buy quality used shoes",
+            "description": "Good condition, affordable, smart.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "money": -100,
+                "confidence": 5
+              },
+              "hidden": {
+                "resource_optimization": 8,
+                "planning": 4
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Buy new cheap shoes",
+            "description": "New but low quality.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -180
+              },
+              "hidden": {
+                "resource_optimization": -2,
+                "risk_management": 2
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Use old shoes",
+            "description": "Save money, risk injury.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "health": -6,
+                "confidence": -2
+              },
+              "hidden": {
+                "risk_management": -6,
+                "prediction": -4
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "random",
+        "text": "Three days before: You catch a mild cold.",
+        "effects": {
+          "resources": {
+            "health": -8,
+            "energy": -4
+          }
+        },
+        "next": "n4"
+      },
+      {
+        "id": "n4",
+        "type": "decision",
+        "text": "You have a mild cold. Sports day is close.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Rest and recover fully",
+            "description": "Skip one practice, recover well.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "health": 6,
+                "time": -1
+              },
+              "hidden": {
+                "patience": 8,
+                "risk_management": 8,
+                "planning": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Practice lightly with medicine",
+            "description": "Keep moving but protect health.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "money": -30,
+                "health": 2,
+                "energy": -3
+              },
+              "hidden": {
+                "adaptability": 5,
+                "risk_management": 4
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Ignore and train hard",
+            "description": "Push through the illness.",
+            "risk": "high",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "health": -10,
+                "energy": -6
+              },
+              "hidden": {
+                "risk_management": -10,
+                "prediction": -6
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The sports day arrives. Your body is ready or not. Your mind is ready.",
+        "reflection": [
+          "What is the difference between preparation and obsession?",
+          "How did rest contribute to performance?"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ls-02-010",
+    "meta": {
+      "title": "Community Clean-up",
+      "level": 2,
+      "theme": "planner",
+      "duration": "8 min",
+      "difficulty": 2,
+      "tags": [
+        "teamwork",
+        "leadership",
+        "environment",
+        "systems"
+      ]
+    },
+    "intro": "You are leading a small team to clean a local park.",
+    "objective": "Organize people, tools, safety, and complete the area.",
+    "resources": {
+      "money": 250,
+      "time": 5,
+      "energy": 80,
+      "trust": 65,
+      "knowledge": 66,
+      "confidence": 58,
+      "health": 95
+    },
+    "relationships": {
+      "parents": 68,
+      "friends": 66,
+      "neighbors": 58,
+      "teacher": 60
+    },
+    "nodes": [
+      {
+        "id": "n1",
+        "type": "decision",
+        "text": "Team arrives. How do you start?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Map the area and divide zones",
+            "description": "Plan before moving.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "knowledge": 6,
+                "time": -1
+              },
+              "relationships": {
+                "team": 8
+              },
+              "hidden": {
+                "leadership": 10,
+                "planning": 8
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c2",
+            "title": "Everyone starts wherever",
+            "description": "Fast start, messy execution.",
+            "risk": "medium",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": -6,
+                "time": -1
+              },
+              "relationships": {
+                "team": -2
+              },
+              "hidden": {
+                "planning": -4,
+                "leadership": -2
+              }
+            },
+            "next": "n2"
+          },
+          {
+            "id": "c3",
+            "title": "You clean alone, others watch",
+            "description": "Lead by example, but isolate.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "energy": -12
+              },
+              "relationships": {
+                "friends": -4
+              },
+              "hidden": {
+                "leadership": 2,
+                "teamwork": -4
+              }
+            },
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "type": "decision",
+        "text": "Midway: Some volunteers are tired and want to quit.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Rotate tasks and give breaks",
+            "description": "Keep everyone engaged, reduce fatigue.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "energy": 2,
+                "time": -1
+              },
+              "relationships": {
+                "team": 8,
+                "friends": 4
+              },
+              "hidden": {
+                "leadership": 8,
+                "resource_optimization": 6
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c2",
+            "title": "Let them leave, finish with fewer",
+            "description": "Reduce team, focus on completion.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "energy": -6
+              },
+              "hidden": {
+                "adaptability": 4,
+                "risk_management": 2
+              }
+            },
+            "next": "n3"
+          },
+          {
+            "id": "c3",
+            "title": "Push them to continue",
+            "description": "Force motivation, risk resentment.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -4
+              },
+              "relationships": {
+                "team": -6
+              },
+              "hidden": {
+                "leadership": -4,
+                "ethics": -3
+              }
+            },
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "type": "random",
+        "text": "You find a broken glass bottle near a child playing.",
+        "effects": {
+          "resources": {
+            "time": -1
+          },
+          "relationships": {
+            "neighbors": 3
+          }
+        },
+        "next": "n4"
+      },
+      {
+        "id": "n4",
+        "type": "decision",
+        "text": "Hazard found: sharp glass near children.",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "Safely remove and alert everyone",
+            "description": "Immediate safe action, clear communication.",
+            "risk": "low",
+            "reward": "high",
+            "effects": {
+              "resources": {
+                "trust": 8,
+                "confidence": 6
+              },
+              "relationships": {
+                "neighbors": 10
+              },
+              "hidden": {
+                "leadership": 8,
+                "risk_management": 10,
+                "ethics": 6
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c2",
+            "title": "Remove quietly without alarming",
+            "description": "Calm but less educational.",
+            "risk": "low",
+            "reward": "medium",
+            "effects": {
+              "resources": {
+                "trust": 4
+              },
+              "hidden": {
+                "risk_management": 5,
+                "adaptability": 3
+              }
+            },
+            "next": "ending"
+          },
+          {
+            "id": "c3",
+            "title": "Tell someone else to handle it",
+            "description": "Pass responsibility.",
+            "risk": "medium",
+            "reward": "low",
+            "effects": {
+              "resources": {
+                "trust": -3
+              },
+              "hidden": {
+                "leadership": -4,
+                "ethics": -2
+              }
+            },
+            "next": "ending"
+          }
+        ]
+      },
+      {
+        "id": "ending",
+        "type": "ending",
+        "text": "The park is cleaner. The children are safer. The team is stronger.",
+        "reflection": [
+          "How did leadership show in small moments?",
+          "What is the long-term effect of a clean shared space?"
+        ]
+      }
+    ]
+  }
+]

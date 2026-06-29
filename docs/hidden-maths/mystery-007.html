@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mystery 007: Rainbow — Discover the 42° angle hiding inside every raindrop that splits sunlight into color.">
+    <title>Mystery 007 — Rainbow | Hidden Maths</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mystery-007.css">
+</head>
+<body>
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="gradient-layer"></div>
+        <div class="particle-container" id="particleContainer"></div>
+        <div class="floating-symbols" id="floatingSymbols"></div>
+    </div>
+
+    <nav class="mystery-nav glass" role="navigation" aria-label="Mystery navigation">
+        <div class="nav-container">
+            <a href="index.html" class="nav-back" aria-label="Return to home screen">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back</span>
+            </a>
+            <div class="mystery-progress">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-label" id="progressLabel">Step 1 of 9</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="mystery-main" id="mysteryMain">
+        <section class="mystery-step active" id="step-curiosity" aria-labelledby="step1-title">
+            <div class="step-content">
+                <span class="mystery-tag">Mystery 007</span>
+                <h1 class="step-title" id="step1-title">Rainbow</h1>
+                <p class="step-hook">Why does a rainbow always form a perfect arc — and why is red always on the outside?</p>
+                <div class="curiosity-visual" aria-hidden="true">
+                    <div class="rainbow-scene">
+                        <div class="sun-orb"></div>
+                        <div class="rainbow-arc"></div>
+                        <div class="rain-drops">
+                            <div class="r-drop"></div>
+                            <div class="r-drop"></div>
+                            <div class="r-drop"></div>
+                            <div class="r-drop"></div>
+                            <div class="r-drop"></div>
+                        </div>
+                        <div class="observer-eye">👁</div>
+                    </div>
+                </div>
+                <p class="step-hint">The answer is not in the sky. It is inside a single drop of water — and an angle of exactly 42 degrees.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-observation" aria-labelledby="step2-title">
+            <div class="step-content">
+                <span class="step-tag">Observation</span>
+                <h2 class="step-title" id="step2-title">Watch the Light</h2>
+                <p class="step-desc">Sunlight enters a raindrop. It bends. It bounces off the back. It bends again when it exits. The light that reaches your eye has travelled a very specific path.</p>
+                <div class="observation-stage" id="observationStage" aria-hidden="true">
+                    <div class="drop-path">
+                        <div class="path-label">Enter → Bend → Reflect → Bend → Exit</div>
+                        <div class="drop-diagram">
+                            <div class="drop-circle">
+                                <div class="ray-in"></div>
+                                <div class="ray-bend"></div>
+                                <div class="ray-reflect"></div>
+                                <div class="ray-out"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="obs-facts" id="obsFacts">
+                        <div class="fact-card glass">
+                            <span class="fact-number">42°</span>
+                            <span class="fact-label">Rainbow angle</span>
+                        </div>
+                        <div class="fact-card glass">
+                            <span class="fact-number">1.33</span>
+                            <span class="fact-label">Water refractive index</span>
+                        </div>
+                        <div class="fact-card glass">
+                            <span class="fact-number">2</span>
+                            <span class="fact-label">Bends inside drop</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-experiment" aria-labelledby="step3-title">
+            <div class="step-content">
+                <span class="step-tag">Experiment</span>
+                <h2 class="step-title" id="step3-title">Bend the Light</h2>
+                <p class="step-desc">Pick a color. Each color bends at a slightly different angle inside water. See which angle escapes the drop and reaches your eye.</p>
+                <div class="experiment-stage glass" id="experimentStage">
+                    <div class="drop-sim">
+                        <canvas id="dropCanvas" width="400" height="300"></canvas>
+                        <div class="drop-legend">
+                            <div class="legend-item"><span class="leg-dot red"></span>Red</div>
+                            <div class="legend-item"><span class="leg-dot green"></span>Green</div>
+                            <div class="legend-item"><span class="leg-dot blue"></span>Blue</div>
+                            <div class="legend-item"><span class="leg-dot violet"></span>Violet</div>
+                        </div>
+                    </div>
+                    <div class="color-controls">
+                        <div class="color-control">
+                            <label>Color</label>
+                            <div class="color-value" id="colorDisplay">Red</div>
+                            <input type="range" class="color-slider" id="colorSlider" min="0" max="3" value="0" step="1">
+                            <div class="color-swatches">
+                                <div class="swatch active" id="swatch0" style="background:#ff5c5c"></div>
+                                <div class="swatch" id="swatch1" style="background:#5cff85"></div>
+                                <div class="swatch" id="swatch2" style="background:#5cabff"></div>
+                                <div class="swatch" id="swatch3" style="background:#d95cff"></div>
+                            </div>
+                        </div>
+                        <div class="color-control">
+                            <label>Refractive Index</label>
+                            <div class="color-value" id="nDisplay">1.331</div>
+                            <div class="color-note">Red light bends less than violet light</div>
+                        </div>
+                    </div>
+                    <div class="drop-readout">
+                        <div class="readout-item">
+                            <span class="readout-label">Incident Angle</span>
+                            <span class="readout-value" id="readoutIncident">60°</span>
+                        </div>
+                        <div class="readout-item">
+                            <span class="readout-label">Exit Angle</span>
+                            <span class="readout-value" id="readoutExit">42°</span>
+                        </div>
+                        <div class="readout-item">
+                            <span class="readout-label">Deviation</span>
+                            <span class="readout-value" id="readoutDev">138°</span>
+                        </div>
+                    </div>
+                    <div class="exp-actions">
+                        <button class="btn btn-primary" id="btnTrace">Trace Path</button>
+                        <button class="btn btn-secondary" id="btnResetDrop">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-prediction" aria-labelledby="step4-title">
+            <div class="step-content">
+                <span class="step-tag">Prediction</span>
+                <h2 class="step-title" id="step4-title">The Rainbow Angle</h2>
+                <p class="step-desc">After light bends twice and reflects once inside a drop, it exits at a specific angle from the incoming sunlight. What angle do you see the rainbow?</p>
+                <div class="prediction-gauge glass">
+                    <div class="gauge-display">
+                        <span class="gauge-value" id="gaugeValue">45</span>
+                        <span class="gauge-unit">degrees</span>
+                    </div>
+                    <input type="range" class="gauge-slider" id="gaugeSlider" min="20" max="60" value="45" step="1" aria-label="Rainbow angle prediction slider">
+                    <div class="gauge-labels"><span>20°</span><span>30°</span><span>42°</span><span>50°</span><span>60°</span></div>
+                </div>
+                <p class="step-hint">Most people guess 45°. The actual angle is slightly less — and it is different for each color.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-discovery" aria-labelledby="step5-title">
+            <div class="step-content">
+                <span class="step-tag">Discovery</span>
+                <h2 class="step-title" id="step5-title">The Hidden Formula</h2>
+                <p class="step-desc">The rainbow is not a thing in the sky. It is a direction. Every droplet at 42° from your shadow sends red light back to your eye.</p>
+                <div class="discovery-reveal glass" id="discoveryReveal">
+                    <div class="reveal-line">
+                        <span class="reveal-label">Sunlight</span>
+                        <span class="reveal-arrow">→</span>
+                        <span class="reveal-label">Water Drop</span>
+                        <span class="reveal-arrow">→</span>
+                        <span class="reveal-label">Reflect</span>
+                        <span class="reveal-arrow">→</span>
+                        <span class="reveal-label highlight">42° Back</span>
+                    </div>
+                    <div class="reveal-formula" id="revealFormula">
+                        <span class="formula-num">180°</span>
+                        <span class="formula-op">−</span>
+                        <span class="formula-num">138°</span>
+                        <span class="formula-op">=</span>
+                        <span class="formula-res">42°</span>
+                    </div>
+                </div>
+                <p class="step-desc">The light is bent so strongly that it turns almost back on itself. The 138° deviation leaves only 42° between your shadow and the red arc.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-explanation" aria-labelledby="step6-title">
+            <div class="step-content">
+                <span class="step-tag">Explanation</span>
+                <h2 class="step-title" id="step6-title">How the Numbers Work</h2>
+                <div class="explanation-cards">
+                    <div class="explanation-card glass" id="explCard1">
+                        <div class="expl-number">1</div>
+                        <h3>Snell's Law</h3>
+                        <p>Light bends when it enters water. The amount depends on the refractive index <strong>n ≈ 1.33</strong>. The formula is <strong>n₁ sin(θ₁) = n₂ sin(θ₂)</strong>.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">1.000 × sin(60°) = 1.331 × sin(θ₂)</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard2">
+                        <div class="expl-number">2</div>
+                        <h3>Internal Reflection</h3>
+                        <p>The light hits the back of the drop and bounces. This mirror-like reflection turns the light back toward the sun side — but still inside the drop.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">1 bounce</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard3">
+                        <div class="expl-number">3</div>
+                        <h3>Second Bend</h3>
+                        <p>Exiting the drop, light bends again. The total turn is the deviation angle. For red light it is <strong>138°</strong>. That means the rainbow appears 42° from your shadow.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">138° deviation</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard4">
+                        <div class="expl-number">4</div>
+                        <h3>Dispersion</h3>
+                        <p>Violet light bends more than red. Its deviation is 140°. So violet appears at <strong>40°</strong> — 2° lower than red. This creates the color band.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">Red 42° → Violet 40°</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-applications" aria-labelledby="step7-title">
+            <div class="step-content">
+                <span class="step-tag">Applications</span>
+                <h2 class="step-title" id="step7-title">Where Else Is Refraction Hiding?</h2>
+                <p class="step-desc">Bending light is not just a sky trick. It is the core of lenses, fiber optics, and the human eye.</p>
+                <div class="apps-grid">
+                    <div class="app-card glass"><div class="app-icon">👓</div><h3>Eyeglasses</h3><p>Lenses bend light before it reaches your eye. The curvature of the lens changes the angle to correct vision — pure geometry.</p></div>
+                    <div class="app-card glass"><div class="app-icon">📷</div><h3>Camera Lenses</h3><p>Multiple glass elements bend light at calculated angles to focus an image onto a sensor. Chromatic aberration is the same dispersion effect.</p></div>
+                    <div class="app-card glass"><div class="app-icon">💎</div><h3>Prisms</h3><p>A triangular prism splits white light into colors exactly like a raindrop, but without the internal reflection. The same angles apply.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🔬</div><h3>Microscopes</h3><p>High-power lenses use oil immersion to increase the refractive index and bend light more sharply — revealing smaller details.</p></div>
+                    <div class="app-card glass"><div class="app-icon">💡</div><h3>Fiber Optics</h3><p>Light bends back into the cable when it hits the wall at a shallow angle. Engineers calculate the exact angle for total internal reflection.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🌊</div><h3>Mirages</h3><p>Hot air has a lower refractive index. Light bends through temperature layers, creating the illusion of water on the road — the same law.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-challenge" aria-labelledby="step8-title">
+            <div class="step-content">
+                <span class="step-tag">Challenge</span>
+                <h2 class="step-title" id="step8-title">Spectrum Challenge</h2>
+                <p class="step-desc">Three questions. Use the refraction logic you discovered.</p>
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-question active" id="quizQ1">
+                        <p class="quiz-text">Red light deviates by 138° inside a raindrop. At what angle do you see the red rainbow arc from your shadow?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">138°</button>
+                            <button class="quiz-option glass" data-correct="false">90°</button>
+                            <button class="quiz-option glass" data-correct="true">42°</button>
+                            <button class="quiz-option glass" data-correct="false">60°</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ1"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ2">
+                        <p class="quiz-text">Which color appears at the top of the rainbow arc?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">Violet</button>
+                            <button class="quiz-option glass" data-correct="false">Green</button>
+                            <button class="quiz-option glass" data-correct="true">Red</button>
+                            <button class="quiz-option glass" data-correct="false">Blue</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ2"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ3">
+                        <p class="quiz-text">If violet light bends more than red, what happens to its rainbow angle?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">It stays the same</button>
+                            <button class="quiz-option glass" data-correct="false">It becomes larger</button>
+                            <button class="quiz-option glass" data-correct="true">It becomes smaller</button>
+                            <button class="quiz-option glass" data-correct="false">It disappears</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ3"></div>
+                    </div>
+                </div>
+                <div class="quiz-score glass" id="quizScore" style="display:none;">
+                    <span class="score-label">Your Score</span>
+                    <span class="score-value" id="scoreValue">0/3</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-celebration" aria-labelledby="step9-title">
+            <div class="step-content">
+                <div class="celebration-visual" id="celebrationVisual" aria-hidden="true"></div>
+                <div class="celebration-badge glass">
+                    <div class="badge-icon">🏆</div>
+                    <div class="badge-text">
+                        <span class="badge-title">Spectrum Master</span>
+                        <span class="badge-desc">Mystery 007 Complete</span>
+                    </div>
+                </div>
+                <h2 class="step-title" id="step9-title">Mystery Solved!</h2>
+                <p class="step-desc">You started with a raindrop. You ended with the angle that governs every lens, prism, and ray of light in the world.</p>
+                <div class="celebration-stats">
+                    <div class="cstat glass"><span class="cstat-label">Mystery</span><span class="cstat-value">007</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Formula</span><span class="cstat-value">180° − D = 42°</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Discovery</span><span class="cstat-value">Dispersion</span></div>
+                </div>
+                <div class="celebration-actions">
+                    <a href="index.html" class="btn btn-primary">Return to Home</a>
+                    <a href="mystery-007.html" class="btn btn-secondary">Play Again</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="mystery-controls glass" id="mysteryControls">
+        <button class="btn btn-secondary" id="prevBtn" style="display:none">Back</button>
+        <button class="btn btn-primary" id="nextBtn">Begin</button>
+    </div>
+    <script src="audio.js"></script>
+    <script src="mystery-007.js"></script>
+</body>
+</html>

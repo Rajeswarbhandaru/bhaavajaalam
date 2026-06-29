@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mystery 004: Washing Machine — Discover the circle hiding in the drum and how fast it spins water away.">
+    <title>Mystery 004 — Washing Machine | Hidden Maths</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mystery-004.css">
+</head>
+<body>
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="gradient-layer"></div>
+        <div class="particle-container" id="particleContainer"></div>
+        <div class="floating-symbols" id="floatingSymbols"></div>
+    </div>
+
+    <nav class="mystery-nav glass" role="navigation" aria-label="Mystery navigation">
+        <div class="nav-container">
+            <a href="index.html" class="nav-back" aria-label="Return to home screen">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back</span>
+            </a>
+            <div class="mystery-progress">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-label" id="progressLabel">Step 1 of 9</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="mystery-main" id="mysteryMain">
+        <section class="mystery-step active" id="step-curiosity" aria-labelledby="step1-title">
+            <div class="step-content">
+                <span class="mystery-tag">Mystery 004</span>
+                <h1 class="step-title" id="step1-title">Washing Machine</h1>
+                <p class="step-hook">How does the drum spin your clothes dry — and what shape is hiding in the motion?</p>
+                <div class="curiosity-visual" aria-hidden="true">
+                    <div class="washer-scene">
+                        <div class="washer-drum" id="washerDrum">
+                            <div class="drum-inner">
+                                <div class="drum-hole"></div>
+                                <div class="drum-hole"></div>
+                                <div class="drum-hole"></div>
+                                <div class="drum-hole"></div>
+                                <div class="drum-hole"></div>
+                                <div class="drum-hole"></div>
+                                <div class="drum-hole"></div>
+                                <div class="drum-hole"></div>
+                            </div>
+                        </div>
+                        <div class="water-drop" id="waterDrop"></div>
+                    </div>
+                </div>
+                <p class="step-hint">The answer is a perfect circle — and a number that is over 3,000 years old.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-observation" aria-labelledby="step2-title">
+            <div class="step-content">
+                <span class="step-tag">Observation</span>
+                <h2 class="step-title" id="step2-title">Watch the Drum</h2>
+                <p class="step-desc">The drum is a hollow cylinder. It spins. The clothes stick to the wall. Water flies out through tiny holes. But the wall never changes shape.</p>
+                <div class="observation-stage" id="observationStage" aria-hidden="true">
+                    <div class="drum-observation">
+                        <div class="obs-drum" id="obsDrum">
+                            <div class="obs-drum-inner">
+                                <div class="obs-cloth"></div>
+                                <div class="obs-cloth"></div>
+                                <div class="obs-cloth"></div>
+                            </div>
+                        </div>
+                        <div class="spin-arrows">
+                            <div class="spin-arrow"></div>
+                            <div class="spin-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="obs-facts" id="obsFacts">
+                        <div class="fact-card glass">
+                            <span class="fact-number">50 cm</span>
+                            <span class="fact-label">Drum diameter</span>
+                        </div>
+                        <div class="fact-card glass">
+                            <span class="fact-number">1,200</span>
+                            <span class="fact-label">RPM spin speed</span>
+                        </div>
+                        <div class="fact-card glass">
+                            <span class="fact-number">π</span>
+                            <span class="fact-label">Circumference ratio</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-experiment" aria-labelledby="step3-title">
+            <div class="step-content">
+                <span class="step-tag">Experiment</span>
+                <h2 class="step-title" id="step3-title">Spin the Drum</h2>
+                <p class="step-desc">Pick a drum size and RPM. The machine will calculate the exact speed at the rim — and how far a water drop travels in one second.</p>
+                <div class="experiment-stage glass" id="experimentStage">
+                    <div class="drum-builder">
+                        <div class="drum-preview" id="drumPreview">
+                            <div class="preview-drum" id="previewDrum">
+                                <div class="preview-inner">
+                                    <div class="preview-cloth"></div>
+                                    <div class="preview-water"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="drum-controls">
+                            <div class="control-group">
+                                <label>Drum Diameter</label>
+                                <div class="control-value" id="diameterDisplay">50 cm</div>
+                                <input type="range" class="drum-slider" id="diameterSlider" min="30" max="70" value="50" step="5">
+                            </div>
+                            <div class="control-group">
+                                <label>Spin Speed (RPM)</label>
+                                <div class="control-value" id="rpmDisplay">1,200</div>
+                                <input type="range" class="drum-slider" id="rpmSlider" min="400" max="1600" value="1200" step="100">
+                            </div>
+                        </div>
+                        <div class="exp-readout">
+                            <div class="readout-item">
+                                <span class="readout-label">Circumference</span>
+                                <span class="readout-value" id="readoutCircumference">157 cm</span>
+                            </div>
+                            <div class="readout-item">
+                                <span class="readout-label">Rim Speed</span>
+                                <span class="readout-value" id="readoutRimSpeed">94 km/h</span>
+                            </div>
+                            <div class="readout-item">
+                                <span class="readout-label">G-Force</span>
+                                <span class="readout-value" id="readoutGForce">400 G</span>
+                            </div>
+                        </div>
+                        <div class="exp-actions">
+                            <button class="btn btn-primary" id="btnSpin">Spin</button>
+                            <button class="btn btn-secondary" id="btnStopSpin">Stop</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-prediction" aria-labelledby="step4-title">
+            <div class="step-content">
+                <span class="step-tag">Prediction</span>
+                <h2 class="step-title" id="step4-title">How Fast Is the Rim?</h2>
+                <p class="step-desc">A drum is 50 cm across. It spins at 1,200 RPM. How fast does the rim travel in kilometres per hour?</p>
+                <div class="prediction-gauge glass">
+                    <div class="gauge-display">
+                        <span class="gauge-value" id="gaugeValue">60</span>
+                        <span class="gauge-unit">km/h</span>
+                    </div>
+                    <input type="range" class="gauge-slider" id="gaugeSlider" min="20" max="150" value="60" step="5" aria-label="Rim speed prediction slider">
+                    <div class="gauge-labels"><span>20</span><span>60</span><span>100</span><span>150</span></div>
+                </div>
+                <p class="step-hint">Most people guess 60. The rim is actually faster than a car on a highway.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-discovery" aria-labelledby="step5-title">
+            <div class="step-content">
+                <span class="step-tag">Discovery</span>
+                <h2 class="step-title" id="step5-title">The Hidden Formula</h2>
+                <p class="step-desc">The drum is a circle. Every circle hides the same ancient number inside its curve.</p>
+                <div class="discovery-reveal glass" id="discoveryReveal">
+                    <div class="reveal-line">
+                        <span class="reveal-label">Diameter</span>
+                        <span class="reveal-arrow">×</span>
+                        <span class="reveal-label">π</span>
+                        <span class="reveal-arrow">=</span>
+                        <span class="reveal-label highlight">Circumference</span>
+                    </div>
+                    <div class="reveal-formula" id="revealFormula">
+                        <span class="formula-num" id="formulaDia">50</span>
+                        <span class="formula-op">×</span>
+                        <span class="formula-num">π</span>
+                        <span class="formula-op">=</span>
+                        <span class="formula-res" id="formulaCirc">157</span>
+                        <span class="formula-unit">cm</span>
+                    </div>
+                </div>
+                <p class="step-desc">Once you know the circumference, one multiplication by RPM gives you the exact speed of every hole in the drum wall.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-explanation" aria-labelledby="step6-title">
+            <div class="step-content">
+                <span class="step-tag">Explanation</span>
+                <h2 class="step-title" id="step6-title">How the Numbers Work</h2>
+                <div class="explanation-cards">
+                    <div class="explanation-card glass" id="explCard1">
+                        <div class="expl-number">1</div>
+                        <h3>The Circle</h3>
+                        <p>The drum is a circle with a <strong>50 cm diameter</strong>. Multiply by π and you get the distance around the rim.</p>
+                        <div class="expl-visual circle-visual"><span class="circle-formula">C = π × 50</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard2">
+                        <div class="expl-number">2</div>
+                        <h3>One Revolution</h3>
+                        <p>One full spin carries every point on the rim exactly <strong>157 cm</strong> — the circumference of the circle.</p>
+                        <div class="expl-visual rev-visual"><span class="rev-display">157 cm</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard3">
+                        <div class="expl-number">3</div>
+                        <h3>Per Minute</h3>
+                        <p>At <strong>1,200 RPM</strong>, the rim travels 1,200 × 157 cm in one minute. That is <strong>1,884 metres</strong>.</p>
+                        <div class="expl-visual calc-visual">1200 × 157 = 188,400 cm</div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard4">
+                        <div class="expl-number">4</div>
+                        <h3>Per Hour</h3>
+                        <p>Multiply by 60 minutes. The rim travels <strong>113 km/h</strong>. That is why water has no chance to stay inside.</p>
+                        <div class="expl-visual final-visual"><span class="final-result">113 km/h</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-applications" aria-labelledby="step7-title">
+            <div class="step-content">
+                <span class="step-tag">Applications</span>
+                <h2 class="step-title" id="step7-title">Where Else Is the Circle Hiding?</h2>
+                <p class="step-desc">Every spinning object obeys the same rule. The circle is the master of rotation.</p>
+                <div class="apps-grid">
+                    <div class="app-card glass"><div class="app-icon">🎡</div><h3>Centrifuges</h3><p>Medical labs spin blood samples at 15,000 RPM. The circumference formula tells them exactly how strong the separation force is.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🚗</div><h3>Car Wheels</h3><p>Your tyre is a circle. One rotation covers exactly its circumference. Speed = circumference × RPM × 60. Same formula.</p></div>
+                    <div class="app-card glass"><div class="app-icon">✈️</div><h3>Jet Engines</h3><p>Turbine blades trace enormous circles. A 1 metre diameter fan at 10,000 RPM moves air at 1,885 km/h at the tips.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🌍</div><h3>Earth Rotation</h3><p>The equator is a giant circle. Earth spins at 1,670 km/h because its circumference is 40,075 km and it completes one turn in 24 hours.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🎠</div><h3>Merry-Go-Rounds</h3><p>The outer horses travel farther than the inner horses in the same time. That is why they feel faster — larger circumference.</p></div>
+                    <div class="app-card glass"><div class="app-icon">⚙️</div><h3>Lathe Machines</h3><p>Metal workers calculate cutting speed using the circumference of the rotating metal rod. Wrong RPM ruins the tool.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-challenge" aria-labelledby="step8-title">
+            <div class="step-content">
+                <span class="step-tag">Challenge</span>
+                <h2 class="step-title" id="step8-title">Spin Master Challenge</h2>
+                <p class="step-desc">Three questions. Use the circumference and speed formulas.</p>
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-question active" id="quizQ1">
+                        <p class="quiz-text">Drum diameter is 40 cm. What is the circumference? (Use π ≈ 3.14)</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">120 cm</button>
+                            <button class="quiz-option glass" data-correct="false">160 cm</button>
+                            <button class="quiz-option glass" data-correct="true">125.6 cm</button>
+                            <button class="quiz-option glass" data-correct="false">80 cm</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ1"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ2">
+                        <p class="quiz-text">Circumference is 157 cm. RPM is 1,200. How many metres per minute does the rim travel?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">120 m</button>
+                            <button class="quiz-option glass" data-correct="true">1,884 m</button>
+                            <button class="quiz-option glass" data-correct="false">157 m</button>
+                            <button class="quiz-option glass" data-correct="false">12,000 m</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ2"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ3">
+                        <p class="quiz-text">A car tyre is 60 cm in diameter. It spins at 800 RPM. What is the rim speed in km/h?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">48 km/h</button>
+                            <button class="quiz-option glass" data-correct="false">90 km/h</button>
+                            <button class="quiz-option glass" data-correct="true">90.5 km/h</button>
+                            <button class="quiz-option glass" data-correct="false">120 km/h</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ3"></div>
+                    </div>
+                </div>
+                <div class="quiz-score glass" id="quizScore" style="display:none;">
+                    <span class="score-label">Your Score</span>
+                    <span class="score-value" id="scoreValue">0/3</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-celebration" aria-labelledby="step9-title">
+            <div class="step-content">
+                <div class="celebration-visual" id="celebrationVisual" aria-hidden="true"></div>
+                <div class="celebration-badge glass">
+                    <div class="badge-icon">🏆</div>
+                    <div class="badge-text">
+                        <span class="badge-title">Spin Master</span>
+                        <span class="badge-desc">Mystery 004 Complete</span>
+                    </div>
+                </div>
+                <h2 class="step-title" id="step9-title">Mystery Solved!</h2>
+                <p class="step-desc">You started with a drum. You ended with the formula that governs every wheel, turbine, and planet in motion.</p>
+                <div class="celebration-stats">
+                    <div class="cstat glass"><span class="cstat-label">Mystery</span><span class="cstat-value">004</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Formula</span><span class="cstat-value">C = π × D</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Discovery</span><span class="cstat-value">113 km/h</span></div>
+                </div>
+                <div class="celebration-actions">
+                    <a href="index.html" class="btn btn-primary">Return to Home</a>
+                    <a href="mystery-004.html" class="btn btn-secondary">Play Again</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="mystery-controls glass" id="mysteryControls">
+        <button class="btn btn-secondary" id="prevBtn" style="display:none">Back</button>
+        <button class="btn btn-primary" id="nextBtn">Begin</button>
+    </div>
+
+    <script src="mystery-004.js"></script>
+</body>
+</html>

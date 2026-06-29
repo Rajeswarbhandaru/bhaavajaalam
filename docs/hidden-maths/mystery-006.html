@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mystery 006: Rocket Launch — Discover the parabola hiding in every rocket trajectory.">
+    <title>Mystery 006 — Rocket Launch | Hidden Maths</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mystery-006.css">
+</head>
+<body>
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="gradient-layer"></div>
+        <div class="particle-container" id="particleContainer"></div>
+        <div class="floating-symbols" id="floatingSymbols"></div>
+    </div>
+
+    <nav class="mystery-nav glass" role="navigation" aria-label="Mystery navigation">
+        <div class="nav-container">
+            <a href="index.html" class="nav-back" aria-label="Return to home screen">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back</span>
+            </a>
+            <div class="mystery-progress">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-label" id="progressLabel">Step 1 of 9</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="mystery-main" id="mysteryMain">
+        <section class="mystery-step active" id="step-curiosity" aria-labelledby="step1-title">
+            <div class="step-content">
+                <span class="mystery-tag">Mystery 006</span>
+                <h1 class="step-title" id="step1-title">Rocket Launch</h1>
+                <p class="step-hook">Why does every rocket follow the exact same curved path — and what secret shape is hiding in the smoke?</p>
+                <div class="curiosity-visual" aria-hidden="true">
+                    <div class="rocket-scene">
+                        <div class="launch-pad">
+                            <div class="pad-tower"></div>
+                            <div class="rocket-body" id="rocketBody">
+                                <div class="rocket-nose"></div>
+                                <div class="rocket-fin"></div>
+                                <div class="rocket-fin"></div>
+                            </div>
+                            <div class="rocket-flame" id="rocketFlame"></div>
+                        </div>
+                        <div class="trajectory-arc" id="trajectoryArc"></div>
+                    </div>
+                </div>
+                <p class="step-hint">Gravity does not just pull the rocket down. It bends the entire path into a shape you have seen before.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-observation" aria-labelledby="step2-title">
+            <div class="step-content">
+                <span class="step-tag">Observation</span>
+                <h2 class="step-title" id="step2-title">Watch the Path</h2>
+                <p class="step-desc">The rocket shoots upward. Then it curves. Then it falls. The smoke trail traces a smooth arc — not a circle, not a straight line.</p>
+                <div class="observation-stage" id="observationStage" aria-hidden="true">
+                    <div class="path-trace">
+                        <div class="trace-line" id="traceLine"></div>
+                        <div class="trace-points">
+                            <div class="t-point start">Launch</div>
+                            <div class="t-point apex">Peak</div>
+                            <div class="t-point end">Land</div>
+                        </div>
+                    </div>
+                    <div class="path-shape">
+                        <div class="shape-label">The path is a...</div>
+                        <div class="shape-options">
+                            <div class="shape-opt">Circle</div>
+                            <div class="shape-opt">Straight Line</div>
+                            <div class="shape-opt highlight">Parabola</div>
+                            <div class="shape-opt">Spiral</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="obs-facts" id="obsFacts">
+                    <div class="fact-card glass">
+                        <span class="fact-number">9.8 m/s²</span>
+                        <span class="fact-label">Gravity constant</span>
+                    </div>
+                    <div class="fact-card glass">
+                        <span class="fact-number">45°</span>
+                        <span class="fact-label">Maximum range angle</span>
+                    </div>
+                    <div class="fact-card glass">
+                        <span class="fact-number">2×</span>
+                        <span class="fact-label">Velocity doubles range</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-experiment" aria-labelledby="step3-title">
+            <div class="step-content">
+                <span class="step-tag">Experiment</span>
+                <h2 class="step-title" id="step3-title">Launch Control</h2>
+                <p class="step-desc">Pick an angle and launch power. Fire the rocket. The smoke will trace the exact parabola determined by your numbers.</p>
+                <div class="experiment-stage glass" id="experimentStage">
+                    <div class="launch-sim">
+                        <canvas id="launchCanvas" width="480" height="320"></canvas>
+                        <div class="launch-overlay">
+                            <div class="launch-readout">
+                                <div class="readout-item"><span class="readout-label">Angle</span><span class="readout-value" id="simAngle">45°</span></div>
+                                <div class="readout-item"><span class="readout-label">Power</span><span class="readout-value" id="simPower">50 m/s</span></div>
+                                <div class="readout-item"><span class="readout-label">Range</span><span class="readout-value" id="simRange">255 m</span></div>
+                                <div class="readout-item"><span class="readout-label">Max Height</span><span class="readout-value" id="simHeight">64 m</span></div>
+                                <div class="readout-item"><span class="readout-label">Flight Time</span><span class="readout-value" id="simTime">7.2 s</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="launch-controls">
+                        <div class="control-group">
+                            <label>Launch Angle</label>
+                            <div class="control-value" id="angleDisplay">45°</div>
+                            <input type="range" class="launch-slider" id="angleSlider" min="10" max="80" value="45">
+                            <div class="angle-visual" id="angleVisual">
+                                <div class="angle-line" id="angleLine"></div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label>Launch Power</label>
+                            <div class="control-value" id="powerDisplay">50 m/s</div>
+                            <input type="range" class="launch-slider" id="powerSlider" min="20" max="100" value="50">
+                        </div>
+                    </div>
+                    <div class="exp-actions">
+                        <button class="btn btn-primary" id="btnLaunch">Launch</button>
+                        <button class="btn btn-secondary" id="btnResetLaunch">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-prediction" aria-labelledby="step4-title">
+            <div class="step-content">
+                <span class="step-tag">Prediction</span>
+                <h2 class="step-title" id="step4-title">What Angle Flies Farthest?</h2>
+                <p class="step-desc">You have a fixed launch power. You can aim at any angle from 10° to 80°. Which angle sends the rocket the farthest distance?</p>
+                <div class="prediction-gauge glass">
+                    <div class="gauge-display">
+                        <span class="gauge-value" id="gaugeValue">45</span>
+                        <span class="gauge-unit">degrees</span>
+                    </div>
+                    <input type="range" class="gauge-slider" id="gaugeSlider" min="10" max="80" value="45" step="5" aria-label="Angle prediction slider">
+                    <div class="gauge-labels"><span>10°</span><span>30°</span><span>45°</span><span>60°</span><span>80°</span></div>
+                </div>
+                <p class="step-hint">Most people guess 45°. The math confirms it — on flat ground, with no air.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-discovery" aria-labelledby="step5-title">
+            <div class="step-content">
+                <span class="step-tag">Discovery</span>
+                <h2 class="step-title" id="step5-title">The Hidden Formula</h2>
+                <p class="step-desc">You have been firing rockets. The path was never random. Gravity shapes every flight into a parabola.</p>
+                <div class="discovery-reveal glass" id="discoveryReveal">
+                    <div class="reveal-line">
+                        <span class="reveal-label">Velocity²</span>
+                        <span class="reveal-arrow">×</span>
+                        <span class="reveal-label">sin(2×Angle)</span>
+                        <span class="reveal-arrow">÷</span>
+                        <span class="reveal-label">Gravity</span>
+                        <span class="reveal-arrow">=</span>
+                        <span class="reveal-label highlight">Range</span>
+                    </div>
+                    <div class="reveal-formula" id="revealFormula">
+                        <span class="formula-num">50²</span>
+                        <span class="formula-op">×</span>
+                        <span class="formula-num">sin(90°)</span>
+                        <span class="formula-op">÷</span>
+                        <span class="formula-num">9.8</span>
+                        <span class="formula-op">=</span>
+                        <span class="formula-res" id="formulaRes">255</span>
+                        <span class="formula-unit">m</span>
+                    </div>
+                </div>
+                <p class="step-desc">This formula is why artillery tables, basketball shots, and rocket stages all rely on the same hidden curve.</p>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-explanation" aria-labelledby="step6-title">
+            <div class="step-content">
+                <span class="step-tag">Explanation</span>
+                <h2 class="step-title" id="step6-title">How the Numbers Work</h2>
+                <div class="explanation-cards">
+                    <div class="explanation-card glass" id="explCard1">
+                        <div class="expl-number">1</div>
+                        <h3>Horizontal Speed</h3>
+                        <p>The rocket leaves the pad at an angle. The sideways part of its velocity is <strong>v × cos(θ)</strong>. This part never changes — no air resistance.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">v × cos(θ)</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard2">
+                        <div class="expl-number">2</div>
+                        <h3>Vertical Speed</h3>
+                        <p>The upward part is <strong>v × sin(θ)</strong>. Gravity pulls this downward at 9.8 m/s every second. The climb slows, stops, then reverses.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">v × sin(θ)</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard3">
+                        <div class="expl-number">3</div>
+                        <h3>Time in Air</h3>
+                        <p>How long until the rocket comes back down? The time depends only on the upward speed. Higher vertical speed means longer flight.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">t = 2v×sin(θ) ÷ g</span></div>
+                    </div>
+                    <div class="explanation-card glass" id="explCard4">
+                        <div class="expl-number">4</div>
+                        <h3>Range</h3>
+                        <p>Distance = horizontal speed × time. Multiply everything out and you get the elegant formula: <strong>v² sin(2θ) ÷ g</strong>. That is the parabola.</p>
+                        <div class="expl-visual calc-visual"><span class="calc-text">v² sin(2θ) ÷ g</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-applications" aria-labelledby="step7-title">
+            <div class="step-content">
+                <span class="step-tag">Applications</span>
+                <h2 class="step-title" id="step7-title">Where Else Is the Parabola Hiding?</h2>
+                <p class="step-desc">Gravity draws the same curve everywhere. Once you see the parabola, you cannot stop seeing it.</p>
+                <div class="apps-grid">
+                    <div class="app-card glass"><div class="app-icon">🏀</div><h3>Basketball</h3><p>Every free throw follows a parabola. Players adjust angle and speed until their muscle memory matches the curve.</p></div>
+                    <div class="app-card glass"><div class="app-icon">⛲</div><h3>Fountains</h3><p>Water jets trace perfect parabolas. The fountain designer chooses pressure and nozzle angle to make the arcs meet at a point.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🎆</div><h3>Fireworks</h3><p>Exploding shells are launched at calculated angles so they burst directly above the crowd. The path is parabolic.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🎾</div><h3>Tennis Serve</h3><p>A lob is a high-angle parabola. A flat serve is a low-angle parabola. The player is solving the same equation in milliseconds.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🎪</div><h3>Circus Trapeze</h3><p>A flying acrobat follows a parabola between catches. The timing depends on the launch angle and speed from the previous swing.</p></div>
+                    <div class="app-card glass"><div class="app-icon">🎨</div><h3>Car Headlights</h3><p>Parabolic reflectors focus light into a beam. The mirror shape is the same parabola, just flipped. Every headlight is a math equation.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-challenge" aria-labelledby="step8-title">
+            <div class="step-content">
+                <span class="step-tag">Challenge</span>
+                <h2 class="step-title" id="step8-title">Trajectory Challenge</h2>
+                <p class="step-desc">Three questions. Use the parabola logic you discovered.</p>
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-question active" id="quizQ1">
+                        <p class="quiz-text">Launch angle is 45°. Power is 50 m/s. What is the maximum height reached?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">32 m</button>
+                            <button class="quiz-option glass" data-correct="true">64 m</button>
+                            <button class="quiz-option glass" data-correct="false">128 m</button>
+                            <button class="quiz-option glass" data-correct="false">255 m</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ1"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ2">
+                        <p class="quiz-text">Which angle gives the longest horizontal range for a fixed launch speed?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">30°</button>
+                            <button class="quiz-option glass" data-correct="true">45°</button>
+                            <button class="quiz-option glass" data-correct="false">60°</button>
+                            <button class="quiz-option glass" data-correct="false">90°</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ2"></div>
+                    </div>
+                    <div class="quiz-question" id="quizQ3">
+                        <p class="quiz-text">If launch speed doubles, what happens to the maximum range?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option glass" data-correct="false">Stays the same</button>
+                            <button class="quiz-option glass" data-correct="false">Doubles</button>
+                            <button class="quiz-option glass" data-correct="true">Quadruples</button>
+                            <button class="quiz-option glass" data-correct="false">Halves</button>
+                        </div>
+                        <div class="quiz-feedback" id="feedbackQ3"></div>
+                    </div>
+                </div>
+                <div class="quiz-score glass" id="quizScore" style="display:none;">
+                    <span class="score-label">Your Score</span>
+                    <span class="score-value" id="scoreValue">0/3</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="mystery-step" id="step-celebration" aria-labelledby="step9-title">
+            <div class="step-content">
+                <div class="celebration-visual" id="celebrationVisual" aria-hidden="true"></div>
+                <div class="celebration-badge glass">
+                    <div class="badge-icon">🏆</div>
+                    <div class="badge-text">
+                        <span class="badge-title">Trajectory Master</span>
+                        <span class="badge-desc">Mystery 006 Complete</span>
+                    </div>
+                </div>
+                <h2 class="step-title" id="step9-title">Mystery Solved!</h2>
+                <p class="step-desc">You started with a rocket. You ended with the parabola that connects every thrown, fired, and launched object in the universe.</p>
+                <div class="celebration-stats">
+                    <div class="cstat glass"><span class="cstat-label">Mystery</span><span class="cstat-value">006</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Formula</span><span class="cstat-value">R = v² sin(2θ) ÷ g</span></div>
+                    <div class="cstat glass"><span class="cstat-label">Discovery</span><span class="cstat-value">45° = Maximum</span></div>
+                </div>
+                <div class="celebration-actions">
+                    <a href="index.html" class="btn btn-primary">Return to Home</a>
+                    <a href="mystery-006.html" class="btn btn-secondary">Play Again</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="mystery-controls glass" id="mysteryControls">
+        <button class="btn btn-secondary" id="prevBtn" style="display:none">Back</button>
+        <button class="btn btn-primary" id="nextBtn">Begin</button>
+    </div>
+    <script src="audio.js"></script>
+    <script src="mystery-006.js"></script>
+</body>
+</html>
