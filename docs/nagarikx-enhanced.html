@@ -3,142 +3,418 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>NagarikX — Civic & Legal Awareness Suite</title>
+<title>NagarikX — Civic &amp; Legal Awareness Suite</title>
 <style>
-  .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:9999;display:none}
-  .confetti span{position:absolute;top:-12vh;width:12px;height:20px;border-radius:4px;opacity:.95;animation:fall 1.8s linear forwards}
-  @keyframes fall{to{transform:translateY(120vh) rotate(720deg);opacity:0}}
-  .blockShield{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(111,230,168,.12);border:1px solid rgba(111,230,168,.25);color:#dfffea;font-size:.78rem;margin-top:10px}
-  .certificateBtn{margin-top:14px;padding:12px 14px;border:none;border-radius:14px;background:linear-gradient(135deg,rgba(255,215,106,.95),rgba(255,164,76,.95));color:#13212f;font-weight:800;cursor:pointer}
-  .certificateScreen{position:fixed;inset:0;background:rgba(2,7,14,.78);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;z-index:10000}
-  .certificateScreen.open{display:flex}
-  .certificate{width:min(860px,100%);border-radius:28px;padding:28px;background:linear-gradient(180deg,#fff8df,#f5d98a);color:#1d2733;box-shadow:0 30px 90px rgba(0,0,0,.45);border:8px solid rgba(255,255,255,.45)}
-  .certificate h2{margin:0;font-size:2.2rem;letter-spacing:.05em}
-  .certificate p{line-height:1.7;font-size:1.02rem}
-  .certRow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
-  .certBox{padding:16px;border-radius:18px;background:rgba(255,255,255,.6)}
+/* ── Reset & tokens ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:      #07111f;
+  --panel:   #0e1b2e;
+  --panel2:  #10233d;
+  --soft:    #172d4b;
+  --text:    #edf4ff;
+  --muted:   #a9bdd9;
+  --accent:  #69d2ff;
+  --accent2: #8d7bff;
+  --gold:    #ffd76a;
+  --green:   #6fe6a8;
+  --red:     #ff8a8a;
+  --chip:    #1a3456;
+  --shadow:  0 20px 60px rgba(0,0,0,.35);
+  --radius:  20px;
+  --sidebar-w: 280px;
+}
+html, body {
+  height: 100%;
+  font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: radial-gradient(circle at top right, #183964 0%, #0a1526 42%, #050b15 100%);
+  color: var(--text);
+  overflow-x: hidden;
+}
+body { overflow-y: auto; }
 
-  :root{
-    --bg:#07111f;
-    --panel:#0e1b2e;
-    --panel2:#10233d;
-    --soft:#172d4b;
-    --text:#edf4ff;
-    --muted:#a9bdd9;
-    --accent:#69d2ff;
-    --accent2:#8d7bff;
-    --gold:#ffd76a;
-    --green:#6fe6a8;
-    --red:#ff8a8a;
-    --chip:#1a3456;
-    --shadow:0 20px 60px rgba(0,0,0,.28);
-    --radius:22px;
+/* ── Confetti ── */
+.confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 9999; display: none; }
+.confetti span { position: absolute; top: -12vh; width: 12px; height: 20px; border-radius: 4px; opacity: .95; animation: fall 1.8s linear forwards; }
+@keyframes fall { to { transform: translateY(120vh) rotate(720deg); opacity: 0; } }
+
+/* ── Certificate ── */
+.blockShield { display: none; } /* kept for JS compat, just hidden */
+.certificateBtn {
+  margin-top: 14px; padding: 12px 14px; border: none; border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255,215,106,.95), rgba(255,164,76,.95));
+  color: #13212f; font-weight: 800; cursor: pointer; font-size: .9rem;
+}
+.certificateScreen {
+  position: fixed; inset: 0; background: rgba(2,7,14,.82); backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center; padding: 20px; z-index: 10000;
+}
+.certificateScreen.open { display: flex; }
+.certificate {
+  width: min(860px, 100%); border-radius: 28px; padding: 28px;
+  background: linear-gradient(180deg, #fff8df, #f5d98a); color: #1d2733;
+  box-shadow: 0 30px 90px rgba(0,0,0,.45); border: 8px solid rgba(255,255,255,.45);
+}
+.certificate h2 { font-size: 2.2rem; letter-spacing: .05em; }
+.certificate p { line-height: 1.7; font-size: 1.02rem; }
+.certRow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+.certBox { padding: 16px; border-radius: 18px; background: rgba(255,255,255,.6); }
+
+/* ── Top sticky bar (mobile only) ── */
+.topBar {
+  display: none;
+  position: sticky; top: 0; z-index: 200;
+  height: 52px; background: #07111f;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  align-items: center; justify-content: space-between;
+  padding: 0 14px; gap: 10px;
+}
+.topBar-back {
+  color: var(--muted); background: none; border: none; cursor: pointer;
+  font-size: .92rem; padding: 8px 6px; min-height: 44px; white-space: nowrap;
+}
+.topBar-back:hover { color: var(--text); }
+.topBar-title {
+  font-size: 1rem; font-weight: 800; letter-spacing: .1em; color: var(--accent);
+}
+.topBar-right { display: flex; align-items: center; gap: 8px; }
+.topBar-score {
+  background: rgba(255,215,106,.15); color: var(--gold);
+  border: 1px solid rgba(255,215,106,.3);
+  border-radius: 999px; padding: 4px 10px; font-size: .78rem; font-weight: 700;
+  white-space: nowrap;
+}
+.topBar-ham {
+  background: none; border: 1px solid rgba(255,255,255,.12); color: var(--text);
+  width: 36px; height: 36px; border-radius: 10px; cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── Layout ── */
+.app { display: flex; min-height: 100vh; }
+
+/* ── Sidebar ── */
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  max-width: var(--sidebar-w);
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  padding: 24px 18px;
+  border-right: 1px solid rgba(255,255,255,.08);
+  background: linear-gradient(180deg, rgba(16,31,53,.97), rgba(8,17,31,.97));
+  display: flex; flex-direction: column; gap: 18px;
+  flex-shrink: 0;
+}
+.sidebar-drawer-backdrop {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55);
+  backdrop-filter: blur(3px); z-index: 299;
+}
+
+/* Brand */
+.brand {
+  padding: 18px;
+  background: linear-gradient(135deg, rgba(105,210,255,.12), rgba(141,123,255,.12));
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 20px;
+}
+.brand-logo {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+}
+.brand-logo svg { flex-shrink: 0; }
+.brand h1 {
+  font-size: 1.6rem; font-weight: 900; letter-spacing: .1em;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.brand-tagline { font-size: .82rem; color: var(--muted); line-height: 1.45; margin-top: 2px; }
+
+/* Score box */
+.scoreBox {
+  padding: 16px; border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255,215,106,.12), rgba(255,164,76,.10));
+  border: 1px solid rgba(255,215,106,.2);
+}
+.scoreBox strong {
+  display: block; margin-bottom: 4px; font-size: 1.2rem; color: var(--gold);
+}
+.scoreBox span { font-size: .84rem; color: var(--muted); }
+
+/* Search */
+.searchWrap { position: relative; }
+.searchWrap input {
+  width: 100%; padding: 12px 16px 12px 40px;
+  border-radius: 14px; border: 1px solid rgba(255,255,255,.09);
+  background: rgba(9,20,38,.8); color: var(--text); outline: none;
+  font-size: .9rem; transition: border-color .2s;
+}
+.searchWrap input:focus { border-color: rgba(105,210,255,.4); }
+.searchWrap::before {
+  content: "🔍"; position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  font-size: .85rem; pointer-events: none;
+}
+
+/* ── Main ── */
+.main { flex: 1; min-width: 0; padding: 28px 28px 60px; overflow-y: auto; }
+
+/* ── Hero ── */
+.hero { display: grid; grid-template-columns: 1.3fr 0.85fr; gap: 18px; }
+.card {
+  background: linear-gradient(180deg, rgba(14,27,46,.95), rgba(9,18,33,.95));
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.heroMain { padding: 28px; }
+.heroMain h2 { font-size: 1.85rem; font-weight: 800; margin-bottom: 10px; line-height: 1.25; }
+.heroMain p { color: var(--muted); line-height: 1.65; font-size: .95rem; }
+.heroNote {
+  margin-top: 16px; padding: 14px 16px; border-radius: 16px;
+  background: rgba(255,255,255,.05); color: #d8e6fb; line-height: 1.6; font-size: .88rem;
+}
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 18px; }
+.stat {
+  padding: 18px; border-radius: 18px;
+  background: linear-gradient(135deg, rgba(105,210,255,.1), rgba(141,123,255,.1));
+  border: 1px solid rgba(255,255,255,.07);
+}
+.stat .num { font-size: 1.8rem; font-weight: 800; }
+.stat .lab { color: var(--muted); margin-top: 4px; font-size: .85rem; }
+
+/* ── Section title ── */
+.sectionTitle { display: flex; align-items: baseline; justify-content: space-between; margin: 32px 0 16px; gap: 12px; }
+.sectionTitle h3 { font-size: 1.15rem; font-weight: 700; }
+.sectionTitle p { color: var(--muted); font-size: .85rem; }
+
+/* ── Block map ── */
+.blocks { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.block {
+  padding: 18px; cursor: pointer;
+  transition: transform .2s, border-color .2s, background .2s;
+  background: linear-gradient(180deg, rgba(18,35,61,.95), rgba(10,19,35,.96));
+  border: 1px solid rgba(255,255,255,.08); border-radius: 20px;
+}
+.block:hover { transform: translateY(-2px); border-color: rgba(105,210,255,.38); }
+.block.active { border-color: rgba(255,215,106,.6); background: linear-gradient(180deg, rgba(255,215,106,.12), rgba(255,164,76,.10)); }
+.block-icon { font-size: 1.6rem; margin-bottom: 10px; }
+.block h4 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+.block p { color: var(--muted); font-size: .84rem; line-height: 1.5; min-height: 54px; }
+.block-meta {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 12px; padding: 6px 10px; border-radius: 999px;
+  background: var(--chip); color: #d8ebff; font-size: .75rem;
+}
+
+/* ── Filters ── */
+.modulesWrap { margin-top: 8px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.fbtn {
+  padding: 9px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.09);
+  background: rgba(255,255,255,.05); color: var(--text); cursor: pointer;
+  font-size: .86rem; transition: background .2s, border-color .2s;
+  min-height: 44px;
+}
+.fbtn.active {
+  background: linear-gradient(135deg, rgba(105,210,255,.18), rgba(141,123,255,.15));
+  border-color: rgba(105,210,255,.45);
+}
+.fbtn:hover:not(.active) { background: rgba(255,255,255,.09); }
+
+/* ── Module grid ── */
+.moduleGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
+.module {
+  padding: 18px 18px 14px; cursor: pointer;
+  background: linear-gradient(180deg, rgba(14,27,46,.95), rgba(9,18,33,.95));
+  border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius);
+  box-shadow: 0 8px 28px rgba(0,0,0,.22);
+  transition: transform .2s, border-color .2s;
+  animation: cardIn .35s ease both;
+  display: flex; flex-direction: column; gap: 8px;
+}
+@keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.module:hover { transform: translateY(-2px); border-color: rgba(105,210,255,.38); }
+.module-block-label {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--muted); display: flex; align-items: center; gap: 5px;
+}
+.module-title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.module-title-row h4 { font-size: 1.08rem; font-weight: 700; line-height: 1.3; }
+.doneChip {
+  display: inline-flex; gap: 4px; align-items: center;
+  padding: 3px 8px; border-radius: 999px;
+  background: rgba(111,230,168,.15); color: #c9ffe0; font-size: .72rem;
+  white-space: nowrap; flex-shrink: 0;
+}
+.module-intro {
+  color: var(--muted); font-size: .9rem; line-height: 1.55;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  flex: 1;
+}
+.module-footer { display: flex; justify-content: flex-end; margin-top: 4px; }
+.openBtn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 8px 14px; border-radius: 12px; border: 1px solid rgba(105,210,255,.25);
+  background: rgba(105,210,255,.08); color: var(--accent);
+  font-size: .84rem; font-weight: 600; cursor: pointer;
+  transition: background .2s, border-color .2s;
+  min-height: 36px;
+}
+.openBtn:hover { background: rgba(105,210,255,.16); border-color: rgba(105,210,255,.5); }
+
+/* ── Detail sheet ── */
+.detail {
+  position: fixed; inset: 0;
+  background: rgba(3,7,14,.75); backdrop-filter: blur(6px);
+  display: none; align-items: flex-start; justify-content: center;
+  padding: 16px; z-index: 300; overflow-y: auto;
+}
+.detail.open { display: flex; }
+.sheet {
+  width: min(900px, 100%); border-radius: 26px;
+  background: linear-gradient(180deg, #10213a, #081220);
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 30px 90px rgba(0,0,0,.5);
+  margin: auto;
+  overflow: hidden;
+}
+.sheetTop {
+  padding: 24px 24px 18px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  display: flex; justify-content: space-between; gap: 16px; align-items: flex-start;
+  position: sticky; top: 0; background: #10213a; z-index: 2;
+}
+.sheetTop h2 { font-size: 1.55rem; font-weight: 800; margin-bottom: 6px; line-height: 1.25; }
+.sheetTop p { color: var(--muted); line-height: 1.55; font-size: .9rem; }
+.close {
+  border: none; background: rgba(255,255,255,.08); color: var(--text);
+  width: 42px; height: 42px; border-radius: 50%; cursor: pointer; font-size: 1.1rem;
+  flex-shrink: 0; transition: background .2s;
+}
+.close:hover { background: rgba(255,255,255,.14); }
+.sheetBody {
+  padding: 22px; display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.panel {
+  padding: 18px; border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
+  border: 1px solid rgba(255,255,255,.08);
+}
+.panel-header {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 1rem; font-weight: 700; color: #f7fbff; margin-bottom: 12px;
+}
+.panel-header .ph-icon { font-size: 1.1rem; }
+.panel ul, .panel ol { padding-left: 20px; color: #d7e7fb; line-height: 1.65; }
+.panel li { margin: 8px 0; font-size: .92rem; }
+.remember { grid-column: 1 / -1; }
+.quick-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 12px; margin-top: 10px; }
+.qcard {
+  padding: 14px; border-radius: 16px;
+  background: rgba(105,210,255,.07); border: 1px solid rgba(255,255,255,.07);
+}
+.qcard strong { display: block; margin-bottom: 5px; font-size: .82rem; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+.qcard span { font-size: .88rem; color: var(--text); }
+.footerNote {
+  margin-top: 16px; padding: 14px 16px; border-radius: 16px;
+  background: rgba(255,255,255,.04); color: #d8e6fb; line-height: 1.6; font-size: .82rem;
+}
+
+/* ── Quiz panel ── */
+.quizPanel {
+  grid-column: 1 / -1;
+  margin-top: 0;
+  border-radius: 20px; padding: 18px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+}
+.quizPanel h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.quizPanel .qtext { color: var(--muted); margin: 0 0 14px; font-size: .92rem; line-height: 1.55; }
+.optList { display: flex; flex-direction: column; gap: 8px; }
+.optBtn {
+  padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(255,255,255,.09);
+  background: rgba(255,255,255,.04); color: var(--text); cursor: pointer;
+  text-align: left; font-size: .9rem; transition: background .15s;
+  min-height: 44px;
+}
+.optBtn:hover { background: rgba(255,255,255,.09); }
+.optBtn.correct { background: rgba(111,230,168,.14); border-color: rgba(111,230,168,.42); }
+.optBtn.wrong   { background: rgba(255,138,138,.14); border-color: rgba(255,138,138,.42); }
+.optBtn .exp    { font-size: .83rem; color: var(--muted); margin-top: 6px; display: none; }
+.optBtn.correct .exp, .optBtn.wrong .exp { display: block; }
+.quizScore {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 12px;
+  background: rgba(255,215,106,.12); color: var(--gold);
+  font-size: .95rem; margin-top: 10px;
+}
+.badgeUnlock {
+  margin: 14px 0 6px; padding: 14px; border-radius: 16px;
+  background: rgba(255,215,106,.14); border: 1px solid rgba(255,215,106,.25);
+  color: var(--gold); display: flex; align-items: center; gap: 10px;
+  font-size: .95rem; opacity: 0; transition: opacity .4s;
+}
+.badgeUnlock.show { opacity: 1; }
+
+/* ── Bhāva overlay ── */
+#bvMenuOverlay {
+  display: none; position: fixed; inset: 0; z-index: 9997;
+  background: rgba(3,7,14,.82); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center;
+}
+
+/* ─────── RESPONSIVE ─────── */
+
+/* Tablet: single-column hero + 2-col blocks */
+@media (max-width: 1080px) {
+  .hero { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  /* Show top bar, hide sidebar permanently */
+  .topBar { display: flex; }
+  .app { display: block; }
+  .sidebar {
+    position: fixed; top: 0; left: 0; height: 100vh;
+    width: min(var(--sidebar-w), 88vw);
+    transform: translateX(-110%);
+    transition: transform .28s cubic-bezier(.4,0,.2,1);
+    z-index: 300;
   }
-  *{box-sizing:border-box}
-  html,body{margin:0;height:100%;font-family:Inter,Segoe UI,system-ui,-apple-system,sans-serif;background:radial-gradient(circle at top right,#183964 0%, #0a1526 42%, #050b15 100%);color:var(--text)}
-  body{overflow:hidden}
-  .app{display:grid;grid-template-columns:330px 1fr;height:100vh}
-  .sidebar{padding:22px 18px;border-right:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(16,31,53,.92),rgba(8,17,31,.92));overflow:auto}
-  .brand{padding:18px;background:linear-gradient(135deg,rgba(105,210,255,.16),rgba(141,123,255,.16));border:1px solid rgba(255,255,255,.09);border-radius:24px;box-shadow:var(--shadow)}
-  .brand h1{margin:0;font-size:2rem;letter-spacing:.08em}
-  .brand p{margin:8px 0 0;color:var(--muted);line-height:1.45}
-  .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .pill{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.08);font-size:.82rem;color:#dce8fb}
-  .search{margin:18px 0 14px}
-  .search input{width:100%;padding:14px 16px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:#091426;color:var(--text);outline:none}
-  .seq{margin-top:14px}
-  .seq h3,.nav h3{font-size:.95rem;letter-spacing:.06em;text-transform:uppercase;color:#c8d8ef;margin:16px 8px 10px}
-  .seq ol{margin:0;padding-left:24px;color:var(--muted);line-height:1.6}
-  .seq li{margin:8px 0}
-  .navlist{display:flex;flex-direction:column;gap:10px}
-  .navbtn{border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));color:var(--text);padding:14px;border-radius:18px;text-align:left;cursor:pointer;transition:.2s transform,.2s border-color,.2s background}
-  .navbtn:hover,.navbtn.active{transform:translateY(-1px);border-color:rgba(105,210,255,.5);background:linear-gradient(180deg,rgba(105,210,255,.14),rgba(141,123,255,.10))}
-  .navbtn small{display:block;color:var(--muted);margin-top:4px}
-  .scoreBox{margin:14px 0;padding:14px;border-radius:18px;background:linear-gradient(135deg,rgba(255,215,106,.14),rgba(255,164,76,.14));border:1px solid rgba(255,255,255,.08);font-size:.92rem}
-  .scoreBox strong{display:block;margin-bottom:6px;font-size:1.1rem;color:#ffd76a}
-  .main{overflow:auto;padding:26px}
-  .hero{display:grid;grid-template-columns:1.25fr .9fr;gap:18px;align-items:stretch}
-  .card{background:linear-gradient(180deg,rgba(15,30,51,.95),rgba(9,18,33,.95));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);box-shadow:var(--shadow)}
-  .heroMain{padding:26px}
-  .heroMain h2{font-size:2rem;margin:0 0 10px}
-  .heroMain p{color:var(--muted);line-height:1.65;margin:0}
-  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:18px}
-  .stat{padding:18px;border-radius:20px;background:linear-gradient(135deg,rgba(105,210,255,.12),rgba(141,123,255,.12));border:1px solid rgba(255,255,255,.07)}
-  .stat .num{font-size:1.8rem;font-weight:800}
-  .stat .lab{color:var(--muted);margin-top:4px;font-size:.92rem}
-  .sectionTitle{display:flex;align-items:end;justify-content:space-between;margin:26px 4px 14px;gap:12px}
-  .sectionTitle h3{margin:0;font-size:1.28rem}
-  .sectionTitle p{margin:0;color:var(--muted)}
-  .blocks{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
-  .block{padding:18px;cursor:pointer;transition:.2s transform,.2s border-color,.2s background; background:linear-gradient(180deg,rgba(18,35,61,.95),rgba(10,19,35,.96));border:1px solid rgba(255,255,255,.08);border-radius:22px}
-  .block:hover{transform:translateY(-2px);border-color:rgba(105,210,255,.42)}
-  .block.active{transform:translateY(-2px);border-color:rgba(255,215,106,.65);background:linear-gradient(180deg,rgba(255,215,106,.14),rgba(255,164,76,.14))}
-  .block .icon{font-size:1.6rem}
-  .block h4{margin:10px 0 6px;font-size:1.06rem}
-  .block p{margin:0;color:var(--muted);line-height:1.5;min-height:64px}
-  .badge{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:var(--chip);color:#d8ebff;font-size:.78rem;margin-top:12px}
-  .modulesWrap{margin-top:24px}
-  .filters{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 14px}
-  .fbtn{padding:10px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.05);color:var(--text);cursor:pointer}
-  .fbtn.active{background:linear-gradient(135deg,rgba(105,210,255,.18),rgba(141,123,255,.18));border-color:rgba(105,210,255,.45)}
-  .moduleGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-  .module{padding:18px;cursor:pointer;transition:.2s transform,.2s border-color; animation: cardIn .35s ease both}
-  @keyframes cardIn { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: translateY(0) } }
-  .module:hover{transform:translateY(-2px);border-color:rgba(105,210,255,.4)}
-  .moduleHead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-  .module h4{margin:0;font-size:1rem;line-height:1.35}
-  .module p{color:var(--muted);line-height:1.55;margin:10px 0 0}
-  .tagrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-  .tag{padding:6px 10px;border-radius:999px;background:#122945;color:#dceaff;font-size:.76rem}
-  .priority{font-size:.74rem;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.08)}
-  .high{color:#ffd8d8;background:rgba(255,76,76,.12)}
-  .mid{color:#ffe9b3;background:rgba(255,190,60,.12)}
-  .low{color:#d7ffd9;background:rgba(85,214,130,.12)}
-  .doneChip{display:inline-flex;gap:6px;align-items:center;padding:5px 10px;border-radius:999px;background:rgba(111,230,168,.15);color:#c9ffe0;font-size:.75rem;margin-left:6px}
-  .detail{position:fixed;inset:0;background:rgba(3,7,14,.74);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;z-index:40}
-  .detail.open{display:flex}
-  .sheet{width:min(1100px,100%);max-height:92vh;overflow:auto;border-radius:28px;background:linear-gradient(180deg,#10213a,#081220);border:1px solid rgba(255,255,255,.09);box-shadow:0 30px 90px rgba(0,0,0,.45)}
-  .sheetTop{padding:24px 24px 16px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
-  .sheetTop h2{margin:0 0 8px;font-size:1.7rem}
-  .sheetTop p{margin:0;color:var(--muted);line-height:1.55;max-width:820px}
-  .close{border:none;background:rgba(255,255,255,.08);color:var(--text);width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.1rem}
-  .sheetBody{padding:22px;display:grid;grid-template-columns:1fr 1fr;gap:16px;overflow-y:auto}
-  .panel{padding:18px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08)}
-  .panel h5{margin:0 0 10px;font-size:1rem;color:#f7fbff}
-  .panel ul,.panel ol{margin:0;padding-left:20px;color:#d7e7fb;line-height:1.65}
-  .panel li{margin:8px 0}
-  .remember{grid-column:1 / -1}
-  .remember .quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:10px}
-  .qcard{padding:14px;border-radius:18px;background:rgba(105,210,255,.08);border:1px solid rgba(255,255,255,.07)}
-  .qcard strong{display:block;margin-bottom:6px}
-  .muted{color:var(--muted)}
-  .footerNote{margin-top:20px;padding:16px 18px;border-radius:20px;background:rgba(255,255,255,.05);color:#d8e6fb;line-height:1.6}
-  .tiny{font-size:.88rem;color:var(--muted)}
-  .quizPanel{margin-top:14px;border-radius:22px;padding:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04)}
-  .quizPanel h4{margin:0 0 12px;font-size:1.12rem}
-  .quizPanel .qtext{color:var(--muted);margin:0 0 12px}
-  .optList{display:flex;flex-direction:column;gap:8px}
-  .optBtn{padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;text-align:left}
-  .optBtn:hover{background:rgba(255,255,255,.08)}
-  .optBtn.correct{background:rgba(111,230,168,.15);border-color:rgba(111,230,168,.45)}
-  .optBtn.wrong{background:rgba(255,138,138,.15);border-color:rgba(255,138,138,.45)}
-  .optBtn .exp{font-size:.85rem;color:var(--muted);margin-top:6px;display:none}
-  .optBtn.correct .exp,.optBtn.wrong .exp{display:block}
-  .quizScore{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;background:rgba(255,215,106,.12);color:#ffd76a;font-size:.95rem;margin-top:10px}
-  .badgeUnlock{margin:16px 0 10px;padding:14px;border-radius:18px;background:rgba(255,215,106,.15);border:1px solid rgba(255,215,106,.25);color:#ffd76a;display:flex;align-items:center;gap:10px;font-size:1rem;opacity:0;transition:opacity .4s}
-  .badgeUnlock.show{opacity:1}
-  .scrollHint{display:none}
-  @media (max-width: 1000px){
-    body{overflow:auto}
-    .app{grid-template-columns:1fr;height:auto}
-    .sidebar{border-right:none;border-bottom:1px solid rgba(255,255,255,.08)}
-    .hero{grid-template-columns:1fr}
-    .sheetBody{grid-template-columns:1fr}
-  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-drawer-backdrop.open { display: block; }
+  .main { padding: 16px 16px 60px; }
+  .hero { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .blocks { grid-template-columns: 1fr 1fr; }
+  .moduleGrid { grid-template-columns: 1fr; }
+  .sheetBody { grid-template-columns: 1fr; }
+  .sheet { border-radius: 20px; }
+  .sectionTitle { flex-direction: column; gap: 4px; }
+  .heroMain h2 { font-size: 1.45rem; }
+}
+
+@media (max-width: 420px) {
+  .blocks { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: 1fr 1fr; }
+}
+
+/* Desktop: make sure sidebar never shows topBar */
+@media (min-width: 769px) {
+  .topBar { display: none !important; }
+  .sidebar { position: sticky; transform: none !important; }
+  .sidebar-drawer-backdrop { display: none !important; }
+}
 </style>
 </head>
 <body>
+
+<!-- Confetti -->
 <div class="confetti" id="confetti"></div>
+
+<!-- Certificate screen -->
 <div class="certificateScreen" id="certificateScreen">
   <div class="certificate">
     <h2>Certificate of Civic Readiness</h2>
@@ -152,48 +428,65 @@
     <button class="certificateBtn" id="closeCert">Close Certificate</button>
   </div>
 </div>
+
+<!-- Mobile top sticky bar -->
+<div class="topBar" id="topBar">
+  <a href="../index.html" style="text-decoration:none;">
+    <button class="topBar-back">← Back</button>
+  </a>
+  <span class="topBar-title">NAGARIKX</span>
+  <div class="topBar-right">
+    <span class="topBar-score" id="topBarScore">0 pts</span>
+    <button class="topBar-ham" id="sidebarToggle">☰</button>
+  </div>
+</div>
+
+<!-- Sidebar drawer backdrop -->
+<div class="sidebar-drawer-backdrop" id="drawerBackdrop"></div>
+
 <div class="app">
-  <aside class="sidebar">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar" id="sidebar">
+    <!-- Brand -->
     <div class="brand">
-      <h1>NAGARIKX</h1>
-      <p>Know your rights, duties, documents, and action steps. Built as an informative civic-awareness suite for teenagers 13+.</p>
-      <div class="pillrow">
-        <span class="pill">Informative first</span>
-        <span class="pill">India-focused</span>
-        <span class="pill">Offline single file</span>
+      <div class="brand-logo">
+        <!-- Inline SVG logo mark -->
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-label="NagarikX logo mark" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="1" width="30" height="30" rx="8" fill="rgba(105,210,255,0.12)" stroke="rgba(105,210,255,0.35)" stroke-width="1.5"/>
+          <path d="M8 22L13 10L16 17L19 13L24 22" stroke="#69d2ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="9" r="2" fill="#ffd76a"/>
+        </svg>
+        <h1>NAGARIKX</h1>
       </div>
+      <div class="brand-tagline">Know your rights. Know your power.</div>
     </div>
+
+    <!-- Score box -->
     <div class="scoreBox">
       <strong id="scoreText">0 pts</strong>
       <span id="scoreSub">Completed 0 / 22 modules</span>
-      <button class="certificateBtn" id="openCertBtn" style="width:100%;margin-top:12px">View Certificate</button>
+      <button class="certificateBtn" id="openCertBtn" style="width:100%;margin-top:10px;font-size:.85rem;">View Certificate</button>
     </div>
-    <div class="search">
-      <input id="searchBox" type="text" placeholder="Search module, law, document, right..." />
+
+    <!-- Search -->
+    <div class="searchWrap">
+      <input id="searchBox" type="text" placeholder="Search module, law, right…" autocomplete="off" />
     </div>
-    <div class="seq">
-      <h3>Suggested sequence</h3>
-      <ol>
-        <li>Documents of Your Life</li>
-        <li>Age, identity, and voting readiness</li>
-        <li>School, safety, and child protection</li>
-        <li>Digital rights and cyber safety</li>
-        <li>Police, FIR, and legal aid basics</li>
-        <li>RTI, PIL, NHRC, corruption reporting</li>
-        <li>Passport, VISA, OCI, global awareness</li>
-      </ol>
-    </div>
-    <div class="nav">
-      <h3>Jump to blocks</h3>
-      <div class="navlist" id="navList"></div>
-    </div>
+
+    <!-- Hidden navList kept for JS compatibility -->
+    <div style="display:none"><div id="navList"></div></div>
   </aside>
-  <main class="main">
+
+  <!-- ── MAIN ── -->
+  <main class="main" id="mainContent">
+
+    <!-- Hero -->
     <section class="hero">
       <div class="card heroMain">
         <h2>Citizen awareness before adulthood</h2>
         <p>This suite presents the core things children are rarely taught in school: why voting matters, how a voter card works, what PAN unlocks, why passports and VISAs matter, what schools and police can or cannot do, and the tools a smart citizen can use when the system is unfair.</p>
-        <div class="footerNote"><strong>App logic:</strong> every module answers 3 questions — what is happening, what right/law matters here, and what exactly should the student do. Finish the short questions to score points.</div>
+        <div class="heroNote"><strong>App logic:</strong> every module answers 3 questions — what is happening, what right/law matters here, and what exactly should the student do. Finish the short questions to score points.</div>
       </div>
       <div class="stats card">
         <div class="stat"><div class="num" id="moduleCount">0</div><div class="lab">Modules included</div></div>
@@ -202,13 +495,17 @@
         <div class="stat"><div class="num">100%</div><div class="lab">Offline and self-contained</div></div>
       </div>
     </section>
+
+    <!-- Block map -->
     <section>
       <div class="sectionTitle">
         <h3>Block map</h3>
-        <p>Tap a block to filter and jump straight to its modules.</p>
+        <p>Tap a block to filter modules.</p>
       </div>
       <div class="blocks" id="blockGrid"></div>
     </section>
+
+    <!-- Modules -->
     <section class="modulesWrap" id="modulesWrap">
       <div class="sectionTitle">
         <h3>All modules</h3>
@@ -222,8 +519,11 @@
       </div>
       <div class="moduleGrid" id="moduleGrid"></div>
     </section>
+
   </main>
-</div>
+</div><!-- /.app -->
+
+<!-- ── DETAIL SHEET ── -->
 <div class="detail" id="detail">
   <div class="sheet">
     <div class="sheetTop">
@@ -235,28 +535,28 @@
     </div>
     <div class="sheetBody">
       <div class="panel">
-        <h5>Why this matters</h5>
+        <div class="panel-header"><span class="ph-icon">💡</span> Why this matters</div>
         <ul id="detailWhy"></ul>
       </div>
       <div class="panel">
-        <h5>Know this</h5>
+        <div class="panel-header"><span class="ph-icon">📖</span> Know this</div>
         <ul id="detailKnow"></ul>
       </div>
       <div class="panel">
-        <h5>What to do</h5>
+        <div class="panel-header"><span class="ph-icon">✅</span> What to do</div>
         <ol id="detailDo"></ol>
       </div>
       <div class="panel">
-        <h5>Useful places</h5>
+        <div class="panel-header"><span class="ph-icon">🔗</span> Useful places</div>
         <ul id="detailLinks"></ul>
       </div>
       <div class="panel remember">
-        <h5>Remember fast</h5>
-        <div class="quick" id="detailQuick"></div>
-        <div class="footerNote tiny">Educational awareness prototype only. Specific legal situations can depend on current rules, state procedures, and case facts.</div>
+        <div class="panel-header"><span class="ph-icon">⚡</span> Remember fast</div>
+        <div class="quick-cards" id="detailQuick"></div>
+        <div class="footerNote">Educational awareness prototype only. Specific legal situations can depend on current rules, state procedures, and case facts.</div>
       </div>
       <div class="panel remember quizPanel" id="quizPanel" style="display:none">
-        <h4>Quick check</h4>
+        <h4><span>🧩</span> Quick check</h4>
         <p class="qtext" id="quizText"></p>
         <div class="optList" id="quizOpts"></div>
         <div class="quizScore" id="quizScore" style="display:none"></div>
@@ -266,13 +566,13 @@
   </div>
 </div>
 
-<!-- Bhāva menu button -->
+<!-- Bhāva menu button (fixed top-right, desktop) -->
 <button id="bvMenuBtn" style="position:fixed;top:16px;right:16px;z-index:9998;border:none;background:linear-gradient(135deg,rgba(105,210,255,.22),rgba(141,123,255,.22));border:1px solid rgba(105,210,255,.35);color:#edf4ff;width:44px;height:44px;border-radius:14px;font-size:1.3rem;cursor:pointer;backdrop-filter:blur(8px);">☰</button>
 
 <div id="bvMenuOverlay" style="display:none;position:fixed;inset:0;z-index:9997;background:rgba(3,7,14,.82);backdrop-filter:blur(8px);align-items:center;justify-content:center;">
   <div style="background:linear-gradient(180deg,#10213a,#081220);border:1px solid rgba(255,255,255,.09);border-radius:24px;padding:28px;width:min(380px,92vw);color:#edf4ff;">
     <h3 style="margin:0 0 8px;font-size:1.4rem;">Bhāva Tech</h3>
-    <p style="margin:0 0 18px;color:#a9bdd9;font-size:.92rem;">NagarikX — Civic & Legal Awareness Suite</p>
+    <p style="margin:0 0 18px;color:#a9bdd9;font-size:.92rem;">NagarikX — Civic &amp; Legal Awareness Suite</p>
     <div style="display:flex;flex-direction:column;gap:10px;">
       <button onclick="document.getElementById('bvMenuOverlay').style.display='none'" style="padding:12px;border-radius:14px;border:1px solid rgba(105,210,255,.3);background:rgba(105,210,255,.1);color:#edf4ff;cursor:pointer;font-size:.95rem;">🏠 Close Menu</button>
       <button onclick="openCertificate();document.getElementById('bvMenuOverlay').style.display='none'" style="padding:12px;border-radius:14px;border:1px solid rgba(255,215,106,.3);background:rgba(255,215,106,.1);color:#ffd76a;cursor:pointer;font-size:.95rem;">🏆 View Certificate</button>
@@ -562,57 +862,53 @@ function endBhavaSession(moduleId, correctCount, totalQ) {
   } catch(e) { /* silent no-op on public web */ }
 }
 
-const navList = document.getElementById('navList');
-const blockGrid = document.getElementById('blockGrid');
+// ── DOM refs ──
+const navList    = document.getElementById('navList');
+const blockGrid  = document.getElementById('blockGrid');
 const moduleGrid = document.getElementById('moduleGrid');
 const moduleCount = document.getElementById('moduleCount');
-const searchBox = document.getElementById('searchBox');
-const detail = document.getElementById('detail');
-const closeBtn = document.getElementById('closeBtn');
-let activeBlock = 'all';
+const searchBox  = document.getElementById('searchBox');
+const detail     = document.getElementById('detail');
+const closeBtn   = document.getElementById('closeBtn');
+
+let activeBlock  = 'all';
 let activeFilter = 'all';
-let query = '';
+let query        = '';
 let openModuleId = null;
 
+// ── State ──
 function loadState(){
-  try{
-    const raw = localStorage.getItem('nagarikx_v1');
-    if(!raw) return {};
-    return JSON.parse(raw);
-  }catch(e){ return {}; }
+  try { const raw = localStorage.getItem('nagarikx_v1'); if(!raw) return {}; return JSON.parse(raw); }
+  catch(e){ return {}; }
 }
-function saveState(st){
-  localStorage.setItem('nagarikx_v1', JSON.stringify(st));
-}
+function saveState(st){ localStorage.setItem('nagarikx_v1', JSON.stringify(st)); }
 let state = loadState();
-if(!state.scores) state.scores = {};
+if(!state.scores)    state.scores    = {};
 if(!state.completed) state.completed = {};
 saveState(state);
 
-function totalScore(){
-  let s=0; for(let k in state.scores) s+=state.scores[k]; return s;
-}
-function completedCount(){
-  let c=0; for(let k in state.completed) if(state.completed[k]) c++; return c;
-}
+function totalScore(){ let s=0; for(let k in state.scores) s+=state.scores[k]; return s; }
+function completedCount(){ let c=0; for(let k in state.completed) if(state.completed[k]) c++; return c; }
+
 function updateScoreBox(){
-  const pts = totalScore();
+  const pts  = totalScore();
   const done = completedCount();
   document.getElementById('scoreText').textContent = pts + ' pts';
-  document.getElementById('scoreSub').textContent = 'Completed ' + done + ' / ' + modules.length + ' modules';
+  document.getElementById('scoreSub').textContent  = 'Completed ' + done + ' / ' + modules.length + ' modules';
+  // update mobile topbar score
+  const tbs = document.getElementById('topBarScore');
+  if(tbs) tbs.textContent = pts + ' pts';
 }
 
 moduleCount.textContent = modules.length;
 updateScoreBox();
 
 function scrollToModules(){
-  const main = document.querySelector('.main');
   const target = document.getElementById('modulesWrap');
-  if(main && target){
-    main.scrollTo({top: target.offsetTop - 18, behavior:'smooth'});
-  }
+  if(target) target.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
+// ── Nav (hidden but kept for JS compat) ──
 function buildNav(){
   const allBtn = document.createElement('button');
   allBtn.className = 'navbtn active';
@@ -621,8 +917,7 @@ function buildNav(){
   navList.appendChild(allBtn);
   blocks.forEach(b=>{
     const btn = document.createElement('button');
-    btn.className='navbtn';
-    btn.dataset.block=b.id;
+    btn.className='navbtn'; btn.dataset.block=b.id;
     btn.innerHTML=`<div>${b.icon} ${b.name}</div><small>${b.desc}</small>`;
     navList.appendChild(btn);
   });
@@ -632,9 +927,7 @@ function buildNav(){
     document.querySelectorAll('.navbtn').forEach(x=>x.classList.remove('active'));
     btn.classList.add('active');
     activeBlock = btn.dataset.block;
-    renderModules();
-    scrollToModules();
-    highlightActiveBlock();
+    renderModules(); scrollToModules(); highlightActiveBlock();
   });
 }
 
@@ -644,118 +937,117 @@ function highlightActiveBlock(){
   });
 }
 
+// ── Block grid ──
 function buildBlocks(){
-  blockGrid.innerHTML='';
+  blockGrid.innerHTML = '';
   blocks.forEach(b=>{
     const count = modules.filter(m=>m.block===b.id).length;
-    const done = modules.filter(m=>m.block===b.id && state.completed[m.id]).length;
+    const done  = modules.filter(m=>m.block===b.id && state.completed[m.id]).length;
     const el = document.createElement('div');
-    el.className='block card';
-    el.id = b.id;
-    el.innerHTML=`<div class="icon">${b.icon}</div><h4>${b.name}</h4><p>${b.desc}</p><span class="badge">${count} modules • ${done}/${count} done</span><div class="blockShield">🛡️ Shield ${done}/${count}</div>`;
+    el.className = 'block card'; el.id = b.id;
+    el.innerHTML = `
+      <div class="block-icon">${b.icon}</div>
+      <h4>${b.name}</h4>
+      <p>${b.desc}</p>
+      <span class="block-meta">${count} modules • ${done} done</span>
+      <div class="blockShield" style="display:none">🛡️ Shield ${done}/${count}</div>`;
     el.addEventListener('click',()=>{
       activeBlock = b.id;
       document.querySelectorAll('.navbtn').forEach(x=>x.classList.toggle('active', x.dataset.block===b.id));
-      renderModules();
-      scrollToModules();
-      highlightActiveBlock();
+      renderModules(); scrollToModules(); highlightActiveBlock();
     });
     blockGrid.appendChild(el);
   });
   highlightActiveBlock();
 }
 
+// ── Module grid ──
 function renderModules(){
   let filtered = [...modules];
   if(activeBlock !== 'all') filtered = filtered.filter(m=>m.block===activeBlock);
   if(activeFilter !== 'all') filtered = filtered.filter(m=>m.urgency===activeFilter);
   if(query){
     const q = query.toLowerCase();
-    filtered = filtered.filter(m => (m.title + ' ' + m.intro + ' ' + m.why.join(' ') + ' ' + m.know.join(' ')).toLowerCase().includes(q));
+    filtered = filtered.filter(m=>(m.title+' '+m.intro+' '+m.why.join(' ')+' '+m.know.join(' ')).toLowerCase().includes(q));
   }
   filtered.sort((a,b)=>a.sequence-b.sequence);
-  moduleGrid.innerHTML='';
+  moduleGrid.innerHTML = '';
   filtered.forEach((m, idx)=>{
     const block = blocks.find(b=>b.id===m.block);
-    const done = state.completed[m.id];
+    const done  = state.completed[m.id];
     const el = document.createElement('div');
-    el.className='module card';
+    el.className = 'module';
     el.style.animationDelay = (idx * 0.04) + 's';
-    el.innerHTML=`
-      <div class="moduleHead">
-        <div>
-          <div class="muted">${m.sequence}. ${block.icon} ${block.name.replace(/^Block \d+ — /,'')}</div>
-          <h4>${m.title}${done ? '<span class="doneChip">✅ Done</span>' : ''}</h4>
-        </div>
-        <span class="priority ${m.priority==='high'?'high':m.priority==='mid'?'mid':'low'}">${m.urgency}</span>
+    el.innerHTML = `
+      <div class="module-block-label">
+        <span>${block.icon}</span>
+        <span>${block.name.replace(/^Block \d+ — /,'')}</span>
       </div>
-      <p>${m.intro}</p>
-      <div class="tagrow">
-        <span class="tag">What is it?</span>
-        <span class="tag">Why it matters</span>
-        <span class="tag">What to do</span>
-        ${done ? '<span class="tag">🎉 +10 pts</span>' : '<span class="tag">📝 2 questions</span>'}
+      <div class="module-title-row">
+        <h4>${m.title}</h4>
+        ${done ? '<span class="doneChip">✅ Done</span>' : ''}
       </div>
-      <div class="tagrow" style="margin-top:6px">
-        <span class="tag" style="background:rgba(105,210,255,.12);color:#69d2ff;">🧠 IQ ${Math.round((BHAVA_DOMAIN_MAP[m.id]?.IQ||0)*100)}%</span>
-        <span class="tag" style="background:rgba(141,123,255,.12);color:#c4b5ff;">💛 EQ ${Math.round((BHAVA_DOMAIN_MAP[m.id]?.EQ||0)*100)}%</span>
-        <span class="tag" style="background:rgba(111,230,168,.12);color:#6fe6a8;">🤝 SQ ${Math.round((BHAVA_DOMAIN_MAP[m.id]?.SQ||0)*100)}%</span>
+      <div class="module-intro">${m.intro}</div>
+      <div class="module-footer">
+        <button class="openBtn">Open →</button>
       </div>`;
-    el.addEventListener('click',()=>openDetail(m));
+    el.addEventListener('click', ()=>openDetail(m));
     moduleGrid.appendChild(el);
   });
 }
 
+// ── Detail sheet ──
 function openDetail(m){
   openModuleId = m.id;
   const block = blocks.find(b=>b.id===m.block);
-  document.getElementById('detailTitle').textContent = `${m.sequence}. ${m.title}`;
-  document.getElementById('detailIntro').textContent = `${block.name} • ${m.intro}`;
-  fillList('detailWhy', m.why);
-  fillList('detailKnow', m.know);
-  fillList('detailDo', m.steps);
+  document.getElementById('detailTitle').textContent  = m.sequence + '. ' + m.title;
+  document.getElementById('detailIntro').textContent  = block.name + ' • ' + m.intro;
+  fillList('detailWhy',   m.why);
+  fillList('detailKnow',  m.know);
+  fillList('detailDo',    m.steps);
   fillList('detailLinks', m.links);
   const quick = document.getElementById('detailQuick');
   quick.innerHTML = '';
   m.quick.forEach(([a,b])=>{
     const c = document.createElement('div');
-    c.className='qcard';
-    c.innerHTML=`<strong>${a}</strong><span>${b}</span>`;
+    c.className = 'qcard';
+    c.innerHTML = `<strong>${a}</strong><span>${b}</span>`;
     quick.appendChild(c);
   });
   buildQuiz(m);
   detail.classList.add('open');
+  // scroll sheet to top
+  const sheet = detail.querySelector('.sheet');
+  if(sheet) sheet.scrollTop = 0;
+  detail.scrollTop = 0;
 }
 
 function buildQuiz(m){
   const panel = document.getElementById('quizPanel');
   const qtext = document.getElementById('quizText');
-  const opts = document.getElementById('quizOpts');
+  const opts  = document.getElementById('quizOpts');
   const score = document.getElementById('quizScore');
   const badge = document.getElementById('badgeUnlock');
-  if(!m.quiz || m.quiz.length===0){
-    panel.style.display='none'; return;
-  }
-  panel.style.display='block';
+  if(!m.quiz || m.quiz.length===0){ panel.style.display='none'; return; }
+  panel.style.display = 'block';
   badge.classList.remove('show');
   const already = state.completed[m.id];
   if(already){
     qtext.textContent = 'You have already completed this module. +' + (state.scores[m.id]||0) + ' points earned.';
-    opts.innerHTML='';
-    score.style.display='none';
+    opts.innerHTML = '';
+    score.style.display = 'none';
     badge.classList.add('show');
     return;
   }
-  let currentQ = 0;
-  let correctCount = 0;
+  let currentQ = 0, correctCount = 0;
   function showQuestion(){
     if(currentQ >= m.quiz.length){
       qtext.textContent = 'Quiz complete. You answered ' + correctCount + ' of ' + m.quiz.length + ' correctly.';
-      opts.innerHTML='';
-      score.style.display='inline-flex';
+      opts.innerHTML = '';
+      score.style.display = 'inline-flex';
       const pts = correctCount === m.quiz.length ? 10 : (correctCount > 0 ? 5 : 0);
       score.textContent = '🏆 ' + pts + ' points earned';
-      state.scores[m.id] = pts;
+      state.scores[m.id]    = pts;
       state.completed[m.id] = true;
       endBhavaSession(m.id, correctCount, m.quiz.length);
       saveState(state);
@@ -769,49 +1061,34 @@ function buildQuiz(m){
     }
     const q = m.quiz[currentQ];
     qtext.textContent = 'Q' + (currentQ+1) + '. ' + q.q;
-    opts.innerHTML='';
+    opts.innerHTML = '';
     q.options.forEach((opt, idx)=>{
       const btn = document.createElement('button');
-      btn.className='optBtn';
+      btn.className = 'optBtn';
       btn.innerHTML = `<div>${opt}</div><div class="exp">${idx===q.correct ? '✅ ' + q.exp : '❌ ' + q.exp}</div>`;
       btn.addEventListener('click', ()=>{
-        if(idx === q.correct){
-          btn.classList.add('correct');
-          correctCount++;
-        } else {
-          btn.classList.add('wrong');
-        }
+        if(idx === q.correct){ btn.classList.add('correct'); correctCount++; }
+        else { btn.classList.add('wrong'); }
         const all = opts.querySelectorAll('.optBtn');
-        all.forEach((b,i)=>{
-          b.disabled = true;
-          if(i===q.correct) b.classList.add('correct');
-        });
-        setTimeout(()=>{
-          currentQ++;
-          showQuestion();
-        }, 1600);
+        all.forEach((b,i)=>{ b.disabled=true; if(i===q.correct) b.classList.add('correct'); });
+        setTimeout(()=>{ currentQ++; showQuestion(); }, 1600);
       });
       opts.appendChild(btn);
     });
   }
-  score.style.display='none';
+  score.style.display = 'none';
   showQuestion();
 }
 
 function fillList(id, items){
   const el = document.getElementById(id);
   el.innerHTML = '';
-  items.forEach(t=>{
-    const li = document.createElement('li');
-    li.textContent = t;
-    el.appendChild(li);
-  });
+  items.forEach(t=>{ const li=document.createElement('li'); li.textContent=t; el.appendChild(li); });
 }
 
 function fireConfetti(){
   const c = document.getElementById('confetti');
-  c.innerHTML = '';
-  c.style.display = 'block';
+  c.innerHTML = ''; c.style.display = 'block';
   const colors = ['#ffd76a','#69d2ff','#8d7bff','#6fe6a8','#ff8a8a'];
   for(let i=0;i<110;i++){
     const s = document.createElement('span');
@@ -821,22 +1098,21 @@ function fireConfetti(){
     s.style.transform = 'translateY(0) rotate(' + (Math.random()*180) + 'deg)';
     c.appendChild(s);
   }
-  setTimeout(()=>{c.style.display='none'; c.innerHTML='';}, 2300);
+  setTimeout(()=>{ c.style.display='none'; c.innerHTML=''; }, 2300);
 }
 
 function openCertificate(){
-  const s = document.getElementById('certificateScreen');
   document.getElementById('certText').textContent = 'This certificate confirms that the learner has completed all modules in NagarikX and has demonstrated basic awareness of civic documents, rights, responsibilities, and system tools.';
   document.getElementById('certDone').textContent = completedCount() + ' / ' + modules.length;
   document.getElementById('certScore').textContent = totalScore() + ' pts';
-  s.classList.add('open');
+  document.getElementById('certificateScreen').classList.add('open');
 }
 function closeCertificate(){
   document.getElementById('certificateScreen').classList.remove('open');
 }
 
-// Fix 1: Only one of each event listener (duplicates removed)
-closeBtn.addEventListener('click',()=>detail.classList.remove('open'));
+// ── Event listeners ──
+closeBtn.addEventListener('click', ()=>detail.classList.remove('open'));
 detail.addEventListener('click', e=>{ if(e.target===detail) detail.classList.remove('open'); });
 document.getElementById('closeCert').addEventListener('click', closeCertificate);
 document.getElementById('certificateScreen').addEventListener('click', e=>{ if(e.target.id==='certificateScreen') closeCertificate(); });
@@ -846,25 +1122,42 @@ document.querySelectorAll('.fbtn').forEach(btn=>btn.addEventListener('click',()=
   btn.classList.add('active');
   activeFilter = btn.dataset.filter;
   renderModules();
-  scrollToModules();
 }));
-
 document.getElementById('openCertBtn').addEventListener('click', openCertificate);
 
 // Bhāva menu JS
-document.getElementById('bvMenuBtn').addEventListener('click', () => {
+document.getElementById('bvMenuBtn').addEventListener('click', ()=>{
   document.getElementById('bvMenuOverlay').style.display = 'flex';
 });
-document.getElementById('bvMenuOverlay').addEventListener('click', e => {
-  if (e.target.id === 'bvMenuOverlay') document.getElementById('bvMenuOverlay').style.display = 'none';
+document.getElementById('bvMenuOverlay').addEventListener('click', e=>{
+  if(e.target.id==='bvMenuOverlay') document.getElementById('bvMenuOverlay').style.display = 'none';
 });
+
+// Mobile sidebar drawer
+const sidebarEl    = document.getElementById('sidebar');
+const drawerBackdrop = document.getElementById('drawerBackdrop');
+const sidebarToggle  = document.getElementById('sidebarToggle');
+
+function openDrawer(){
+  sidebarEl.classList.add('open');
+  drawerBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer(){
+  sidebarEl.classList.remove('open');
+  drawerBackdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+sidebarToggle.addEventListener('click', openDrawer);
+drawerBackdrop.addEventListener('click', closeDrawer);
 
 // Capacitor back button listener
 if (typeof Capacitor !== 'undefined' && Capacitor.Plugins && Capacitor.Plugins.App) {
   Capacitor.Plugins.App.addListener('backButton', () => {
-    if (document.getElementById('certificateScreen').classList.contains('open')) { closeCertificate(); return; }
-    if (document.getElementById('bvMenuOverlay').style.display === 'flex') { document.getElementById('bvMenuOverlay').style.display = 'none'; return; }
-    if (detail.classList.contains('open')) { detail.classList.remove('open'); return; }
+    if(document.getElementById('certificateScreen').classList.contains('open')){ closeCertificate(); return; }
+    if(document.getElementById('bvMenuOverlay').style.display==='flex'){ document.getElementById('bvMenuOverlay').style.display='none'; return; }
+    if(detail.classList.contains('open')){ detail.classList.remove('open'); return; }
+    if(sidebarEl.classList.contains('open')){ closeDrawer(); return; }
   });
 }
 
