@@ -1,31 +1,31 @@
-﻿<!DOCTYPE html>
-<html lang="en" data-theme="dark" data-bhava-game="Mental Rotation">
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-bhava-game="Mental Rotation">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Logic Grid</title>
+<title>Shape Spinner</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Quicksand:wght@400..700&display=swap" rel="stylesheet">
 <style>
 /* ── DESIGN TOKENS ── */
 :root {
-  --font-display: 'Orbitron', monospace;
-  --font-body: 'Space Grotesk', sans-serif;
-  --color-bg: #0a0b14;
-  --color-surface: rgba(255,255,255,0.05);
-  --color-surface-2: rgba(255,255,255,0.09);
-  --color-border: rgba(255,255,255,0.12);
-  --color-text: #e8eaf0;
-  --color-text-muted: #8890a8;
-  --color-primary: #5ee8c8;
-  --color-primary-glow: rgba(94,232,200,0.25);
-  --color-secondary: #7c6fff;
-  --color-secondary-glow: rgba(124,111,255,0.25);
-  --color-correct: #4ade80;
-  --color-wrong: #f87171;
-  --color-gold: #fbbf24;
-  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+  --font-display: 'Baloo 2', cursive;
+  --font-body: 'Quicksand', sans-serif;
+  --color-bg: #fff8ec;
+  --color-surface: rgba(255,255,255,0.75);
+  --color-surface-2: rgba(255,255,255,0.95);
+  --color-border: rgba(255,150,60,0.25);
+  --color-text: #4a3b2a;
+  --color-text-muted: #9c8770;
+  --color-primary: #ff9f43;
+  --color-primary-glow: rgba(255,159,67,0.3);
+  --color-secondary: #6c5ce7;
+  --color-secondary-glow: rgba(108,92,231,0.25);
+  --color-correct: #2ecc71;
+  --color-wrong: #ff6b6b;
+  --color-gold: #ffd93d;
+  --radius-sm: 12px; --radius-md: 20px; --radius-lg: 28px;
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
   --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
   --text-xs: clamp(0.65rem,0.6rem+0.25vw,0.75rem);
@@ -42,8 +42,8 @@ body{
   min-height:100dvh; font-family:var(--font-body); font-size:var(--text-base);
   color:var(--color-text); background:var(--color-bg); overflow-x:hidden;
   background-image:
-    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(94,232,200,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 80% 80%, rgba(124,111,255,0.07) 0%, transparent 60%);
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(255,217,61,0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 80%, rgba(108,92,231,0.12) 0%, transparent 60%);
 }
 button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
 img{display:block;max-width:100%}
@@ -52,9 +52,8 @@ img{display:block;max-width:100%}
 body::before{
   content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
   background-image:
-    linear-gradient(rgba(94,232,200,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(94,232,200,0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
+    radial-gradient(circle, rgba(255,159,67,0.10) 2px, transparent 2px);
+  background-size: 34px 34px;
 }
 
 /* ── LAYOUT ── */
@@ -295,53 +294,52 @@ canvas{display:block;border-radius:var(--radius-md)}
 <!-- ══ MENU SCREEN ══ -->
 <section class="screen active" id="screen-menu">
   <div class="logo">
-    <svg class="logo-icon" viewBox="0 0 48 48" fill="none" aria-label="MindSpin logo">
-      <circle cx="24" cy="24" r="20" stroke="url(#lg1)" stroke-width="2.5"/>
-      <path d="M14 24 L24 14 L34 24 L24 34 Z" stroke="url(#lg1)" stroke-width="2" stroke-linejoin="round"/>
-      <circle cx="24" cy="24" r="4" fill="url(#lg1)"/>
-      <path d="M24 8 A16 16 0 0 1 40 24" stroke="#5ee8c8" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>
+    <svg class="logo-icon" viewBox="0 0 48 48" fill="none" aria-label="Shape Spinner logo">
+      <circle cx="24" cy="24" r="20" fill="url(#lg1)" opacity="0.15"/>
+      <path d="M24 6 L30 18 L43 20 L34 29 L36 42 L24 36 L12 42 L14 29 L5 20 L18 18 Z" fill="url(#lg1)" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/>
+      <circle cx="24" cy="24" r="4" fill="#fff" opacity="0.9"/>
       <defs>
         <linearGradient id="lg1" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#5ee8c8"/><stop offset="1" stop-color="#7c6fff"/>
+          <stop stop-color="#ff9f43"/><stop offset="1" stop-color="#6c5ce7"/>
         </linearGradient>
       </defs>
     </svg>
-    <span class="logo-text">MindSpin</span>
+    <span class="logo-text">Shape Spinner</span>
   </div>
 
-  <p class="tagline">Train your brain's 3D mental rotation ability — the cognitive skill that powers spatial reasoning, mathematics, and creative thinking.</p>
+  <p class="tagline">Spin your imagination! Turn the shapes in your mind and find the matching twin. A fun brain game for sharp young thinkers! 🧩</p>
 
   <div class="feature-pills">
-    <span class="pill">🧠 Cognitive Training</span>
-    <span class="pill">♾️ Infinite Unique Puzzles</span>
-    <span class="pill">⚡ Reaction Speed</span>
-    <span class="pill">📈 Score Tracking</span>
+    <span class="pill">🧠 Brain Power</span>
+    <span class="pill">♾️ Endless Fun Puzzles</span>
+    <span class="pill">⚡ Quick Thinking</span>
+    <span class="pill">📈 Star Scores</span>
   </div>
 
   <!-- Animated demo shapes -->
   <canvas id="demoCanvas" width="180" height="80" style="margin-bottom:var(--space-4)"></canvas>
 
-  <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-4)">Choose Difficulty</p>
+  <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-4)">Pick Your Level! 🎮</p>
   <div class="difficulty-grid">
     <div class="diff-card selected" data-diff="easy" tabindex="0" role="button" aria-pressed="true">
       <span class="diff-label">EASY</span>
-      <span class="diff-name">Novice</span>
+      <span class="diff-name">Starter</span>
       <span class="diff-desc">4 choices · 20s timer · Basic shapes</span>
     </div>
     <div class="diff-card" data-diff="medium" tabindex="0" role="button" aria-pressed="false">
       <span class="diff-label">MEDIUM</span>
-      <span class="diff-name">Explorer</span>
+      <span class="diff-name">Adventurer</span>
       <span class="diff-desc">4 choices · 15s timer · Complex forms</span>
     </div>
     <div class="diff-card" data-diff="hard" tabindex="0" role="button" aria-pressed="false">
       <span class="diff-label">HARD</span>
-      <span class="diff-name">Master</span>
+      <span class="diff-name">Champion</span>
       <span class="diff-desc">4 choices · 10s timer · 3D projections</span>
     </div>
   </div>
 
-  <button class="btn-primary" id="btnStart">LAUNCH GAME</button>
-  <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-4)">10 rounds per game · Press <kbd style="background:rgba(255,255,255,0.1);padding:1px 5px;border-radius:3px;font-size:0.85em">1–4</kbd> keys to answer</p>
+  <button class="btn-primary" id="btnStart">LET'S PLAY! 🚀</button>
+  <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-4)">10 fun rounds to play · Or press <kbd style="background:rgba(255,255,255,0.1);padding:1px 5px;border-radius:3px;font-size:0.85em">1–4</kbd> keys to answer</p>
 </section>
 
 <!-- ══ GAME SCREEN ══ -->
@@ -378,7 +376,7 @@ canvas{display:block;border-radius:var(--radius-md)}
 
   <!-- Question Area -->
   <div class="question-area">
-    <p class="question-label">Mentally rotate the original shape — then pick the matching option</p>
+    <p class="question-label">Spin the shape in your mind — then find its twin! 🔍</p>
 
     <div class="shapes-row">
       <div class="shape-card target">
@@ -388,9 +386,9 @@ canvas{display:block;border-radius:var(--radius-md)}
       <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-3);align-self:center;">
         <div style="font-size:var(--text-xl);color:var(--color-text-muted);">→</div>
         <div style="background:var(--color-surface-2);border:2px solid var(--color-primary);border-radius:var(--radius-lg);padding:var(--space-5) var(--space-8);text-align:center;box-shadow:0 0 28px var(--color-primary-glow);min-width:140px;">
-          <div style="font-family:var(--font-display);font-size:var(--text-xs);letter-spacing:0.14em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:var(--space-2);">Rotate by</div>
+          <div style="font-family:var(--font-display);font-size:var(--text-xs);letter-spacing:0.14em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:var(--space-2);">Spin by</div>
           <div id="rotationAngle" style="font-family:var(--font-display);font-size:var(--text-2xl);font-weight:900;color:var(--color-primary);line-height:1.1;">45°</div>
-          <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2);opacity:0.75;">Visualise mentally</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2);opacity:0.75;">Picture it in your head!</div>
         </div>
       </div>
     </div>
@@ -405,16 +403,16 @@ canvas{display:block;border-radius:var(--radius-md)}
 <section class="screen" id="screen-results">
   <div class="grade-badge" id="gradeBadge">A</div>
   <div class="results-score" id="finalScore">0</div>
-  <div class="results-label">Total Score</div>
-  <p class="results-msg" id="resultsMsg">Excellent spatial reasoning!</p>
+  <div class="results-label">Total Stars</div>
+  <p class="results-msg" id="resultsMsg">You did great spinning those shapes!</p>
   <div class="stats-grid">
     <div class="stat-item"><div class="stat-val" id="resCorrect">0</div><div class="stat-lbl">Correct</div></div>
     <div class="stat-item"><div class="stat-val" id="resAccuracy">0%</div><div class="stat-lbl">Accuracy</div></div>
-    <div class="stat-item"><div class="stat-val" id="resBestStreak">0</div><div class="stat-lbl">Best Streak</div></div>
+    <div class="stat-item"><div class="stat-val" id="resBestStreak">0</div><div class="stat-lbl">Best Streak 🔥</div></div>
   </div>
   <div class="btns-row">
-    <button class="btn-primary" id="btnPlayAgain">PLAY AGAIN</button>
-    <button class="btn-secondary" id="btnMenu">MENU</button>
+    <button class="btn-primary" id="btnPlayAgain">PLAY AGAIN 🔁</button>
+    <button class="btn-secondary" id="btnMenu">HOME 🏠</button>
   </div>
 </section>
 
@@ -428,8 +426,8 @@ const TOTAL_ROUNDS = 10;
 const CIRCUMFERENCE = 2 * Math.PI * 22; // ~138.2
 
 const DIFF_CONFIG = {
-  easy:   { time: 20, label: 'Novice',   complexity: 1 },
-  medium: { time: 15, label: 'Explorer', complexity: 2 },
+  easy:   { time: 20, label: 'Starter',   complexity: 1 },
+  medium: { time: 15, label: 'Adventurer', complexity: 2 },
   hard:   { time: 10, label: 'Master',   complexity: 3 },
 };
 
@@ -455,7 +453,8 @@ function mulberry32(a) {
 }
 
 const PALETTE = [
-  '#5ee8c8','#7c6fff','#f472b6','#fb923c','#34d399','#60a5fa','#a78bfa','#fbbf24'
+  '#5ee8c8','#7c6fff','#f472b6','#fb923c','#34d399','#60a5fa','#a78bfa','#fbbf24',
+  '#f87171','#22d3ee','#c084fc','#facc15'
 ];
 
 // Generate a unique complex shape: array of polygon "layers"
@@ -471,7 +470,7 @@ function generateShape(seed, complexity) {
   const accentColor = PALETTE[Math.floor(rng() * PALETTE.length)];
 
   for (let l = 0; l < numLayers; l++) {
-    const type = Math.floor(rng() * 5); // 0=poly 1=star 2=rect 3=arrow 4=L-shape
+    const type = Math.floor(rng() * 7); // 0=poly 1=star 2=rect 3=arrow 4=L-shape 5=cross 6=lightning
     const size = 20 + rng() * (complexity * 18);
     const cx = rng() * 60 - 30;
     const cy = rng() * 60 - 30;
@@ -504,12 +503,14 @@ function drawShape(ctx, shapeDef, cx, cy, angle, alpha = 1) {
     ctx.rotate(layer.rotation);
 
     ctx.beginPath();
-    switch (layer.type % 5) {
+    switch (layer.type % 7) {
       case 0: drawPolygon(ctx, 0, 0, layer.size, layer.sides); break;
       case 1: drawStar(ctx, 0, 0, layer.size * 0.5, layer.size, layer.sides + 2); break;
       case 2: drawRect(ctx, 0, 0, layer.size * 1.6, layer.size * 0.7); break;
       case 3: drawArrow(ctx, 0, 0, layer.size); break;
       case 4: drawLShape(ctx, 0, 0, layer.size); break;
+      case 5: drawCross(ctx, 0, 0, layer.size); break;
+      case 6: drawLightning(ctx, 0, 0, layer.size); break;
     }
 
     // Fill + stroke
@@ -565,6 +566,23 @@ function drawLShape(ctx, x, y, s) {
   const t = s * 0.35;
   ctx.rect(x - s * 0.5, y - s * 0.5, t, s);
   ctx.rect(x - s * 0.5, y + s * 0.5 - t, s, t);
+}
+
+function drawCross(ctx, x, y, s) {
+  const t = s * 0.32;
+  ctx.rect(x - t / 2, y - s * 0.5, t, s);
+  ctx.rect(x - s * 0.5, y - t / 2, s, t);
+}
+
+
+function drawLightning(ctx, x, y, s) {
+  ctx.moveTo(x - s * 0.15, y - s * 0.55);
+  ctx.lineTo(x + s * 0.25, y - s * 0.05);
+  ctx.lineTo(x - s * 0.02, y - s * 0.05);
+  ctx.lineTo(x + s * 0.15, y + s * 0.55);
+  ctx.lineTo(x - s * 0.3, y + s * 0.05);
+  ctx.lineTo(x + s * 0.02, y + s * 0.05);
+  ctx.closePath();
 }
 
 // Render a shape to a canvas element
@@ -933,9 +951,9 @@ function handleAnswer(idx) {
     state.streak = 0;
     playWrong();
     if (idx === -1) {
-      showFeedback('⏱ TIME UP!', 'wrong');
+      showFeedback('⏱ Oops, time\'s up!', 'wrong');
     } else {
-      showFeedback('✗ Wrong!', 'wrong');
+      showFeedback('Try again next time!', 'wrong');
     }
   }
 
@@ -1002,12 +1020,12 @@ function showResults() {
 
   // Grade
   let grade, msg;
-  if (accuracy >= 90) { grade = 'S'; msg = '🧠 Exceptional spatial genius!'; }
-  else if (accuracy >= 80) { grade = 'A'; msg = '⚡ Outstanding rotation skills!'; }
-  else if (accuracy >= 70) { grade = 'B'; msg = '🌟 Strong mental rotation!'; }
-  else if (accuracy >= 60) { grade = 'C'; msg = '📈 Good, keep practicing!'; }
-  else if (accuracy >= 40) { grade = 'D'; msg = '💪 Keep training your brain!'; }
-  else { grade = 'F'; msg = '🔄 Practice makes perfect!'; }
+  if (accuracy >= 90) { grade = 'S'; msg = '🧠 Wow! You are a Shape Genius! 🌟'; }
+  else if (accuracy >= 80) { grade = 'A'; msg = '⚡ Amazing spinning skills! 🎉'; }
+  else if (accuracy >= 70) { grade = 'B'; msg = '🌟 Great job thinking in 3D! 💪'; }
+  else if (accuracy >= 60) { grade = 'C'; msg = '📈 Good try! Keep practicing! 😊'; }
+  else if (accuracy >= 40) { grade = 'D'; msg = '💪 Nice effort! Your brain is growing! 🌱'; }
+  else { grade = 'F'; msg = '🔄 Don\'t worry, practice makes perfect! 🙂'; }
 
   document.getElementById('gradeBadge').textContent = grade;
   document.getElementById('finalScore').textContent = state.score.toLocaleString();

@@ -473,22 +473,24 @@
             relative_t4_success: { npcDialogue: '"Just be smart about it." [SUCCESS: Validated the underlying concern.]', characterVisual: '🧠', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p1', resetMeter: true }] },
 
             relative_t5_start: {
-                npcDialogue: '"Give your auntie a big kiss!" (You really do not want to).', characterVisual: '💋',
+                npcDialogue: '"Come here, let me pinch those cute cheeks!" (You really do not want that).', characterVisual: '😣',
                 choices: [
                     { buttonText: 'Awkwardly submit and feel uncomfortable.', nextScene: 'relative_t5_fail', meterChange: -20 },
-                    { buttonText: 'Block: Step back and offer a hand. "Hi Auntie! Let\'s high-five today!"', nextScene: 'relative_t5_success', meterChange: 30 }
+                    { buttonText: 'Block: Step back and offer a hand. \'Hi Auntie! Let\'s high-five today!\'', nextScene: 'relative_t5_success', meterChange: 30 }
                 ]
             },
+
             relative_t5_fail: { npcDialogue: 'You feel gross. [FAIL: Ignored bodily autonomy.]', characterVisual: '😖', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p1', resetMeter: true }] },
             relative_t5_success: { npcDialogue: 'She laughs and high-fives. [SUCCESS: Playful boundary setting.]', characterVisual: '✋', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p1', resetMeter: true }] },
 
             relative_t6_start: {
-                npcDialogue: 'An uncle walks into your bedroom without knocking while you are changing.', characterVisual: '🚪',
+                npcDialogue: 'An uncle walks straight into your room without knocking while you are on a private video call.', characterVisual: '🚪',
                 choices: [
                     { buttonText: 'Scream: "GET OUT! YOU NEVER KNOCK!"', nextScene: 'relative_t6_fail', meterChange: -25 },
-                    { buttonText: 'Firm: "Uncle, please step out and knock so I can get dressed!"', nextScene: 'relative_t6_success', meterChange: 30 }
+                    { buttonText: 'Firm: "Uncle, please knock next time, I am in the middle of a call!"', nextScene: 'relative_t6_success', meterChange: 30 }
                 ]
             },
+
             relative_t6_fail: { npcDialogue: 'A massive family drama starts. [FAIL: Over-escalation.]', characterVisual: '🌋', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p2', resetMeter: true }] },
             relative_t6_success: { npcDialogue: 'He apologizes and steps out. [SUCCESS: Direct, clear boundaries.]', characterVisual: '✅', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p2', resetMeter: true }] },
 
@@ -892,13 +894,14 @@
             elder_t7_success: { npcDialogue: 'They are stumped. [SUCCESS: Masterful boundary deflection.]', characterVisual: '🧱', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] },
 
             elder_t8_start: {
-                npcDialogue: 'Walking down the street, an older man yells, "You\'d look prettier if you smiled more!"', characterVisual: '😬',
+                npcDialogue: 'Walking down the street, a stranger stops you and snaps, "Kids today have no manners, you did not even greet me!"', characterVisual: '😬',
                 choices: [
-                    { buttonText: 'Flip them off and curse.', nextScene: 'elder_t8_fail', meterChange: -20 },
-                    { buttonText: 'Keep walking/Neutral: "Just deep in thought today!"', nextScene: 'elder_t8_success', meterChange: 25 }
+                    { buttonText: 'Snap back: "I do not even know you!"', nextScene: 'elder_t8_fail', meterChange: -20 },
+                    { buttonText: 'Keep walking/Neutral: "Sorry, in a hurry today, have a good one!"', nextScene: 'elder_t8_success', meterChange: 25 }
                 ]
             },
-            elder_t8_fail: { npcDialogue: 'They yell back at you. [FAIL: Engaged with street harassment.]', characterVisual: '📣', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] },
+
+            elder_t8_fail: { npcDialogue: 'The stranger keeps grumbling loudly. [FAIL: Escalating with a stranger wastes energy.]', characterVisual: '📣', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] },
             elder_t8_success: { npcDialogue: 'You walk away safely. [SUCCESS: De-escalation and exit.]', characterVisual: '🚶‍♀️', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] },
 
             elder_t9_start: {

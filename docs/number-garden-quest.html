@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
-<html lang="en" data-bhava-game="Number Garden Quest">
+<html lang="en" data-bhava-game="Number Garden">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Number Garden Quest</title>
+  <title>Number Garden</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
@@ -72,6 +72,21 @@
     .topic-btn[data-t="mis"].active   {background:linear-gradient(135deg,#f9c74f,#fca311);}
     .topic-btn[data-t="tab"].active   {background:linear-gradient(135deg,#e879f9,#c026d3);}
     .topic-btn[data-t="mix"].active   {background:linear-gradient(135deg,#ff8f5a,#e65a2f);}
+    .topic-btn[data-t="num"].active   {background:linear-gradient(135deg,#34b5e5,#1a8fc4);}
+
+    /* LEVEL SELECTOR */
+    .level-bar{padding:0 1.5rem 0.6rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;}
+    .level-label{font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-right:0.25rem;}
+    .level-btn{padding:0.45rem 1rem;border-radius:999px;font-size:0.8rem;font-weight:800;border:1.5px solid var(--border);background:rgba(255,255,255,0.7);color:var(--muted);transition:background var(--tr),color var(--tr),border-color var(--tr),transform var(--tr);}
+    .level-btn:hover{transform:translateY(-2px);}
+    .level-btn.active{color:white;border-color:transparent;}
+    .level-btn[data-lv="easy"].active  {background:linear-gradient(135deg,#4caf74,#2d9e5f);}
+    .level-btn[data-lv="medium"].active{background:linear-gradient(135deg,#ffb347,#e67e22);}
+    .level-btn[data-lv="hard"].active  {background:linear-gradient(135deg,#e74c3c,#c0392b);}
+    .level-badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:0.7rem;font-weight:800;margin-left:6px;vertical-align:middle;}
+    .lv-easy{background:#d4f5e2;color:#1a6b3a;}
+    .lv-medium{background:#ffe5b4;color:#7a4a00;}
+    .lv-hard{background:#ffd0cc;color:#8b1a1a;}
 
     /* STATS */
     .stats{display:flex;gap:0.65rem;padding:0 1.5rem 1rem;flex-wrap:wrap;}
@@ -85,7 +100,7 @@
     /* GARDEN */
     .garden{
       position:relative;margin:0 1rem 1rem;border-radius:24px;overflow:hidden;
-      min-height:clamp(290px,56vw,420px);
+      min-height:clamp(360px,62vw,500px);
       background:linear-gradient(180deg,rgba(180,235,255,0.7),rgba(255,255,255,0) 42%),
                  linear-gradient(180deg,#e2f7ff 0%,#fff8ee 50%,#f8e3ba 100%);
       border:1px solid var(--border);
@@ -100,12 +115,12 @@
     .cb::before{width:26px;height:26px;top:-14px;left:9px;}
     .cb::after{width:34px;height:34px;top:-17px;right:9px;}
 
-    .ground{position:absolute;left:0;right:0;bottom:0;height:96px;background:linear-gradient(180deg,#98db7a,#79c35c);border-radius:28px 28px 0 0;}
+    .ground{position:absolute;left:0;right:0;bottom:0;height:60px;background:linear-gradient(180deg,#98db7a,#79c35c);border-radius:28px 28px 0 0;}
 
     /* QUESTION CARD */
     .qcard{
       position:absolute;left:50%;transform:translateX(-50%);
-      top:clamp(86px,18%,115px);
+      top:clamp(72px,15%,96px);
       width:min(93%,420px);text-align:center;
       background:rgba(255,255,255,0.95);border-radius:24px;
       padding:1.2rem 1.2rem 0.9rem;
@@ -115,14 +130,14 @@
     .qtype{font-size:0.74rem;color:var(--muted);font-weight:700;letter-spacing:.04em;}
     .question{
       font-family:var(--fh);
-      font-size:clamp(1.85rem,1.1rem+2.5vw,3rem);
-      color:#3d365c;line-height:1;margin:0.4rem 0 0.9rem;
+      font-size:clamp(2.4rem,1.6rem+3vw,3.8rem);
+      color:#3d365c;line-height:1.1;margin:0.4rem 0 0.9rem;
     }
     .choices{display:flex;justify-content:center;gap:0.65rem;flex-wrap:wrap;}
     .choice{
       min-width:70px;min-height:56px;padding:0.7rem 0.9rem;
       border-radius:16px;background:white;font-weight:800;
-      font-size:clamp(0.95rem,0.75rem+0.8vw,1.25rem);
+      font-size:clamp(1.15rem,0.9rem+1vw,1.5rem);
       box-shadow:0 7px 15px rgba(86,75,112,0.11);
       transition:transform var(--tr),box-shadow var(--tr),background var(--tr);
     }
@@ -144,7 +159,7 @@
     .hint-strip.show{display:block;}
 
     /* FLOWERS */
-    .bed{position:absolute;bottom:16px;left:8px;right:8px;display:flex;align-items:flex-end;justify-content:space-evenly;gap:0.4rem;}
+    .bed{position:absolute;bottom:4px;left:8px;right:8px;display:flex;align-items:flex-end;justify-content:space-evenly;gap:0.4rem;}
     .flower{display:flex;flex-direction:column;align-items:center;transform-origin:bottom center;animation:sway 3s ease-in-out infinite;}
     .flower:nth-child(2n){animation-duration:3.7s;}
     .flower:nth-child(3n){animation-duration:4.3s;}
@@ -214,6 +229,34 @@
     .table-cell.hl{background:rgba(249,199,79,0.35);color:#7a5a00;}
 
     .footer{text-align:center;padding:0.4rem 1rem 1.1rem;font-size:0.72rem;color:var(--muted);}
+
+    /* REFERENCE MODAL */
+    .ref-modal-bg{display:none;position:fixed;inset:0;background:rgba(30,20,60,0.52);backdrop-filter:blur(4px);z-index:9000;justify-content:center;align-items:flex-start;padding:1rem;overflow-y:auto;}
+    .ref-modal-bg.show{display:flex;}
+    .ref-modal{background:#fff;border-radius:24px;width:min(720px,100%);box-shadow:0 24px 60px rgba(0,0,0,0.25);padding:1.5rem 1.5rem 2rem;margin:auto;position:relative;}
+    .ref-modal h2{font-family:var(--fh);font-size:1.5rem;color:#3d365c;margin-bottom:0.3rem;}
+    .ref-tabs{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:0.6rem;}
+    .ref-tab{padding:0.35rem 0.85rem;border-radius:999px;font-size:0.78rem;font-weight:700;border:1.5px solid var(--border);background:rgba(255,255,255,0.7);color:var(--muted);cursor:pointer;}
+    .ref-tab.active{background:linear-gradient(135deg,#7a8cff,#a78bfa);color:white;border-color:transparent;}
+    .ref-panel{display:none;} .ref-panel.show{display:block;}
+    .ref-panel h3{font-family:var(--fh);font-size:1rem;color:var(--muted);margin:0.8rem 0 0.4rem;text-transform:uppercase;letter-spacing:.04em;}
+    .ref-grid{display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:0.8rem;}
+    .ref-cell{padding:0.25rem 0.55rem;background:rgba(122,140,255,0.1);border-radius:8px;font-size:0.78rem;font-weight:700;color:#5460bf;white-space:nowrap;}
+    .ref-rule{background:rgba(255,255,255,0.9);border:1px solid var(--border);border-radius:14px;padding:0.75rem 1rem;margin-bottom:0.6rem;}
+    .ref-rule strong{display:block;font-size:0.88rem;color:#3d365c;margin-bottom:0.2rem;}
+    .ref-rule span{font-size:0.78rem;color:var(--muted);line-height:1.5;}
+    .ref-example{font-size:0.82rem;font-weight:700;color:var(--primary);margin-top:0.25rem;display:block;}
+    .ref-close{position:absolute;top:1rem;right:1rem;background:var(--border);border:none;border-radius:999px;width:36px;height:36px;font-size:1.1rem;cursor:pointer;display:grid;place-items:center;color:#555;}
+    .speak-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:999px;border:1.5px solid rgba(122,140,255,0.3);background:rgba(122,140,255,0.1);color:#5460bf;font-size:0.75rem;font-weight:700;cursor:pointer;transition:background 0.2s,transform 0.15s;margin-left:8px;vertical-align:middle;}
+    .speak-btn:hover{background:rgba(122,140,255,0.22);transform:scale(1.05);}
+    .speak-btn.speaking{background:linear-gradient(135deg,#7a8cff,#a78bfa);color:white;border-color:transparent;animation:pulse 1.2s ease-in-out infinite;}
+    .ref-rule-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+    .ref-rule-row .ref-rule{flex:1;}
+    .ref-tbl-wrap{overflow-x:auto;}
+    .ref-tbl{border-collapse:collapse;font-size:0.78rem;min-width:420px;}
+    .ref-tbl th{background:rgba(122,140,255,0.15);padding:0.3rem 0.6rem;text-align:center;font-weight:800;color:#5460bf;}
+    .ref-tbl td{padding:0.25rem 0.55rem;text-align:center;border:1px solid rgba(122,140,255,0.12);}
+    .ref-tbl tr:nth-child(even) td{background:rgba(122,140,255,0.05);}
 
     /* KEYFRAMES */
     @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.07);}}
@@ -296,12 +339,22 @@
     <button class="topic-btn" data-t="div" aria-pressed="false">&#247; Division</button>
     <button class="topic-btn" data-t="tab" aria-pressed="false">&#128221; Tables</button>
     <button class="topic-btn" data-t="mis" aria-pressed="false">&#10067; Missing No.</button>
+    <button class="topic-btn" data-t="num" aria-pressed="false">&#128290; Numbers</button>
+  </nav>
+
+  <!-- LEVEL SELECTOR -->
+  <nav class="level-bar" aria-label="Choose difficulty">
+    <span class="level-label">Level:</span>
+    <button class="level-btn active" data-lv="easy"   aria-pressed="true" >&#127808; Easy</button>
+    <button class="level-btn"        data-lv="medium" aria-pressed="false">&#127815; Medium</button>
+    <button class="level-btn"        data-lv="hard"   aria-pressed="false">&#128293; Hard</button>
+    <button class="level-btn" id="refBtn" style="margin-left:auto;background:linear-gradient(135deg,#e0e7ff,#c7d2fe);color:#4338ca;border-color:#a5b4fc;" aria-label="Open reference sheet">&#128218; Reference</button>
   </nav>
 
   <!-- STATS -->
   <div class="stats" role="status" aria-label="Progress">
     <div class="stat"><strong id="sScore">0</strong><span>&#11088; Stars</span></div>
-    <div class="stat"><strong id="sRound">1 / 12</strong><span>&#127824; Question</span></div>
+    <div class="stat"><strong id="sRound">1 / 24</strong><span>&#127824; Question</span></div>
     <div class="stat"><strong id="sStreak">0</strong><span>&#128293; Streak</span></div>
     <div class="stat"><strong id="sCorrect">0%</strong><span>&#127919; Accuracy</span></div>
   </div>
@@ -328,7 +381,7 @@
     <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="ovTitle">
       <div style="font-size:3.2rem" aria-hidden="true">&#127752;</div>
       <h2 id="ovTitle">Wonderful!</h2>
-      <div class="score-badge" id="ovScore">12 / 12</div>
+      <div class="score-badge" id="ovScore">24 / 24</div>
       <p id="ovBody">Amazing work! Ready for a new challenge?</p>
       <button class="btn-play" id="btnNext">&#127807; New Garden</button>
     </div>
@@ -351,6 +404,63 @@
 
   <div class="footer">&nbsp; Keyboard: press 1, 2 or 3 to answer.</div>
 </main>
+
+<!-- ===== REFERENCE MODAL ===== -->
+<div class="ref-modal-bg" id="refModalBg" role="dialog" aria-modal="true" aria-labelledby="refModalTitle">
+  <div class="ref-modal">
+    <button class="ref-close" id="refClose" aria-label="Close">&#10005;</button>
+    <h2 id="refModalTitle">&#128218; Full Reference Sheet</h2>
+    <div class="ref-tabs">
+      <button class="ref-tab active" data-rt="rules">&#128221; Rules</button>
+      <button class="ref-tab" data-rt="numbers">&#128290; Numbers</button>
+      <button class="ref-tab" data-rt="tables">&#128203; Tables 1&ndash;20</button>
+    </div>
+
+    <!-- RULES PANEL -->
+    <div class="ref-panel show" id="rp-rules">
+      <div style="margin-bottom:0.8rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+        <button class="speak-btn" id="speakAllBtn" onclick="speakSection('all')">&#128266; Read All Rules</button>
+        <button class="speak-btn" id="speakStopBtn" onclick="speakStop()" style="background:rgba(231,76,60,0.1);color:#c0392b;border-color:rgba(231,76,60,0.3);">&#9646;&#9646; Stop</button>
+        <span style="font-size:0.72rem;color:var(--muted);">Tap any rule heading to hear it</span>
+      </div>
+      <h3>&#10133; Addition <button class="speak-btn" onclick="speakSection('add')">&#128266; Hear</button></h3>
+      <div class="ref-rule"><strong>Add means put together.</strong><span>Start from the ones place. Add digits column by column. Carry over if sum &ge; 10.</span><span class="ref-example">34 + 28 = 62 &nbsp;|&nbsp; 1,200 + 800 = 2,000</span></div>
+      <div class="ref-rule"><strong>Adding with 0:</strong><span>Any number + 0 = that number itself.</span><span class="ref-example">57 + 0 = 57</span></div>
+      <h3>&#10134; Subtraction <button class="speak-btn" onclick="speakSection('sub')">&#128266; Hear</button></h3>
+      <div class="ref-rule"><strong>Subtract means take away.</strong><span>Start from ones. Borrow from the next column if needed.</span><span class="ref-example">52 &minus; 17 = 35 &nbsp;|&nbsp; 1000 &minus; 250 = 750</span></div>
+      <div class="ref-rule"><strong>Subtracting 0:</strong><span>Any number &minus; 0 = that number.</span><span class="ref-example">89 &minus; 0 = 89</span></div>
+      <h3>&#10006; Multiplication <button class="speak-btn" onclick="speakSection('mul')">&#128266; Hear</button></h3>
+      <div class="ref-rule"><strong>Multiply means repeated addition.</strong><span>4 &times; 3 = 4 + 4 + 4 = 12. Order doesn&rsquo;t matter: 3 &times; 4 = 4 &times; 3.</span><span class="ref-example">7 &times; 8 = 56 &nbsp;|&nbsp; 12 &times; 5 = 60</span></div>
+      <div class="ref-rule"><strong>Multiply by 10, 100, 1000:</strong><span>Add 1, 2, or 3 zeros to the right.</span><span class="ref-example">7 &times; 10 = 70 &nbsp;|&nbsp; 7 &times; 100 = 700 &nbsp;|&nbsp; 7 &times; 1000 = 7000</span></div>
+      <h3>&#247; Division <button class="speak-btn" onclick="speakSection('div')">&#128266; Hear</button></h3>
+      <div class="ref-rule"><strong>Divide means share equally.</strong><span>20 &divide; 4 = 5 means share 20 into 4 equal groups.</span><span class="ref-example">48 &divide; 6 = 8 &nbsp;|&nbsp; 100 &divide; 5 = 20</span></div>
+      <div class="ref-rule"><strong>Division by 1:</strong><span>Any number &divide; 1 = itself.</span><span class="ref-example">63 &divide; 1 = 63</span></div>
+      <h3>&#128290; Place Value &amp; Numbers <button class="speak-btn" onclick="speakSection('place')">&#128266; Hear</button></h3>
+      <div class="ref-rule"><strong>Place Value Chart (Indian System):</strong><span>Ones | Tens | Hundreds | Thousands | Ten-Thousands | Lakhs | Ten-Lakhs | Crores</span><span class="ref-example">35,72,046 = 3 Crores + 5 Ten-Lakhs + 7 Lakhs + 2 Ten-Thousands + 46</span></div>
+      <div class="ref-rule"><strong>Rounding Rules:</strong><span>Look at the digit to the right. If it is 5 or more, round up. If less than 5, round down.</span><span class="ref-example">347 rounded to nearest 100 = 300 &nbsp;|&nbsp; 650 rounded to nearest 100 = 700</span></div>
+    </div>
+
+    <!-- NUMBERS PANEL -->
+    <div class="ref-panel" id="rp-numbers">
+      <h3>1 &ndash; 100</h3>
+      <div class="ref-grid" id="refNum1to100"></div>
+      <h3>Tens (10 &ndash; 100)</h3>
+      <div class="ref-grid" id="refTens"></div>
+      <h3>Hundreds (100 &ndash; 1000)</h3>
+      <div class="ref-grid" id="refHundreds"></div>
+      <h3>Thousands (1,000 &ndash; 10,000)</h3>
+      <div class="ref-grid" id="refThousands"></div>
+      <h3>Lakhs (1,00,000 &ndash; 10,00,000)</h3>
+      <div class="ref-grid" id="refLakhs"></div>
+    </div>
+
+    <!-- TABLES PANEL -->
+    <div class="ref-panel" id="rp-tables">
+      <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.8rem;" id="tblNavBtns"></div>
+      <div class="ref-tbl-wrap"><table class="ref-tbl" id="refTableFull"></table></div>
+    </div>
+  </div>
+</div>
 
 <script>
 (function () {
@@ -381,10 +491,44 @@
   function uniqueChoices(answer, rand, lo, hi) {
     var set = [answer];
     var tries = 0;
-    while (set.length < 3 && tries < 80) {
+    while (set.length < 3 && tries < 120) {
       tries++;
       var v = lo + Math.floor(rand() * (hi - lo + 1));
       if (v !== answer && set.indexOf(v) === -1) { set.push(v); }
+    }
+    return shuffle(set, rand);
+  }
+
+  /* Anti-shortcut choices for Add/Sub:
+     Forces at least one decoy that SHARES the same last digit as the answer
+     so the child cannot simply look at units digit to guess. */
+  function antiShortcutChoices(answer, rand, lo, hi) {
+    var lastDigit = answer % 10;
+    var set = [answer];
+    var tries = 0;
+    // First decoy: same last digit, different value
+    while (set.length < 2 && tries < 120) {
+      tries++;
+      var range = Math.max(hi - lo, 20);
+      var offset = 1 + Math.floor(rand() * Math.floor(range / 10));
+      var candidate = answer + offset * 10 * (rand() < 0.5 ? 1 : -1);
+      // ensure same last digit
+      candidate = Math.round((candidate - lastDigit) / 10) * 10 + lastDigit;
+      if (candidate !== answer && candidate >= lo && candidate <= hi + range && set.indexOf(candidate) === -1) {
+        set.push(candidate);
+      }
+    }
+    // Second decoy: different last digit (so not ALL are same — child still needs to compute)
+    tries = 0;
+    while (set.length < 3 && tries < 120) {
+      tries++;
+      var v = lo + Math.floor(rand() * (hi - lo + 1));
+      if (v !== answer && v % 10 !== lastDigit && set.indexOf(v) === -1) { set.push(v); }
+    }
+    // Fallback if we still don't have 3
+    while (set.length < 3) {
+      var fb = answer + (set.length * (rand() < 0.5 ? 1 : -1) * (1 + Math.floor(rand() * 5)));
+      if (fb !== answer && set.indexOf(fb) === -1 && fb > 0) set.push(fb);
     }
     return shuffle(set, rand);
   }
@@ -394,65 +538,119 @@
   ========================================================= */
 
   /* Addition: a + b within 20 */
+  var LEVEL_CFG = {
+    easy:   { addMax:20,  subMax:20,  mulTbls:[2,3,4,5],             mulN:10, divTbls:[2,5,10],                    misStep:[1,2],       numPools:["oneToHundred","tens"],        tabTbls:[2,3,4,5],                    tabN:10 },
+    medium: { addMax:100, subMax:100, mulTbls:[2,3,4,5,6,7,8,9],     mulN:12, divTbls:[2,3,4,5,6,10],              misStep:[2,5,10],    numPools:["tens","hundreds","thousands"], tabTbls:[1,2,3,4,5,6,7,8,9,10],      tabN:15 },
+    hard:   { addMax:9999,subMax:9999,mulTbls:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], mulN:20, divTbls:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], misStep:[10,50,100,1000], numPools:["hundreds","thousands","lakhs"], tabTbls:[11,12,13,14,15,16,17,18,19,20], tabN:20 }
+  };
+
   function makeAdd(rand) {
-    var a = 1 + Math.floor(rand() * 9);
-    var b = 1 + Math.floor(rand() * (20 - a));
+    var cfg = LEVEL_CFG[activeLevel];
+    var max = cfg.addMax;
+    var a = 1 + Math.floor(rand() * (max - 1));
+    var b = 1 + Math.floor(rand() * (max - 1));
     var ans = a + b;
-    return { type: "Sunny Sum \u2795", text: a + " + " + b + " = ?", ans: ans, choices: uniqueChoices(ans, rand, 1, 20) };
+    var lbl = activeLevel[0].toUpperCase() + activeLevel.slice(1);
+    var chooseFn = (a >= 10 || b >= 10) ? antiShortcutChoices : uniqueChoices;
+    return { type: "Sunny Sum ➕ · " + lbl, text: a + " + " + b + " = ?", ans: ans, choices: chooseFn(ans, rand, Math.max(1,ans-max), ans+max) };
   }
 
   /* Subtraction: a - b, result >= 0 */
   function makeSub(rand) {
-    var a = 4 + Math.floor(rand() * 11);
+    var cfg = LEVEL_CFG[activeLevel];
+    var max = cfg.subMax;
+    var a = 2 + Math.floor(rand() * (max - 2));
     var b = 1 + Math.floor(rand() * (a - 1));
     var ans = a - b;
-    return { type: "Petal Take-Away \u2796", text: a + " \u2212 " + b + " = ?", ans: ans, choices: uniqueChoices(ans, rand, 0, 14) };
+    var lbl = activeLevel[0].toUpperCase() + activeLevel.slice(1);
+    var chooseFn = (a >= 10 || b >= 10) ? antiShortcutChoices : uniqueChoices;
+    return { type: "Take-Away ➖ · " + lbl, text: a + " − " + b + " = ?", ans: ans, choices: chooseFn(ans, rand, Math.max(0,ans-Math.floor(max/2)), ans+Math.floor(max/2)) };
   }
 
-  /* Multiplication: 2x, 5x, 10x tables (age-appropriate) */
-  var MUL_TABLES = [2, 5, 10];
+  /* Multiplication: 1 to 20 tables */
+  var MUL_TABLES = Array.from({length:20}, function(_, i){ return i + 1; });
   function makeMul(rand) {
-    var tbl = MUL_TABLES[Math.floor(rand() * MUL_TABLES.length)];
-    var n   = 1 + Math.floor(rand() * 10);
+    var cfg = LEVEL_CFG[activeLevel];
+    var tbl = cfg.mulTbls[Math.floor(rand() * cfg.mulTbls.length)];
+    var n   = 1 + Math.floor(rand() * cfg.mulN);
     var ans = tbl * n;
-    return { type: "Magic Multiply \u00d7", text: tbl + " \u00d7 " + n + " = ?", ans: ans, choices: uniqueChoices(ans, rand, tbl, tbl * 10), hint: tbl + "\u00d7 table" };
+    var lbl = activeLevel[0].toUpperCase() + activeLevel.slice(1);
+    return { type: "Multiply × · " + lbl, text: tbl + " × " + n + " = ?", ans: ans, choices: uniqueChoices(ans, rand, Math.max(1, ans - tbl*3), ans + tbl*3), hint: tbl + "× table" };
   }
 
   /* Division: exact quotients from 2x, 5x, 10x tables */
   function makeDiv(rand) {
-    var tbl = MUL_TABLES[Math.floor(rand() * MUL_TABLES.length)];
-    var n   = 1 + Math.floor(rand() * 10);
+    var cfg = LEVEL_CFG[activeLevel];
+    var tbl = cfg.divTbls[Math.floor(rand() * cfg.divTbls.length)];
+    var maxN = activeLevel === "easy" ? 10 : activeLevel === "medium" ? 15 : 20;
+    var n   = 1 + Math.floor(rand() * maxN);
     var num = tbl * n;
-    var ans = n;
-    return { type: "Garden Division \u00f7", text: num + " \u00f7 " + tbl + " = ?", ans: ans, choices: uniqueChoices(ans, rand, 1, 12), hint: tbl + "\u00d7 table" };
+    var lbl = activeLevel[0].toUpperCase() + activeLevel.slice(1);
+    return { type: "Division ÷ · " + lbl, text: num + " ÷ " + tbl + " = ?", ans: n, choices: uniqueChoices(n, rand, 1, n+8), hint: tbl + "× table" };
   }
 
   /* Missing number: sequence with step 1 or 2 */
   function makeMis(rand) {
-    var step  = 1 + Math.floor(rand() * 2);
-    var start = 1 + Math.floor(rand() * 8);
+    var cfg = LEVEL_CFG[activeLevel];
+    var steps = cfg.misStep;
+    var step  = steps[Math.floor(rand() * steps.length)];
+    var start = step + Math.floor(rand() * step * 5);
     var mid   = start + step;
-    var end   = mid + step;
-    return { type: "Missing Number \u2753", text: start + ",  ?,  " + end, ans: mid, choices: uniqueChoices(mid, rand, 1, 16) };
+    var end_  = mid + step;
+    var lbl = activeLevel[0].toUpperCase() + activeLevel.slice(1);
+    return { type: "Missing No. ❓ · " + lbl, text: start + ",  ?,  " + end_, ans: mid, choices: uniqueChoices(mid, rand, Math.max(1,mid-step*3), mid+step*3) };
   }
 
   /* Times-table drill: random fact from 2,3,4,5,10 tables */
-  var TAB_TABLES = [2, 3, 4, 5, 10];
+  var TAB_TABLES = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
   function makeTab(rand) {
-    var tbl = TAB_TABLES[Math.floor(rand() * TAB_TABLES.length)];
-    var n   = 1 + Math.floor(rand() * 10);
+    var cfg = LEVEL_CFG[activeLevel];
+    var tbl = cfg.tabTbls[Math.floor(rand() * cfg.tabTbls.length)];
+    var n   = 1 + Math.floor(rand() * cfg.tabN);
     var ans = tbl * n;
-    return { type: "Table Challenge \ud83d\udcdd", text: tbl + " \u00d7 " + n + " = ?", ans: ans, choices: uniqueChoices(ans, rand, Math.max(1, ans - 12), ans + 12), hint: tbl + "\u00d7 table" };
+    var lbl = activeLevel[0].toUpperCase() + activeLevel.slice(1);
+    return { type: "Table 📝 · " + lbl, text: tbl + " × " + n + " = ?", ans: ans, choices: uniqueChoices(ans, rand, Math.max(1, ans - tbl*3), ans + tbl*3), hint: tbl + "× table" };
   }
 
-  var MAKERS = { add: makeAdd, sub: makeSub, mul: makeMul, div: makeDiv, mis: makeMis, tab: makeTab };
+  /* Number list: identify place value or name a number from pools */
+  function makeNum(rand) {
+    var cfg = LEVEL_CFG[activeLevel];
+    var poolKeys = cfg.numPools;
+    var poolLabelMap = { oneToHundred:"1–100", tens:"Tens", hundreds:"Hundreds", thousands:"Thousands", lakhs:"Lakhs" };
+    var pk   = poolKeys[Math.floor(rand() * poolKeys.length)];
+    var pool = NUMBER_POOLS[pk];
+    var ans  = pool[Math.floor(rand() * pool.length)];
+    var step = pk === "oneToHundred" ? 1 : pool[1] - pool[0];
+    var lbl  = activeLevel[0].toUpperCase() + activeLevel.slice(1);
+    var ptypes = [
+      { type: "Count On 🧮 · " + lbl, text: "Comes after " + (ans - step) + "?", ans: ans },
+      { type: "Place Value 🏷 · " + lbl, text: poolLabelMap[pk] + ": after " + (ans - step) + " is?", ans: ans },
+      { type: "Number Names 💬 · " + lbl, text: (ans - 2*step) + ", " + (ans - step) + ", ?, ...", ans: ans }
+    ];
+    var q = ptypes[Math.floor(rand() * ptypes.length)];
+    return { type: q.type, text: q.text, ans: ans, choices: uniqueChoices(ans, rand, Math.max(1, ans - step*4), ans + step*4) };
+  }
+
+  var MAKERS = { add: makeAdd, sub: makeSub, mul: makeMul, div: makeDiv, mis: makeMis, tab: makeTab, num: makeNum };
+
+  var NUMBER_POOLS = {
+    oneToHundred: Array.from({length:100}, function(_, i){ return i + 1; }),
+    tens: Array.from({length:10}, function(_, i){ return (i + 1) * 10; }),
+    hundreds: Array.from({length:10}, function(_, i){ return (i + 1) * 100; }),
+    thousands: Array.from({length:10}, function(_, i){ return (i + 1) * 1000; }),
+    lakhs: Array.from({length:10}, function(_, i){ return (i + 1) * 100000; }),
+    millions: Array.from({length:10}, function(_, i){ return (i + 1) * 1000000; }),
+    crores: Array.from({length:10}, function(_, i){ return (i + 1) * 10000000; })
+  };
+  var TABLES_1_TO_20 = Object.fromEntries(Array.from({length:20}, function(_, n){ var m = n + 1; return [m, Array.from({length:20}, function(_, i){ return m * (i + 1); })]; }));
+
 
   function buildQuestions(seed, topic) {
     var rand = makePRNG(seed);
     var qs   = [];
-    var total = 12;
+    var total = 40;
     if (topic === "mix") {
-      var topics = ["add","add","sub","sub","mul","mul","div","div","tab","tab","mis","mis"];
+      var topics = ["add","add","add","add","add","sub","sub","sub","sub","sub","mul","mul","mul","mul","mul","div","div","div","div","div","tab","tab","tab","tab","tab","mis","mis","mis","mis","mis","num","num","num","num","num","num","num","num","num","num"];
       topics = shuffle(topics, rand);
       for (var i = 0; i < total; i++) { qs.push(MAKERS[topics[i]](rand)); }
     } else {
@@ -522,6 +720,7 @@
   var roundNum     = 1;
   var locked       = false;
   var activeTopic  = "mix";
+  var activeLevel  = "easy";
   var audioCtx     = null;
 
   /* =========================================================
@@ -545,16 +744,34 @@
   document.querySelector('.topic-btn[data-t="mix"]').classList.add("active");
 
   /* =========================================================
+     LEVEL BUTTONS
+  ========================================================= */
+  var levelBtns = document.querySelectorAll(".level-btn[data-lv]");
+  levelBtns.forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      activeLevel = btn.getAttribute("data-lv");
+      levelBtns.forEach(function(b) {
+        b.classList.toggle("active", b === btn);
+        b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+      });
+      SESSION_SEED = ((Date.now() & 0xFFFFFF) ^ (Math.random() * 0xFFFFFF | 0)) >>> 0;
+      SESSION_ID   = ("00000" + (SESSION_SEED % 100000)).slice(-5);
+      roundNum = 1;
+      startSession(SESSION_SEED);
+    });
+  });
+
+  /* =========================================================
      TIMES TABLE REFERENCE CARD
   ========================================================= */
   function showTableRef(tblNum) {
     elTableRef.classList.add("show");
-    elTableLbl.textContent = tblNum + "\u00d7 Table";
+    elTableLbl.textContent = tblNum + "× Table";
     elTableGrd.innerHTML = "";
-    for (var i = 1; i <= 10; i++) {
+    for (var i = 1; i <= 20; i++) {
       var cell = document.createElement("div");
       cell.className = "table-cell";
-      cell.textContent = tblNum + " \u00d7 " + i + " = " + (tblNum * i);
+      cell.textContent = tblNum + " × " + i + " = " + (tblNum * i);
       elTableGrd.appendChild(cell);
     }
   }
@@ -567,6 +784,115 @@
   }
 
   function hideTableRef() { elTableRef.classList.remove("show"); }
+
+  /* =========================================================
+     REFERENCE MODAL
+  ========================================================= */
+  (function initRefModal() {
+    // Populate numbers panel
+    function makeGrid(containerId, items) {
+      var el = document.getElementById(containerId);
+      if (!el) return;
+      el.innerHTML = "";
+      items.forEach(function(v) {
+        var d = document.createElement("div");
+        d.className = "ref-cell";
+        d.textContent = v.toLocaleString("en-IN");
+        d.style.cursor = "pointer";
+        d.title = "Tap to hear";
+        d.addEventListener("click", function() { speakText(String(v)); });
+        el.appendChild(d);
+      });
+    }
+    makeGrid("refNum1to100", Array.from({length:100}, function(_,i){ return i+1; }));
+    makeGrid("refTens",      Array.from({length:10},  function(_,i){ return (i+1)*10; }));
+    makeGrid("refHundreds",  Array.from({length:10},  function(_,i){ return (i+1)*100; }));
+    makeGrid("refThousands", Array.from({length:10},  function(_,i){ return (i+1)*1000; }));
+    makeGrid("refLakhs",     Array.from({length:10},  function(_,i){ return (i+1)*100000; }));
+
+    // Tables panel nav buttons + full table render
+    var tblNav = document.getElementById("tblNavBtns");
+    var tblFull = document.getElementById("refTableFull");
+    var selTbl = 1;
+    function renderFullTable(n) {
+      selTbl = n;
+      tblNav.querySelectorAll(".ref-tab").forEach(function(b){
+        b.classList.toggle("active", Number(b.getAttribute("data-tn")) === n);
+      });
+      tblFull.innerHTML = "";
+      var thead = document.createElement("thead");
+      var thBtn = document.createElement("th");
+      thBtn.innerHTML = n + " × Table";
+      var hBtn = document.createElement("button");
+      hBtn.className = "speak-btn";
+      hBtn.style.cssText = "font-size:0.7rem;padding:3px 8px;";
+      hBtn.innerHTML = "&#128266;";
+      hBtn.addEventListener("click", (function(num){ return function(){ speakText(num + " times table"); }; })(n));
+      thBtn.appendChild(hBtn);
+      var th2 = document.createElement("th");
+      th2.textContent = "= Answer";
+      var headRow = document.createElement("tr");
+      headRow.appendChild(thBtn); headRow.appendChild(th2);
+      var thead2 = document.createElement("thead");
+      thead2.appendChild(headRow);
+      tblFull.appendChild(thead2);
+      var tbody = document.createElement("tbody");
+      for (var i = 1; i <= 20; i++) {
+        var tr = document.createElement("tr");
+        var ans = n * i;
+        var td1 = document.createElement("td");
+        td1.style.cursor = "pointer";
+        td1.innerHTML = n + " × " + i + " &#128266;";
+        td1.addEventListener("click", (function(a,b,c){ return function(){ speakText(a + " times " + b + " equals " + c); }; })(n,i,ans));
+        var td2 = document.createElement("td");
+        td2.innerHTML = "<b>" + ans + "</b>";
+        tr.appendChild(td1); tr.appendChild(td2);
+        tbody.appendChild(tr);
+      }
+      tblFull.appendChild(tbody);
+    }
+    for (var t = 1; t <= 20; t++) {
+      (function(num){
+        var btn = document.createElement("button");
+        btn.className = "ref-tab" + (num === 1 ? " active" : "");
+        btn.setAttribute("data-tn", num);
+        btn.textContent = num + "×";
+        btn.addEventListener("click", function(){ renderFullTable(num); });
+        tblNav.appendChild(btn);
+      })(t);
+    }
+    renderFullTable(1);
+
+    // Tab switching
+    var refTabs = document.querySelectorAll(".ref-tab[data-rt]");
+    var refPanels = { rules: document.getElementById("rp-rules"), numbers: document.getElementById("rp-numbers"), tables: document.getElementById("rp-tables") };
+    refTabs.forEach(function(tab) {
+      tab.addEventListener("click", function() {
+        refTabs.forEach(function(t){ t.classList.remove("active"); });
+        tab.classList.add("active");
+        Object.keys(refPanels).forEach(function(k){ refPanels[k].classList.remove("show"); });
+        var panel = refPanels[tab.getAttribute("data-rt")];
+        if (panel) panel.classList.add("show");
+      });
+    });
+
+    // Open/close
+    document.getElementById("refBtn").addEventListener("click", function() {
+      document.getElementById("refModalBg").classList.add("show");
+    });
+    document.getElementById("refClose").addEventListener("click", function() {
+      document.getElementById("refModalBg").classList.remove("show");
+    });
+    document.getElementById("refModalBg").addEventListener("click", function(e) {
+      if (e.target === this) this.classList.remove("show");
+    });
+  })();
+
+
+  // Stop speech when modal closes
+  document.getElementById("refClose").addEventListener("click", function(){ if(typeof speakStop !== "undefined") speakStop(); });
+
+
 
   /* =========================================================
      START SESSION
@@ -776,6 +1102,62 @@
   startSession(SESSION_SEED);
 
 }());
+</script>
+
+
+<!-- ===== BHAVA VOICE ENGINE ===== -->
+<script>
+/* Speak scripts -- completely synchronous, no IIFE, no async wrapping.
+   Must stay synchronous inside user-gesture chain for file:// to work. */
+var _SS = {
+  add:   "Addition means putting numbers together. Start from the ones place. Add the digits column by column from right to left. Carry over when the sum is ten or more. For example, 34 plus 28 equals 62.",
+  sub:   "Subtraction means taking away. Start from the ones place. Borrow from the next column when needed. For example, 52 minus 17 equals 35. Any number minus zero is the same number.",
+  mul:   "Multiplication means repeated addition. Four times three means four added three times, which equals twelve. The order does not matter. To multiply by ten, just add a zero at the end.",
+  div:   "Division means sharing equally. Twenty divided by four equals five, meaning we share twenty things into four equal groups. Any number divided by one equals itself.",
+  place: "Place value tells us the value of each digit by its position. From right to left we have: ones, tens, hundreds, thousands, ten-thousands, lakhs, ten-lakhs, and crores.",
+  all:   "Let me explain all the rules! Addition means putting numbers together. Subtraction means taking away. Multiplication is repeated addition. Division is sharing into equal groups. Place value is the position of each digit. In India we use ones, tens, hundreds, thousands, lakhs, and crores. Great work studying!"
+};
+
+function speakText(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang  = "en-IN";
+  u.rate  = 0.85;
+  u.pitch = 1.05;
+  /* pick best available voice synchronously */
+  var vv = window.speechSynthesis.getVoices();
+  var pref = null;
+  for (var i = 0; i < vv.length; i++) {
+    if (vv[i].lang === "en-IN")                      { pref = vv[i]; break; }
+    if (!pref && /en[-_](GB|AU|US)/i.test(vv[i].lang)) pref = vv[i];
+    if (!pref && vv[i].lang.slice(0,2) === "en")       pref = vv[i];
+  }
+  if (pref) u.voice = pref;
+  document.querySelectorAll(".speak-btn").forEach(function(b){ b.classList.add("speaking"); });
+  u.onend = u.onerror = function(){
+    document.querySelectorAll(".speak-btn").forEach(function(b){ b.classList.remove("speaking"); });
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function speakSection(key) {
+  var t = _SS[key];
+  if (t) speakText(t);
+}
+
+function speakStop() {
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  document.querySelectorAll(".speak-btn").forEach(function(b){ b.classList.remove("speaking"); });
+}
+
+/* Pre-load voice list as early as possible */
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  if (window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = function(){ window.speechSynthesis.getVoices(); };
+  }
+}
 </script>
 
   <!-- Bhava Tech Session Tracker -->

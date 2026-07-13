@@ -289,9 +289,9 @@ const app = {
 };
 
 const cfg = {
-  gentle:{time:70,diffs:3,objects:[8,10],penalty:3,rounds:6},
-  steady:{time:60,diffs:4,objects:[10,13],penalty:4,rounds:7},
-  expert:{time:52,diffs:5,objects:[12,15],penalty:5,rounds:8}
+  gentle:{time:80,diffs:4,objects:[14,18],penalty:3,rounds:6},
+  steady:{time:70,diffs:5,objects:[18,22],penalty:4,rounds:7},
+  expert:{time:60,diffs:6,objects:[22,26],penalty:5,rounds:8}
 };
 
 const themes = [
@@ -305,7 +305,7 @@ const themes = [
   {name:'Sunset Balcony', sky:['#ffbf8b','#e87f8f'], ground:['#8b4b64','#4e3042'], deco:'petals'}
 ];
 
-const objectTypes = ['flower','lantern','kite','fish','star','book','cup','tree','planet','butterfly','shell','gem','leaf','cloud','mountain','mushroom'];
+const objectTypes = ['flower','lantern','kite','fish','star','book','cup','tree','planet','butterfly','shell','gem','leaf','cloud','mountain','mushroom','sun','moon','heart','diamond','anchor','umbrella','balloon','cactus','bell','key','snowflake','drop','candle','house','boat'];
 const diffModes = ['move','color','size','rotate','missing','style'];
 const paletteSets = [
   ['#ffd36e','#ff8ca8','#7ce8ff','#82f7d6'],
@@ -385,22 +385,37 @@ function buildHeroArt(){
 
 function svgFor(type, c1, c2, c3, variant){
   const v = variant;
-  if(type==='flower') return `<svg viewBox="0 0 100 100"><g><rect x="47" y="42" width="6" height="42" rx="3" fill="#2d7f53"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(0 50 34)" fill="${c1}"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(72 50 34)" fill="${c2}"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(144 50 34)" fill="${c1}"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(216 50 34)" fill="${c2}"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(288 50 34)" fill="${c1}"/><circle cx="50" cy="34" r="12" fill="${c3}"/></g></svg>`;
-  if(type==='lantern') return `<svg viewBox="0 0 100 100"><g><line x1="50" y1="8" x2="50" y2="24" stroke="#d6eef8" stroke-width="4"/><rect x="28" y="24" width="44" height="44" rx="10" fill="${c1}"/><rect x="35" y="31" width="30" height="30" rx="6" fill="${c2}" opacity=".9"/><path d="M35 68 Q50 ${76+v} 65 68" stroke="${c3}" stroke-width="6" fill="none" stroke-linecap="round"/></g></svg>`;
-  if(type==='kite') return `<svg viewBox="0 0 100 100"><g><path d="M50 10 L80 40 L50 86 L20 40 Z" fill="${c1}"/><path d="M50 10 L50 86" stroke="${c3}" stroke-width="4"/><path d="M20 40 L80 40" stroke="${c2}" stroke-width="4"/><path d="M50 86 Q${48-v} 93 ${56+v} 100" stroke="#f7f2ff" stroke-width="3" fill="none"/></g></svg>`;
-  if(type==='fish') return `<svg viewBox="0 0 100 100"><g><ellipse cx="48" cy="50" rx="26" ry="18" fill="${c1}"/><polygon points="70,50 92,34 92,66" fill="${c2}"/><circle cx="38" cy="46" r="3.8" fill="#12202f"/><path d="M36 58 Q48 ${62+v} 58 58" stroke="${c3}" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg>`;
+  if(type==='flower') return `<svg viewBox="0 0 100 100"><g><rect x="47" y="42" width="6" height="42" rx="3" fill="#2d7f53" stroke="#173a28" stroke-width="1.5"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(0 50 34)" fill="${c1}" stroke="#00000022" stroke-width="1.5"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(72 50 34)" fill="${c2}" stroke="#00000022" stroke-width="1.5"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(144 50 34)" fill="${c1}" stroke="#00000022" stroke-width="1.5"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(216 50 34)" fill="${c2}" stroke="#00000022" stroke-width="1.5"/><ellipse cx="50" cy="34" rx="12" ry="26" transform="rotate(288 50 34)" fill="${c1}" stroke="#00000022" stroke-width="1.5"/><circle cx="50" cy="34" r="12" fill="${c3}" stroke="#00000030" stroke-width="2"/></g></svg>`;
+  if(type==='lantern') return `<svg viewBox="0 0 100 100"><g><line x1="50" y1="8" x2="50" y2="24" stroke="#d6eef8" stroke-width="4"/><rect x="28" y="24" width="44" height="44" rx="10" fill="${c1}" stroke="#00000030" stroke-width="2"/><rect x="35" y="31" width="30" height="30" rx="6" fill="${c2}" opacity=".9"/><path d="M35 68 Q50 ${76+v} 65 68" stroke="${c3}" stroke-width="6" fill="none" stroke-linecap="round"/></g></svg>`;
+  if(type==='kite') return `<svg viewBox="0 0 100 100"><g><path d="M50 10 L80 40 L50 86 L20 40 Z" fill="${c1}" stroke="#00000035" stroke-width="2.5"/><path d="M50 10 L50 86" stroke="${c3}" stroke-width="4"/><path d="M20 40 L80 40" stroke="${c2}" stroke-width="4"/><path d="M50 86 Q${48-v} 93 ${56+v} 100" stroke="#f7f2ff" stroke-width="3" fill="none"/></g></svg>`;
+  if(type==='fish') return `<svg viewBox="0 0 100 100"><g><ellipse cx="48" cy="50" rx="26" ry="18" fill="${c1}" stroke="#00000030" stroke-width="2"/><polygon points="70,50 92,34 92,66" fill="${c2}" stroke="#00000030" stroke-width="1.5"/><circle cx="38" cy="46" r="3.8" fill="#12202f"/><path d="M36 58 Q48 ${62+v} 58 58" stroke="${c3}" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg>`;
   if(type==='star') return `<svg viewBox="0 0 100 100"><polygon points="50,8 61,36 92,38 67,56 75,88 50,70 25,88 33,56 8,38 39,36" fill="${c1}" stroke="${c3}" stroke-width="4"/></svg>`;
-  if(type==='book') return `<svg viewBox="0 0 100 100"><g><path d="M18 22 h28 q10 0 14 6 v48 h-28 q-9 0 -14 5z" fill="${c1}"/><path d="M82 22 h-28 q-10 0 -14 6 v48 h28 q9 0 14 5z" fill="${c2}"/><line x1="50" y1="28" x2="50" y2="80" stroke="#ffffff" opacity=".45" stroke-width="3"/></g></svg>`;
-  if(type==='cup') return `<svg viewBox="0 0 100 100"><g><path d="M26 24 h40 v28 q0 20 -20 20 q-20 0 -20 -20z" fill="${c1}"/><path d="M66 32 h10 q12 0 12 10 q0 10 -12 10 h-10" fill="none" stroke="${c2}" stroke-width="8" stroke-linecap="round"/><path d="M22 78 h50" stroke="${c3}" stroke-width="7" stroke-linecap="round"/></g></svg>`;
-  if(type==='tree') return `<svg viewBox="0 0 100 100"><g><rect x="45" y="52" width="10" height="30" rx="4" fill="#704d35"/><circle cx="50" cy="46" r="22" fill="${c1}"/><circle cx="34" cy="50" r="14" fill="${c2}" opacity=".9"/><circle cx="66" cy="50" r="14" fill="${c2}" opacity=".9"/></g></svg>`;
-  if(type==='planet') return `<svg viewBox="0 0 100 100"><g><circle cx="50" cy="50" r="22" fill="${c1}"/><ellipse cx="50" cy="52" rx="36" ry="12" fill="none" stroke="${c2}" stroke-width="8" transform="rotate(${20+v} 50 52)"/><circle cx="38" cy="42" r="5" fill="${c3}" opacity=".7"/></g></svg>`;
-  if(type==='butterfly') return `<svg viewBox="0 0 100 100"><g><ellipse cx="34" cy="42" rx="16" ry="20" fill="${c1}" transform="rotate(${14+v} 34 42)"/><ellipse cx="66" cy="42" rx="16" ry="20" fill="${c2}" transform="rotate(${-14-v} 66 42)"/><ellipse cx="34" cy="64" rx="12" ry="16" fill="${c2}" transform="rotate(${8+v} 34 64)"/><ellipse cx="66" cy="64" rx="12" ry="16" fill="${c1}" transform="rotate(${-8-v} 66 64)"/><rect x="47" y="28" width="6" height="42" rx="4" fill="#23384a"/></g></svg>`;
-  if(type==='shell') return `<svg viewBox="0 0 100 100"><g><path d="M20 72 q30 -50 60 0" fill="${c1}"/><path d="M30 70 q20 -36 40 0" fill="${c2}"/><path d="M20 72 h60" stroke="${c3}" stroke-width="4"/></g></svg>`;
-  if(type==='gem') return `<svg viewBox="0 0 100 100"><polygon points="24,38 40,20 60,20 76,38 50,82" fill="${c1}"/><polyline points="24,38 40,38 50,82 60,38 76,38" fill="none" stroke="${c3}" stroke-width="4"/></svg>`;
-  if(type==='leaf') return `<svg viewBox="0 0 100 100"><path d="M22 66 q0 -42 48 -46 q10 28 -6 50 q-16 22 -42 -4z" fill="${c1}"/><path d="M30 64 q26 -18 40 -36" stroke="${c2}" stroke-width="5" fill="none" stroke-linecap="round"/></svg>`;
-  if(type==='cloud') return `<svg viewBox="0 0 100 100"><g><circle cx="36" cy="54" r="16" fill="${c1}"/><circle cx="54" cy="46" r="20" fill="${c1}"/><circle cx="70" cy="54" r="14" fill="${c2}"/><rect x="24" y="54" width="52" height="14" rx="7" fill="${c1}"/></g></svg>`;
-  if(type==='mountain') return `<svg viewBox="0 0 100 100"><g><polygon points="14,80 40,28 66,80" fill="${c1}"/><polygon points="44,80 68,38 90,80" fill="${c2}"/><polygon points="34,40 40,28 46,40" fill="#fff" opacity=".75"/></g></svg>`;
-  return `<svg viewBox="0 0 100 100"><g><path d="M50 16 q18 0 18 18 q0 10 -8 16 q12 4 16 16 q0 18 -26 18 q-26 0 -26 -18 q4 -12 16 -16 q-8 -6 -8 -16 q0 -18 18 -18z" fill="${c1}"/><rect x="47" y="10" width="6" height="12" rx="3" fill="${c3}"/></g></svg>`;
+  if(type==='book') return `<svg viewBox="0 0 100 100"><g><path d="M18 22 h28 q10 0 14 6 v48 h-28 q-9 0 -14 5z" fill="${c1}" stroke="#00000035" stroke-width="2"/><path d="M82 22 h-28 q-10 0 -14 6 v48 h28 q9 0 14 5z" fill="${c2}" stroke="#00000035" stroke-width="2"/><line x1="50" y1="28" x2="50" y2="80" stroke="#ffffff" opacity=".45" stroke-width="3"/></g></svg>`;
+  if(type==='cup') return `<svg viewBox="0 0 100 100"><g><path d="M26 24 h40 v28 q0 20 -20 20 q-20 0 -20 -20z" fill="${c1}" stroke="#00000035" stroke-width="2"/><path d="M66 32 h10 q12 0 12 10 q0 10 -12 10 h-10" fill="none" stroke="${c2}" stroke-width="8" stroke-linecap="round"/><path d="M22 78 h50" stroke="${c3}" stroke-width="7" stroke-linecap="round"/></g></svg>`;
+  if(type==='tree') return `<svg viewBox="0 0 100 100"><g><rect x="45" y="52" width="10" height="30" rx="4" fill="#704d35"/><circle cx="50" cy="46" r="22" fill="${c1}" stroke="#00000030" stroke-width="2"/><circle cx="34" cy="50" r="14" fill="${c2}" opacity=".9"/><circle cx="66" cy="50" r="14" fill="${c2}" opacity=".9"/></g></svg>`;
+  if(type==='planet') return `<svg viewBox="0 0 100 100"><g><circle cx="50" cy="50" r="22" fill="${c1}" stroke="#00000030" stroke-width="2"/><ellipse cx="50" cy="52" rx="36" ry="12" fill="none" stroke="${c2}" stroke-width="8" transform="rotate(${20+v} 50 52)"/><circle cx="38" cy="42" r="5" fill="${c3}" opacity=".7"/></g></svg>`;
+  if(type==='butterfly') return `<svg viewBox="0 0 100 100"><g><ellipse cx="34" cy="42" rx="16" ry="20" fill="${c1}" stroke="#00000030" stroke-width="1.5" transform="rotate(${14+v} 34 42)"/><ellipse cx="66" cy="42" rx="16" ry="20" fill="${c2}" stroke="#00000030" stroke-width="1.5" transform="rotate(${-14-v} 66 42)"/><ellipse cx="34" cy="64" rx="12" ry="16" fill="${c2}" transform="rotate(${8+v} 34 64)"/><ellipse cx="66" cy="64" rx="12" ry="16" fill="${c1}" transform="rotate(${-8-v} 66 64)"/><rect x="47" y="28" width="6" height="42" rx="4" fill="#23384a"/></g></svg>`;
+  if(type==='shell') return `<svg viewBox="0 0 100 100"><g><path d="M20 72 q30 -50 60 0" fill="${c1}" stroke="#00000030" stroke-width="2"/><path d="M30 70 q20 -36 40 0" fill="${c2}"/><path d="M20 72 h60" stroke="${c3}" stroke-width="4"/></g></svg>`;
+  if(type==='gem') return `<svg viewBox="0 0 100 100"><polygon points="24,38 40,20 60,20 76,38 50,82" fill="${c1}" stroke="#00000035" stroke-width="2"/><polyline points="24,38 40,38 50,82 60,38 76,38" fill="none" stroke="${c3}" stroke-width="4"/></svg>`;
+  if(type==='leaf') return `<svg viewBox="0 0 100 100"><path d="M22 66 q0 -42 48 -46 q10 28 -6 50 q-16 22 -42 -4z" fill="${c1}" stroke="#00000030" stroke-width="2"/><path d="M30 64 q26 -18 40 -36" stroke="${c2}" stroke-width="5" fill="none" stroke-linecap="round"/></svg>`;
+  if(type==='cloud') return `<svg viewBox="0 0 100 100"><g><circle cx="36" cy="54" r="16" fill="${c1}" stroke="#00000025" stroke-width="1.5"/><circle cx="54" cy="46" r="20" fill="${c1}" stroke="#00000025" stroke-width="1.5"/><circle cx="70" cy="54" r="14" fill="${c2}" stroke="#00000025" stroke-width="1.5"/><rect x="24" y="54" width="52" height="14" rx="7" fill="${c1}" stroke="#00000025" stroke-width="1.5"/></g></svg>`;
+  if(type==='mountain') return `<svg viewBox="0 0 100 100"><g><polygon points="14,80 40,28 66,80" fill="${c1}" stroke="#00000030" stroke-width="2"/><polygon points="44,80 68,38 90,80" fill="${c2}" stroke="#00000030" stroke-width="2"/><polygon points="34,40 40,28 46,40" fill="#fff" opacity=".75"/></g></svg>`;
+  if(type==='sun') return `<svg viewBox="0 0 100 100"><g><circle cx="50" cy="50" r="20" fill="${c1}" stroke="${c3}" stroke-width="3"/>${[0,45,90,135,180,225,270,315].map(a=>`<line x1="50" y1="50" x2="${50+34*Math.cos(a*Math.PI/180)}" y2="${50+34*Math.sin(a*Math.PI/180)}" stroke="${c2}" stroke-width="6" stroke-linecap="round" transform="rotate(${v} 50 50)"/>`).join('')}</g></svg>`;
+  if(type==='moon') return `<svg viewBox="0 0 100 100"><g><path d="M64 20 A32 32 0 1 0 64 80 A24 24 0 1 1 64 20Z" fill="${c1}" stroke="${c3}" stroke-width="2.5"/><circle cx="42" cy="42" r="3" fill="${c2}" opacity=".8"/><circle cx="50" cy="60" r="2" fill="${c2}" opacity=".7"/></g></svg>`;
+  if(type==='heart') return `<svg viewBox="0 0 100 100"><path d="M50 82 C20 60 8 40 8 26 C8 8 30 2 50 24 C70 2 92 8 92 26 C92 40 80 60 50 82Z" fill="${c1}" stroke="${c3}" stroke-width="3"/></svg>`;
+  if(type==='diamond') return `<svg viewBox="0 0 100 100"><g><polygon points="50,10 78,40 50,90 22,40" fill="${c1}" stroke="${c3}" stroke-width="3"/><polyline points="22,40 78,40" stroke="${c2}" stroke-width="3"/><polyline points="38,40 50,10 62,40" stroke="${c2}" stroke-width="2" fill="none"/></g></svg>`;
+  if(type==='anchor') return `<svg viewBox="0 0 100 100"><g><circle cx="50" cy="18" r="8" fill="none" stroke="${c1}" stroke-width="5"/><line x1="50" y1="26" x2="50" y2="78" stroke="${c1}" stroke-width="6"/><line x1="30" y1="42" x2="70" y2="42" stroke="${c2}" stroke-width="5"/><path d="M22 60 Q28 84 50 86 Q72 84 78 60" fill="none" stroke="${c1}" stroke-width="6" stroke-linecap="round"/><circle cx="50" cy="86" r="4" fill="${c3}"/></g></svg>`;
+  if(type==='umbrella') return `<svg viewBox="0 0 100 100"><g><path d="M12 46 Q50 4 88 46 Z" fill="${c1}" stroke="${c3}" stroke-width="2.5"/><path d="M12 46 Q30 54 38 46 Q46 54 54 46 Q62 54 70 46 Q78 54 88 46" fill="none" stroke="${c2}" stroke-width="3"/><line x1="50" y1="46" x2="50" y2="88" stroke="#5a4632" stroke-width="4"/><path d="M50 88 q0 8 8 8" fill="none" stroke="#5a4632" stroke-width="4" stroke-linecap="round"/></g></svg>`;
+  if(type==='balloon') return `<svg viewBox="0 0 100 100"><g><ellipse cx="50" cy="38" rx="26" ry="32" fill="${c1}" stroke="${c3}" stroke-width="2.5"/><polygon points="42,66 58,66 50,76" fill="${c2}"/><line x1="50" y1="76" x2="50" y2="96" stroke="#89796a" stroke-width="2"/></g></svg>`;
+  if(type==='cactus') return `<svg viewBox="0 0 100 100"><g><rect x="40" y="30" width="20" height="52" rx="10" fill="${c1}" stroke="${c3}" stroke-width="2.5"/><rect x="20" y="42" width="18" height="14" rx="8" fill="${c1}" stroke="${c3}" stroke-width="2" transform="rotate(-10 29 49)"/><rect x="60" y="36" width="18" height="14" rx="8" fill="${c1}" stroke="${c3}" stroke-width="2" transform="rotate(10 69 43)"/><rect x="30" y="82" width="40" height="10" rx="4" fill="${c2}"/></g></svg>`;
+  if(type==='bell') return `<svg viewBox="0 0 100 100"><g><path d="M50 14 a4 4 0 0 1 4 4 v4 a26 26 0 0 1 20 25 v18 h-48 v-18 a26 26 0 0 1 20 -25 v-4 a4 4 0 0 1 4 -4z" fill="${c1}" stroke="${c3}" stroke-width="2.5"/><rect x="20" y="65" width="60" height="8" rx="4" fill="${c2}"/><circle cx="50" cy="86" r="6" fill="${c2}"/></g></svg>`;
+  if(type==='key') return `<svg viewBox="0 0 100 100"><g><circle cx="32" cy="34" r="16" fill="none" stroke="${c1}" stroke-width="8"/><line x1="44" y1="46" x2="82" y2="84" stroke="${c1}" stroke-width="8" stroke-linecap="round"/><line x1="62" y1="64" x2="70" y2="56" stroke="${c2}" stroke-width="6"/><line x1="72" y1="74" x2="80" y2="66" stroke="${c2}" stroke-width="6"/></g></svg>`;
+  if(type==='snowflake') return `<svg viewBox="0 0 100 100"><g stroke="${c1}" stroke-width="5" stroke-linecap="round">${[0,60,120].map(a=>`<line x1="50" y1="14" x2="50" y2="86" transform="rotate(${a+v} 50 50)"/>`).join('')}${[0,60,120].map(a=>`<line x1="38" y1="26" x2="62" y2="26" transform="rotate(${a+v} 50 50)"/>`).join('')}</g><circle cx="50" cy="50" r="6" fill="${c2}"/></svg>`;
+  if(type==='drop') return `<svg viewBox="0 0 100 100"><path d="M50 12 Q78 50 78 66 a28 28 0 1 1 -56 0 Q22 50 50 12Z" fill="${c1}" stroke="${c3}" stroke-width="2.5"/><ellipse cx="42" cy="64" rx="7" ry="10" fill="${c2}" opacity=".6"/></svg>`;
+  if(type==='candle') return `<svg viewBox="0 0 100 100"><g><rect x="38" y="40" width="24" height="46" rx="4" fill="${c1}" stroke="${c3}" stroke-width="2"/><rect x="38" y="40" width="24" height="10" fill="${c2}" opacity=".7"/><line x1="50" y1="40" x2="50" y2="28" stroke="#7a5b3a" stroke-width="3"/><path d="M50 10 q8 10 0 18 q-8 -8 0 -18z" fill="#ffcf6e"/></g></svg>`;
+  if(type==='house') return `<svg viewBox="0 0 100 100"><g><polygon points="50,14 88,44 12,44" fill="${c2}" stroke="${c3}" stroke-width="2.5"/><rect x="22" y="44" width="56" height="40" fill="${c1}" stroke="${c3}" stroke-width="2.5"/><rect x="44" y="60" width="14" height="24" fill="${c3}" opacity=".8"/></g></svg>`;
+  if(type==='boat') return `<svg viewBox="0 0 100 100"><g><polygon points="16,66 84,66 70,84 30,84" fill="${c1}" stroke="${c3}" stroke-width="2.5"/><line x1="50" y1="66" x2="50" y2="18" stroke="#7a5b3a" stroke-width="4"/><polygon points="50,20 78,60 50,60" fill="${c2}" stroke="${c3}" stroke-width="2"/></g></svg>`;
+  return `<svg viewBox="0 0 100 100"><g><path d="M50 16 q18 0 18 18 q0 10 -8 16 q12 4 16 16 q0 18 -26 18 q-26 0 -26 -18 q4 -12 16 -16 q-8 -6 -8 -16 q0 -18 18 -18z" fill="${c1}" stroke="#00000030" stroke-width="2"/><rect x="47" y="10" width="6" height="12" rx="3" fill="${c3}"/></g></svg>`;
 }
 
 function bgFor(theme, r){
@@ -454,12 +469,12 @@ function generateRound(){
   const h = leftScene.clientHeight || 500;
   for(let i=0;i<meta.objCount;i++){
     const type = objectTypes[(i + randInt(r,0,objectTypes.length-1)) % objectTypes.length];
-    let ow = randInt(r,52,104), oh = ow + randInt(r,-14,16);
+    let ow = randInt(r,40,78), oh = ow + randInt(r,-10,12);
     let x=0,y=0,safe=false;
-    for(let attempts=0;attempts<80 && !safe;attempts++){
-      x = randInt(r,18,w-ow-18);
-      y = randInt(r,36,h-oh-18);
-      safe = placed.every(p => Math.abs((x+ow/2)-(p.x+p.w/2)) > (ow+p.w)*0.38 || Math.abs((y+oh/2)-(p.y+p.h/2)) > (oh+p.h)*0.42);
+    for(let attempts=0;attempts<140 && !safe;attempts++){
+      x = randInt(r,14,w-ow-14);
+      y = randInt(r,32,h-oh-14);
+      safe = placed.every(p => Math.abs((x+ow/2)-(p.x+p.w/2)) > (ow+p.w)*0.30 || Math.abs((y+oh/2)-(p.y+p.h/2)) > (oh+p.h)*0.34);
     }
     placed.push({x,y,w:ow,h:oh});
     const colors = shuffle(r, palette).slice(0,3);
