@@ -1,4 +1,4 @@
-<!-- ═══════════════════════════════════════════════════════════════════════
+﻿<!-- ═══════════════════════════════════════════════════════════════════════
      BHĀVA BADGE SYSTEM — Achievements section for bhava-student-report.html
      ───────────────────────────────────────────────────────────────────────
      HOW TO USE:
@@ -260,7 +260,12 @@
 
 
 <!-- ── PASTE THIS SCRIPT at the bottom of your <script> block ────────────
-     (or just before </body> — after the existing report JS) ────────────── -->
+     (or just before <script src="bhava-bridge.js"></script>
+<script src="bhava-session.js"></script>
+<script src="bhava-game-nav.js"></script>
+<script>document.title = "Achievements Section";</script>
+  <script src="bhava-responsive.js"></script>
+</body> — after the existing report JS) ────────────── -->
 <script id="bhava-badge-script">
 // ── renderAchievements ─────────────────────────────────────────────────────
 // Called after getBadges + getCertificates IPC calls resolve.
@@ -392,3 +397,4 @@ function showNewBadgePopups(newBadges) {
 }
 </script>
 <!-- ── END SCRIPT ──────────────────────────────────────────────────────── -->
+

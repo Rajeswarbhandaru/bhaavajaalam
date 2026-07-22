@@ -1,0 +1,734 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bhāva Tech — Setup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0a0a1a 0%, #0f0c29 50%, #1a0a2e 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #e2e8f0;
+    }
+
+    .setup-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      font-size: 2.6rem;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      margin-bottom: 36px;
+    }
+
+    /* ── Step indicator ── */
+    .steps {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .step-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      transition: background 0.3s;
+    }
+
+    .step-dot.active { background: #06b6d4; }
+    .step-dot.done   { background: #22c55e; }
+
+    /* ── Panels ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── Role cards ── */
+    .role-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .role-card {
+      border: 2px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 28px 16px;
+      cursor: pointer;
+      transition: all 0.25s;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .role-card:hover {
+      border-color: rgba(6,182,212,0.5);
+      background: rgba(6,182,212,0.08);
+      transform: translateY(-3px);
+    }
+
+    .role-card.selected {
+      border-color: #06b6d4;
+      background: rgba(6,182,212,0.14);
+      box-shadow: 0 0 20px rgba(6,182,212,0.25);
+    }
+
+    .role-icon { font-size: 2.4rem; margin-bottom: 10px; display: block; }
+    .role-name { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .role-desc { font-size: 0.76rem; color: #94a3b8; line-height: 1.4; }
+
+    /* Admin card accent */
+    .role-card.admin-card:hover,
+    .role-card.admin-card.selected {
+      border-color: #f59e0b;
+      background: rgba(245,158,11,0.12);
+      box-shadow: 0 0 20px rgba(245,158,11,0.2);
+    }
+
+    /* ── PIN input ── */
+    .pin-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .pin-digit {
+      width: 56px; height: 64px;
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.07);
+      color: #fff;
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+      caret-color: #f59e0b;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-text-security: disc;
+    }
+
+    .pin-digit:focus {
+      border-color: #f59e0b;
+      box-shadow: 0 0 12px rgba(245,158,11,0.3);
+    }
+
+    .pin-hint {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(6,182,212,0.35);
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(6,182,212,0.45); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .btn-admin {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #1a1a2e;
+      box-shadow: 0 4px 16px rgba(245,158,11,0.35);
+    }
+
+    .btn-admin:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(245,158,11,0.45); }
+
+    .btn-outline {
+      background: transparent;
+      color: #94a3b8;
+      border: 1px solid rgba(255,255,255,0.15);
+      margin-top: 10px;
+    }
+
+    .btn-outline:hover { color: #e2e8f0; border-color: rgba(255,255,255,0.3); }
+
+    /* ── Verify panel ── */
+    .verify-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f59e0b;
+      margin-bottom: 6px;
+    }
+
+    .verify-sub {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+
+    .error-msg {
+      color: #f87171;
+      font-size: 0.82rem;
+      margin-top: 10px;
+      min-height: 20px;
+    }
+
+    /* ── Success ── */
+    .success-icon {
+      font-size: 3.5rem;
+      margin-bottom: 16px;
+      animation: pop 0.4s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .success-role {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #22c55e;
+      margin-bottom: 6px;
+    }
+
+    .success-msg {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<div class="setup-card" id="setup-card">
+
+  <div class="logo">🧠</div>
+  <h1>Bhāva Tech</h1>
+  <p class="subtitle" id="card-subtitle">First-time setup — choose your installation type</p>
+
+  <!-- Step dots -->
+  <div class="steps" id="step-dots">
+    <div class="step-dot active" id="dot-1"></div>
+    <div class="step-dot" id="dot-2"></div>
+    <div class="step-dot" id="dot-3"></div>
+    <div class="step-dot" id="dot-4"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PANEL 1 — Role Selection
+  ══════════════════════════════════════ -->
+  <div class="panel active" id="panel-role">
+    <p style="font-size:0.85rem;color:#94a3b8;margin-bottom:20px;">
+      Who will use this installation?
+    </p>
+
+    <div class="role-grid">
+      <div class="role-card admin-card" id="card-admin" onclick="selectRole('admin')">
+        <span class="role-icon">⚙️</span>
+        <div class="role-name">Admin</div>
+        <div class="role-desc">Manage students, import data, full access</div>
+      </div>
+      <div class="role-card" id="card-user" onclick="selectRole('user')">
+        <span class="role-icon">🎓</span>
+        <div class="role-name">Student / User</div>
+        <div class="role-desc">Play games and take assessments only</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="btn-role-next" disabled onclick="roleNext()">
+      Continue →
+    </button>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       PANEL — Context Selection
+  ══════════════════════════════════════ -->
+  <div class="panel" id="panel-context">
+    <p style="font-size:0.85rem;color:#94a3b8;margin-bottom:20px;">
+      How will this app be used?
+    </p>
+    <div class="role-grid">
+      <div class="role-card admin-card" id="card-school" onclick="selectContext('school')">
+        <span class="role-icon">🏫</span>
+        <div class="role-name">School</div>
+        <div class="role-desc">Classroom use — games, assessments and reports only</div>
+      </div>
+      <div class="role-card" id="card-public" onclick="selectContext('public')">
+        <span class="role-icon">🌐</span>
+        <div class="role-name">Public / Home</div>
+        <div class="role-desc">Full website with enrolment, pricing and all features</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="btn-context-next" disabled onclick="contextNext()">
+      Continue →
+    </button>
+    <button class="btn btn-outline" onclick="goBackToRole()" style="margin-top:10px">← Back</button>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       PANEL 2B — School Code Entry
+  ══════════════════════════════════════ -->
+  <div class="panel" id="panel-school-code">
+    <p style="font-size:0.9rem;font-weight:600;color:#38bdf8;margin-bottom:6px;">🏫 Enter School Code</p>
+    <p style="font-size:0.82rem;color:#94a3b8;margin-bottom:16px;">
+      Enter the Bhāva school code provided to your institution (e.g. BHAVA-GNT-002).
+    </p>
+    <input
+      id="school-code-input"
+      type="text"
+      placeholder="e.g. BHAVA-GNT-002"
+      maxlength="30"
+      style="width:100%;padding:12px 16px;border-radius:10px;border:1.5px solid #334155;
+             background:#1e293b;color:#f1f5f9;font-size:1rem;font-family:inherit;
+             text-transform:uppercase;letter-spacing:0.05em;box-sizing:border-box;
+             outline:none;transition:border 0.2s;"
+      oninput="this.value=this.value.toUpperCase()"
+      onfocus="this.style.borderColor='#38bdf8'"
+      onblur="this.style.borderColor='#334155'"
+    />
+    <div id="school-code-feedback" style="min-height:36px;margin-top:10px;font-size:0.82rem;"></div>
+    <button class="btn btn-primary" id="btn-code-next" onclick="verifySchoolCode()" style="margin-top:4px;">
+      Verify &amp; Continue →
+    </button>
+    <button class="btn" onclick="goBackToContext()" style="margin-top:8px;background:transparent;color:#64748b;border:none;cursor:pointer;font-size:0.82rem;">
+      ← Back
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PANEL 2 — Admin PIN Setup
+  ══════════════════════════════════════ -->
+  <div class="panel" id="panel-pin">
+    <p style="font-size:0.9rem;font-weight:600;color:#f59e0b;margin-bottom:6px;">🔐 Set Admin PIN</p>
+    <p style="font-size:0.82rem;color:#94a3b8;margin-bottom:4px;">
+      Choose a 4-digit PIN. You'll need this each session to access Admin features.
+    </p>
+
+    <div class="pin-row" id="pin-row-set">
+      <input class="pin-digit" id="p1" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+      <input class="pin-digit" id="p2" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+      <input class="pin-digit" id="p3" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+      <input class="pin-digit" id="p4" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+    </div>
+
+    <p class="pin-hint">Confirm PIN</p>
+    <div class="pin-row" id="pin-row-confirm">
+      <input class="pin-digit" id="c1" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+      <input class="pin-digit" id="c2" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+      <input class="pin-digit" id="c3" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+      <input class="pin-digit" id="c4" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+    </div>
+
+    <div class="error-msg" id="pin-error"></div>
+
+    <button class="btn btn-admin" id="btn-pin-save" onclick="savePin()">
+      Save PIN &amp; Continue →
+    </button>
+    <button class="btn btn-outline" onclick="goBack()">← Back</button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PANEL 3 — Success
+  ══════════════════════════════════════ -->
+  <div class="panel" id="panel-done">
+    <div class="success-icon" id="success-icon">✅</div>
+    <div class="success-role" id="success-role">Setup Complete</div>
+    <p class="success-msg" id="success-msg">Loading Bhāva Tech...</p>
+    <button class="btn btn-primary" onclick="launchApp()">Open Bhāva Tech →</button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PANEL — PIN Verify (admin returning)
+  ══════════════════════════════════════ -->
+  <div class="panel" id="panel-verify">
+    <p class="verify-title">🔐 Admin Access</p>
+    <p class="verify-sub">Enter your 4-digit PIN to continue</p>
+
+    <div class="pin-row">
+      <input class="pin-digit" id="v1" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+      <input class="pin-digit" id="v2" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+      <input class="pin-digit" id="v3" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+      <input class="pin-digit" id="v4" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+    </div>
+
+    <div class="error-msg" id="verify-error"></div>
+
+    <button class="btn btn-admin" onclick="verifyPin()">Unlock →</button>
+    <button class="btn btn-outline" style="margin-top:10px;" onclick="cancelVerify()">Cancel</button>
+  </div>
+
+</div>
+
+<script>
+// ──────────────────────────────────────────────
+// State
+// ──────────────────────────────────────────────
+let selectedRole    = null;
+let selectedContext = null;
+let setupMode       = 'first-run'; // 'first-run' | 'verify'
+
+// ──────────────────────────────────────────────
+// Init — check what mode to show
+// ──────────────────────────────────────────────
+async function init() {
+  const cfg = await window.bhava.getConfig();
+
+  if (cfg.role === 'admin' && cfg.pinHash) {
+    // Admin returning — show PIN verify
+    setupMode = 'verify';
+    showPanel('panel-verify');
+    document.getElementById('card-subtitle').textContent = 'Admin verification required';
+    document.getElementById('step-dots').style.display = 'none';
+    focusPinRow('v');
+    return;
+  }
+
+  if (cfg.role) {
+    // Role set but no PIN (user role) — go straight to app
+    launchApp();
+    return;
+  }
+
+  // First run — show role selection
+  showPanel('panel-role');
+}
+
+// ──────────────────────────────────────────────
+// Panel helpers
+// ──────────────────────────────────────────────
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function updateDots(step) {
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById('dot-' + i);
+    dot.className = 'step-dot';
+    if (i < step) dot.classList.add('done');
+    else if (i === step) dot.classList.add('active');
+  }
+}
+
+// ──────────────────────────────────────────────
+// Role selection
+// ──────────────────────────────────────────────
+function selectRole(role) {
+  selectedRole = role;
+  document.getElementById('card-admin').classList.toggle('selected', role === 'admin');
+  document.getElementById('card-user').classList.toggle('selected', role === 'user');
+  document.getElementById('btn-role-next').disabled = false;
+}
+
+async function roleNext() {
+  if (!selectedRole) return;
+  // Go to context selection for both roles
+  updateDots(2);
+  showPanel('panel-context');
+  document.getElementById('card-subtitle').textContent = 'Step 2 of 4 — Installation type';
+}
+
+function goBack() {
+  updateDots(2);
+  showPanel('panel-context');
+  document.getElementById('card-subtitle').textContent = 'Step 2 of 4 — Installation type';
+}
+// ──────────────────────────────────────────────
+// Context selection
+// ──────────────────────────────────────────────
+function selectContext(ctx) {
+  selectedContext = ctx;
+  document.getElementById('card-school').classList.toggle('selected', ctx === 'school');
+  document.getElementById('card-public').classList.toggle('selected', ctx === 'public');
+  document.getElementById('btn-context-next').disabled = false;
+}
+
+async function contextNext() {
+  if (!selectedContext) return;
+
+  if (selectedRole === 'user') {
+    // User role — save role + context, done
+    await window.bhava.setRole('user');
+    await window.bhava.setContext(selectedContext);
+    showSuccess('user');
+    return;
+  }
+
+  // Admin + School → ask for school code first
+  if (selectedContext === 'school') {
+    updateDots(3);
+    showPanel('panel-school-code');
+    document.getElementById('card-subtitle').textContent = 'Step 3 of 4 — School Code';
+    document.getElementById('school-code-input').value = '';
+    document.getElementById('school-code-feedback').innerHTML = '';
+    setTimeout(() => document.getElementById('school-code-input').focus(), 100);
+    return;
+  }
+
+  // Admin + Public → go straight to PIN
+  updateDots(3);
+  showPanel('panel-pin');
+  document.getElementById('card-subtitle').textContent = 'Step 3 of 4 — Set admin PIN';
+  focusPinRow('p');
+}
+
+function goBackToContext() {
+  updateDots(2);
+  showPanel('panel-context');
+  document.getElementById('card-subtitle').textContent = 'Step 2 of 4 — Installation type';
+}
+
+const CLOUD_URL = 'https://bhava-cloud.onrender.com';
+
+async function verifySchoolCode() {
+  const btn = document.getElementById('btn-code-next');
+  const fb  = document.getElementById('school-code-feedback');
+  const code = document.getElementById('school-code-input').value.trim().toUpperCase();
+
+  if (!code) {
+    fb.innerHTML = '<span style="color:#f87171;">Please enter your school code.</span>';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Verifying…';
+  fb.innerHTML = '<span style="color:#94a3b8;">Checking with Bhāva server…</span>';
+
+  try {
+    const res  = await fetch(`${CLOUD_URL}/verify-school?code=${encodeURIComponent(code)}`);
+    const data = await res.json();
+
+    if (data.ok) {
+      fb.innerHTML = `<span style="color:#4ade80;">✓ ${data.school.name}, ${data.school.city}</span>`;
+      // Save school ID then proceed to PIN
+      await window.bhava.setSchoolId(code);
+      setTimeout(() => {
+        updateDots(4);
+        showPanel('panel-pin');
+        document.getElementById('card-subtitle').textContent = 'Step 4 of 4 — Set admin PIN';
+        focusPinRow('p');
+      }, 800);
+    } else {
+      fb.innerHTML = '<span style="color:#f87171;">✗ School code not found. Please check with your Bhāva coordinator.</span>';
+      btn.disabled = false;
+      btn.textContent = 'Verify & Continue →';
+    }
+  } catch (err) {
+    fb.innerHTML = '<span style="color:#f87171;">Could not reach Bhāva server. Check internet and try again.</span>';
+    btn.disabled = false;
+    btn.textContent = 'Verify & Continue →';
+  }
+}
+
+function goBackToRole() {
+  updateDots(1);
+  showPanel('panel-role');
+  document.getElementById('card-subtitle').textContent = 'First-time setup — choose your installation type';
+}
+
+
+
+// ──────────────────────────────────────────────
+// PIN helpers — auto-advance on digit entry
+// ──────────────────────────────────────────────
+function focusPinRow(prefix) {
+  const el = document.getElementById(prefix + '1');
+  if (el) setTimeout(() => el.focus(), 100);
+}
+
+function wirePin(prefix, count) {
+  for (let i = 1; i <= count; i++) {
+    const el = document.getElementById(prefix + i);
+    if (!el) continue;
+    el.addEventListener('input', () => {
+      el.value = el.value.replace(/[^0-9]/g, '');
+      if (el.value.length === 1 && i < count) {
+        document.getElementById(prefix + (i + 1)).focus();
+      }
+    });
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && el.value === '' && i > 1) {
+        document.getElementById(prefix + (i - 1)).focus();
+      }
+    });
+  }
+}
+
+function getPinValue(prefix, count) {
+  let val = '';
+  for (let i = 1; i <= count; i++) {
+    val += (document.getElementById(prefix + i)?.value || '');
+  }
+  return val;
+}
+
+function clearPin(prefix, count) {
+  for (let i = 1; i <= count; i++) {
+    const el = document.getElementById(prefix + i);
+    if (el) el.value = '';
+  }
+}
+
+// ──────────────────────────────────────────────
+// Save PIN
+// ──────────────────────────────────────────────
+async function savePin() {
+  const pin     = getPinValue('p', 4);
+  const confirm = getPinValue('c', 4);
+
+  if (pin.length < 4) {
+    showError('pin-error', 'Please enter all 4 digits');
+    return;
+  }
+  if (pin !== confirm) {
+    showError('pin-error', 'PINs do not match — please re-enter');
+    clearPin('c', 4);
+    focusPinRow('c');
+    return;
+  }
+
+  await window.bhava.setRole('admin');
+  await window.bhava.setPin(pin);
+  await window.bhava.setContext(selectedContext || 'school');
+  showSuccess('admin');
+}
+
+// ──────────────────────────────────────────────
+// Verify PIN (admin returning)
+// ──────────────────────────────────────────────
+async function verifyPin() {
+  const pin = getPinValue('v', 4);
+  if (pin.length < 4) {
+    showError('verify-error', 'Enter all 4 digits');
+    return;
+  }
+
+  const result = await window.bhava.verifyPin(pin);
+  if (result.ok) {
+    // Mark session as verified in sessionStorage so index.html knows
+    sessionStorage.setItem('bhava_admin_verified', '1');
+    window.location.href = 'index.html';
+  } else {
+    showError('verify-error', 'Incorrect PIN — try again');
+    clearPin('v', 4);
+    focusPinRow('v');
+  }
+}
+
+function cancelVerify() {
+  // Go to index as a normal user (no admin access)
+  window.location.href = 'index.html';
+}
+
+// ──────────────────────────────────────────────
+// Success screen
+// ──────────────────────────────────────────────
+function showSuccess(role) {
+  updateDots(3);
+  showPanel('panel-done');
+
+  if (role === 'admin') {
+    document.getElementById('success-icon').textContent  = '⚙️';
+    document.getElementById('success-role').textContent  = 'Admin Installation Ready';
+    document.getElementById('success-msg').innerHTML     =
+      'PIN saved. Context: <strong>' + (selectedContext==='school'?'School':'Public') + '</strong>.<br>Each session you will verify your PIN to access Admin features.';
+  } else {
+    document.getElementById('success-icon').textContent  = '🎓';
+    document.getElementById('success-role').textContent  = 'User Installation Ready';
+    document.getElementById('success-msg').innerHTML     =
+      'Setup complete. Enjoy your games<br>and cognitive assessments!';
+  }
+
+  document.getElementById('card-subtitle').textContent = 'All done!';
+}
+
+function launchApp() {
+  if (selectedRole === 'admin') {
+    // Mark session verified right after setup — user just set their PIN
+    sessionStorage.setItem('bhava_admin_verified', '1');
+  }
+  window.location.href = 'index.html';
+}
+
+// ──────────────────────────────────────────────
+// Error helper
+// ──────────────────────────────────────────────
+function showError(id, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  setTimeout(() => { el.textContent = ''; }, 3500);
+}
+
+// ──────────────────────────────────────────────
+// Wire PIN inputs
+// ──────────────────────────────────────────────
+wirePin('p', 4);
+wirePin('c', 4);
+wirePin('v', 4);
+
+// ──────────────────────────────────────────────
+// Start
+// ──────────────────────────────────────────────
+// Wait for preload bridge to be ready before calling init
+// (in packaged Electron, contextBridge may not be injected instantly)
+function safeInit(retries = 10) {
+  if (window.bhava && typeof window.bhava.getConfig === 'function') {
+    init();
+  } else if (retries > 0) {
+    setTimeout(() => safeInit(retries - 1), 100);
+  } else {
+    document.body.innerHTML = '<div style="color:#f87171;font-family:sans-serif;padding:40px;font-size:1rem;">' +
+      '<strong>Bhāva Tech failed to start.</strong><br>Could not connect to app bridge.<br>' +
+      'Please restart the application.</div>';
+  }
+}
+safeInit();
+</script>
+<script src="bhava-bridge.js"></script>
+<script src="bhava-session.js"></script>
+<script src="bhava-game-nav.js"></script>
+</body>
+</html>
+

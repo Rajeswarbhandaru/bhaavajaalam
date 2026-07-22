@@ -1,0 +1,172 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   bhava-responsive.css — Global Mobile/Tablet Toolkit for Bhāva Tech Games
+   Include ONCE per game, in <head>, AFTER your game's own CSS:
+     <link rel="stylesheet" href="bhava-responsive.css">
+   (or "../bhava-responsive.css" depending on your folder depth)
+
+   TIER 1 (below): applies automatically to every game, no setup needed.
+   TIER 2 (in bhava-responsive.js): opt-in per game via data-attributes.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Safe defaults: no accidental double-tap zoom, no callout menus ──── */
+html {
+  touch-action: manipulation; /* kills the 300ms double-tap-to-zoom delay */
+  -webkit-text-size-adjust: 100%;
+}
+* {
+  -webkit-tap-highlight-color: transparent; /* removes grey flash on tap (Android) */
+}
+img, .drag-item, .cap-tile, [draggable="true"] {
+  -webkit-touch-callout: none; /* stops the "save image" popup on long-press */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ── 2. Safe-area padding for notches / home-indicator bars ─────────────── */
+body {
+  padding-left: env(safe-area-inset-left, 0);
+  padding-right: env(safe-area-inset-right, 0);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* ── 3. Minimum touch target size (WCAG: 44x44px minimum) ───────────────── */
+/* Applies to common interactive elements without needing per-game classes */
+button, a.cap-tile, .btn, [role="button"], input[type="checkbox"], input[type="radio"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+/* Small icon-only buttons: keep visual size, pad the tap area instead */
+.icon-btn, .bgnav-btn {
+  position: relative;
+}
+.icon-btn::after, .bgnav-btn::after {
+  content: '';
+  position: absolute;
+  inset: -6px; /* invisible 6px tap-padding on all sides */
+}
+
+/* ── 4. Responsive type scale — fonts shrink gracefully, never below floor ─ */
+:root {
+  --bhava-font-body:  clamp(14px, 2.6vw, 18px);
+  --bhava-font-title: clamp(20px, 5vw, 36px);
+  --bhava-font-label: clamp(11px, 2.2vw, 14px);
+}
+/* Opt-in classes — add these to your existing title/body elements if you
+   want automatic scaling. Nothing is forced without the class. */
+.bhava-text-body  { font-size: var(--bhava-font-body); }
+.bhava-text-title { font-size: var(--bhava-font-title); }
+.bhava-text-label { font-size: var(--bhava-font-label); }
+
+/* ── 5. Prevent horizontal page overflow (the “half screen” bug root cause) */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden; /* page itself never scrolls sideways */
+}
+/* Any element explicitly marked as the wide content still scrolls INSIDE
+   itself — see .bhava-hscroll below — so this is safe to apply globally. */
+
+/* ── 6. Horizontal-scroll container (Option 1 fix) ───────────────────────
+   Wrap any wide grid/board in a container with class "bhava-hscroll".
+   On phones/tablets it becomes a smooth, snappy horizontal scroller
+   instead of squeezing every column smaller. On desktop it behaves
+   like a normal block (no visual change at all). */
+.bhava-hscroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  padding-bottom: 10px;
+  scrollbar-width: thin;
+}
+.bhava-hscroll > * {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+.bhava-hscroll::-webkit-scrollbar { height: 5px; }
+.bhava-hscroll::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.18);
+  border-radius: 3px;
+}
+/* Fade hint on the right edge so kids know there's more to scroll */
+.bhava-hscroll-wrap {
+  position: relative;
+}
+.bhava-hscroll-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 10px; width: 28px;
+  background: linear-gradient(to right, transparent, rgba(10,8,20,0.55));
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+.bhava-hscroll-wrap.bhava-scrolled-end::after { opacity: 0; }
+
+/* Only activate the horizontal-scroll treatment below desktop width —
+   on a laptop/desktop the same markup lays out as a normal wrapping grid,
+   so you don't need two different HTML structures. */
+@media (max-width: 900px) {
+  .bhava-hscroll-auto {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+  .bhava-hscroll-auto > * {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    /* keep a comfortable minimum width so nothing feels cramped */
+    min-width: 130px;
+  }
+}
+
+/* ── 7. Rotate / bigger-screen nudge banner (soft, dismissible) ─────────── */
+#bhava-rotate-banner {
+  position: fixed;
+  left: 0; right: 0; top: 44px; /* sits just below bhava-game-nav bar */
+  z-index: 9998;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(217,119,6,0.16);
+  border-bottom: 1px solid rgba(217,119,6,0.35);
+  backdrop-filter: blur(10px);
+  font-family: 'Poppins', 'Inter', sans-serif;
+  font-size: 13px;
+  color: #fdba74;
+}
+#bhava-rotate-banner.bhava-show { display: flex; }
+#bhava-rotate-banner .bhava-rb-icon { font-size: 18px; flex-shrink: 0; }
+#bhava-rotate-banner .bhava-rb-text { flex: 1; }
+#bhava-rotate-banner .bhava-rb-close {
+  background: none; border: none; color: inherit;
+  font-size: 16px; cursor: pointer; padding: 4px 8px;
+  opacity: 0.7;
+}
+#bhava-rotate-banner .bhava-rb-close:hover { opacity: 1; }
+
+/* ── 8. Hard-block rotate screen (opt-in, only for genuinely unplayable UIs) */
+#bhava-rotate-block {
+  position: fixed; inset: 0; z-index: 100000;
+  display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px; text-align: center; padding: 32px;
+  background: rgba(5,5,15,0.97);
+  font-family: 'Poppins', 'Inter', sans-serif;
+  color: #e2e8f0;
+}
+#bhava-rotate-block.bhava-show { display: flex; }
+#bhava-rotate-block .bhava-rotate-icon {
+  font-size: 56px;
+  animation: bhava-rotate-spin 1.8s ease-in-out infinite;
+}
+@keyframes bhava-rotate-spin {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+}
+#bhava-rotate-block h3 { font-size: 20px; font-weight: 800; margin: 0; }
+#bhava-rotate-block p { font-size: 14px; color: #94a3b8; margin: 0; max-width: 320px; }

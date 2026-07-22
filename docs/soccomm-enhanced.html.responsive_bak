@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhāva Tech: Life-Linguistics Simulator</title>
+    <style>
+        body {
+            margin: 0; padding: 0;
+            background-color: #1a1a2e;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; height: 100dvh; min-height: 100dvh; color: #fff;
+        }
+        #game-container {
+            width: 100%; max-width: 450px; height: 95vh;
+            background-color: #16213e; border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            display: flex; flex-direction: column; overflow: hidden;
+            position: relative;
+        }
+        #header-branding {
+            text-align: center; font-size: 0.8rem; letter-spacing: 2px;
+            color: #a29bfe; padding: 8px 0; background-color: #0b132b;
+            text-transform: uppercase; font-weight: bold;
+        }
+        #ui-bar {
+            padding: 12px 20px; background-color: #0f3460;
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 0.9rem; font-weight: bold;
+        }
+        #meter-container {
+            width: 55%; height: 12px; background-color: #2f3640;
+            border-radius: 6px; overflow: hidden;
+        }
+        #meter-fill {
+            height: 100%; width: 50%; background-color: #fbc531;
+            transition: width 0.4s ease, background-color 0.4s ease;
+        }
+        #stage {
+            flex-grow: 1; display: flex; justify-content: center; align-items: center;
+            background: radial-gradient(circle at center, #1f2a4f, #0b132b);
+        }
+        #character-expression {
+            font-size: 90px; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center; text-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+        #dialogue-box {
+            background-color: rgba(11, 19, 43, 0.95); padding: 25px;
+            border-top: 3px solid #e94560; height: 50%;
+            display: flex; flex-direction: column; overflow-y: auto;
+        }
+        #npc-text {
+            font-size: 1.05rem; margin-bottom: 20px; line-height: 1.5; color: #f1f2f6;
+            border-left: 4px solid #a29bfe; padding-left: 15px;
+        }
+        .choice-btn {
+            background-color: #e94560; color: white; border: none;
+            padding: 14px 15px; margin-bottom: 10px; border-radius: 8px;
+            font-size: 0.95rem; cursor: pointer; text-align: left;
+            transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        .choice-btn:hover { background-color: #ff5270; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.3); }
+        .choice-btn:active { transform: translateY(0); }
+        .nav-btn { background-color: #576574; }
+        .nav-btn:hover { background-color: #8395a7; }
+        .back-btn { background-color: #2f3542; border-left: 4px solid #7bed9f; }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="header-branding">Bhāva Tech Life-Linguistics</div>
+        <div id="ui-bar">
+            <span>Social Score</span>
+            <div id="meter-container"><div id="meter-fill"></div></div>
+            <span id="meter-score" style="color:#ffd76a;font-size:0.85rem;min-width:32px;text-align:right">50</span>
+        </div>
+        <div id="session-bar" style="padding:6px 20px;background:#081228;display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:#a29bfe;border-bottom:1px solid rgba(255,255,255,0.06);">
+            <span>Session: <strong id="session-grade" style="color:#ffd76a">—</strong></span>
+            <span id="session-detail" style="color:#718096">Start a scenario to begin</span>
+        </div>
+        <div id="stage"><div id="character-expression">🌐</div></div>
+        <div id="dialogue-box">
+            <div id="npc-text">"Initializing simulator..."</div>
+            <div id="choices-container"></div>
+        </div>
+    </div>
+
+    <button id="bvMenuBtn" style="position:fixed;top:12px;right:12px;z-index:9998;border:none;background:linear-gradient(135deg,rgba(162,155,254,.25),rgba(233,69,96,.2));border:1px solid rgba(162,155,254,.4);color:#fff;width:40px;height:40px;border-radius:12px;font-size:1.2rem;cursor:pointer;backdrop-filter:blur(8px);">☰</button>
+
+    <div id="bvMenuOverlay" style="display:none;position:fixed;inset:0;z-index:9997;background:rgba(3,7,14,.88);backdrop-filter:blur(8px);align-items:center;justify-content:center;">
+        <div style="background:#16213e;border:1px solid rgba(162,155,254,.2);border-radius:20px;padding:26px;width:min(340px,90vw);color:#fff;">
+            <h3 style="margin:0 0 6px;font-size:1.3rem;color:#a29bfe;">Bhāva Tech</h3>
+            <p style="margin:0 0 16px;color:#718096;font-size:.88rem;">Society & Communication · Life-Linguistics Simulator</p>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+                <button onclick="document.getElementById('bvMenuOverlay').style.display='none'" style="padding:12px;border-radius:12px;border:1px solid rgba(162,155,254,.3);background:rgba(162,155,254,.1);color:#fff;cursor:pointer;font-size:.9rem;">🏠 Close Menu</button>
+            </div>
+            <p style="margin:16px 0 0;font-size:.75rem;color:#4a5568;text-align:center;">Bhāva Tech · Cognitive Skills Platform</p>
+        </div>
+    </div>
+
+    <script>
+        // ── Bhāva session state ──────────────────────────────────────────────
+        const ENV_SESSIONS = {
+            school:   { successCount: 0, totalSeen: 0 },
+            relative: { successCount: 0, totalSeen: 0 },
+            friend:   { successCount: 0, totalSeen: 0 },
+            grandpa:  { successCount: 0, totalSeen: 0 },
+            elder:    { successCount: 0, totalSeen: 0 }
+        };
+
+        const BHAVA_DOMAIN_MAP = {
+            school:   { IQ: 0.30, EQ: 0.40, SQ: 0.30 },
+            relative: { IQ: 0.10, EQ: 0.50, SQ: 0.40 },
+            friend:   { IQ: 0.10, EQ: 0.50, SQ: 0.40 },
+            grandpa:  { IQ: 0.10, EQ: 0.60, SQ: 0.30 },
+            elder:    { IQ: 0.20, EQ: 0.30, SQ: 0.50 }
+        };
+
+        const backMap = {
+            school_t1: 'menu_school_p1', school_t2: 'menu_school_p1', school_t3: 'menu_school_p1', school_t4: 'menu_school_p1', school_t5: 'menu_school_p1',
+            school_t6: 'menu_school_p2', school_t7: 'menu_school_p2', school_t8: 'menu_school_p2', school_t9: 'menu_school_p2', school_t10: 'menu_school_p2',
+            relative_t1: 'menu_relative_p1', relative_t2: 'menu_relative_p1', relative_t3: 'menu_relative_p1', relative_t4: 'menu_relative_p1', relative_t5: 'menu_relative_p1',
+            relative_t6: 'menu_relative_p2', relative_t7: 'menu_relative_p2', relative_t8: 'menu_relative_p2', relative_t9: 'menu_relative_p2', relative_t10: 'menu_relative_p2',
+            friend_t1: 'menu_friend_p1', friend_t2: 'menu_friend_p1', friend_t3: 'menu_friend_p1', friend_t4: 'menu_friend_p1', friend_t5: 'menu_friend_p1',
+            friend_t6: 'menu_friend_p2', friend_t7: 'menu_friend_p2', friend_t8: 'menu_friend_p2', friend_t9: 'menu_friend_p2', friend_t10: 'menu_friend_p2',
+            grandpa_t1: 'menu_grandpa_p1', grandpa_t2: 'menu_grandpa_p1', grandpa_t3: 'menu_grandpa_p1', grandpa_t4: 'menu_grandpa_p1', grandpa_t5: 'menu_grandpa_p1',
+            grandpa_t6: 'menu_grandpa_p2', grandpa_t7: 'menu_grandpa_p2', grandpa_t8: 'menu_grandpa_p2', grandpa_t9: 'menu_grandpa_p2', grandpa_t10: 'menu_grandpa_p2',
+            elder_t1: 'menu_elder_p1', elder_t2: 'menu_elder_p1', elder_t3: 'menu_elder_p1', elder_t4: 'menu_elder_p1', elder_t5: 'menu_elder_p1',
+            elder_t6: 'menu_elder_p2', elder_t7: 'menu_elder_p2', elder_t8: 'menu_elder_p2', elder_t9: 'menu_elder_p2', elder_t10: 'menu_elder_p2',
+        };
+
+        let currentMeter = 50;
+        let currentSceneKey = 'main_menu';
+
+        function getEnvFromScene(sceneKey) {
+            if (sceneKey.startsWith('school_') || sceneKey.startsWith('menu_school')) return 'school';
+            if (sceneKey.startsWith('relative_') || sceneKey.startsWith('menu_relative')) return 'relative';
+            if (sceneKey.startsWith('friend_') || sceneKey.startsWith('menu_friend')) return 'friend';
+            if (sceneKey.startsWith('grandpa_') || sceneKey.startsWith('menu_grandpa')) return 'grandpa';
+            if (sceneKey.startsWith('elder_') || sceneKey.startsWith('menu_elder')) return 'elder';
+            return null;
+        }
+
+        function endBhavaEnvSession(env) {
+            try {
+                const session = ENV_SESSIONS[env];
+                const pct = session.totalSeen > 0 ? session.successCount / session.totalSeen : 0;
+                const rawScore = Math.round(Math.min(pct * 100, 100));
+                const domains = BHAVA_DOMAIN_MAP[env] || { IQ: 0.33, EQ: 0.33, SQ: 0.34 };
+                // Persist to localStorage
+                const stored = JSON.parse(localStorage.getItem('bhava_soccomm_last') || '{}');
+                stored[env] = {
+                    rawScore,
+                    domains,
+                    pct: Math.round(pct * 100),
+                    successCount: session.successCount,
+                    totalSeen: session.totalSeen,
+                    timestamp: Date.now(),
+                    studentId: sessionStorage.getItem('bhava_student_id') || sessionStorage.getItem('bhavaStudentId') || sessionStorage.getItem('studentId') || null
+                };
+                localStorage.setItem('bhava_soccomm_last', JSON.stringify(stored));
+                // Update session bar
+                const grade = rawScore >= 80 ? 'S' : rawScore >= 60 ? 'A' : rawScore >= 40 ? 'B' : 'C';
+                document.getElementById('session-grade').textContent = grade;
+                document.getElementById('session-detail').textContent = env.charAt(0).toUpperCase() + env.slice(1) + ': ' + session.successCount + '/' + session.totalSeen + ' correct';
+                // Call BhavaSession if available
+                if (typeof BhavaSession !== 'undefined' && BhavaSession.end) {
+                    BhavaSession.end(rawScore);
+                }
+                // Reset session counters for next time
+                ENV_SESSIONS[env].successCount = 0;
+                ENV_SESSIONS[env].totalSeen = 0;
+            } catch(e) { /* silent no-op */ }
+        }
+
+        function updateScene(sceneKey) {
+            currentSceneKey = sceneKey;
+            const scene = storyData[sceneKey];
+
+            document.getElementById('npc-text').innerText = scene.npcDialogue;
+            document.getElementById('character-expression').innerText = scene.characterVisual;
+
+            const charDiv = document.getElementById('character-expression');
+            charDiv.style.transform = 'scale(1.1)';
+            setTimeout(() => charDiv.style.transform = 'scale(1)', 250);
+
+            const choicesContainer = document.getElementById('choices-container');
+            choicesContainer.innerHTML = '';
+
+            scene.choices.forEach(choice => {
+                const btn = document.createElement('button');
+
+                let btnClass = 'choice-btn';
+                if (choice.isBackBtn) btnClass += ' back-btn';
+                else if (choice.isNavBtn) btnClass += ' nav-btn';
+
+                btn.className = btnClass;
+                btn.innerText = choice.buttonText;
+                btn.onclick = () => handleChoice(choice);
+                choicesContainer.appendChild(btn);
+            });
+
+            // Fix 4 — back button on _start scenes
+            if (sceneKey.endsWith('_start')) {
+                const prefix = sceneKey.replace('_start', '');
+                const backTarget = backMap[prefix];
+                if (backTarget) {
+                    const backBtn = document.createElement('button');
+                    backBtn.className = 'choice-btn back-btn';
+                    backBtn.innerText = '↩ Back to Menu';
+                    backBtn.onclick = () => {
+                        currentMeter = 50;
+                        updateScene(backTarget);
+                        document.getElementById('meter-fill').style.width = '50%';
+                        document.getElementById('meter-fill').style.backgroundColor = '#fbc531';
+                        document.getElementById('meter-score').textContent = '50';
+                    };
+                    choicesContainer.appendChild(backBtn);
+                }
+            }
+
+            document.getElementById('dialogue-box').scrollTop = 0;
+        }
+
+        function handleChoice(choice) {
+            // Bhāva tracking — detect if this is a scenario answer (not nav/back)
+            if (!choice.resetMeter && !choice.isNavBtn && !choice.isBackBtn) {
+                const env = getEnvFromScene(currentSceneKey);
+                if (env && ENV_SESSIONS[env]) {
+                    ENV_SESSIONS[env].totalSeen++;
+                    if (choice.meterChange > 0) {
+                        ENV_SESSIONS[env].successCount++;
+                    }
+                }
+            }
+
+            if (choice.resetMeter) {
+                // End session for the environment we just completed
+                const env = getEnvFromScene(currentSceneKey);
+                if (env) endBhavaEnvSession(env);
+                currentMeter = 50;
+            } else {
+                currentMeter += choice.meterChange;
+                if (currentMeter > 100) currentMeter = 100;
+                if (currentMeter < 0) currentMeter = 0;
+            }
+
+            const meterFill = document.getElementById('meter-fill');
+            meterFill.style.width = currentMeter + '%';
+
+            if (currentMeter > 65) meterFill.style.backgroundColor = '#2ed573';
+            else if (currentMeter > 35) meterFill.style.backgroundColor = '#ffa502';
+            else meterFill.style.backgroundColor = '#ff4757';
+
+            // Fix 3 — update numeric score
+            document.getElementById('meter-score').textContent = Math.round(currentMeter);
+
+            updateScene(choice.nextScene);
+        }
+
+        const storyData = {
+
+            main_menu: {
+                npcDialogue: 'Select an environment to begin.',
+                characterVisual: '🌐',
+                choices: [
+                    { buttonText: '🏫 The School', nextScene: 'menu_school_p1', meterChange: 0 },
+                    { buttonText: '🏠 Relative\'s House', nextScene: 'menu_relative_p1', meterChange: 0 },
+                    { buttonText: '🛋️ Friend\'s House', nextScene: 'menu_friend_p1', meterChange: 0 },
+                    { buttonText: '🪑 Grandparents', nextScene: 'menu_grandpa_p1', meterChange: 0 },
+                    { buttonText: '🌳 Community Elders', nextScene: 'menu_elder_p1', meterChange: 0 }
+                ]
+            },
+
+            // ==========================================
+            // 1. THE SCHOOL
+            // ==========================================
+            menu_school_p1: {
+                npcDialogue: 'School Environment - Page 1:',
+                characterVisual: '🏫',
+                choices: [
+                    { buttonText: '1. Did You Hear?', nextScene: 'school_t1_start', meterChange: 0 },
+                    { buttonText: '2. The Blank Slides', nextScene: 'school_t2_start', meterChange: 0 },
+                    { buttonText: '3. The Red Pen', nextScene: 'school_t3_start', meterChange: 0 },
+                    { buttonText: '4. Hallway Target', nextScene: 'school_t4_start', meterChange: 0 },
+                    { buttonText: '5. The Cracked Screen', nextScene: 'school_t5_start', meterChange: 0 },
+                    { buttonText: '➡️ Next Page', nextScene: 'menu_school_p2', meterChange: 0, isNavBtn: true },
+                    { buttonText: '⬅️ Back to Map', nextScene: 'main_menu', meterChange: 0, isBackBtn: true }
+                ]
+            },
+            menu_school_p2: {
+                npcDialogue: 'School Environment - Page 2:',
+                characterVisual: '🏫',
+                choices: [
+                    { buttonText: '6. The Echo', nextScene: 'school_t6_start', meterChange: 0 },
+                    { buttonText: '7. Just One Glance', nextScene: 'school_t7_start', meterChange: 0 },
+                    { buttonText: '8. Who Are You Again?', nextScene: 'school_t8_start', meterChange: 0 },
+                    { buttonText: '9. Punished Together', nextScene: 'school_t9_start', meterChange: 0 },
+                    { buttonText: '10. The Secret Group', nextScene: 'school_t10_start', meterChange: 0 },
+                    { buttonText: '⬅️ Previous Page', nextScene: 'menu_school_p1', meterChange: 0, isNavBtn: true },
+                    { buttonText: '⬅️ Back to Map', nextScene: 'main_menu', meterChange: 0, isBackBtn: true }
+                ]
+            },
+            school_t1_start: {
+                npcDialogue: '"I heard you were talking trash about my project!"', characterVisual: '😤',
+                choices: [
+                    { buttonText: 'Aggressive: "Who told you that? You\'re liars!"', nextScene: 'school_t1_fail', meterChange: -30 },
+                    { buttonText: 'Assertive: "Hold on. I didn\'t say anything bad. Who told you that?"', nextScene: 'school_t1_success', meterChange: 25 }
+                ]
+            },
+            school_t1_fail: { npcDialogue: 'They yell back. [FAIL: Anger matches anger, creating a scene.]', characterVisual: '😡', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p1', resetMeter: true }] },
+            school_t1_success: { npcDialogue: 'They explain calmly. [SUCCESS: Forced clarification de-escalates.]', characterVisual: '🤔', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p1', resetMeter: true }] },
+
+            school_t2_start: {
+                npcDialogue: 'Partner: "I\'ll do my part later." (Due tomorrow, nothing done).', characterVisual: '🥱',
+                choices: [
+                    { buttonText: 'Passive: "Fine, I\'ll just do it all myself."', nextScene: 'school_t2_fail', meterChange: -20 },
+                    { buttonText: 'Boundary: "I need your part by 8 PM, or I have to submit it with just my name."', nextScene: 'school_t2_success', meterChange: 30 }
+                ]
+            },
+            school_t2_fail: { npcDialogue: 'You carry their weight. [FAIL: Rewarded bad behavior.]', characterVisual: '😩', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p1', resetMeter: true }] },
+            school_t2_success: { npcDialogue: 'They log on to work. [SUCCESS: Consequences drive action.]', characterVisual: '💻', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p1', resetMeter: true }] },
+
+            school_t3_start: {
+                npcDialogue: 'The teacher gives you an unexpectedly low grade on a paper.', characterVisual: '🧑‍🏫',
+                choices: [
+                    { buttonText: 'Whine: "This isn\'t fair, I worked so hard!"', nextScene: 'school_t3_fail', meterChange: -25 },
+                    { buttonText: 'Inquire: "Could we go over this? I want to understand where I lost points."', nextScene: 'school_t3_success', meterChange: 25 }
+                ]
+            },
+            school_t3_fail: { npcDialogue: 'Teacher ignores you. [FAIL: Complaining limits learning.]', characterVisual: '😒', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p1', resetMeter: true }] },
+            school_t3_success: { npcDialogue: 'Teacher explains the rubric. [SUCCESS: Professional inquiry.]', characterVisual: '📝', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p1', resetMeter: true }] },
+
+            school_t4_start: {
+                npcDialogue: 'Kids make fun of a younger student\'s shoes.', characterVisual: '👟',
+                choices: [
+                    { buttonText: 'Join in/Laugh nervously.', nextScene: 'school_t4_fail', meterChange: -35 },
+                    { buttonText: 'Redirect: "Hey guys, let\'s go, we\'ll be late." (Pulling them away)', nextScene: 'school_t4_success', meterChange: 35 }
+                ]
+            },
+            school_t4_fail: { npcDialogue: 'The kid looks crushed. [FAIL: Complicity via silence.]', characterVisual: '😢', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p1', resetMeter: true }] },
+            school_t4_success: { npcDialogue: 'The bullies leave. [SUCCESS: Protected without a fight.]', characterVisual: '🛡️', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p1', resetMeter: true }] },
+
+            school_t5_start: {
+                npcDialogue: 'You accidentally break your friend\'s phone screen.', characterVisual: '📱',
+                choices: [
+                    { buttonText: 'Deflect: "You shouldn\'t have left it on the edge!"', nextScene: 'school_t5_fail', meterChange: -30 },
+                    { buttonText: 'Accountability: "I am so sorry. Let\'s figure out the repair cost together."', nextScene: 'school_t5_success', meterChange: 35 }
+                ]
+            },
+            school_t5_fail: { npcDialogue: 'Friend is furious. [FAIL: Deflecting ruins trust.]', characterVisual: '🔥', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p1', resetMeter: true }] },
+            school_t5_success: { npcDialogue: 'Friend calms down. [SUCCESS: Accountability diffuses anger.]', characterVisual: '🤝', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p1', resetMeter: true }] },
+
+            school_t6_start: {
+                npcDialogue: 'A classmate repeats your exact idea loudly and the teacher praises them.', characterVisual: '🙋',
+                choices: [
+                    { buttonText: 'Yell: "I literally just said that! You stole it!"', nextScene: 'school_t6_fail', meterChange: -25 },
+                    { buttonText: 'Tactical: "I am glad you liked the point I brought up! Building on that..."', nextScene: 'school_t6_success', meterChange: 35 }
+                ]
+            },
+            school_t6_fail: { npcDialogue: 'Teacher reprimands you for yelling. [FAIL]', characterVisual: '🤫', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p2', resetMeter: true }] },
+            school_t6_success: { npcDialogue: 'You reclaim credit smoothly. [SUCCESS: The "Yes, And" technique.]', characterVisual: '💡', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p2', resetMeter: true }] },
+
+            school_t7_start: {
+                npcDialogue: '"Can I copy your homework real quick? I forgot to do it."', characterVisual: '📝',
+                choices: [
+                    { buttonText: 'Submit: "Fine, just don\'t make it obvious."', nextScene: 'school_t7_fail', meterChange: -20 },
+                    { buttonText: 'Boundary: "I can\'t let you copy it, but I can show you how I solved number 1."', nextScene: 'school_t7_success', meterChange: 25 }
+                ]
+            },
+            school_t7_fail: { npcDialogue: 'Teacher catches you both. [FAIL: Compromised integrity.]', characterVisual: '🚨', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p2', resetMeter: true }] },
+            school_t7_success: { npcDialogue: 'They sigh but accept help. [SUCCESS: Helpful but firm.]', characterVisual: '✅', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p2', resetMeter: true }] },
+
+            school_t8_start: {
+                npcDialogue: 'The substitute teacher repeatedly mispronounces your name.', characterVisual: '👨‍🏫',
+                choices: [
+                    { buttonText: 'Ignore it and feel resentful.', nextScene: 'school_t8_fail', meterChange: -15 },
+                    { buttonText: 'Correct: "Actually, it is pronounced [Name]. Nice to meet you!"', nextScene: 'school_t8_success', meterChange: 25 }
+                ]
+            },
+            school_t8_fail: { npcDialogue: 'They keep saying it wrong all week. [FAIL: Unstated boundaries.]', characterVisual: '😔', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p2', resetMeter: true }] },
+            school_t8_success: { npcDialogue: '"Oh, my apologies! [Name]." [SUCCESS: Polite self-advocacy.]', characterVisual: '🗣️', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p2', resetMeter: true }] },
+
+            school_t9_start: {
+                npcDialogue: 'The whole class is kept late because one student threw a paper plane.', characterVisual: '⏱️',
+                choices: [
+                    { buttonText: 'Argue: "You can\'t punish all of us for his mistake!"', nextScene: 'school_t9_fail', meterChange: -25 },
+                    { buttonText: 'Negotiate: "Is there a way we can earn back our time if we focus right now?"', nextScene: 'school_t9_success', meterChange: 35 }
+                ]
+            },
+            school_t9_fail: { npcDialogue: 'Teacher adds 5 more minutes. [FAIL: Escalating an authority figure.]', characterVisual: '😠', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p2', resetMeter: true }] },
+            school_t9_success: { npcDialogue: 'Teacher agrees to a compromise. [SUCCESS: Solution-oriented linguistics.]', characterVisual: '🤝', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p2', resetMeter: true }] },
+
+            school_t10_start: {
+                npcDialogue: 'You find out your friends formed a study group and didn\'t invite you.', characterVisual: '📚',
+                choices: [
+                    { buttonText: 'Accuse: "Wow, thanks for leaving me out guys. Fake friends."', nextScene: 'school_t10_fail', meterChange: -30 },
+                    { buttonText: 'Direct: "Hey, I saw you guys studying! I\'d love to join the group next time."', nextScene: 'school_t10_success', meterChange: 30 }
+                ]
+            },
+            school_t10_fail: { npcDialogue: 'They get defensive. [FAIL: Assumptions breed conflict.]', characterVisual: '🚫', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p2', resetMeter: true }] },
+            school_t10_success: { npcDialogue: '"Oh sorry, we just threw it together! Come tomorrow!" [SUCCESS: Vulnerability over accusation.]', characterVisual: '👋', choices: [{ buttonText: 'Return', nextScene: 'menu_school_p2', resetMeter: true }] },
+
+            // ==========================================
+            // 2. RELATIVE'S HOUSE
+            // ==========================================
+            menu_relative_p1: {
+                npcDialogue: 'Relative\'s House - Page 1:',
+                characterVisual: '🏠',
+                choices: [
+                    { buttonText: '1. The Interrogation', nextScene: 'relative_t1_start', meterChange: 0 },
+                    { buttonText: '2. But Your Cousin...', nextScene: 'relative_t2_start', meterChange: 0 },
+                    { buttonText: '3. Just One More Bite', nextScene: 'relative_t3_start', meterChange: 0 },
+                    { buttonText: '4. The "Right" Path', nextScene: 'relative_t4_start', meterChange: 0 },
+                    { buttonText: '5. Pinch Your Cheeks', nextScene: 'relative_t5_start', meterChange: 0 },
+                    { buttonText: '➡️ Next Page', nextScene: 'menu_relative_p2', meterChange: 0, isNavBtn: true },
+                    { buttonText: '⬅️ Back to Map', nextScene: 'main_menu', meterChange: 0, isBackBtn: true }
+                ]
+            },
+            menu_relative_p2: {
+                npcDialogue: 'Relative\'s House - Page 2:',
+                characterVisual: '🏠',
+                choices: [
+                    { buttonText: '6. No Knocking', nextScene: 'relative_t6_start', meterChange: 0 },
+                    { buttonText: '7. You Never Call', nextScene: 'relative_t7_start', meterChange: 0 },
+                    { buttonText: '8. The Wedding Comment', nextScene: 'relative_t8_start', meterChange: 0 },
+                    { buttonText: '9. Center Stage', nextScene: 'relative_t9_start', meterChange: 0 },
+                    { buttonText: '10. Zero Focus', nextScene: 'relative_t10_start', meterChange: 0 },
+                    { buttonText: '⬅️ Previous Page', nextScene: 'menu_relative_p1', meterChange: 0, isNavBtn: true },
+                    { buttonText: '⬅️ Back to Map', nextScene: 'main_menu', meterChange: 0, isBackBtn: true }
+                ]
+            },
+            relative_t1_start: {
+                npcDialogue: '"Why aren\'t you studying something useful?"', characterVisual: '👩‍🦳',
+                choices: [
+                    { buttonText: 'Rude: "Mind your own business."', nextScene: 'relative_t1_fail', meterChange: -35 },
+                    { buttonText: 'Pivot: "I\'m learning computer science! How is your garden?"', nextScene: 'relative_t1_success', meterChange: 30 }
+                ]
+            },
+            relative_t1_fail: { npcDialogue: 'Dinner is ruined. [FAIL]', characterVisual: '😱', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p1', resetMeter: true }] },
+            relative_t1_success: { npcDialogue: '"Oh, the garden is lovely..." [SUCCESS: The Polite Pivot.]', characterVisual: '🌻', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p1', resetMeter: true }] },
+
+            relative_t2_start: {
+                npcDialogue: '"Your cousin got 99% in math. Why are your grades lower?"', characterVisual: '👨‍🦱',
+                choices: [
+                    { buttonText: 'Defensive: "I have my own life!"', nextScene: 'relative_t2_fail', meterChange: -25 },
+                    { buttonText: 'Secure: "Ravi is so smart! I am focusing on coding right now."', nextScene: 'relative_t2_success', meterChange: 30 }
+                ]
+            },
+            relative_t2_fail: { npcDialogue: '"Such a bad attitude." [FAIL]', characterVisual: '👎', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p1', resetMeter: true }] },
+            relative_t2_success: { npcDialogue: '"Well, computers are good too." [SUCCESS: Validation removes conflict.]', characterVisual: '💻', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p1', resetMeter: true }] },
+
+            relative_t3_start: {
+                npcDialogue: '"You barely ate! Have another plate of biryani right now."', characterVisual: '🍲',
+                choices: [
+                    { buttonText: 'Annoyed: "No! Stop pushing food on me!"', nextScene: 'relative_t3_fail', meterChange: -25 },
+                    { buttonText: 'Appreciative: "It was so delicious, but I literally cannot eat another bite!"', nextScene: 'relative_t3_success', meterChange: 25 }
+                ]
+            },
+            relative_t3_fail: { npcDialogue: '"Fine, starve." [FAIL: Hurt feelings over love languages.]', characterVisual: '😠', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p1', resetMeter: true }] },
+            relative_t3_success: { npcDialogue: '"Okay, maybe later." [SUCCESS: Gratitude softens refusal.]', characterVisual: '😋', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p1', resetMeter: true }] },
+
+            relative_t4_start: {
+                npcDialogue: '"Tech startups are a fad. Get a safe bank job."', characterVisual: '💼',
+                choices: [
+                    { buttonText: 'Argue: "You don\'t understand the modern economy!"', nextScene: 'relative_t4_fail', meterChange: -30 },
+                    { buttonText: 'Validate: "Stability is definitely important. I\'m exploring all options."', nextScene: 'relative_t4_success', meterChange: 30 }
+                ]
+            },
+            relative_t4_fail: { npcDialogue: '"Kids today..." [FAIL: Arguing with elders fails.]', characterVisual: '🙄', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p1', resetMeter: true }] },
+            relative_t4_success: { npcDialogue: '"Just be smart about it." [SUCCESS: Validated the underlying concern.]', characterVisual: '🧠', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p1', resetMeter: true }] },
+
+            relative_t5_start: {
+                npcDialogue: '"Come here, let me pinch those cute cheeks!" (You really do not want that).', characterVisual: '😣',
+                choices: [
+                    { buttonText: 'Awkwardly submit and feel uncomfortable.', nextScene: 'relative_t5_fail', meterChange: -20 },
+                    { buttonText: 'Block: Step back and offer a hand. \'Hi Auntie! Let\'s high-five today!\'', nextScene: 'relative_t5_success', meterChange: 30 }
+                ]
+            },
+
+            relative_t5_fail: { npcDialogue: 'You feel gross. [FAIL: Ignored bodily autonomy.]', characterVisual: '😖', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p1', resetMeter: true }] },
+            relative_t5_success: { npcDialogue: 'She laughs and high-fives. [SUCCESS: Playful boundary setting.]', characterVisual: '✋', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p1', resetMeter: true }] },
+
+            relative_t6_start: {
+                npcDialogue: 'An uncle walks straight into your room without knocking while you are on a private video call.', characterVisual: '🚪',
+                choices: [
+                    { buttonText: 'Scream: "GET OUT! YOU NEVER KNOCK!"', nextScene: 'relative_t6_fail', meterChange: -25 },
+                    { buttonText: 'Firm: "Uncle, please knock next time, I am in the middle of a call!"', nextScene: 'relative_t6_success', meterChange: 30 }
+                ]
+            },
+
+            relative_t6_fail: { npcDialogue: 'A massive family drama starts. [FAIL: Over-escalation.]', characterVisual: '🌋', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p2', resetMeter: true }] },
+            relative_t6_success: { npcDialogue: 'He apologizes and steps out. [SUCCESS: Direct, clear boundaries.]', characterVisual: '✅', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p2', resetMeter: true }] },
+
+            relative_t7_start: {
+                npcDialogue: '"You never call us. Do you not care about your family?"', characterVisual: '📞',
+                choices: [
+                    { buttonText: 'Guilt back: "You never call me either!"', nextScene: 'relative_t7_fail', meterChange: -25 },
+                    { buttonText: 'Reframe: "I\'ve been swamped with school, but I\'m so glad we\'re talking now."', nextScene: 'relative_t7_success', meterChange: 30 }
+                ]
+            },
+            relative_t7_fail: { npcDialogue: 'The conversation turns toxic. [FAIL: Defensiveness.]', characterVisual: '☎️', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p2', resetMeter: true }] },
+            relative_t7_success: { npcDialogue: 'They soften up immediately. [SUCCESS: Focus on the positive present.]', characterVisual: '❤️', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p2', resetMeter: true }] },
+
+            relative_t8_start: {
+                npcDialogue: 'At a wedding: "Wow, you have put on so much weight recently!"', characterVisual: '👗',
+                choices: [
+                    { buttonText: 'Insult: "And you look older!"', nextScene: 'relative_t8_fail', meterChange: -35 },
+                    { buttonText: 'Neutralize: "I am focusing on feeling healthy and strong right now! Have you seen the buffet?"', nextScene: 'relative_t8_success', meterChange: 35 }
+                ]
+            },
+            relative_t8_fail: { npcDialogue: 'You start a war at a wedding. [FAIL: Sinking to their level.]', characterVisual: '⚔️', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p2', resetMeter: true }] },
+            relative_t8_success: { npcDialogue: 'They blink, confused, and move on. [SUCCESS: Unshakeable confidence.]', characterVisual: '🛡️', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p2', resetMeter: true }] },
+
+            relative_t9_start: {
+                npcDialogue: '"Come here and recite that poem for all the guests!" (You hate performing).', characterVisual: '🎤',
+                choices: [
+                    { buttonText: 'Run away and hide in the bathroom.', nextScene: 'relative_t9_fail', meterChange: -20 },
+                    { buttonText: 'Polite Refusal: "I am a little too shy for a stage today, but I will help pass the snacks!"', nextScene: 'relative_t9_success', meterChange: 25 }
+                ]
+            },
+            relative_t9_fail: { npcDialogue: 'Parents are embarrassed. [FAIL: Avoidance.]', characterVisual: '🏃', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p2', resetMeter: true }] },
+            relative_t9_success: { npcDialogue: 'Guests smile and move on. [SUCCESS: Offering an alternative value.]', characterVisual: '🍪', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p2', resetMeter: true }] },
+
+            relative_t10_start: {
+                npcDialogue: 'A relative keeps loudly interrupting you while you are studying for a final.', characterVisual: '📖',
+                choices: [
+                    { buttonText: 'Sigh loudly, slam your books, and glare.', nextScene: 'relative_t10_fail', meterChange: -25 },
+                    { buttonText: 'Direct: "I really need to finish this assignment for tomorrow. Can we catch up in an hour?"', nextScene: 'relative_t10_success', meterChange: 30 }
+                ]
+            },
+            relative_t10_fail: { npcDialogue: '"Why the attitude?" [FAIL: Passive-aggression creates conflict.]', characterVisual: '😠', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p2', resetMeter: true }] },
+            relative_t10_success: { npcDialogue: '"Oh sorry, I\'ll let you work!" [SUCCESS: Clear needs communicated.]', characterVisual: '✅', choices: [{ buttonText: 'Return', nextScene: 'menu_relative_p2', resetMeter: true }] },
+
+
+            // ==========================================
+            // 3. FRIEND'S HOUSE
+            // ==========================================
+            menu_friend_p1: {
+                npcDialogue: 'Friend\'s House - Page 1:',
+                characterVisual: '🛋️',
+                choices: [
+                    { buttonText: '1. Just One Round', nextScene: 'friend_t1_start', meterChange: 0 },
+                    { buttonText: '2. The Lucky Socks', nextScene: 'friend_t2_start', meterChange: 0 },
+                    { buttonText: '3. Watching the Clock', nextScene: 'friend_t3_start', meterChange: 0 },
+                    { buttonText: '4. Spilling the Tea', nextScene: 'friend_t4_start', meterChange: 0 },
+                    { buttonText: '5. Movie Night Standoff', nextScene: 'friend_t5_start', meterChange: 0 },
+                    { buttonText: '➡️ Next Page', nextScene: 'menu_friend_p2', meterChange: 0, isNavBtn: true },
+                    { buttonText: '⬅️ Back to Map', nextScene: 'main_menu', meterChange: 0, isBackBtn: true }
+                ]
+            },
+            menu_friend_p2: {
+                npcDialogue: 'Friend\'s House - Page 2:',
+                characterVisual: '🛋️',
+                choices: [
+                    { buttonText: '6. Bailed Again', nextScene: 'friend_t6_start', meterChange: 0 },
+                    { buttonText: '7. Oh Yeah? Well I...', nextScene: 'friend_t7_start', meterChange: 0 },
+                    { buttonText: '8. The Missing Jacket', nextScene: 'friend_t8_start', meterChange: 0 },
+                    { buttonText: '9. The Inside Joke', nextScene: 'friend_t9_start', meterChange: 0 },
+                    { buttonText: '10. Fine. Whatever.', nextScene: 'friend_t10_start', meterChange: 0 },
+                    { buttonText: '⬅️ Previous Page', nextScene: 'menu_friend_p1', meterChange: 0, isNavBtn: true },
+                    { buttonText: '⬅️ Back to Map', nextScene: 'main_menu', meterChange: 0, isBackBtn: true }
+                ]
+            },
+            friend_t1_start: {
+                npcDialogue: '"Come on, let\'s play that banned game. Your parents won\'t know."', characterVisual: '😏',
+                choices: [
+                    { buttonText: 'Submit: "Okay fine, don\'t tell anyone."', nextScene: 'friend_t1_fail', meterChange: -25 },
+                    { buttonText: 'Boundary: "Nah, I\'m good. Let\'s play the other one."', nextScene: 'friend_t1_success', meterChange: 25 }
+                ]
+            },
+            friend_t1_fail: { npcDialogue: 'You feel anxious. [FAIL: Compromised boundaries.]', characterVisual: '😟', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p1', resetMeter: true }] },
+            friend_t1_success: { npcDialogue: '"Alright, whatever." [SUCCESS: Real friends respect boundaries.]', characterVisual: '🎮', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p1', resetMeter: true }] },
+
+            friend_t2_start: {
+                npcDialogue: 'Mom asks you to remove shoes, but you have holey socks.', characterVisual: '👟',
+                choices: [
+                    { buttonText: 'Lie: "My feet are too cold, I\'ll keep them on."', nextScene: 'friend_t2_fail', meterChange: -30 },
+                    { buttonText: 'Honesty: "Sure! Just ignore my lucky holey socks!"', nextScene: 'friend_t2_success', meterChange: 30 }
+                ]
+            },
+            friend_t2_fail: { npcDialogue: 'Mom is offended. [FAIL: Disrespected their home rules.]', characterVisual: '😠', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p1', resetMeter: true }] },
+            friend_t2_success: { npcDialogue: 'Mom laughs. [SUCCESS: Humor diffuses embarrassment.]', characterVisual: '🧦', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p1', resetMeter: true }] },
+
+            friend_t3_start: {
+                npcDialogue: 'It is 9 PM. Friend is yawning and giving short answers.', characterVisual: '🥱',
+                choices: [
+                    { buttonText: 'Ignore cues: "Let\'s start another movie!"', nextScene: 'friend_t3_fail', meterChange: -25 },
+                    { buttonText: 'Read Room: "Looks like we\'re tired. I should head home!"', nextScene: 'friend_t3_success', meterChange: 35 }
+                ]
+            },
+            friend_t3_fail: { npcDialogue: '"Uh... guess so..." [FAIL: Lack of social awareness.]', characterVisual: '😩', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p1', resetMeter: true }] },
+            friend_t3_success: { npcDialogue: '"Yeah, I\'m exhausted!" [SUCCESS: High EQ reading non-verbal cues.]', characterVisual: '👋', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p1', resetMeter: true }] },
+
+            friend_t4_start: {
+                npcDialogue: '"Did you hear what happened to Priya? She is so embarrassing."', characterVisual: '🗣️',
+                choices: [
+                    { buttonText: 'Join In: "Yeah, so crazy."', nextScene: 'friend_t4_fail', meterChange: -30 },
+                    { buttonText: 'Neutralize: "I don\'t know her well. Did you finish the math homework?"', nextScene: 'friend_t4_success', meterChange: 30 }
+                ]
+            },
+            friend_t4_fail: { npcDialogue: 'You gossip for an hour. [FAIL: Toxicity spreads.]', characterVisual: '🐍', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p1', resetMeter: true }] },
+            friend_t4_success: { npcDialogue: '"Oh, right, the math." [SUCCESS: Starved gossip of oxygen.]', characterVisual: '🛡️', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p1', resetMeter: true }] },
+
+            friend_t5_start: {
+                npcDialogue: '"I want to watch horror!" (You get terrible nightmares).', characterVisual: '👻',
+                choices: [
+                    { buttonText: 'Complain: "No way, those are stupid."', nextScene: 'friend_t5_fail', meterChange: -20 },
+                    { buttonText: 'Compromise: "I get nightmares from those. Action movie instead?"', nextScene: 'friend_t5_success', meterChange: 25 }
+                ]
+            },
+            friend_t5_fail: { npcDialogue: 'Fight starts. [FAIL: Insulting their interest.]', characterVisual: '😤', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p1', resetMeter: true }] },
+            friend_t5_success: { npcDialogue: '"Action is fine." [SUCCESS: Honest vulnerability.]', characterVisual: '🍿', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p1', resetMeter: true }] },
+
+            friend_t6_start: {
+                npcDialogue: 'A friend cancels plans on you for the fourth time this month at the last minute.', characterVisual: '📱',
+                choices: [
+                    { buttonText: 'Passive Aggressive: "Whatever, didn\'t expect you to show up anyway."', nextScene: 'friend_t6_fail', meterChange: -25 },
+                    { buttonText: 'Honest: "I feel really bummed when you cancel last minute. Let\'s plan when you\'re 100% free."', nextScene: 'friend_t6_success', meterChange: 35 }
+                ]
+            },
+            friend_t6_fail: { npcDialogue: 'Friend ghosts you. [FAIL: Punitive language ruins friendships.]', characterVisual: '👻', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p2', resetMeter: true }] },
+            friend_t6_success: { npcDialogue: 'Friend apologizes sincerely. [SUCCESS: "I" statements work.]', characterVisual: '🤝', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p2', resetMeter: true }] },
+
+            friend_t7_start: {
+                npcDialogue: 'You tell a story about a hard test. Friend interrupts: "That\'s nothing, my test was twice as hard!"', characterVisual: '🗣️',
+                choices: [
+                    { buttonText: 'Argue: "No it wasn\'t, stop making everything about you!"', nextScene: 'friend_t7_fail', meterChange: -30 },
+                    { buttonText: 'Deflect: "That sounds intense! Anyway, as I was saying..."', nextScene: 'friend_t7_success', meterChange: 25 }
+                ]
+            },
+            friend_t7_fail: { npcDialogue: 'A shouting match begins. [FAIL: Ego vs Ego.]', characterVisual: '🌋', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p2', resetMeter: true }] },
+            friend_t7_success: { npcDialogue: 'They listen. [SUCCESS: Acknowledge and redirect.]', characterVisual: '↪️', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p2', resetMeter: true }] },
+
+            friend_t8_start: {
+                npcDialogue: 'A friend has had your expensive jacket for three weeks and hasn\'t returned it.', characterVisual: '🧥',
+                choices: [
+                    { buttonText: 'Hint: "Man, it\'s cold outside these days..."', nextScene: 'friend_t8_fail', meterChange: -20 },
+                    { buttonText: 'Direct: "Hey, I need that jacket back for this weekend! When can I swing by?"', nextScene: 'friend_t8_success', meterChange: 30 }
+                ]
+            },
+            friend_t8_fail: { npcDialogue: 'They don\'t get the hint. [FAIL: Passive communication fails.]', characterVisual: '🥶', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p2', resetMeter: true }] },
+            friend_t8_success: { npcDialogue: '"Oh my bad, come by tonight!" [SUCCESS: Clear logistics.]', characterVisual: '📅', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p2', resetMeter: true }] },
+
+            friend_t9_start: {
+                npcDialogue: 'Two of your friends start dying laughing at an inside joke you don\'t understand.', characterVisual: '😂',
+                choices: [
+                    { buttonText: 'Pout and scroll on your phone in silence.', nextScene: 'friend_t9_fail', meterChange: -20 },
+                    { buttonText: 'Engage: "I am totally lost! What are we laughing at?"', nextScene: 'friend_t9_success', meterChange: 25 }
+                ]
+            },
+            friend_t9_fail: { npcDialogue: 'They stop hanging out with you. [FAIL: Self-isolation.]', characterVisual: '📱', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p2', resetMeter: true }] },
+            friend_t9_success: { npcDialogue: 'They explain the joke to you. [SUCCESS: Joining the energy.]', characterVisual: '🤗', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p2', resetMeter: true }] },
+
+            friend_t10_start: {
+                npcDialogue: 'A friend sends a text: "Fine. Whatever." You can\'t tell if they are mad or busy.', characterVisual: '💬',
+                choices: [
+                    { buttonText: 'Assume anger: "Wow, what is your problem?"', nextScene: 'friend_t10_fail', meterChange: -35 },
+                    { buttonText: 'Verify: "Hey, hard to read tone over text. Are we good, or should we call?"', nextScene: 'friend_t10_success', meterChange: 35 }
+                ]
+            },
+            friend_t10_fail: { npcDialogue: 'They were just busy. Now they are mad. [FAIL]', characterVisual: '😡', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p2', resetMeter: true }] },
+            friend_t10_success: { npcDialogue: '"Sorry, just stressed with homework! We are good." [SUCCESS]', characterVisual: '✅', choices: [{ buttonText: 'Return', nextScene: 'menu_friend_p2', resetMeter: true }] },
+
+            // ==========================================
+            // 4. GRANDPARENTS
+            // ==========================================
+            menu_grandpa_p1: {
+                npcDialogue: 'Grandparents - Page 1:',
+                characterVisual: '🪑',
+                choices: [
+                    { buttonText: '1. The Missing Photos', nextScene: 'grandpa_t1_start', meterChange: 0 },
+                    { buttonText: '2. The Blue Bicycle', nextScene: 'grandpa_t2_start', meterChange: 0 },
+                    { buttonText: '3. Kids These Days', nextScene: 'grandpa_t3_start', meterChange: 0 },
+                    { buttonText: '4. Don\'t Go Outside!', nextScene: 'grandpa_t4_start', meterChange: 0 },
+                    { buttonText: '5. The Scratchy Sweater', nextScene: 'grandpa_t5_start', meterChange: 0 },
+                    { buttonText: '➡️ Next Page', nextScene: 'menu_grandpa_p2', meterChange: 0, isNavBtn: true },
+                    { buttonText: '⬅️ Back to Map', nextScene: 'main_menu', meterChange: 0, isBackBtn: true }
+                ]
+            },
+            menu_grandpa_p2: {
+                npcDialogue: 'Grandparents - Page 2:',
+                characterVisual: '🪑',
+                choices: [
+                    { buttonText: '6. The Garlic Cure', nextScene: 'grandpa_t6_start', meterChange: 0 },
+                    { buttonText: '7. Where Are the Sweets?', nextScene: 'grandpa_t7_start', meterChange: 0 },
+                    { buttonText: '8. The Family Way', nextScene: 'grandpa_t8_start', meterChange: 0 },
+                    { buttonText: '9. Turn That Off!', nextScene: 'grandpa_t9_start', meterChange: 0 },
+                    { buttonText: '10. The 15-Page Form', nextScene: 'grandpa_t10_start', meterChange: 0 },
+                    { buttonText: '⬅️ Previous Page', nextScene: 'menu_grandpa_p1', meterChange: 0, isNavBtn: true },
+                    { buttonText: '⬅️ Back to Map', nextScene: 'main_menu', meterChange: 0, isBackBtn: true }
+                ]
+            },
+            grandpa_t1_start: {
+                npcDialogue: '"This phone deleted my photos again. Fix it?"', characterVisual: '👴',
+                choices: [
+                    { buttonText: 'Impatient: "You keep pressing the wrong button!"', nextScene: 'grandpa_t1_fail', meterChange: -20 },
+                    { buttonText: 'Patient: "They just moved. Let me show you how to find them."', nextScene: 'grandpa_t1_success', meterChange: 30 }
+                ]
+            },
+            grandpa_t1_fail: { npcDialogue: 'Grandpa is embarrassed. [FAIL]', characterVisual: '😔', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p1', resetMeter: true }] },
+            grandpa_t1_success: { npcDialogue: '"Thank you." [SUCCESS: Empathy.]', characterVisual: '😌', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p1', resetMeter: true }] },
+
+            grandpa_t2_start: {
+                npcDialogue: 'Grandpa starts telling the story about his bicycle for the 100th time.', characterVisual: '🚲',
+                choices: [
+                    { buttonText: 'Interrupt: "You told me this yesterday!"', nextScene: 'grandpa_t2_fail', meterChange: -30 },
+                    { buttonText: 'Listen: "Oh yeah, the blue one! What happened to it?"', nextScene: 'grandpa_t2_success', meterChange: 40 }
+                ]
+            },
+            grandpa_t2_fail: { npcDialogue: 'He looks sad. [FAIL: Cut the connection.]', characterVisual: '💔', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p1', resetMeter: true }] },
+            grandpa_t2_success: { npcDialogue: 'He smiles. [SUCCESS: Gift of attention.]', characterVisual: '😊', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p1', resetMeter: true }] },
+
+            grandpa_t3_start: {
+                npcDialogue: '"Kids these days are ruined by the internet." (You build things online).', characterVisual: '👵',
+                choices: [
+                    { buttonText: 'Lecture: "You don\'t understand the modern world!"', nextScene: 'grandpa_t3_fail', meterChange: -30 },
+                    { buttonText: 'Bridge: "It can be a distraction. But I use it to learn coding!"', nextScene: 'grandpa_t3_success', meterChange: 25 }
+                ]
+            },
+            grandpa_t3_fail: { npcDialogue: '"Disrespectful." [FAIL]', characterVisual: '🛑', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p1', resetMeter: true }] },
+            grandpa_t3_success: { npcDialogue: '"Doing something smart with it." [SUCCESS]', characterVisual: '💡', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p1', resetMeter: true }] },
+
+            grandpa_t4_start: {
+                npcDialogue: '"Don\'t go outside, it\'s cloudy! You\'ll end up in the hospital!"', characterVisual: '☁️',
+                choices: [
+                    { buttonText: 'Dismissive: "Don\'t be ridiculous."', nextScene: 'grandpa_t4_fail', meterChange: -25 },
+                    { buttonText: 'Reassuring: "I have my heavy jacket on, I promise I\'ll be warm!"', nextScene: 'grandpa_t4_success', meterChange: 25 }
+                ]
+            },
+            grandpa_t4_fail: { npcDialogue: '"You never listen." [FAIL]', characterVisual: '😟', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p1', resetMeter: true }] },
+            grandpa_t4_success: { npcDialogue: '"Okay... pull your hood up." [SUCCESS]', characterVisual: '🧣', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p1', resetMeter: true }] },
+
+            grandpa_t5_start: {
+                npcDialogue: 'They give you an ugly, scratchy sweater for your birthday.', characterVisual: '🧥',
+                choices: [
+                    { buttonText: 'Honest: "I am never going to wear this."', nextScene: 'grandpa_t5_fail', meterChange: -40 },
+                    { buttonText: 'Grateful: "Thank you so much! I love the green color!"', nextScene: 'grandpa_t5_success', meterChange: 35 }
+                ]
+            },
+            grandpa_t5_fail: { npcDialogue: 'They look hurt. [FAIL]', characterVisual: '😢', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p1', resetMeter: true }] },
+            grandpa_t5_success: { npcDialogue: 'They beam with pride. [SUCCESS]', characterVisual: '🎁', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p1', resetMeter: true }] },
+
+            grandpa_t6_start: {
+                npcDialogue: '"Don\'t take those pills, rub this garlic paste on your neck for the fever."', characterVisual: '🧄',
+                choices: [
+                    { buttonText: 'Mock: "That is scientifically ridiculous."', nextScene: 'grandpa_t6_fail', meterChange: -30 },
+                    { buttonText: 'Respect: "I appreciate you looking out for me! I\'m going to stick to the doctor\'s medicine for now though."', nextScene: 'grandpa_t6_success', meterChange: 30 }
+                ]
+            },
+            grandpa_t6_fail: { npcDialogue: 'Grandma is insulted. [FAIL: Destroyed their dignity.]', characterVisual: '😤', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p2', resetMeter: true }] },
+            grandpa_t6_success: { npcDialogue: '"Well, if you say so." [SUCCESS: Reject the idea, keep the relationship.]', characterVisual: '✅', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p2', resetMeter: true }] },
+
+            grandpa_t7_start: {
+                npcDialogue: '"Why aren\'t you eating the sweets I made? Do you hate my cooking now?"', characterVisual: '🧁',
+                choices: [
+                    { buttonText: 'Blunt: "Sugar is basically poison for the brain."', nextScene: 'grandpa_t7_fail', meterChange: -25 },
+                    { buttonText: 'Affirm: "Your cooking is the best in the world! I am just trying to eat more vegetables this week."', nextScene: 'grandpa_t7_success', meterChange: 30 }
+                ]
+            },
+            grandpa_t7_fail: { npcDialogue: 'She cries. [FAIL: Food equals love to elders.]', characterVisual: '😭', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p2', resetMeter: true }] },
+            grandpa_t7_success: { npcDialogue: '"I will make you vegetable curry tomorrow!" [SUCCESS]', characterVisual: '🥦', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p2', resetMeter: true }] },
+
+            grandpa_t8_start: {
+                npcDialogue: '"You must perform this family ritual exactly this way, or it brings bad luck."', characterVisual: '🕯️',
+                choices: [
+                    { buttonText: 'Rebel: "I don\'t even believe in this stuff anyway."', nextScene: 'grandpa_t8_fail', meterChange: -35 },
+                    { buttonText: 'Honor: "I love that this is important to our family history. Show me how."', nextScene: 'grandpa_t8_success', meterChange: 35 }
+                ]
+            },
+            grandpa_t8_fail: { npcDialogue: 'A massive generational rift opens. [FAIL]', characterVisual: '⚡', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p2', resetMeter: true }] },
+            grandpa_t8_success: { npcDialogue: 'He proudly shows you. [SUCCESS: Respecting roots.]', characterVisual: '🌳', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p2', resetMeter: true }] },
+
+            grandpa_t9_start: {
+                npcDialogue: '"Turn off that screen! You have been playing games for hours!" (You are doing homework).', characterVisual: '💻',
+                choices: [
+                    { buttonText: 'Yell: "I AM DOING HOMEWORK! LEAVE ME ALONE!"', nextScene: 'grandpa_t9_fail', meterChange: -30 },
+                    { buttonText: 'Educate: "I\'m actually doing biology research! Want me to show you what I\'m reading?"', nextScene: 'grandpa_t9_success', meterChange: 30 }
+                ]
+            },
+            grandpa_t9_fail: { npcDialogue: 'They unplug the router. [FAIL: Escalation.]', characterVisual: '🔌', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p2', resetMeter: true }] },
+            grandpa_t9_success: { npcDialogue: '"Oh! Look at those cells." [SUCCESS: Transparency builds trust.]', characterVisual: '🔬', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p2', resetMeter: true }] },
+
+            grandpa_t10_start: {
+                npcDialogue: '"Can you help me with this bank form? It makes no sense." (It is 15 pages long).', characterVisual: '📄',
+                choices: [
+                    { buttonText: 'Sigh: "Just sign here, I\'ll do the rest, you\'re too slow."', nextScene: 'grandpa_t10_fail', meterChange: -25 },
+                    { buttonText: 'Patience: "These forms are ridiculously confusing. Let\'s take it one line at a time together."', nextScene: 'grandpa_t10_success', meterChange: 35 }
+                ]
+            },
+            grandpa_t10_fail: { npcDialogue: 'They feel useless and old. [FAIL]', characterVisual: '🥀', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p2', resetMeter: true }] },
+            grandpa_t10_success: { npcDialogue: '"Thank you for your patience." [SUCCESS: Dignity preserved.]', characterVisual: '🏛️', choices: [{ buttonText: 'Return', nextScene: 'menu_grandpa_p2', resetMeter: true }] },
+
+
+            // ==========================================
+            // 5. COMMUNITY ELDERS
+            // ==========================================
+            menu_elder_p1: {
+                npcDialogue: 'Community Scenarios - Page 1:',
+                characterVisual: '🌳',
+                choices: [
+                    { buttonText: '1. The Haircut', nextScene: 'elder_t1_start', meterChange: 0 },
+                    { buttonText: '2. I Saw You!', nextScene: 'elder_t2_start', meterChange: 0 },
+                    { buttonText: '3. The Heavy Bags', nextScene: 'elder_t3_start', meterChange: 0 },
+                    { buttonText: '4. Digital Workshop', nextScene: 'elder_t4_start', meterChange: 0 },
+                    { buttonText: '5. Elevator Silence', nextScene: 'elder_t5_start', meterChange: 0 },
+                    { buttonText: '➡️ Next Page', nextScene: 'menu_elder_p2', meterChange: 0, isNavBtn: true },
+                    { buttonText: '⬅️ Back to Map', nextScene: 'main_menu', meterChange: 0, isBackBtn: true }
+                ]
+            },
+            menu_elder_p2: {
+                npcDialogue: 'Community Scenarios - Page 2:',
+                characterVisual: '🌳',
+                choices: [
+                    { buttonText: '6. The 500 Note', nextScene: 'elder_t6_start', meterChange: 0 },
+                    { buttonText: '7. How Much Do They Make?', nextScene: 'elder_t7_start', meterChange: 0 },
+                    { buttonText: '8. Look Prettier', nextScene: 'elder_t8_start', meterChange: 0 },
+                    { buttonText: '9. Cutting the Line', nextScene: 'elder_t9_start', meterChange: 0 },
+                    { buttonText: '10. Move Along!', nextScene: 'elder_t10_start', meterChange: 0 },
+                    { buttonText: '⬅️ Previous Page', nextScene: 'menu_elder_p1', meterChange: 0, isNavBtn: true },
+                    { buttonText: '⬅️ Back to Map', nextScene: 'main_menu', meterChange: 0, isBackBtn: true }
+                ]
+            },
+            elder_t1_start: {
+                npcDialogue: '"That haircut is terrible. No discipline today."', characterVisual: '🧓',
+                choices: [
+                    { buttonText: 'Disrespectful: "Good thing it\'s not your hair!"', nextScene: 'elder_t1_fail', meterChange: -40 },
+                    { buttonText: 'Dismissal: "It\'s a modern style! Have a good day."', nextScene: 'elder_t1_success', meterChange: 20 }
+                ]
+            },
+            elder_t1_fail: { npcDialogue: '"How rude!" [FAIL]', characterVisual: '😤', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p1', resetMeter: true }] },
+            elder_t1_success: { npcDialogue: 'They grumble. [SUCCESS]', characterVisual: '🚶', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p1', resetMeter: true }] },
+
+            elder_t2_start: {
+                npcDialogue: 'Shop owner: "I saw you kids littering!" (It wasn\'t you).', characterVisual: '🏪',
+                choices: [
+                    { buttonText: 'Yell: "Are you blind? We just got here!"', nextScene: 'elder_t2_fail', meterChange: -30 },
+                    { buttonText: 'Calm: "Oh, we just walked up! We\'ll use the bin for our stuff, though."', nextScene: 'elder_t2_success', meterChange: 35 }
+                ]
+            },
+            elder_t2_fail: { npcDialogue: '"I\'m calling police!" [FAIL: Escalation looks guilty.]', characterVisual: '🚨', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p1', resetMeter: true }] },
+            elder_t2_success: { npcDialogue: '"Oh... well." [SUCCESS: Calmness proves innocence.]', characterVisual: '🧹', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p1', resetMeter: true }] },
+
+            elder_t3_start: {
+                npcDialogue: 'An older person is struggling with heavy bags.', characterVisual: '🛍️',
+                choices: [
+                    { buttonText: 'Walk past quickly.', nextScene: 'elder_t3_fail', meterChange: -20 },
+                    { buttonText: 'Offer: "Excuse me, can I help you carry those?"', nextScene: 'elder_t3_success', meterChange: 40 }
+                ]
+            },
+            elder_t3_fail: { npcDialogue: 'Guilt sets in. [FAIL: Missed civic duty.]', characterVisual: '👀', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p1', resetMeter: true }] },
+            elder_t3_success: { npcDialogue: '"Oh, bless you!" [SUCCESS: Community building.]', characterVisual: '💪', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p1', resetMeter: true }] },
+
+            elder_t4_start: {
+                npcDialogue: '"Why do you kids just stare at screens all day?"', characterVisual: '📱',
+                choices: [
+                    { buttonText: 'Defensive: "Because outside is boring."', nextScene: 'elder_t4_fail', meterChange: -20 },
+                    { buttonText: 'Educate: "I use mine to build software. It\'s a digital workshop!"', nextScene: 'elder_t4_success', meterChange: 30 }
+                ]
+            },
+            elder_t4_fail: { npcDialogue: '"Lazy generation." [FAIL]', characterVisual: '🤦', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p1', resetMeter: true }] },
+            elder_t4_success: { npcDialogue: '"A workshop? Useful." [SUCCESS: Relatable metaphors.]', characterVisual: '🛠️', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p1', resetMeter: true }] },
+
+            elder_t5_start: {
+                npcDialogue: 'Stuck in an elevator in total silence with a neighbor.', characterVisual: '🛗',
+                choices: [
+                    { buttonText: 'Pretend to text.', nextScene: 'elder_t5_fail', meterChange: -15 },
+                    { buttonText: 'Icebreaker: "Good morning! Beautiful weather today, isn\'t it?"', nextScene: 'elder_t5_success', meterChange: 20 }
+                ]
+            },
+            elder_t5_fail: { npcDialogue: 'Awkward silence. [FAIL: Anti-social.]', characterVisual: '😶', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p1', resetMeter: true }] },
+            elder_t5_success: { npcDialogue: '"Yes, finally!" [SUCCESS: High EQ small talk.]', characterVisual: '🌤️', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p1', resetMeter: true }] },
+
+            elder_t6_start: {
+                npcDialogue: 'A shopkeeper gives you change for a 100 note, but you handed them 500.', characterVisual: '💵',
+                choices: [
+                    { buttonText: 'Accuse: "Hey, you are trying to scam me! I gave you 500!"', nextScene: 'elder_t6_fail', meterChange: -30 },
+                    { buttonText: 'Benefit of Doubt: "Excuse me, I think I handed you a 500 note. Could we check?"', nextScene: 'elder_t6_success', meterChange: 30 }
+                ]
+            },
+            elder_t6_fail: { npcDialogue: '"I don\'t scam people!" [FAIL: Attacking their character.]', characterVisual: '🤬', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] },
+            elder_t6_success: { npcDialogue: '"Oh, my mistake, here you go." [SUCCESS: Graceful correction.]', characterVisual: '🙏', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] },
+
+            elder_t7_start: {
+                npcDialogue: 'A nosy neighbor asks: "So how much money does your father make at his new job?"', characterVisual: '🕵️',
+                choices: [
+                    { buttonText: 'Offended: "That is incredibly rude to ask!"', nextScene: 'elder_t7_fail', meterChange: -25 },
+                    { buttonText: 'Deflect: "Oh, you\'d have to ask him about that! Have a great day!"', nextScene: 'elder_t7_success', meterChange: 25 }
+                ]
+            },
+            elder_t7_fail: { npcDialogue: 'They gossip about your attitude. [FAIL]', characterVisual: '🐍', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] },
+            elder_t7_success: { npcDialogue: 'They are stumped. [SUCCESS: Masterful boundary deflection.]', characterVisual: '🧱', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] },
+
+            elder_t8_start: {
+                npcDialogue: 'Walking down the street, a stranger stops you and snaps, "Kids today have no manners, you did not even greet me!"', characterVisual: '😬',
+                choices: [
+                    { buttonText: 'Snap back: "I do not even know you!"', nextScene: 'elder_t8_fail', meterChange: -20 },
+                    { buttonText: 'Keep walking/Neutral: "Sorry, in a hurry today, have a good one!"', nextScene: 'elder_t8_success', meterChange: 25 }
+                ]
+            },
+
+            elder_t8_fail: { npcDialogue: 'The stranger keeps grumbling loudly. [FAIL: Escalating with a stranger wastes energy.]', characterVisual: '📣', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] },
+            elder_t8_success: { npcDialogue: 'You walk away safely. [SUCCESS: De-escalation and exit.]', characterVisual: '🚶‍♀️', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] },
+
+            elder_t9_start: {
+                npcDialogue: 'An older person blatantly cuts in front of you in a long line.', characterVisual: '🧍',
+                choices: [
+                    { buttonText: 'Passive Aggressive: Mutter loudly about how rude people are.', nextScene: 'elder_t9_fail', meterChange: -25 },
+                    { buttonText: 'Direct: "Excuse me, the back of the line is actually right behind me."', nextScene: 'elder_t9_success', meterChange: 35 }
+                ]
+            },
+            elder_t9_fail: { npcDialogue: 'They ignore you, you stay angry. [FAIL: Complaining fixes nothing.]', characterVisual: '😤', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] },
+            elder_t9_success: { npcDialogue: '"Oh, I didn\'t see!" [SUCCESS: Polite assertiveness claims your space.]', characterVisual: '🛑', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] },
+
+            elder_t10_start: {
+                npcDialogue: 'A security guard approaches aggressively: "You can\'t loiter here! Move along!"', characterVisual: '🔦',
+                choices: [
+                    { buttonText: 'Ego: "I have a right to stand here, it\'s a public sidewalk!"', nextScene: 'elder_t10_fail', meterChange: -35 },
+                    { buttonText: 'De-escalate: "Sorry for the confusion! I\'m just waiting for my ride, I can wait down the block if you prefer."', nextScene: 'elder_t10_success', meterChange: 40 }
+                ]
+            },
+            elder_t10_fail: { npcDialogue: 'They call for backup. [FAIL: Challenging authority with ego.]', characterVisual: '🚓', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] },
+            elder_t10_success: { npcDialogue: '"Just stay by the bench then." [SUCCESS: Removing the threat allows them to relax rules.]', characterVisual: '🤝', choices: [{ buttonText: 'Return', nextScene: 'menu_elder_p2', resetMeter: true }] }
+
+        };
+
+        updateScene('main_menu');
+
+        // ── Bhāva Menu ───────────────────────────────────────────────────────
+        document.getElementById('bvMenuBtn').addEventListener('click', () => {
+            document.getElementById('bvMenuOverlay').style.display = 'flex';
+        });
+        document.getElementById('bvMenuOverlay').addEventListener('click', e => {
+            if (e.target.id === 'bvMenuOverlay') document.getElementById('bvMenuOverlay').style.display = 'none';
+        });
+
+        // ── Capacitor back button ─────────────────────────────────────────────
+        if (typeof Capacitor !== 'undefined' && Capacitor.Plugins && Capacitor.Plugins.App) {
+            Capacitor.Plugins.App.addListener('backButton', () => {
+                if (document.getElementById('bvMenuOverlay').style.display === 'flex') {
+                    document.getElementById('bvMenuOverlay').style.display = 'none'; return;
+                }
+                if (currentSceneKey !== 'main_menu') {
+                    currentMeter = 50;
+                    updateScene('main_menu');
+                    document.getElementById('meter-fill').style.width = '50%';
+                    document.getElementById('meter-fill').style.backgroundColor = '#fbc531';
+                    document.getElementById('meter-score').textContent = '50';
+                }
+            });
+        }
+    </script>
+
+    <script src="bhava-tech-all.js"></script>
+    <script src="bhava-bridge.js"></script>
+    <script src="bhava-session.js"></script>
+    <script src="bhava-game-nav.js"></script>
+</body>
+</html>

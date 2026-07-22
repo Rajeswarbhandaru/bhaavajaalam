@@ -1,0 +1,2281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bhāva Tech Likh-well</title>
+<style>
+  :root{
+    --bg:#f6f2ea;
+    --card:#ffffff;
+    --ink:#222;
+    --accent:#2e7d32;
+    --accent2:#1565c0;
+    --muted:#6b7280;
+    --line:#cfcfcf;
+    --danger:#c62828;
+    --soft:#eef6ee;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    padding:24px;
+    font-family:Arial, Helvetica, sans-serif;
+    background:var(--bg);
+    color:#222;
+  }
+  .app{ max-width:1100px; margin:0 auto; }
+  .card{
+    background:var(--card);
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.06);
+    padding:18px;
+    margin-bottom:16px;
+  }
+  h1{ margin:0 0 6px; font-size:28px; }
+  .sub{ margin:0; color:var(--muted); line-height:1.5; }
+  .toolbar{
+    display:grid;
+    grid-template-columns:repeat(9, minmax(120px, 1fr));
+    gap:12px;
+    align-items:end;
+  }
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-size:13px; color:#4b5563; font-weight:600; }
+  select, button{
+    height:42px;
+    border-radius:10px;
+    border:1px solid #d1d5db;
+    background:#fff;
+    padding:0 12px;
+    font-size:14px;
+  }
+  button{ cursor:pointer; font-weight:700; }
+  .primary{background:var(--accent); color:#fff; border:none;}
+  .secondary{background:#9aa0a6; color:#fff; border:none;}
+  .blue{background:var(--accent2); color:#fff; border:none;}
+  .checkline{
+    display:flex; align-items:center; gap:8px; height:42px;
+    padding:0 10px; border:1px solid #d1d5db; border-radius:10px; background:#fff;
+  }
+  .prompt{ display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+  .promptBox{
+    background:#f8fafc; border:1px dashed #cbd5e1; border-radius:12px;
+    padding:12px 14px; flex:1; min-width:280px;
+  }
+  .promptTitle{
+    font-size:12px; color:#64748b; text-transform:uppercase;
+    letter-spacing:0.08em; margin-bottom:4px;
+  }
+  .promptText{ font-size:28px; color:#111827; min-height:34px; }
+  #drawCanvas{
+    width:100%; max-width:100%; display:block; border-radius:14px;
+    background:#fffdf8; border:1px solid #ece7dd; touch-action:none; cursor:crosshair;
+  }
+  .canvasButtons{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+  .grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; }
+  .metric{
+    background:#f8fafc; border:1px solid #e5e7eb; border-radius:14px;
+    padding:14px; text-align:center;
+  }
+  .metric .label{ color:#6b7280; font-size:13px; margin-bottom:6px; }
+  .metric .value{ font-size:30px; font-weight:800; }
+  #feedbackBox{
+    margin-top:14px; background:var(--soft); border:1px solid #d7ead7;
+    border-radius:12px; padding:14px; line-height:1.5;
+  }
+  .history{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .mini{ background:#f8fafc; border:1px solid #e5e7eb; border-radius:12px; padding:14px; }
+  .mini h3{ margin:0 0 10px; font-size:16px; }
+  .statsRow{ display:flex; justify-content:space-between; margin:6px 0; color:#374151; }
+  .recentList{ margin:0; padding-left:18px; color:#374151; }
+  .legend{ font-size:13px; color:#6b7280; line-height:1.5; }
+  @media (max-width:900px){
+    .toolbar{grid-template-columns:1fr 1fr;}
+    .grid{grid-template-columns:1fr 1fr;}
+    .history{grid-template-columns:1fr;}
+  }
+  @media (max-width:600px){
+    body{padding:12px;}
+    .toolbar{grid-template-columns:1fr;}
+    .grid{grid-template-columns:1fr;}
+    .promptText{font-size:22px;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+      <div>
+        <h1>Bhāva Tech Likh-well</h1>
+        <p class="sub">
+          Practice lowercase, UPPERCASE, cursive letters, words, and sentences.
+          Draw on the copybook lines, then click Submit to measure accuracy, boundary control, and clarity.
+        </p>
+      </div>
+      <button class="secondary" id="homeBtn" style="white-space:nowrap;"></button>
+    </div>
+  </div>
+
+  
+  <div class="card">
+    <div class="toolbar">
+      <div class="field">
+        <label for="practiceType">Practice type</label>
+        <select id="practiceType">
+          <option value="lowercase">Lowercase letters</option>
+          <option value="uppercase">Uppercase letters</option>
+          <option value="cursive">Cursive letters</option>
+          <option value="calligraphy_drills">Calligraphy: Warm-up drills</option>
+          <option value="calligraphy_alphabet">Calligraphy: Alphabet</option>
+          <option value="words">Words</option>
+          <option value="sentences">Sentences</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="exerciseSelect">Exercise</label>
+        <select id="exerciseSelect"></select>
+      </div>
+
+      <div class="field">
+        <label>Tracing guide</label>
+        <div class="checkline">
+          <input type="checkbox" id="traceToggle" checked />
+          <span>Show target</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Stroke animation</label>
+        <div class="checkline">
+          <input type="checkbox" id="animToggle" checked />
+          <span>Show dot guide</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Read aloud</label>
+        <div class="checkline">
+          <input type="checkbox" id="speakToggle" checked />
+          <span>Speak letter/word</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Sound effects</label>
+        <div class="checkline">
+          <input type="checkbox" id="soundToggle" checked />
+          <span>Score chime</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="fontStyleSelect">Target style</label>
+        <select id="fontStyleSelect">
+          <option value="serif">Serif</option>
+          <option value="sans">Sans-serif</option>
+          <option value="print">Print-like</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="speedSelect">Guide dot speed</label>
+        <select id="speedSelect">
+          <option value="220">Very slow</option>
+          <option value="150" selected>Slow</option>
+          <option value="90">Normal</option>
+          <option value="45">Fast</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="nibAngleSelect">Nib angle (calligraphy)</label>
+        <select id="nibAngleSelect">
+          <option value="30">30°</option>
+          <option value="45" selected>45° (classic)</option>
+          <option value="60">60°</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="letterSizeSelect">Letter size (em)</label>
+        <select id="letterSizeSelect">
+          <option value="0.6">Small (0.6em)</option>
+          <option value="0.8">Medium (0.8em)</option>
+          <option value="1.0" selected>Large (1.0em)</option>
+          <option value="1.2">Extra large (1.2em)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="inkColorSelect">Ink color</label>
+        <select id="inkColorSelect">
+          <option value="#1a1a2e" selected>Classic black</option>
+          <option value="#1565c0">Blue</option>
+          <option value="#2e7d32">Green</option>
+          <option value="#c62828">Red</option>
+          <option value="#6a1b9a">Purple</option>
+          <option value="#e65100">Orange</option>
+          <option value="#00838f">Teal</option>
+          <option value="#ad1457">Pink</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="guideStyleSelect">Guide fill style</label>
+        <select id="guideStyleSelect">
+          <option value="solid" selected>Solid fill</option>
+          <option value="outline">Outline only</option>
+          <option value="dotted">Dotted outline</option>
+          <option value="hollow">Hollow (thin stroke)</option>
+          <option value="none">None (blank — freehand)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>&nbsp;</label>
+        <button class="blue" id="randomBtn">Random exercise</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="deviceTipsCard">
+    <h3 style="margin:0 0 10px;">Writing on screens vs. paper — how to get closer to real pen feel</h3>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);">
+      <div class="metric" style="text-align:left;">
+        <div class="label">On a laptop/PC</div>
+        <div style="font-size:14px;color:#374151;line-height:1.5;">
+          A mouse or trackpad has no pressure and moves from the wrist, not the fingers.
+          Use a small USB/Bluetooth <b>pen tablet</b> (e.g. Wacom One, XP-Pen) —
+          it reports real pressure and lets the hand rest naturally like on paper.
+        </div>
+      </div>
+      <div class="metric" style="text-align:left;">
+        <div class="label">On a tablet/phone</div>
+        <div style="font-size:14px;color:#374151;line-height:1.5;">
+          A finger is too smooth and wide. Use a <b>capacitive stylus</b> for casual practice,
+          or a <b>pressure-sensitive pen</b> (S Pen, Apple Pencil) for the closest match
+          to real pencil control and grip.
+        </div>
+      </div>
+      <div class="metric" style="text-align:left;">
+        <div class="label">Best posture &amp; grip</div>
+        <div style="font-size:14px;color:#374151;line-height:1.5;">
+          Hold the stylus like a real pencil, rest your palm on the surface,
+          and keep the screen tilted slightly like a notebook — sitting flat
+          changes the wrist angle compared to real handwriting.
+        </div>
+      </div>
+    </div>
+    <div id="pressureReadout" style="margin-top:12px;font-size:13px;color:#6b7280;">
+      Live input check: draw a small line above to see what device type and pressure level this app is detecting.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="prompt">
+      <div class="promptBox">
+        <div class="promptTitle">Write this</div>
+        <div class="promptText" id="promptText">a</div>
+      </div>
+      <div class="legend">
+        Four-line copybook: top line, dashed middle line, baseline, descender line.<br>
+        The faint blue text and the moving red dot show you where and how to start.<br>
+        <b>Letter size (em):</b> makes the target bigger or smaller, like changing font-size — good for younger students who need larger targets.<br>
+        <b>Guide fill style:</b> Solid fill colors the whole shape faintly; Outline/Dotted only trace the border; Hollow gives a thin hint line; <b>None</b> removes all guides for true freehand writing practice (scoring still works, just without visual help).<br>
+        <b>Ink color:</b> choose the color your writing appears in — great for switching pens between practice sessions or making mistakes easier to spot.<br>
+        <b>Read aloud:</b> speaks each letter/word/sentence out loud when it appears, reinforcing the sound-symbol connection.<br>
+        <b>Sound effects:</b> plays a cheerful chime for high scores, a soft neutral tone for medium scores, and a gentle try-again tone for low scores.<br>
+        <b>Calligraphy modes:</b> hold your stylus at a steady angle — pick the matching Nib angle above.
+        Strokes that cross the nib angle come out thick; strokes that run along it stay thin, just like a real broad-nib pen.
+      </div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <canvas id="drawCanvas" width="980" height="360"></canvas>
+    </div>
+
+    <div class="canvasButtons">
+      <button class="secondary" id="undoBtn">Undo</button>
+      <button class="secondary" id="eraserBtn">Eraser: Off</button>
+      <button class="secondary" id="clearBtn">Clear</button>
+      <button class="primary" id="submitBtn">Submit</button>
+      <button id="backBtn">◀ Back</button>
+      <button id="nextBtn">Next ▶</button>
+      <button class="secondary" id="scoreCriteriaBtn">ℹ️ Score Criteria</button>
+      <button class="blue" id="endSessionBtn">🪔 End Bhava Session</button>
+    </div>
+
+    <div id="sessionSummaryModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:50;align-items:center;justify-content:center;">
+      <div style="background:#fff;border-radius:16px;padding:24px;max-width:420px;width:90%;box-shadow:0 8px 24px rgba(0,0,0,0.2);">
+        <h2 style="margin:0 0 10px;color:#2e7d32;">Bhāva Session Complete</h2>
+        <div id="sessionSummaryBody" style="font-size:14px;line-height:1.6;color:#374151;"></div>
+        <button class="primary" id="closeSessionBtn" style="margin-top:16px;width:100%;">Continue</button>
+      </div>
+    </div>
+
+    <div id="criteriaModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:50;align-items:center;justify-content:center;">
+      <div style="background:#fff;border-radius:16px;padding:24px;max-width:460px;width:90%;box-shadow:0 8px 24px rgba(0,0,0,0.2);">
+        <h2 style="margin:0 0 10px;">How Your Score Is Calculated</h2>
+        <ul style="font-size:14px;line-height:1.7;color:#374151;padding-left:18px;">
+          <li><b>Accuracy (55%)</b> — how closely your stroke shape matches the target letter/word, measured by comparing resampled point clouds.</li>
+          <li><b>Boundary (25%)</b> — whether your writing stays within the copybook lines and matches the target's height/width.</li>
+          <li><b>Clarity (20%)</b> — smoothness of strokes: less overdraw, fewer jerky angle changes, and consistent pen speed.</li>
+        </ul>
+        <p style="font-size:13px;color:#6b7280;">Score bands: 90+ Excellent &middot; 78-89 Good &middot; 60-77 Needs adjustment &middot; below 60 Keep practicing.</p>
+        <button class="primary" id="closeCriteriaBtn" style="margin-top:12px;width:100%;">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="grid">
+      <div class="metric">
+        <div class="label">Final score</div>
+        <div class="value" id="finalScore">--</div>
+      </div>
+      <div class="metric">
+        <div class="label">Accuracy</div>
+        <div class="value" id="accuracyScore">--</div>
+      </div>
+      <div class="metric">
+        <div class="label">Boundary</div>
+        <div class="value" id="boundaryScore">--</div>
+      </div>
+      <div class="metric">
+        <div class="label">Clarity</div>
+        <div class="value" id="clarityScore">--</div>
+      </div>
+    </div>
+
+    <div id="feedbackBox">
+      Draw the current exercise and click Submit. The system will compare your writing to the target shape and give a detailed tip.
+    </div>
+  </div>
+
+  <div class="card history">
+    <div class="mini">
+      <h3>Current mode stats</h3>
+      <div id="statsBox"></div>
+    </div>
+    <div class="mini">
+      <h3>Recent attempts</h3>
+      <div id="recentBox"></div>
+    </div>
+  </div>
+
+  <div class="card" id="sheetCard">
+    <h1 style="font-size:22px;">Multi-Letter Practice Sheet</h1>
+    <p class="sub">Practice many letters on one page at once — no need to click Next between letters.</p>
+
+    <div class="toolbar" style="grid-template-columns:repeat(5, minmax(140px, 1fr)); margin-top:14px;">
+      <div class="field">
+        <label for="sheetModeSelect">Sheet mode</label>
+        <select id="sheetModeSelect">
+          <option value="all">Full A-Z (all 26)</option>
+          <option value="selected">Selected letters</option>
+          <option value="random">Random letters</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="sheetCaseSelect">Letter case</label>
+        <select id="sheetCaseSelect">
+          <option value="lowercase" selected>Lowercase</option>
+          <option value="uppercase">Uppercase</option>
+        </select>
+      </div>
+
+      <div class="field" id="sheetRandomCountField" style="display:none;">
+        <label for="sheetRandomCount">Random count</label>
+        <select id="sheetRandomCount">
+          <option value="5">5 letters</option>
+          <option value="10" selected>10 letters</option>
+          <option value="15">15 letters</option>
+          <option value="20">20 letters</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>&nbsp;</label>
+        <button class="blue" id="generateSheetBtn">Generate sheet</button>
+      </div>
+
+      <div class="field">
+        <label>&nbsp;</label>
+        <button class="primary" id="submitSheetBtn">Submit all</button>
+      </div>
+    </div>
+
+    <div id="sheetPickerBox" style="display:none; margin-top:12px; padding:12px; background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px;">
+      <div class="promptTitle" style="margin-bottom:8px;">Choose letters to include</div>
+      <div id="sheetCheckboxGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(46px,1fr)); gap:8px;"></div>
+    </div>
+
+    <div id="sheetContainer" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(190px,1fr)); gap:14px; margin-top:16px;"></div>
+
+    <div id="sheetResults" style="margin-top:14px;"></div>
+  </div>
+
+</div>
+
+<script>
+/* =====================================================================
+   HANDWRITING PRACTICE STUDIO — FULL MERGED VERSION
+   =====================================================================
+   Sections:
+   1. Practice data (lowercase / uppercase / cursive / words / sentences)
+   2. Element references
+   3. Layout constants (copybook lines)
+   4. Global state
+   5. History (localStorage) helpers
+   6. Exercise dropdown setup
+   7. Canvas background + guide lines
+   8. Target style + font size fitting
+   9. Target generation from text (pixel-scan point cloud)
+   10. Stroke capture (Pointer Events: mouse + touch + stylus + pressure)
+   11. Drawing the user's ink (pressure-aware smoothing)
+   12. Render the whole scene
+   13. Stroke-order animation (moving dot + arrow guide)
+   14. Clear drawing
+   15. Geometry helpers
+   16. Resampling (ordered path / unordered cloud)
+   17. Normalization
+   18. Shape similarity (Accuracy)
+   19. Boundary score
+   20. Clarity score (overdraw / jerk / speed)
+   21. Feedback generator
+   22. Submit / scoring engine
+   23. Stats panel
+   24. Navigation helpers
+   25. UI event wiring
+   26. Startup
+   ===================================================================== */
+
+
+/* ---------------------------------------------------------------------
+   1) PRACTICE DATA
+--------------------------------------------------------------------- */
+const LOWERCASE = "abcdefghijklmnopqrstuvwxyz".split("");
+const UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const CURSIVE_LETTERS = LOWERCASE.concat(UPPERCASE); // cursive practice covers both cases
+
+// Calligraphy drills are simple warm-up motions (not letters) that build
+// the muscle memory broad-nib calligraphers use before writing real letters.
+const CALLIGRAPHY_DRILLS = [
+  "straight line",
+  "diagonal line /",
+  "diagonal line \\",
+  "oval loop",
+  "understroke (u-curve)",
+  "overstroke (n-curve)",
+  "push-pull ladder"
+];
+
+// Calligraphic alphabet reuses the same letters, but rendered in a
+// calligraphic-style font and scored with nib-angle-aware ink.
+const CALLIGRAPHY_ALPHABET = LOWERCASE.concat(UPPERCASE);
+
+const PRACTICE_SETS = {
+  lowercase: LOWERCASE,
+  uppercase: UPPERCASE,
+  cursive: CURSIVE_LETTERS,
+  calligraphy_drills: CALLIGRAPHY_DRILLS,
+  calligraphy_alphabet: CALLIGRAPHY_ALPHABET,
+  words: [
+    "cat","sun","pen","dog","hat","run","big","red","top","map",
+    "the","and","for","are","but","not","you","all","can","her",
+    "little","school","garden","friend","happy","water","before","because","people","family",
+    "beautiful","important","different","together","practice","language","remember","yesterday","tomorrow","favorite",
+    "elephant","umbrella","mountain","adventure","chocolate","dinosaur","butterfly","wonderful","knowledge","confidence"
+  ],
+  sentences: [
+    "the sun is warm","a cat can nap","we read and write","she likes her dog",
+    "small hands make neat lines","practice makes perfect every day","reading builds a strong vocabulary",
+    "the quick brown fox jumps over the lazy dog","pack my box with five dozen liquor jugs",
+    "the five boxing wizards jump quickly","good habits build a bright future",
+    "clear handwriting shows a clear mind","every letter deserves careful attention",
+    "kindness and patience help us learn","slow and steady wins the race",
+    "birds fly high above the trees","the river flows through the valley",
+    "she paints with bright warm colors","music brings people together",
+    "the moon glows softly at night","children love to play outside",
+    "his story made everyone smile","a small seed grows into a tree",
+    "the teacher explained it clearly","we walked along the quiet beach",
+    "the old clock ticks every second","fresh bread smells wonderful",
+    "the stars shine over the hills","a gentle breeze cooled the room",
+    "the puppy chased its own tail","hard work always pays off"
+  ]
+};
+
+// ── NAV ──
+let bubbleAF=null,currentGame=null;
+function goTo(id,fn){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('hidden',s.id!==id));
+  currentGame=id;if(fn) fn();
+}
+function goBack(from){
+  if(from==='bubble-screen'&&bubbleAF){cancelAnimationFrame(bubbleAF);bubbleAF=null;}
+  if(from==='mandala-screen') stopLightGame();
+  goTo('home');
+}
+
+/* ---------------------------------------------------------------------
+   2) ELEMENT REFERENCES
+--------------------------------------------------------------------- */
+const canvas = document.getElementById("drawCanvas");
+const ctx = canvas.getContext("2d");
+
+const practiceTypeEl = document.getElementById("practiceType");
+const exerciseSelectEl = document.getElementById("exerciseSelect");
+const traceToggleEl = document.getElementById("traceToggle");
+const animToggleEl = document.getElementById("animToggle");
+const fontStyleSelectEl = document.getElementById("fontStyleSelect");
+const speedSelectEl = document.getElementById("speedSelect");
+const nibAngleSelectEl = document.getElementById("nibAngleSelect");
+const letterSizeSelectEl = document.getElementById("letterSizeSelect");
+const guideStyleSelectEl = document.getElementById("guideStyleSelect");
+const inkColorSelectEl = document.getElementById("inkColorSelect");
+const speakToggleEl = document.getElementById("speakToggle");
+const soundToggleEl = document.getElementById("soundToggle");
+const promptTextEl = document.getElementById("promptText");
+
+const clearBtn = document.getElementById("clearBtn");
+const submitBtn = document.getElementById("submitBtn");
+const nextBtn = document.getElementById("nextBtn");
+const undoBtn = document.getElementById("undoBtn");
+const eraserBtn = document.getElementById("eraserBtn");
+const randomBtn = document.getElementById("randomBtn");
+
+const finalScoreEl = document.getElementById("finalScore");
+const accuracyScoreEl = document.getElementById("accuracyScore");
+const boundaryScoreEl = document.getElementById("boundaryScore");
+const clarityScoreEl = document.getElementById("clarityScore");
+const feedbackBoxEl = document.getElementById("feedbackBox");
+const statsBoxEl = document.getElementById("statsBox");
+const recentBoxEl = document.getElementById("recentBox");
+const pressureReadoutEl = document.getElementById("pressureReadout");
+
+
+/* ---------------------------------------------------------------------
+   3) LAYOUT CONSTANTS
+--------------------------------------------------------------------- */
+const W = canvas.width;
+const H = canvas.height;
+
+const TOP_LINE_Y = 95;
+const MID_LINE_Y = 150;
+const BASE_LINE_Y = 235;
+const DESC_LINE_Y = 295;
+
+const LEFT_PAD = 50;
+const RIGHT_PAD = 50;
+
+const STORAGE_KEY = "handwriting_practice_history_v3";
+
+
+/* ---------------------------------------------------------------------
+   4) GLOBAL STATE
+--------------------------------------------------------------------- */
+const state = {
+  practiceType: "lowercase",
+  currentExercise: "a",
+  strokes: [],
+  currentStroke: null,
+  isDrawing: false,
+  targetData: null,
+  history: loadHistory(),
+  guideAnimFrame: null,
+  eraserMode: false,     // when true, dragging removes ink instead of adding it
+  sessionAttempts: [],    // attempts recorded since the last "End Bhava Session"
+  sessionStartTime: Date.now()
+};
+
+const ERASE_RADIUS = 14;  // pixels — how close the eraser must be to remove ink
+
+// Returns true if the current practice type is one of the calligraphy modes.
+function isCalligraphyMode() {
+  return state.practiceType === "calligraphy_drills" || state.practiceType === "calligraphy_alphabet";
+}
+
+// Converts the selected nib angle (degrees) into radians for math functions.
+function getNibAngleRad() {
+  const deg = parseInt(nibAngleSelectEl.value, 10) || 45;
+  return (deg * Math.PI) / 180;
+}
+
+
+/* ---------------------------------------------------------------------
+   5) HISTORY HELPERS
+--------------------------------------------------------------------- */
+function loadHistory() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (err) {
+    return [];
+  }
+}
+
+function saveHistory() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.history));
+}
+
+
+/* ---------------------------------------------------------------------
+   6) EXERCISE DROPDOWN SETUP
+--------------------------------------------------------------------- */
+function populateExerciseSelect() {
+  const items = PRACTICE_SETS[state.practiceType];
+  exerciseSelectEl.innerHTML = "";
+
+  items.forEach(item => {
+    const option = document.createElement("option");
+    option.value = item;
+    option.textContent = item;
+    exerciseSelectEl.appendChild(option);
+  });
+
+  state.currentExercise = items[0];
+  exerciseSelectEl.value = state.currentExercise;
+  promptTextEl.textContent = state.currentExercise;
+}
+
+function setCurrentExercise(text) {
+  state.currentExercise = text;
+  promptTextEl.textContent = text;
+  buildTargetData();
+  clearDrawingOnly();
+  renderStats();
+  if (animToggleEl.checked) animateStrokeGuide(state.targetData);
+  speakText(text); // reads the letter/word/sentence aloud (if Read aloud is on)
+}
+
+
+/* ---------------------------------------------------------------------
+   7) CANVAS BACKGROUND + GUIDE LINES
+--------------------------------------------------------------------- */
+function drawGuideLines() {
+  ctx.fillStyle = "#fffdf8";
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.strokeStyle = "#d6d6d6";
+  ctx.lineWidth = 1;
+  ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.moveTo(20, TOP_LINE_Y);
+  ctx.lineTo(W - 20, TOP_LINE_Y);
+  ctx.stroke();
+
+  ctx.strokeStyle = "#c9c9c9";
+  ctx.setLineDash([7, 6]);
+  ctx.beginPath();
+  ctx.moveTo(20, MID_LINE_Y);
+  ctx.lineTo(W - 20, MID_LINE_Y);
+  ctx.stroke();
+
+  ctx.strokeStyle = "#bdbdbd";
+  ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.moveTo(20, BASE_LINE_Y);
+  ctx.lineTo(W - 20, BASE_LINE_Y);
+  ctx.stroke();
+
+  ctx.strokeStyle = "#d6d6d6";
+  ctx.beginPath();
+  ctx.moveTo(20, DESC_LINE_Y);
+  ctx.lineTo(W - 20, DESC_LINE_Y);
+  ctx.stroke();
+
+  ctx.strokeStyle = "#ead9d9";
+  ctx.beginPath();
+  ctx.moveTo(LEFT_PAD, 25);
+  ctx.lineTo(LEFT_PAD, H - 25);
+  ctx.stroke();
+
+  ctx.fillStyle = "#9ca3af";
+  ctx.font = "12px Arial";
+  ctx.fillText("top", 10, TOP_LINE_Y - 4);
+  ctx.fillText("mid", 10, MID_LINE_Y - 4);
+  ctx.fillText("base", 10, BASE_LINE_Y - 4);
+  ctx.fillText("desc", 10, DESC_LINE_Y - 4);
+}
+
+
+/* ---------------------------------------------------------------------
+   8) TARGET STYLE + FONT SIZE FITTING
+--------------------------------------------------------------------- */
+function getTargetFontFamily() {
+  if (state.practiceType === "cursive") return "'Segoe Script','Brush Script MT',cursive";
+  if (state.practiceType === "calligraphy_alphabet") return "'Monotype Corsiva','Segoe Script','Brush Script MT',cursive";
+  if (state.practiceType === "uppercase") return "Arial, Helvetica, sans-serif";
+
+  const mode = fontStyleSelectEl.value;
+  if (mode === "sans") return "Arial, Helvetica, sans-serif";
+  if (mode === "print") return "'Trebuchet MS', 'Comic Sans MS', Arial, sans-serif";
+  return "Georgia, 'Times New Roman', serif";
+}
+
+function getEmMultiplier() {
+  // The "em size" dropdown scales the letter relative to its natural
+  // best-fit size, just like font-size in typography (1em = normal,
+  // 0.6em = smaller, 1.2em = larger).
+  const val = parseFloat(letterSizeSelectEl.value);
+  return isNaN(val) ? 1.0 : val;
+}
+
+function pickFontSizeForText(text, fontFamily) {
+  const testCanvas = document.createElement("canvas");
+  testCanvas.width = W;
+  testCanvas.height = H;
+  const tctx = testCanvas.getContext("2d");
+
+  let startSize = 180;
+  if (state.practiceType === "words") startSize = 145;
+  if (state.practiceType === "sentences") startSize = 90;
+
+  let bestFitSize = 36;
+
+  for (let size = startSize; size >= 36; size--) {
+    tctx.font = `${size}px ${fontFamily}`;
+    const metrics = tctx.measureText(text);
+
+    const textWidth = metrics.width;
+    const textHeight = (metrics.actualBoundingBoxAscent || size * 0.75) +
+                       (metrics.actualBoundingBoxDescent || size * 0.25);
+
+    const fitsWidth = textWidth <= (W - LEFT_PAD - RIGHT_PAD - 40);
+    const fitsHeight = textHeight <= (DESC_LINE_Y - TOP_LINE_Y + 10);
+
+    if (fitsWidth && fitsHeight) { bestFitSize = size; break; }
+  }
+
+  // Apply the em multiplier on top of the natural best-fit size.
+  // We still clamp it so extra-large text doesn't overflow the canvas.
+  const scaled = bestFitSize * getEmMultiplier();
+  const maxAllowed = DESC_LINE_Y - TOP_LINE_Y + 40;
+  return Math.min(scaled, maxAllowed);
+}
+
+
+/* ---------------------------------------------------------------------
+   9) TARGET GENERATION (pixel-scan point cloud + ordered outline)
+--------------------------------------------------------------------- */
+function buildTargetData() {
+  if (state.practiceType === "calligraphy_drills") {
+    state.targetData = generateDrillTargetData(state.currentExercise);
+  } else {
+    state.targetData = generateTargetPointCloud(state.currentExercise);
+  }
+  renderScene();
+}
+
+// ---------------------------------------------------------------------
+// CALLIGRAPHY WARM-UP DRILLS
+// These are not letters — they are the basic pen-control motions
+// (straight lines, diagonals, ovals, u/n curves, ladders) that real
+// calligraphy students practice before ever writing a letter.
+// We build each one as a simple geometric path using basic math
+// (lines and sine-wave curves) instead of rendering text.
+// ---------------------------------------------------------------------
+function generateDrillTargetData(drillName) {
+  const midY = (TOP_LINE_Y + DESC_LINE_Y) / 2;
+  const left = LEFT_PAD + 40;
+  const right = W - RIGHT_PAD - 40;
+  const points = [];
+  const isDrill = true;
+
+  const steps = 100;
+
+  if (drillName === "straight line") {
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      points.push({ x: left + (right - left) * t, y: midY });
+    }
+  } else if (drillName === "diagonal line /") {
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      points.push({ x: left + (right - left) * t, y: BASE_LINE_Y - (BASE_LINE_Y - TOP_LINE_Y) * t });
+    }
+  } else if (drillName === "diagonal line \\") {
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      points.push({ x: left + (right - left) * t, y: TOP_LINE_Y + (BASE_LINE_Y - TOP_LINE_Y) * t });
+    }
+  } else if (drillName === "oval loop") {
+    const cx = (left + right) / 2;
+    const rx = (right - left) / 5;
+    const ry = (BASE_LINE_Y - TOP_LINE_Y) / 2.2;
+    const loops = 5;
+    for (let i = 0; i <= steps * loops; i++) {
+      const t = i / steps;
+      const angle = t * Math.PI * 2;
+      const cxOffset = cx - (right - left) / 2.4 + (right - left) * (t / loops) * 0.9;
+      points.push({ x: cxOffset + rx * Math.cos(angle), y: midY + ry * Math.sin(angle) });
+    }
+  } else if (drillName === "understroke (u-curve)") {
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const x = left + (right - left) * t;
+      const y = midY + Math.sin(t * Math.PI * 6) * -18 + 18; // repeating shallow U shapes
+      points.push({ x, y });
+    }
+  } else if (drillName === "overstroke (n-curve)") {
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const x = left + (right - left) * t;
+      const y = midY + Math.sin(t * Math.PI * 6) * 18 - 18; // repeating shallow n shapes
+      points.push({ x, y });
+    }
+  } else { // push-pull ladder
+    const rungs = 8;
+    for (let r = 0; r <= rungs; r++) {
+      const x = left + (right - left) * (r / rungs);
+      for (let i = 0; i <= 20; i++) {
+        const t = i / 20;
+        points.push({ x, y: TOP_LINE_Y + (BASE_LINE_Y - TOP_LINE_Y) * t });
+      }
+    }
+  }
+
+  const bbox = getBoundingBox(points);
+  const step = Math.max(1, Math.floor(points.length / 140));
+  const orderedPathPoints = points.filter((_, i) => i % step === 0);
+
+  return {
+    text: drillName,
+    fontSize: null,
+    fontFamily: null,
+    x: null, y: null,
+    points, bbox, orderedPathPoints,
+    isDrill
+  };
+}
+
+function generateTargetPointCloud(text) {
+  const off = document.createElement("canvas");
+  off.width = W;
+  off.height = H;
+  const octx = off.getContext("2d");
+
+  const fontFamily = getTargetFontFamily();
+  const fontSize = pickFontSizeForText(text, fontFamily);
+
+  octx.clearRect(0, 0, W, H);
+  octx.fillStyle = "#000";
+  octx.textBaseline = "alphabetic";
+  octx.font = `${fontSize}px ${fontFamily}`;
+
+  const metrics = octx.measureText(text);
+  const textWidth = metrics.width;
+
+  const x = Math.max(LEFT_PAD + 10, (W - textWidth) / 2);
+  const y = BASE_LINE_Y;
+
+  octx.fillText(text, x, y);
+
+  const img = octx.getImageData(0, 0, W, H).data;
+  const points = [];
+
+  for (let py = 0; py < H; py += 3) {
+    for (let px = 0; px < W; px += 3) {
+      const index = (py * W + px) * 4;
+      const alpha = img[index + 3];
+      if (alpha > 20) points.push({ x: px, y: py });
+    }
+  }
+
+  const bbox = getBoundingBox(points);
+
+  // Build an ORDERED path (rough left-to-right, top-to-bottom walk)
+  // used only for the stroke-order animation dot.
+  const orderedPathPoints = buildOrderedPathFromCloud(points);
+
+  return { text, fontSize, fontFamily, x, y, points, bbox, orderedPathPoints };
+}
+
+// Simple ordering heuristic: sort points into a rough writing-direction
+// path by scanning narrow vertical bands left-to-right (good enough for
+// a visual "where to move next" guide, not for precision scoring).
+function buildOrderedPathFromCloud(points) {
+  if (!points.length) return [{ x: LEFT_PAD, y: BASE_LINE_Y }];
+
+  const bands = {};
+  const bandWidth = 8;
+
+  points.forEach(p => {
+    const band = Math.floor(p.x / bandWidth);
+    if (!bands[band]) bands[band] = [];
+    bands[band].push(p);
+  });
+
+  const sortedBandKeys = Object.keys(bands).map(Number).sort((a, b) => a - b);
+  const ordered = [];
+
+  sortedBandKeys.forEach(key => {
+    const bandPoints = bands[key].sort((a, b) => a.y - b.y);
+    ordered.push(...bandPoints);
+  });
+
+  // Downsample for smooth, not-too-fast animation
+  const step = Math.max(1, Math.floor(ordered.length / 120));
+  const thinned = [];
+  for (let i = 0; i < ordered.length; i += step) thinned.push(ordered[i]);
+
+  return thinned.length ? thinned : ordered;
+}
+
+function drawTargetGuide() {
+  if (!traceToggleEl.checked || !state.targetData) return;
+
+  const fillMode = guideStyleSelectEl.value; // solid | outline | dotted | hollow | none
+
+  // "None" means true freehand practice: no visual guide is drawn at all,
+  // just the plain copybook lines. Scoring still compares against the
+  // same target coordinates behind the scenes.
+  if (fillMode === "none") return;
+
+  ctx.save();
+
+  if (state.targetData.isDrill) {
+    // Drills have no text/font — draw the raw guide path as a faint line.
+    const pts = state.targetData.points;
+    if (pts.length > 1) {
+      ctx.globalAlpha = 0.28;
+      ctx.strokeStyle = "#2563eb";
+      ctx.lineWidth = fillMode === "hollow" ? 1.5 : 3;
+      if (fillMode === "dotted") ctx.setLineDash([4, 6]);
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    ctx.restore();
+    return;
+  }
+
+  ctx.textBaseline = "alphabetic";
+  ctx.font = `${state.targetData.fontSize}px ${state.targetData.fontFamily}`;
+
+  // ---------------------------------------------------------------
+  // FOUR VISUAL GUIDE STYLES for the target letter/word/sentence:
+  //
+  // solid   -> fully filled faint shape (like a coloring-book fill)
+  // outline -> only the outer edge traced, no fill inside
+  // dotted  -> outer edge traced as a dashed/dotted line
+  // hollow  -> a very thin, light single-line outline (minimal hint)
+  // ---------------------------------------------------------------
+  if (fillMode === "solid") {
+    ctx.globalAlpha = 0.15;
+    ctx.fillStyle = "#2563eb";
+    ctx.fillText(state.targetData.text, state.targetData.x, state.targetData.y);
+
+  } else if (fillMode === "outline") {
+    ctx.globalAlpha = 0.55;
+    ctx.strokeStyle = "#2563eb";
+    ctx.lineWidth = 1.5;
+    ctx.strokeText(state.targetData.text, state.targetData.x, state.targetData.y);
+
+  } else if (fillMode === "dotted") {
+    ctx.globalAlpha = 0.6;
+    ctx.strokeStyle = "#2563eb";
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([2, 4]);
+    ctx.strokeText(state.targetData.text, state.targetData.x, state.targetData.y);
+    ctx.setLineDash([]);
+
+  } else if (fillMode === "hollow") {
+    ctx.globalAlpha = 0.35;
+    ctx.strokeStyle = "#2563eb";
+    ctx.lineWidth = 0.75;
+    ctx.strokeText(state.targetData.text, state.targetData.x, state.targetData.y);
+  }
+
+  ctx.restore();
+}
+
+
+/* ---------------------------------------------------------------------
+   10) STROKE CAPTURE — POINTER EVENTS
+   Works for mouse, touch, AND pressure-sensitive stylus with one set
+   of listeners. evt.pressure is 0..1 (styluses report real pressure;
+   mouse/touch report a flat 0.5 by default).
+--------------------------------------------------------------------- */
+function getCanvasCoords(evt) {
+  const rect = canvas.getBoundingClientRect();
+
+  // The canvas's INTERNAL resolution (canvas.width / canvas.height) can be
+  // different from its DISPLAYED size on screen (rect.width / rect.height)
+  // because our CSS stretches it to fit the page (width:100%).
+  // Without this scaling correction, the drawn point would land in the
+  // wrong place whenever the displayed size differs from 980x360 —
+  // which is exactly why the ink appeared "far" from the real pointer.
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+
+  return {
+    x: (evt.clientX - rect.left) * scaleX,
+    y: (evt.clientY - rect.top) * scaleY,
+    t: Date.now(),
+    pressure: evt.pressure !== undefined && evt.pressure > 0 ? evt.pressure : 0.5,
+    pointerType: evt.pointerType || "mouse"
+  };
+}
+
+function startStroke(evt) {
+  evt.preventDefault();
+  if (state.guideAnimFrame) {
+    cancelAnimationFrame(state.guideAnimFrame);
+    state.guideAnimFrame = null;
+  }
+
+  const pt = getCanvasCoords(evt);
+  state.isDrawing = true;
+
+  if (state.eraserMode) {
+    // Eraser mode: don't start a new ink stroke, just remove nearby points.
+    eraseNearPoint(pt);
+    renderScene();
+    return;
+  }
+
+  state.currentStroke = { points: [pt] };
+  state.strokes.push(state.currentStroke);
+
+  renderScene();
+}
+
+// Removes any captured points within ERASE_RADIUS of the given point.
+// This directly edits the underlying coordinate data (not just the pixels),
+// so erased ink is also excluded from scoring later.
+function eraseNearPoint(centerPt) {
+  state.strokes.forEach(stroke => {
+    stroke.points = stroke.points.filter(p => distance(p, centerPt) > ERASE_RADIUS);
+  });
+  // Remove strokes that became empty after erasing
+  state.strokes = state.strokes.filter(stroke => stroke.points.length > 0);
+}
+
+function moveStroke(evt) {
+  if (!state.isDrawing) return;
+  evt.preventDefault();
+
+  const pt = getCanvasCoords(evt);
+
+  if (state.eraserMode) {
+    // Keep erasing as the pointer drags, like a real eraser
+    eraseNearPoint(pt);
+    renderScene();
+    return;
+  }
+
+  if (!state.currentStroke) return;
+
+  // >>> THIS IS WHERE EVERY DRAWN COORDINATE (AND PRESSURE) IS CAPTURED <<<
+  state.currentStroke.points.push(pt);
+
+  // Live feedback showing what input device and pressure level is detected,
+  // so students/parents can confirm a stylus is being recognized correctly.
+  if (pressureReadoutEl) {
+    const deviceLabel = pt.pointerType === "pen" ? "Stylus/Pen (pressure-aware)" :
+                         pt.pointerType === "touch" ? "Finger/Touch" : "Mouse/Trackpad (no real pressure)";
+    const pressurePercent = Math.round(pt.pressure * 100);
+    pressureReadoutEl.textContent =
+      `Live input check: detected ${deviceLabel} — pressure level ${pressurePercent}%.`;
+  }
+
+  renderScene();
+}
+
+function endStroke() {
+  state.isDrawing = false;
+  state.currentStroke = null;
+}
+
+canvas.addEventListener("pointerdown", startStroke);
+canvas.addEventListener("pointermove", moveStroke);
+canvas.addEventListener("pointerup", endStroke);
+canvas.addEventListener("pointercancel", endStroke);
+canvas.addEventListener("pointerleave", endStroke);
+
+
+/* ---------------------------------------------------------------------
+   11) DRAWING THE USER'S INK (pressure-aware smoothing)
+--------------------------------------------------------------------- */
+function drawStrokeSmooth(points) {
+  if (!points || !points.length) return;
+
+  const inkColor = inkColorSelectEl.value; // student-selected pen color
+
+  ctx.save();
+  ctx.strokeStyle = inkColor;
+  ctx.fillStyle = inkColor;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
+  const calligraphic = isCalligraphyMode();
+
+  if (points.length === 1) {
+    const w = 2 + (points[0].pressure || 0.5) * 5;
+    ctx.beginPath();
+    ctx.arc(points[0].x, points[0].y, w / 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+    return;
+  }
+
+  // ---------------------------------------------------------------
+  // CALLIGRAPHIC MODE: broad-nib pens vary stroke width based on the
+  // ANGLE of travel relative to a fixed nib angle, not on pressure.
+  // A stroke moving PARALLEL to the nib angle is thin (like the edge
+  // of a flat blade), while a stroke moving PERPENDICULAR to it is
+  // thick (like the full width of the blade). We calculate this with
+  // simple trigonometry: width follows the sine of the angle between
+  // the stroke direction and the nib angle.
+  // ---------------------------------------------------------------
+  if (calligraphic) {
+    const nibAngle = getNibAngleRad();
+    const minWidth = 2;
+    const maxWidth = 16;
+
+    for (let i = 1; i < points.length; i++) {
+      const p0 = points[i - 1];
+      const p1 = points[i];
+
+      const travelAngle = Math.atan2(p1.y - p0.y, p1.x - p0.x);
+      const angleDiff = travelAngle - nibAngle;
+      const widthFactor = Math.abs(Math.sin(angleDiff)); // 0 = thin, 1 = thick
+
+      const width = minWidth + widthFactor * (maxWidth - minWidth);
+
+      ctx.lineWidth = width;
+      ctx.beginPath();
+      ctx.moveTo(p0.x, p0.y);
+      ctx.lineTo(p1.x, p1.y);
+      ctx.stroke();
+    }
+
+    ctx.restore();
+    return;
+  }
+
+  // ---------------------------------------------------------------
+  // NORMAL MODE: pressure-aware smoothing (mouse/touch/stylus pressure)
+  // ---------------------------------------------------------------
+  for (let i = 1; i < points.length; i++) {
+    const p0 = points[i - 1];
+    const p1 = points[i];
+    const width = 2 + ((p0.pressure + p1.pressure) / 2 || 0.5) * 5;
+
+    ctx.lineWidth = width;
+    ctx.beginPath();
+
+    if (i < points.length - 1) {
+      const midX = (p1.x + points[i + 1].x) / 2;
+      const midY = (p1.y + points[i + 1].y) / 2;
+      ctx.moveTo(p0.x, p0.y);
+      ctx.quadraticCurveTo(p1.x, p1.y, midX, midY);
+    } else {
+      ctx.moveTo(p0.x, p0.y);
+      ctx.lineTo(p1.x, p1.y);
+    }
+
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+function drawAllUserStrokes() {
+  state.strokes.forEach(stroke => drawStrokeSmooth(stroke.points));
+}
+
+
+/* ---------------------------------------------------------------------
+   12) RENDER THE WHOLE SCENE
+--------------------------------------------------------------------- */
+function renderScene() {
+  drawGuideLines();
+  drawTargetGuide();
+  drawAllUserStrokes();
+}
+
+
+/* ---------------------------------------------------------------------
+   13) STROKE-ORDER ANIMATION (moving dot + direction arrow)
+--------------------------------------------------------------------- */
+function animateStrokeGuide(targetData) {
+  if (state.guideAnimFrame) cancelAnimationFrame(state.guideAnimFrame);
+  if (!targetData || !targetData.orderedPathPoints.length) return;
+
+  // In "None (freehand)" guide mode, we skip the moving dot too, so the
+  // student writes with zero visual hints — true freehand practice.
+  if (guideStyleSelectEl.value === "none") return;
+
+  const path = targetData.orderedPathPoints;
+  let i = 0;
+  let lastMoveTime = 0;
+
+  // SPEED CONTROL: higher MS_PER_STEP = slower dot movement.
+  // Read from the speed dropdown so users can adjust it live.
+  function getMsPerStep() {
+    const val = parseInt(speedSelectEl.value, 10);
+    return isNaN(val) ? 90 : val;
+  }
+
+  function step(timestamp) {
+    if (state.isDrawing) { state.guideAnimFrame = null; return; }
+
+    if (timestamp - lastMoveTime >= getMsPerStep()) {
+      lastMoveTime = timestamp;
+
+      renderScene();
+
+      const p = path[i % path.length];
+      const next = path[(i + 2) % path.length];
+
+      ctx.beginPath();
+      ctx.fillStyle = "#e11d48";
+      ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+      ctx.fill();
+
+      const angle = Math.atan2(next.y - p.y, next.x - p.x);
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(p.x - 11 * Math.cos(angle - 0.4), p.y - 11 * Math.sin(angle - 0.4));
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(p.x - 11 * Math.cos(angle + 0.4), p.y - 11 * Math.sin(angle + 0.4));
+      ctx.strokeStyle = "#e11d48";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      i += 1;
+    }
+
+    state.guideAnimFrame = requestAnimationFrame(step);
+  }
+  state.guideAnimFrame = requestAnimationFrame(step);
+}
+
+
+/* ---------------------------------------------------------------------
+   14) CLEAR DRAWING
+--------------------------------------------------------------------- */
+function clearDrawingOnly() {
+  state.strokes = [];
+  state.currentStroke = null;
+  state.isDrawing = false;
+  renderScene();
+}
+
+// Removes the most recently completed stroke (one pen-down-to-pen-up motion).
+function undoLastStroke() {
+  if (state.strokes.length === 0) return;
+  state.strokes.pop();
+  renderScene();
+}
+
+// Toggles eraser mode on/off and updates the button label so it's obvious
+// to the student which mode they are currently in.
+function toggleEraserMode() {
+  state.eraserMode = !state.eraserMode;
+  eraserBtn.textContent = state.eraserMode ? "Eraser: On" : "Eraser: Off";
+  eraserBtn.style.background = state.eraserMode ? "#c62828" : "";
+  eraserBtn.style.color = state.eraserMode ? "#fff" : "";
+  canvas.style.cursor = state.eraserMode ? "cell" : "crosshair";
+}
+
+
+/* ---------------------------------------------------------------------
+   15) GEOMETRY HELPERS
+--------------------------------------------------------------------- */
+function clamp(value, min, max) { return Math.max(min, Math.min(max, value)); }
+function distance(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
+
+function flattenStrokes(strokes) {
+  let out = [];
+  strokes.forEach(stroke => { out = out.concat(stroke.points); });
+  return out;
+}
+
+function getBoundingBox(points) {
+  if (!points.length) {
+    return { minX:0, minY:0, maxX:0, maxY:0, width:0, height:0, centerX:0, centerY:0 };
+  }
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  points.forEach(p => {
+    if (p.x < minX) minX = p.x;
+    if (p.y < minY) minY = p.y;
+    if (p.x > maxX) maxX = p.x;
+    if (p.y > maxY) maxY = p.y;
+  });
+  return {
+    minX, minY, maxX, maxY,
+    width: maxX - minX, height: maxY - minY,
+    centerX: (minX + maxX) / 2, centerY: (minY + maxY) / 2
+  };
+}
+
+
+/* ---------------------------------------------------------------------
+   16) RESAMPLING
+--------------------------------------------------------------------- */
+function getPathLength(points) {
+  let len = 0;
+  for (let i = 1; i < points.length; i++) len += distance(points[i - 1], points[i]);
+  return len;
+}
+
+function resampleOrderedPath(points, count) {
+  if (points.length <= 1) return points.map(p => ({ x:p.x, y:p.y }));
+
+  const totalLength = getPathLength(points);
+  if (totalLength === 0) return points.map(p => ({ x:p.x, y:p.y }));
+
+  const interval = totalLength / (count - 1);
+  const newPoints = [{ x: points[0].x, y: points[0].y }];
+  let D = 0;
+  let prev = { x: points[0].x, y: points[0].y };
+  let i = 1;
+
+  while (i < points.length) {
+    const curr = points[i];
+    const d = distance(prev, curr);
+
+    if (d === 0) { prev = { x: curr.x, y: curr.y }; i++; continue; }
+
+    if ((D + d) >= interval) {
+      const t = (interval - D) / d;
+      const q = { x: prev.x + t * (curr.x - prev.x), y: prev.y + t * (curr.y - prev.y) };
+      newPoints.push(q);
+      prev = q;
+      D = 0;
+    } else {
+      D += d;
+      prev = { x: curr.x, y: curr.y };
+      i++;
+    }
+  }
+
+  while (newPoints.length < count) {
+    const last = points[points.length - 1];
+    newPoints.push({ x: last.x, y: last.y });
+  }
+
+  return newPoints.slice(0, count);
+}
+
+function sampleUnorderedPoints(points, count) {
+  if (points.length <= count) return points.map(p => ({ x:p.x, y:p.y }));
+  const step = points.length / count;
+  const sampled = [];
+  for (let i = 0; i < count; i++) {
+    const index = Math.floor(i * step);
+    sampled.push({ x: points[index].x, y: points[index].y });
+  }
+  return sampled;
+}
+
+
+/* ---------------------------------------------------------------------
+   17) NORMALIZATION
+--------------------------------------------------------------------- */
+function normalizePoints(points, boxSize = 220) {
+  const box = getBoundingBox(points);
+  const scale = boxSize / Math.max(box.width || 1, box.height || 1);
+  return points.map(p => ({ x: (p.x - box.centerX) * scale, y: (p.y - box.centerY) * scale }));
+}
+
+
+/* ---------------------------------------------------------------------
+   18) SHAPE SIMILARITY (Accuracy)
+--------------------------------------------------------------------- */
+function averageNearestDistance(setA, setB) {
+  let total = 0;
+  for (const a of setA) {
+    let best = Infinity;
+    for (const b of setB) {
+      const d = distance(a, b);
+      if (d < best) best = d;
+    }
+    total += best;
+  }
+  return total / setA.length;
+}
+
+function computeAccuracyScore(rawUserPoints, targetData) {
+  const userResampled = resampleOrderedPath(rawUserPoints, 150);
+  const targetSampled = sampleUnorderedPoints(targetData.points, 150);
+
+  const userNorm = normalizePoints(userResampled);
+  const targetNorm = normalizePoints(targetSampled);
+
+  const d1 = averageNearestDistance(userNorm, targetNorm);
+  const d2 = averageNearestDistance(targetNorm, userNorm);
+  const avg = (d1 + d2) / 2;
+
+  const score = 100 - (avg / 32) * 100;
+  return clamp(Math.round(score), 0, 100);
+}
+
+
+/* ---------------------------------------------------------------------
+   19) BOUNDARY SCORE
+--------------------------------------------------------------------- */
+function computeBoundaryScore(rawUserPoints, targetData) {
+  const userBox = getBoundingBox(rawUserPoints);
+  const targetBox = targetData.bbox;
+
+  const topDiff = Math.abs(userBox.minY - targetBox.minY);
+  const bottomDiff = Math.abs(userBox.maxY - targetBox.maxY);
+  const heightDiffRatio = Math.abs(userBox.height - targetBox.height) / Math.max(targetBox.height, 1);
+  const widthDiffRatio = Math.abs(userBox.width - targetBox.width) / Math.max(targetBox.width, 1);
+
+  let outsideCount = 0;
+  rawUserPoints.forEach(p => {
+    if (p.y < TOP_LINE_Y - 18 || p.y > DESC_LINE_Y + 18) outsideCount++;
+  });
+  const outsideRatio = outsideCount / rawUserPoints.length;
+
+  const penalty =
+    topDiff * 0.7 + bottomDiff * 0.7 +
+    heightDiffRatio * 32 + widthDiffRatio * 14 +
+    outsideRatio * 50;
+
+  return clamp(Math.round(100 - penalty), 0, 100);
+}
+
+
+/* ---------------------------------------------------------------------
+   20) CLARITY SCORE
+--------------------------------------------------------------------- */
+function computeOverdrawScore(rawUserPoints) {
+  const cellSize = 6;
+  const seen = new Set();
+  rawUserPoints.forEach(p => {
+    const cx = Math.floor(p.x / cellSize);
+    const cy = Math.floor(p.y / cellSize);
+    seen.add(`${cx}_${cy}`);
+  });
+  const uniqueRatio = seen.size / Math.max(rawUserPoints.length, 1);
+  const score = ((uniqueRatio - 0.12) / (0.42 - 0.12)) * 100;
+  return clamp(Math.round(score), 0, 100);
+}
+
+function computeJerkScore(rawUserPoints) {
+  if (rawUserPoints.length < 5) return 60;
+  const sampled = [];
+  for (let i = 0; i < rawUserPoints.length; i += 2) sampled.push(rawUserPoints[i]);
+
+  let jerks = 0, checks = 0;
+  for (let i = 2; i < sampled.length; i++) {
+    const p0 = sampled[i - 2], p1 = sampled[i - 1], p2 = sampled[i];
+    const v1x = p1.x - p0.x, v1y = p1.y - p0.y;
+    const v2x = p2.x - p1.x, v2y = p2.y - p1.y;
+    const len1 = Math.hypot(v1x, v1y), len2 = Math.hypot(v2x, v2y);
+    if (len1 < 2 || len2 < 2) continue;
+    const dot = v1x * v2x + v1y * v2y;
+    const cross = v1x * v2y - v1y * v2x;
+    const angle = Math.abs(Math.atan2(cross, dot));
+    if (angle > 2.35 && Math.min(len1, len2) < 18) jerks++;
+    checks++;
+  }
+  if (checks === 0) return 75;
+  const jerkRatio = jerks / checks;
+  return clamp(Math.round(100 - jerkRatio * 320), 0, 100);
+}
+
+function computeSpeedScore(rawUserPoints) {
+  const speeds = [];
+  for (let i = 1; i < rawUserPoints.length; i++) {
+    const p0 = rawUserPoints[i - 1], p1 = rawUserPoints[i];
+    const dt = p1.t - p0.t;
+    if (dt <= 0 || dt > 120) continue;
+    speeds.push(distance(p0, p1) / dt);
+  }
+  if (speeds.length < 5) return 75;
+  const mean = speeds.reduce((a, b) => a + b, 0) / speeds.length;
+  const variance = speeds.reduce((sum, s) => sum + (s - mean) ** 2, 0) / speeds.length;
+  const cv = Math.sqrt(variance) / Math.max(mean, 0.0001);
+  return clamp(Math.round(100 - cv * 40), 0, 100);
+}
+
+function computeClarityScore(rawUserPoints) {
+  const overdraw = computeOverdrawScore(rawUserPoints);
+  const jerk = computeJerkScore(rawUserPoints);
+  const speed = computeSpeedScore(rawUserPoints);
+  return clamp(Math.round(overdraw * 0.5 + jerk * 0.25 + speed * 0.25), 0, 100);
+}
+
+
+/* ---------------------------------------------------------------------
+   20B) AUDIO FEEDBACK (Text-to-Speech + Success/Try-Again Tones)
+   ---------------------------------------------------------------------
+   Two independent audio features, both fully offline (no internet or
+   external sound files needed):
+
+   1) TEXT-TO-SPEECH: uses the browser's built-in SpeechSynthesis API to
+      say the current letter/word/sentence out loud. This reinforces the
+      sound-symbol connection (hearing "a" while seeing/writing "a").
+
+   2) TONES: uses the Web Audio API to generate short beeps directly in
+      code (a pleasant rising chime for good scores, a soft short tone
+      for low scores) — no audio files to manage.
+--------------------------------------------------------------------- */
+
+// Speaks the given text aloud using the browser's speech synthesis voice.
+// Skipped entirely if the "Read aloud" toggle is turned off.
+function speakText(text) {
+  if (!speakToggleEl.checked) return;
+  if (!("speechSynthesis" in window)) return; // gracefully skip on unsupported browsers
+
+  // Cancel any speech currently in progress so prompts don't overlap
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = 0.85;   // slightly slower than normal — easier for young learners
+  utterance.pitch = 1.05;
+  utterance.lang = "en-US";
+
+  window.speechSynthesis.speak(utterance);
+}
+
+// A single shared AudioContext reused for all generated tones
+// (created lazily on first use, since browsers require a user
+// interaction before audio can play).
+let audioCtx = null;
+function getAudioContext() {
+  if (!audioCtx) {
+    const AudioCtor = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AudioCtor();
+  }
+  return audioCtx;
+}
+
+// Plays a single short tone at the given frequency (Hz) and duration (seconds).
+function playTone(frequency, duration, volume = 0.15, type = "sine") {
+  const ctxAudio = getAudioContext();
+  const oscillator = ctxAudio.createOscillator();
+  const gainNode = ctxAudio.createGain();
+
+  oscillator.type = type;
+  oscillator.frequency.value = frequency;
+
+  gainNode.gain.setValueAtTime(volume, ctxAudio.currentTime);
+  // Fade out smoothly so the tone doesn't click/pop at the end
+  gainNode.gain.exponentialRampToValueAtTime(0.0001, ctxAudio.currentTime + duration);
+
+  oscillator.connect(gainNode);
+  gainNode.connect(ctxAudio.destination);
+
+  oscillator.start();
+  oscillator.stop(ctxAudio.currentTime + duration);
+}
+
+// A cheerful two-note rising chime for high scores (like a mini "success!" jingle)
+function playSuccessChime() {
+  if (!soundToggleEl.checked) return;
+  playTone(523.25, 0.14, 0.15, "sine"); // C5
+  setTimeout(() => playTone(659.25, 0.18, 0.15, "sine"), 120); // E5
+  setTimeout(() => playTone(783.99, 0.22, 0.15, "sine"), 260); // G5
+}
+
+// A gentle, short, slightly descending tone for low scores — encouraging
+// rather than harsh, so students aren't discouraged from trying again.
+function playTryAgainTone() {
+  if (!soundToggleEl.checked) return;
+  playTone(392.00, 0.16, 0.12, "sine"); // G4
+  setTimeout(() => playTone(349.23, 0.22, 0.12, "sine"), 130); // F4
+}
+
+// A short neutral "click" tone for medium scores — not a full celebration,
+// not a "try again" cue either.
+function playNeutralTone() {
+  if (!soundToggleEl.checked) return;
+  playTone(440.00, 0.15, 0.12, "sine"); // A4
+}
+
+// Decides which tone to play based on the final score.
+function playScoreTone(finalScore) {
+  if (finalScore >= 78) playSuccessChime();
+  else if (finalScore >= 50) playNeutralTone();
+  else playTryAgainTone();
+}
+
+
+/* ---------------------------------------------------------------------
+   21) FEEDBACK GENERATOR
+--------------------------------------------------------------------- */
+function generateFeedback(finalScore, accuracy, boundary, clarity, rawUserPoints, targetData) {
+  const tips = [];
+  const userBox = getBoundingBox(rawUserPoints);
+  const targetBox = targetData.bbox;
+
+  if (userBox.minY < targetBox.minY - 10) tips.push("You went slightly above the intended top or middle guide line.");
+  if (userBox.maxY > targetBox.maxY + 10) tips.push("Your writing dropped a little below the baseline or descender target.");
+
+  if (userBox.width < targetBox.width * 0.82) tips.push("Try to draw it a little wider.");
+  else if (userBox.width > targetBox.width * 1.2) tips.push("Try to keep it a little narrower and more compact.");
+
+  if (accuracy < 68) tips.push("Focus on matching the overall shape more closely.");
+  if (clarity < 68) tips.push("Use slower, smoother strokes and avoid retracing the same area too much.");
+  if (state.strokes.length > 4 && (state.practiceType === "lowercase" || state.practiceType === "uppercase" || state.practiceType === "cursive")) {
+    tips.push("For a single letter, try using fewer pen lifts.");
+  }
+
+  if (isCalligraphyMode()) {
+    tips.push("Keep the pen angle consistent throughout the stroke — that steady angle is what creates clean thick and thin contrast in calligraphy.");
+    if (state.practiceType === "calligraphy_drills") {
+      tips.push("Warm-up drills build the muscle control needed before writing full calligraphic letters — repeat this drill slowly a few more times.");
+    }
+  }
+
+  if (finalScore >= 90) tips.unshift("Excellent control — the size, shape, and neatness are all strong.");
+  else if (finalScore >= 78) tips.unshift("Good work — your writing is mostly accurate.");
+  else if (finalScore >= 60) tips.unshift("Nice attempt — a few adjustments will make it much clearer.");
+  else tips.unshift("Keep practicing — trace once, then copy slowly on the next attempt.");
+
+  return tips.join(" ");
+}
+
+
+/* ---------------------------------------------------------------------
+   22) SUBMIT / SCORING ENGINE
+--------------------------------------------------------------------- */
+function submitCurrentAttempt() {
+  const rawUserPoints = flattenStrokes(state.strokes);
+
+  if (rawUserPoints.length < 8) {
+    feedbackBoxEl.textContent = "Please draw the exercise first.";
+    return;
+  }
+
+  const accuracy = computeAccuracyScore(rawUserPoints, state.targetData);
+  const boundary = computeBoundaryScore(rawUserPoints, state.targetData);
+  const clarity = computeClarityScore(rawUserPoints);
+
+  const finalScore = Math.round(accuracy * 0.55 + boundary * 0.25 + clarity * 0.20);
+
+  finalScoreEl.textContent = finalScore;
+  accuracyScoreEl.textContent = accuracy;
+  boundaryScoreEl.textContent = boundary;
+  clarityScoreEl.textContent = clarity;
+
+  feedbackBoxEl.textContent = generateFeedback(finalScore, accuracy, boundary, clarity, rawUserPoints, state.targetData);
+  playScoreTone(finalScore); // success chime, neutral click, or gentle try-again tone
+
+  state.history.unshift({
+    date: new Date().toISOString(),
+    practiceType: state.practiceType,
+    exercise: state.currentExercise,
+    finalScore, accuracy, boundary, clarity
+  });
+
+  state.history = state.history.slice(0, 200);
+  saveHistory();
+  renderStats();
+
+  state.sessionAttempts.push({
+    practiceType: state.practiceType,
+    exercise: state.currentExercise,
+    finalScore, accuracy, boundary, clarity
+  });
+}
+
+
+/* ---------------------------------------------------------------------
+   23) STATS PANEL
+--------------------------------------------------------------------- */
+function renderStats() {
+  const modeItems = state.history.filter(item => item.practiceType === state.practiceType);
+  const currentItemHistory = state.history.filter(item =>
+    item.practiceType === state.practiceType && item.exercise === state.currentExercise
+  );
+
+  if (!modeItems.length) {
+    statsBoxEl.innerHTML = `
+      <div class="statsRow"><span>Attempts</span><span>0</span></div>
+      <div class="statsRow"><span>Average</span><span>--</span></div>
+      <div class="statsRow"><span>Best in mode</span><span>--</span></div>
+      <div class="statsRow"><span>Best for current exercise</span><span>--</span></div>
+    `;
+    recentBoxEl.innerHTML = `<p style="margin:0;color:#6b7280;">No attempts yet.</p>`;
+    return;
+  }
+
+  const avg = Math.round(modeItems.reduce((s, x) => s + x.finalScore, 0) / modeItems.length);
+  const best = Math.max(...modeItems.map(x => x.finalScore));
+  const bestCurrent = currentItemHistory.length ? Math.max(...currentItemHistory.map(x => x.finalScore)) : "--";
+
+  statsBoxEl.innerHTML = `
+    <div class="statsRow"><span>Attempts</span><span>${modeItems.length}</span></div>
+    <div class="statsRow"><span>Average</span><span>${avg}</span></div>
+    <div class="statsRow"><span>Best in mode</span><span>${best}</span></div>
+    <div class="statsRow"><span>Best for current exercise</span><span>${bestCurrent}</span></div>
+  `;
+
+  const recent = state.history.slice(0, 6);
+  recentBoxEl.innerHTML = `
+    <ol class="recentList">
+      ${recent.map(item => `<li>${item.practiceType} - "${item.exercise}" - ${item.finalScore}/100</li>`).join("")}
+    </ol>
+  `;
+}
+
+
+/* ---------------------------------------------------------------------
+   24) NAVIGATION HELPERS
+--------------------------------------------------------------------- */
+function goToNextExercise() {
+  const items = PRACTICE_SETS[state.practiceType];
+  const currentIndex = items.indexOf(state.currentExercise);
+  const nextIndex = (currentIndex + 1) % items.length;
+  exerciseSelectEl.value = items[nextIndex];
+  setCurrentExercise(items[nextIndex]);
+}
+
+function goToPrevExercise() {
+  const items = PRACTICE_SETS[state.practiceType];
+  const currentIndex = items.indexOf(state.currentExercise);
+  const prevIndex = (currentIndex - 1 + items.length) % items.length;
+  exerciseSelectEl.value = items[prevIndex];
+  setCurrentExercise(items[prevIndex]);
+}
+
+function goToRandomExercise() {
+  const items = PRACTICE_SETS[state.practiceType];
+  const randomIndex = Math.floor(Math.random() * items.length);
+  exerciseSelectEl.value = items[randomIndex];
+  setCurrentExercise(items[randomIndex]);
+}
+
+
+/* ---------------------------------------------------------------------
+   25) UI EVENT WIRING
+--------------------------------------------------------------------- */
+practiceTypeEl.addEventListener("change", () => {
+  state.practiceType = practiceTypeEl.value;
+  populateExerciseSelect();
+  setCurrentExercise(state.currentExercise);
+
+  finalScoreEl.textContent = "--";
+  accuracyScoreEl.textContent = "--";
+  boundaryScoreEl.textContent = "--";
+  clarityScoreEl.textContent = "--";
+  feedbackBoxEl.textContent = "Draw the current exercise and click Submit. The system will compare your writing to the target shape and give a detailed tip.";
+});
+
+exerciseSelectEl.addEventListener("change", () => { setCurrentExercise(exerciseSelectEl.value); });
+
+traceToggleEl.addEventListener("change", renderScene);
+
+animToggleEl.addEventListener("change", () => {
+  if (animToggleEl.checked) animateStrokeGuide(state.targetData);
+  else if (state.guideAnimFrame) { cancelAnimationFrame(state.guideAnimFrame); state.guideAnimFrame = null; renderScene(); }
+});
+
+speedSelectEl.addEventListener("change", () => {
+  if (animToggleEl.checked) animateStrokeGuide(state.targetData);
+});
+
+nibAngleSelectEl.addEventListener("change", () => {
+  renderScene();
+});
+
+letterSizeSelectEl.addEventListener("change", () => {
+  buildTargetData();               // regenerate target at new em size
+  if (animToggleEl.checked) animateStrokeGuide(state.targetData);
+});
+
+guideStyleSelectEl.addEventListener("change", () => {
+  if (guideStyleSelectEl.value === "none") {
+    if (state.guideAnimFrame) { cancelAnimationFrame(state.guideAnimFrame); state.guideAnimFrame = null; }
+  } else if (animToggleEl.checked) {
+    animateStrokeGuide(state.targetData);
+  }
+  renderScene();                   // fill style is a pure visual change
+});
+
+inkColorSelectEl.addEventListener("change", () => {
+  renderScene();                   // redraw existing ink in the newly chosen color
+});
+
+fontStyleSelectEl.addEventListener("change", () => { buildTargetData(); });
+
+clearBtn.addEventListener("click", () => {
+  clearDrawingOnly();
+  if (animToggleEl.checked) animateStrokeGuide(state.targetData);
+});
+
+undoBtn.addEventListener("click", () => {
+  undoLastStroke();
+});
+
+eraserBtn.addEventListener("click", () => {
+  toggleEraserMode();
+});
+
+submitBtn.addEventListener("click", () => { submitCurrentAttempt(); });
+document.getElementById("backBtn").addEventListener("click", () => { goToPrevExercise(); });
+nextBtn.addEventListener("click", () => { goToNextExercise(); });
+randomBtn.addEventListener("click", () => { goToRandomExercise(); });
+
+document.getElementById("homeBtn").addEventListener("click", () => {
+  practiceTypeEl.value = "lowercase";
+  state.practiceType = "lowercase";
+  populateExerciseSelect();
+  setCurrentExercise(state.currentExercise);
+
+  finalScoreEl.textContent = "--";
+  accuracyScoreEl.textContent = "--";
+  boundaryScoreEl.textContent = "--";
+  clarityScoreEl.textContent = "--";
+  feedbackBoxEl.textContent = "Draw the current exercise and click Submit. The system will compare your writing to the target shape and give a detailed tip.";
+
+  clearDrawingOnly();
+  if (state.eraserMode) toggleEraserMode();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+/* ---------------------------------------------------------------------
+   BHAVA END SESSION + SCORE CRITERIA
+--------------------------------------------------------------------- */
+function endBhavaSession() {
+  const attempts = state.sessionAttempts;
+  const modal = document.getElementById("sessionSummaryModal");
+  const body = document.getElementById("sessionSummaryBody");
+
+  if (!attempts.length) {
+    body.innerHTML = `<p>No attempts recorded yet this session. Write a few letters first!</p>`;
+  } else {
+    const avg = Math.round(attempts.reduce((s, a) => s + a.finalScore, 0) / attempts.length);
+    const best = Math.max(...attempts.map(a => a.finalScore));
+    const durationMin = Math.max(1, Math.round((Date.now() - state.sessionStartTime) / 60000));
+    const dims = ["accuracy", "boundary", "clarity"].map(k => ({
+      k, v: attempts.reduce((s, a) => s + a[k], 0) / attempts.length
+    })).sort((a, b) => a.v - b.v);
+    const weakest = dims[0];
+
+    body.innerHTML = `
+      <p><b>Duration:</b> ${durationMin} min &nbsp; <b>Attempts:</b> ${attempts.length}</p>
+      <p><b>Average score:</b> ${avg}/100 &nbsp; <b>Best:</b> ${best}/100</p>
+      <p><b>Focus area for next session:</b> ${weakest.k} (avg ${Math.round(weakest.v)}/100)</p>
+    `;
+  }
+
+  const sessions = JSON.parse(localStorage.getItem("bhava_sessions") || "[]");
+  sessions.unshift({ date: new Date().toISOString(), attempts: state.sessionAttempts });
+  localStorage.setItem("bhava_sessions", JSON.stringify(sessions.slice(0, 50)));
+
+  modal.style.display = "flex";
+
+  // Sync score to Bhava platform
+  try {
+    if (window.BhavaSession && typeof BhavaSession.end === 'function') {
+      const syncScore = attempts.length
+        ? Math.round(attempts.reduce((s, a) => s + a.finalScore, 0) / attempts.length)
+        : 0;
+      BhavaSession.end(syncScore);
+    }
+  } catch(e) { console.warn('BhavaSession.end:', e.message); }
+}
+
+document.getElementById("endSessionBtn").addEventListener("click", endBhavaSession);
+document.getElementById("closeSessionBtn").addEventListener("click", () => {
+  document.getElementById("sessionSummaryModal").style.display = "none";
+  state.sessionAttempts = [];
+  state.sessionStartTime = Date.now();
+});
+
+document.getElementById("scoreCriteriaBtn").addEventListener("click", () => {
+  document.getElementById("criteriaModal").style.display = "flex";
+});
+document.getElementById("closeCriteriaBtn").addEventListener("click", () => {
+  document.getElementById("criteriaModal").style.display = "none";
+});
+
+
+/* ---------------------------------------------------------------------
+   27) MULTI-LETTER PRACTICE SHEET (A-Z / Selected / Random, one page)
+   ---------------------------------------------------------------------
+   This section is self-contained: it builds its own small canvases,
+   captures ink on each one independently, generates a target letter
+   shape for each, and scores every letter at once when "Submit all"
+   is clicked. It reuses the generic math helpers already defined above
+   (distance, resampleOrderedPath, sampleUnorderedPoints, normalizePoints,
+   averageNearestDistance, getBoundingBox, clamp) so the scoring logic
+   stays consistent with the main single-letter practice area.
+--------------------------------------------------------------------- */
+const sheetModeSelectEl = document.getElementById("sheetModeSelect");
+const sheetCaseSelectEl = document.getElementById("sheetCaseSelect");
+const sheetRandomCountField = document.getElementById("sheetRandomCountField");
+const sheetRandomCountEl = document.getElementById("sheetRandomCount");
+const sheetPickerBoxEl = document.getElementById("sheetPickerBox");
+const sheetCheckboxGridEl = document.getElementById("sheetCheckboxGrid");
+const sheetContainerEl = document.getElementById("sheetContainer");
+const sheetResultsEl = document.getElementById("sheetResults");
+const generateSheetBtn = document.getElementById("generateSheetBtn");
+const submitSheetBtn = document.getElementById("submitSheetBtn");
+
+// Small-canvas layout constants (each letter gets its own mini copybook)
+const MINI_W = 190, MINI_H = 150;
+const MINI_TOP = 20, MINI_MID = 60, MINI_BASE = 105, MINI_DESC = 135;
+const MINI_LEFT_PAD = 14, MINI_RIGHT_PAD = 14;
+
+// Holds one entry per letter card: { letter, canvas, ctx, strokes, target }
+let sheetCards = [];
+
+function getSheetCaseLetters() {
+  return sheetCaseSelectEl.value === "uppercase" ? UPPERCASE : LOWERCASE;
+}
+
+// Build the A-Z checkbox picker (used only in "Selected letters" mode)
+function buildSheetCheckboxes() {
+  const letters = getSheetCaseLetters();
+  sheetCheckboxGridEl.innerHTML = "";
+  letters.forEach(letter => {
+    const wrap = document.createElement("label");
+    wrap.style.cssText = "display:flex;align-items:center;gap:4px;font-size:14px;justify-content:center;background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:6px;";
+    wrap.innerHTML = `<input type="checkbox" value="${letter}" class="sheetLetterCheckbox" /> ${letter}`;
+    sheetCheckboxGridEl.appendChild(wrap);
+  });
+}
+
+sheetModeSelectEl.addEventListener("change", () => {
+  const mode = sheetModeSelectEl.value;
+  sheetPickerBoxEl.style.display = mode === "selected" ? "block" : "none";
+  sheetRandomCountField.style.display = mode === "random" ? "flex" : "none";
+  if (mode === "selected") buildSheetCheckboxes();
+});
+
+sheetCaseSelectEl.addEventListener("change", () => {
+  if (sheetModeSelectEl.value === "selected") buildSheetCheckboxes();
+});
+
+// Draw the mini copybook lines onto a given mini canvas
+function drawMiniGuideLines(mctx) {
+  mctx.fillStyle = "#fffdf8";
+  mctx.fillRect(0, 0, MINI_W, MINI_H);
+
+  mctx.strokeStyle = "#d6d6d6";
+  mctx.lineWidth = 1;
+  mctx.setLineDash([]);
+  mctx.beginPath(); mctx.moveTo(6, MINI_TOP); mctx.lineTo(MINI_W - 6, MINI_TOP); mctx.stroke();
+
+  mctx.strokeStyle = "#c9c9c9";
+  mctx.setLineDash([5, 5]);
+  mctx.beginPath(); mctx.moveTo(6, MINI_MID); mctx.lineTo(MINI_W - 6, MINI_MID); mctx.stroke();
+
+  mctx.strokeStyle = "#bdbdbd";
+  mctx.setLineDash([]);
+  mctx.beginPath(); mctx.moveTo(6, MINI_BASE); mctx.lineTo(MINI_W - 6, MINI_BASE); mctx.stroke();
+
+  mctx.strokeStyle = "#d6d6d6";
+  mctx.beginPath(); mctx.moveTo(6, MINI_DESC); mctx.lineTo(MINI_W - 6, MINI_DESC); mctx.stroke();
+}
+
+// Generate a target point-cloud for one letter, scaled to the mini canvas
+function generateMiniTargetCloud(letter) {
+  const off = document.createElement("canvas");
+  off.width = MINI_W; off.height = MINI_H;
+  const octx = off.getContext("2d");
+
+  const fontFamily = getTargetFontFamily();
+  let fontSize = 80;
+  octx.font = `${fontSize}px ${fontFamily}`;
+  let metrics = octx.measureText(letter);
+
+  while ((metrics.width > MINI_W - MINI_LEFT_PAD - MINI_RIGHT_PAD - 10 ||
+          fontSize > (MINI_DESC - MINI_TOP + 10)) && fontSize > 20) {
+    fontSize -= 2;
+    octx.font = `${fontSize}px ${fontFamily}`;
+    metrics = octx.measureText(letter);
+  }
+
+  octx.clearRect(0, 0, MINI_W, MINI_H);
+  octx.fillStyle = "#000";
+  octx.textBaseline = "alphabetic";
+  octx.font = `${fontSize}px ${fontFamily}`;
+  const x = Math.max(MINI_LEFT_PAD, (MINI_W - metrics.width) / 2);
+  const y = MINI_BASE;
+  octx.fillText(letter, x, y);
+
+  const img = octx.getImageData(0, 0, MINI_W, MINI_H).data;
+  const points = [];
+  for (let py = 0; py < MINI_H; py += 2) {
+    for (let px = 0; px < MINI_W; px += 2) {
+      const idx = (py * MINI_W + px) * 4;
+      if (img[idx + 3] > 20) points.push({ x: px, y: py });
+    }
+  }
+
+  return { letter, fontSize, fontFamily, x, y, points, bbox: getBoundingBox(points) };
+}
+
+// Draw the faint guide + any captured ink for one card
+function renderMiniCard(card) {
+  const mctx = card.ctx;
+  drawMiniGuideLines(mctx);
+
+  const fillMode = guideStyleSelectEl.value;
+  if (fillMode !== "none") {
+    mctx.save();
+    mctx.globalAlpha = fillMode === "solid" ? 0.18 : 0.5;
+    mctx.textBaseline = "alphabetic";
+    mctx.font = `${card.target.fontSize}px ${card.target.fontFamily}`;
+    if (fillMode === "solid") {
+      mctx.fillStyle = "#2563eb";
+      mctx.fillText(card.target.letter, card.target.x, card.target.y);
+    } else {
+      mctx.strokeStyle = "#2563eb";
+      mctx.lineWidth = fillMode === "hollow" ? 0.75 : 1.2;
+      if (fillMode === "dotted") mctx.setLineDash([2, 3]);
+      mctx.strokeText(card.target.letter, card.target.x, card.target.y);
+      mctx.setLineDash([]);
+    }
+    mctx.restore();
+  }
+
+  const inkColor = inkColorSelectEl.value;
+  mctx.save();
+  mctx.strokeStyle = inkColor;
+  mctx.fillStyle = inkColor;
+  mctx.lineCap = "round";
+  mctx.lineJoin = "round";
+  mctx.lineWidth = 3;
+
+  card.strokes.forEach(stroke => {
+    const pts = stroke.points;
+    if (pts.length === 1) {
+      mctx.beginPath(); mctx.arc(pts[0].x, pts[0].y, 2, 0, Math.PI * 2); mctx.fill();
+    } else {
+      mctx.beginPath();
+      mctx.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length; i++) mctx.lineTo(pts[i].x, pts[i].y);
+      mctx.stroke();
+    }
+  });
+  mctx.restore();
+}
+
+// Build one letter card: title, canvas, clear button, per-card score readout
+function buildLetterCard(letter) {
+  const wrap = document.createElement("div");
+  wrap.style.cssText = "background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:10px;text-align:center;";
+
+  const title = document.createElement("div");
+  title.textContent = letter;
+  title.style.cssText = "font-size:14px;color:#6b7280;margin-bottom:6px;font-weight:700;";
+
+  const miniCanvas = document.createElement("canvas");
+  miniCanvas.width = MINI_W;
+  miniCanvas.height = MINI_H;
+  miniCanvas.style.cssText = "width:100%;border-radius:8px;border:1px solid #ece7dd;touch-action:none;cursor:crosshair;background:#fffdf8;";
+
+  const scoreLine = document.createElement("div");
+  scoreLine.style.cssText = "margin-top:6px;font-size:13px;color:#374151;min-height:18px;";
+  scoreLine.textContent = "Not yet checked";
+
+  const miniClear = document.createElement("button");
+  miniClear.textContent = "Clear";
+  miniClear.className = "secondary";
+  miniClear.style.cssText = "margin-top:6px;height:30px;padding:0 10px;font-size:12px;margin-right:6px;";
+
+  const miniSpeak = document.createElement("button");
+  miniSpeak.textContent = "🔊";
+  miniSpeak.title = "Hear this letter";
+  miniSpeak.className = "secondary";
+  miniSpeak.style.cssText = "margin-top:6px;height:30px;padding:0 10px;font-size:12px;";
+  miniSpeak.addEventListener("click", () => speakText(letter));
+
+  const miniBtnRow = document.createElement("div");
+  miniBtnRow.appendChild(miniClear);
+  miniBtnRow.appendChild(miniSpeak);
+
+  wrap.appendChild(title);
+  wrap.appendChild(miniCanvas);
+  wrap.appendChild(scoreLine);
+  wrap.appendChild(miniBtnRow);
+
+  const mctx = miniCanvas.getContext("2d");
+  const card = {
+    letter,
+    canvas: miniCanvas,
+    ctx: mctx,
+    strokes: [],
+    currentStroke: null,
+    isDrawing: false,
+    target: generateMiniTargetCloud(letter),
+    scoreLine
+  };
+
+  function getMiniCoords(evt) {
+    const rect = miniCanvas.getBoundingClientRect();
+    const scaleX = miniCanvas.width / rect.width;
+    const scaleY = miniCanvas.height / rect.height;
+    return {
+      x: (evt.clientX - rect.left) * scaleX,
+      y: (evt.clientY - rect.top) * scaleY,
+      t: Date.now(),
+      pressure: evt.pressure !== undefined && evt.pressure > 0 ? evt.pressure : 0.5
+    };
+  }
+
+  miniCanvas.addEventListener("pointerdown", (evt) => {
+    evt.preventDefault();
+    card.isDrawing = true;
+    card.currentStroke = { points: [getMiniCoords(evt)] };
+    card.strokes.push(card.currentStroke);
+    renderMiniCard(card);
+  });
+  miniCanvas.addEventListener("pointermove", (evt) => {
+    if (!card.isDrawing || !card.currentStroke) return;
+    evt.preventDefault();
+    card.currentStroke.points.push(getMiniCoords(evt));
+    renderMiniCard(card);
+  });
+  const endMini = () => { card.isDrawing = false; card.currentStroke = null; };
+  miniCanvas.addEventListener("pointerup", endMini);
+  miniCanvas.addEventListener("pointercancel", endMini);
+  miniCanvas.addEventListener("pointerleave", endMini);
+
+  miniClear.addEventListener("click", () => {
+    card.strokes = [];
+    card.scoreLine.textContent = "Not yet checked";
+    card.scoreLine.style.color = "#374151";
+    renderMiniCard(card);
+  });
+
+  renderMiniCard(card);
+  return { wrap, card };
+}
+
+// Decide which letters go on the sheet based on the selected mode
+function getSheetLetterList() {
+  const mode = sheetModeSelectEl.value;
+  const allLetters = getSheetCaseLetters();
+
+  if (mode === "all") return allLetters.slice();
+
+  if (mode === "selected") {
+    const checked = Array.from(document.querySelectorAll(".sheetLetterCheckbox:checked")).map(cb => cb.value);
+    return checked.length ? checked : allLetters.slice(0, 5); // fallback if nothing picked
+  }
+
+  // random mode
+  const count = parseInt(sheetRandomCountEl.value, 10) || 10;
+  const pool = allLetters.slice();
+  const chosen = [];
+  for (let i = 0; i < count && pool.length; i++) {
+    const idx = Math.floor(Math.random() * pool.length);
+    chosen.push(pool.splice(idx, 1)[0]);
+  }
+  return chosen;
+}
+
+function generateSheet() {
+  const letters = getSheetLetterList();
+  sheetContainerEl.innerHTML = "";
+  sheetResultsEl.innerHTML = "";
+  sheetCards = [];
+
+  letters.forEach(letter => {
+    const { wrap, card } = buildLetterCard(letter);
+    sheetContainerEl.appendChild(wrap);
+    sheetCards.push(card);
+  });
+}
+
+// Score every card at once using the same geometric approach as the
+// main single-letter practice area (resample -> normalize -> compare).
+function submitSheet() {
+  if (!sheetCards.length) {
+    sheetResultsEl.innerHTML = `<p style="color:#c62828;">Generate a sheet first.</p>`;
+    return;
+  }
+
+  let totalScore = 0;
+  let scoredCount = 0;
+
+  sheetCards.forEach(card => {
+    const rawPoints = [];
+    card.strokes.forEach(s => rawPoints.push(...s.points));
+
+    if (rawPoints.length < 6) {
+      card.scoreLine.textContent = "Skipped (not drawn)";
+      card.scoreLine.style.color = "#9ca3af";
+      return;
+    }
+
+    const userResampled = resampleOrderedPath(rawPoints, 100);
+    const targetSampled = sampleUnorderedPoints(card.target.points, 100);
+    const userNorm = normalizePoints(userResampled, 160);
+    const targetNorm = normalizePoints(targetSampled, 160);
+
+    const d1 = averageNearestDistance(userNorm, targetNorm);
+    const d2 = averageNearestDistance(targetNorm, userNorm);
+    const avg = (d1 + d2) / 2;
+    const accuracy = clamp(Math.round(100 - (avg / 28) * 100), 0, 100);
+
+    const userBox = getBoundingBox(rawPoints);
+    const outsideCount = rawPoints.filter(p => p.y < MINI_TOP - 14 || p.y > MINI_DESC + 14).length;
+    const outsideRatio = outsideCount / rawPoints.length;
+    const boundary = clamp(Math.round(100 - outsideRatio * 80), 0, 100);
+
+    const finalScore = Math.round(accuracy * 0.7 + boundary * 0.3);
+    totalScore += finalScore;
+    scoredCount++;
+
+    card.scoreLine.textContent = `${card.letter}: ${finalScore}/100`;
+    card.scoreLine.style.color = finalScore >= 75 ? "#2e7d32" : finalScore >= 50 ? "#e65100" : "#c62828";
+  });
+
+  const avgScore = scoredCount ? Math.round(totalScore / scoredCount) : 0;
+  sheetResultsEl.innerHTML = `
+    <div class="metric" style="max-width:260px;">
+      <div class="label">Sheet average (${scoredCount}/${sheetCards.length} completed)</div>
+      <div class="value">${avgScore}</div>
+    </div>
+  `;
+
+  if (scoredCount) playScoreTone(avgScore); // one chime/tone for the whole sheet result
+}
+
+generateSheetBtn.addEventListener("click", generateSheet);
+submitSheetBtn.addEventListener("click", submitSheet);
+
+
+/* ---------------------------------------------------------------------
+   26) STARTUP
+--------------------------------------------------------------------- */
+function init() {
+  populateExerciseSelect();
+  buildTargetData();
+  clearDrawingOnly();
+  renderStats();
+  if (animToggleEl.checked) animateStrokeGuide(state.targetData);
+}
+init();
+
+// Capacitor Android back button
+document.addEventListener('DOMContentLoaded', function() {
+  if(window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.App){
+    Capacitor.Plugins.App.addListener('backButton', function(e){
+      if(window.history.length > 1) window.history.back();
+      else Capacitor.Plugins.App.exitApp();
+    });
+  }
+});
+
+</script>
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Bhava Likhwell";</script>
+  <script src="bhava-bridge.js"></script>
+  <script src="bhava-session.js"></script>
+  <script src="bhava-game-nav.js"></script>
+</body>
+</html>

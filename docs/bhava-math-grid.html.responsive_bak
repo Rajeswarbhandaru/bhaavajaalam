@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bhāva Math Grid - Enhanced</title>
+<style>
+:root{--bg:#f5faf4;--card:#ffffff;--soft:#eef7ef;--line:#dce8dd;--text:#203126;--muted:#65746a;--accent:#2fa36f;--accent2:#7a84ff;--good:#4ea85a;--bad:#d8666f;--shadow:0 18px 50px rgba(51,92,62,.09)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,var(--bg),#fff);color:var(--text);min-height:100vh;overflow-x:hidden;}
+.app{max-width:1100px;margin:0 auto;padding:16px;position:relative;z-index:1;}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:var(--shadow);position:sticky;top:12px;z-index:5}
+.title{font-size:32px;font-weight:900;line-height:1}
+.subtitle{font-size:14px;color:var(--muted);margin-top:4px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+button{font:inherit;border:1px solid var(--line);background:#fff;border-radius:999px;padding:12px 16px;cursor:pointer;font-weight:800;box-shadow:var(--shadow); transition: transform 0.1s, box-shadow 0.2s;}
+button:active { transform: scale(0.95); }
+button:hover { box-shadow: 0 8px 20px rgba(47,163,111,.15); }
+.btnMain{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none}
+
+.layout{display:grid;grid-template-columns:300px 1fr;gap:14px;margin-top:14px;align-items:start}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:var(--shadow)}
+.rules .rule{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:12px;margin-top:10px;font-size:14px;line-height:1.45}
+
+/* Enhanced Stats Grid */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.stat{background:var(--soft);border:1px solid var(--line);border-radius:18px;text-align:center;padding:12px; transition: transform 0.2s;}
+.stat.highlight { transform: scale(1.05); background: #e3f5e7; border-color: var(--accent); }
+.small{font-size:12px;color:var(--muted);text-transform:uppercase;font-weight:bold;letter-spacing:0.05em;}
+
+/* Timer Bar */
+.timerWrap{background:var(--soft);border:1px solid var(--line);border-radius:999px;height:12px;margin:14px 0;overflow:hidden;position:relative;}
+.timerBar{background:linear-gradient(90deg, var(--accent), var(--accent2));height:100%;width:100%;border-radius:999px;transition: width 1s linear, background 0.3s;}
+.timerBar.low { background: var(--bad); }
+
+.levels{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
+.level{background:var(--soft);font-size:14px;padding:10px 14px}
+.level.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none}
+
+/* Unified Board CSS for Perfect Alignment */
+.boardWrap{display:flex;justify-content:center;overflow-x:auto;padding:20px 0;}
+.unifiedBoard {
+  display: grid;
+  grid-template-columns: 110px repeat(var(--n), 64px);
+  gap: 12px;
+  align-items: center;
+}
+.corner {
+  text-align: right;
+  padding-right: 8px;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+.target {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 64px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.target span { font-size: 12px; color: var(--muted); margin-bottom: 2px; font-weight: bold; transition: color 0.3s; }
+.target b { font-size: 24px; line-height: 1; color: var(--text); transition: color 0.3s; }
+
+/* Focus Mode Highlights */
+.target.focus { transform: scale(1.05); border-color: var(--accent); box-shadow: 0 4px 12px rgba(47,163,111,.15); }
+.cell.focus { background: #eef9f2; border-color: #a7d9b9; }
+
+/* Success Animations */
+.target.completed {
+  background: var(--good);
+  border-color: var(--good);
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(78,168,90,.3);
+}
+.target.completed span, .target.completed b { color: #fff; }
+
+.label {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  text-align: center;
+  padding: 10px 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  transition: transform 0.2s;
+}
+.label.focus { transform: translateY(-3px); color: var(--accent); border-color: var(--accent); }
+
+.cell {
+  width: 100%;
+  height: 64px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  font-size: 26px;
+  font-weight: 900;
+  text-align: center;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+  transition: all 0.2s;
+}
+.cell:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(47,163,111,0.2);
+  transform: scale(1.05);
+  z-index: 2;
+}
+.fixed { background: #f1faf2; color: var(--text); border-color: #cde4d2; }
+
+.msg{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:16px;font-size:16px;text-align:center;font-weight:bold;margin-top:10px; transition: 0.3s;}
+.ok{color:var(--good);background:#e9f6eb;border-color:#b4e3be}
+.bad{color:var(--bad);background:#fbedee;border-color:#f1c2c6}
+
+/* Confetti Container */
+#confetti-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; overflow: hidden; }
+.confetti { position: absolute; width: 10px; height: 10px; opacity: 0.8; animation: fall 3s linear forwards; }
+@keyframes fall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+@media (max-width:980px){
+  .layout{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:500px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .unifiedBoard { grid-template-columns: 80px repeat(var(--n), 48px); gap: 8px;}
+  .cell, .target { height: 48px; }
+  .cell { font-size: 18px; }
+  .target b { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<div id="confetti-container"></div>
+<div class="app">
+  <div class="top">
+    <div>
+      <div class="title">Bhāva Math Grid</div>
+      <div class="subtitle">A gentle logic game with checked puzzles and smart hints</div>
+    </div>
+    <div class="actions">
+      <button id="themeBtn">Theme</button>
+      <button id="hintBtn">Hint</button>
+      <button id="checkBtn">Check</button>
+      <button class="btnMain" id="newBtn">New Puzzle</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="panel rules">
+      <div style="font-weight:900;font-size:20px">Rules & Status</div>
+      <div class="rule">1. Match the row & column totals.</div>
+      <div class="rule">2. Use each digit (1 to Grid Size²) once only.</div>
+      <div class="rule">3. Solve quickly to maintain high Brain Power.</div>
+      
+      <div class="timerWrap">
+        <div id="timerBar" class="timerBar"></div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="small">Score</div><div id="scoreDisplay" style="font-size:24px;font-weight:900">0</div></div>
+        <div class="stat" id="streakBox"><div class="small">Streak 🔥</div><div id="streakDisplay" style="font-size:24px;font-weight:900">0</div></div>
+        <div class="stat"><div class="small">Level</div><div id="levelNo" style="font-size:24px;font-weight:900">1</div></div>
+        <div class="stat"><div class="small">Checks</div><div id="checksNo" style="font-size:24px;font-weight:900">0</div></div>
+      </div>
+    </div>
+
+    <div class="panel main">
+      <div class="levels" id="levels"></div>
+      <div class="boardWrap">
+        <div id="unifiedBoard" class="unifiedBoard"></div>
+      </div>
+      <div class="msg" id="msg">Choose a level and start solving.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// --- AUDIO SYNTHESIS ENGINE ---
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+
+function initAudio() {
+  if (!audioCtx) audioCtx = new AudioContext();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playTone(freq, type, duration, vol=0.1) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+  
+  gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration);
+}
+
+// Sound Effects Library
+const sfx = {
+  pop: () => playTone(600, 'sine', 0.1, 0.2),
+  blip: () => playTone(800, 'triangle', 0.1, 0.1),
+  chime: () => { playTone(523.25, 'sine', 0.3, 0.2); setTimeout(()=>playTone(659.25, 'sine', 0.4, 0.2), 100); },
+  win: () => { 
+    [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+      setTimeout(() => playTone(f, 'sine', 0.5, 0.2), i * 150);
+    });
+  },
+  error: () => playTone(150, 'sawtooth', 0.3, 0.1)
+};
+
+// --- GAME STATE ---
+const LEVELS = [{size:3,blanks:4},{size:4,blanks:6},{size:5,blanks:8}];
+const unifiedBoard=document.getElementById('unifiedBoard'), msg=document.getElementById('msg'), levels=document.getElementById('levels');
+const levelNo=document.getElementById('levelNo'), checksNo=document.getElementById('checksNo'), scoreDisplay=document.getElementById('scoreDisplay'), streakDisplay=document.getElementById('streakDisplay'), timerBar=document.getElementById('timerBar'), streakBox=document.getElementById('streakBox');
+
+let state = {
+  lvl: 0, solution: [], givens: new Set(), cells: [], checks: 0, 
+  totalScore: 0, streak: 0, currentPoints: 0, timer: null, 
+  rowCompleted: [], colCompleted: []
+};
+
+// --- CONFETTI ENGINE ---
+function shootConfetti() {
+  const container = document.getElementById('confetti-container');
+  const colors = ['#2fa36f', '#7a84ff', '#ffca28', '#ff7043', '#4ea85a'];
+  for (let i = 0; i < 50; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    el.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    el.style.animationDelay = (Math.random() * 0.5) + 's';
+    container.appendChild(el);
+    setTimeout(() => el.remove(), 5000);
+  }
+}
+
+// --- LOGIC & MATH ---
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function makeBase(n){
+  const nums = shuffle([...Array(n*n).keys()].map(x => x + 1));
+  const g = [];
+  for(let r=0;r<n;r++) g.push(nums.slice(r*n, r*n+n));
+  return g;
+}
+function sumsRows(g){return g.map(r=>r.reduce((a,b)=>a+b,0))}
+function sumsCols(g){return g[0].map((_,c)=>g.reduce((a,r)=>a+r[c],0))}
+
+function validateUnique(sol,givens,rows,cols,range){
+  const n=sol.length, flat=Array(n*n).fill(null), used=new Set();
+  for(let i=0;i<n*n;i++) if(givens.has(i)){flat[i]=sol[(i/n)|0][i%n]; used.add(flat[i])}
+  let sols=0;
+  function partialOk(){
+    for(let r=0;r<n;r++){
+      let s=0,empty=0;
+      for(let c=0;c<n;c++){const v=flat[r*n+c]; if(v==null) empty++; else s+=v}
+      if(s>rows[r] || (empty===0 && s!==rows[r])) return false
+    }
+    for(let c=0;c<n;c++){
+      let s=0,empty=0;
+      for(let r=0;r<n;r++){const v=flat[r*n+c]; if(v==null) empty++; else s+=v}
+      if(s>cols[c] || (empty===0 && s!==cols[c])) return false
+    }
+    return true
+  }
+  function back(){
+    if(sols>1) return;
+    let idx=-1;
+    for(let i=0;i<n*n;i++) if(flat[i]==null){idx=i; break}
+    if(idx===-1){ if(partialOk()) sols++; return; }
+    for(let d=1; d<=range; d++){
+      if(used.has(d)) continue;
+      flat[idx]=d; used.add(d);
+      if(partialOk()) back();
+      used.delete(d); flat[idx]=null;
+      if(sols>1) return;
+    }
+  }
+  back();
+  return sols===1;
+}
+
+function generate(){
+  const L=LEVELS[state.lvl], n = L.size, range = n * n, totalCells = n * n, numGivens = totalCells - L.blanks; 
+  for(let tries=0;tries<200;tries++){
+    const base = makeBase(n), rows = sumsRows(base), cols = sumsCols(base);
+    for(let inner=0; inner<10; inner++) {
+      const idx = shuffle([...Array(totalCells).keys()]).slice(0, numGivens);
+      const giv = new Set(idx);
+      if(validateUnique(base, giv, rows, cols, range)){
+        state.solution = base; state.givens = giv;
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+// --- GAMIFICATION / TIMERS ---
+function startTimer() {
+  clearInterval(state.timer);
+  const maxTimePoints = LEVELS[state.lvl].size * 1000;
+  state.currentPoints = maxTimePoints;
+  timerBar.style.width = '100%';
+  timerBar.classList.remove('low');
+  
+  state.timer = setInterval(() => {
+    state.currentPoints = Math.max(0, state.currentPoints - (maxTimePoints / 100)); // Decays over ~100 seconds
+    const pct = (state.currentPoints / maxTimePoints) * 100;
+    timerBar.style.width = pct + '%';
+    if(pct < 25) timerBar.classList.add('low');
+  }, 1000);
+}
+
+// --- RENDERING & UI ---
+function renderLevels(){
+  levels.innerHTML='';
+  LEVELS.forEach((L,i)=>{
+    const b=document.createElement('button');
+    b.className='level'+(i===state.lvl?' active':'');
+    b.textContent=`Level ${i+1} · ${L.size}x${L.size}`;
+    b.onclick=()=>{state.lvl=i; levelNo.textContent=i+1; renderLevels(); newPuzzle(); sfx.blip();};
+    levels.appendChild(b)
+  });
+}
+
+function focusRC(r, c, enable) {
+  const n = LEVELS[state.lvl].size;
+  // Highlight Target Boxes
+  const rt = document.getElementById(`rowTarget-${r}`);
+  const ct = document.getElementById(`colTarget-${c}`);
+  const cl = document.getElementById(`colLabel-${c}`);
+  if(rt) rt.classList.toggle('focus', enable);
+  if(ct) ct.classList.toggle('focus', enable);
+  if(cl) cl.classList.toggle('focus', enable);
+  
+  // Highlight Cells
+  state.cells.forEach((inp, idx) => {
+    const ir = Math.floor(idx / n);
+    const ic = idx % n;
+    if (ir === r || ic === c) {
+      inp.classList.toggle('focus', enable);
+    }
+  });
+}
+
+function liveValidate() {
+  const g = current();
+  const n = g.length;
+  const rs = sumsRows(state.solution), cs = sumsCols(state.solution);
+  let newlyCompleted = false;
+
+  for(let r=0; r<n; r++){
+    let rowSum = 0, isFull = true;
+    for(let c=0; c<n; c++) {
+      if(g[r][c] === null) isFull = false;
+      else rowSum += g[r][c];
+    }
+    const rt = document.getElementById(`rowTarget-${r}`);
+    if(isFull && rowSum === rs[r] && !state.rowCompleted[r]) {
+      state.rowCompleted[r] = true;
+      rt.classList.add('completed');
+      newlyCompleted = true;
+    } else if (rowSum !== rs[r] || !isFull) {
+      state.rowCompleted[r] = false;
+      rt.classList.remove('completed');
+    }
+  }
+
+  for(let c=0; c<n; c++){
+    let colSum = 0, isFull = true;
+    for(let r=0; r<n; r++) {
+      if(g[r][c] === null) isFull = false;
+      else colSum += g[r][c];
+    }
+    const ct = document.getElementById(`colTarget-${c}`);
+    if(isFull && colSum === cs[c] && !state.colCompleted[c]) {
+      state.colCompleted[c] = true;
+      ct.classList.add('completed');
+      newlyCompleted = true;
+    } else if (colSum !== cs[c] || !isFull) {
+      state.colCompleted[c] = false;
+      ct.classList.remove('completed');
+    }
+  }
+
+  if (newlyCompleted) sfx.chime();
+}
+
+function render(){
+  const n = LEVELS[state.lvl].size;
+  unifiedBoard.style.setProperty('--n', n);
+  unifiedBoard.innerHTML = ''; 
+  state.cells = [];
+  state.rowCompleted = Array(n).fill(false);
+  state.colCompleted = Array(n).fill(false);
+
+  const rs=sumsRows(state.solution), cs=sumsCols(state.solution);
+
+  const cornerTop = document.createElement('div');
+  cornerTop.className = 'corner';
+  cornerTop.innerHTML = 'COLS ➔';
+  unifiedBoard.appendChild(cornerTop);
+
+  for(let i=0; i<n; i++){
+    const d = document.createElement('div');
+    d.className = 'label';
+    d.id = `colLabel-${i}`;
+    d.textContent = 'Col ' + (i+1);
+    unifiedBoard.appendChild(d);
+  }
+
+  for(let r=0; r<n; r++){
+    const rt = document.createElement('div');
+    rt.className = 'target';
+    rt.id = `rowTarget-${r}`;
+    rt.innerHTML = `<span>Row ${r+1}</span><b>${rs[r]}</b>`;
+    unifiedBoard.appendChild(rt);
+
+    for(let c=0; c<n; c++){
+      const idx = r*n + c;
+      const inp = document.createElement('input');
+      inp.className = 'cell' + (state.givens.has(idx) ? ' fixed' : '');
+      inp.value = state.givens.has(idx) ? state.solution[r][c] : '';
+      inp.disabled = state.givens.has(idx);
+      
+      // Events for Focus and Validation
+      inp.onmouseenter = () => focusRC(r, c, true);
+      inp.onmouseleave = () => focusRC(r, c, false);
+      inp.oninput = () => {
+        initAudio();
+        sfx.pop();
+        inp.value = inp.value.replace(/[^0-9]/g, '').slice(0, 2);
+        liveValidate();
+      };
+      
+      unifiedBoard.appendChild(inp);
+      state.cells.push(inp);
+    }
+  }
+
+  const cornerBottom = document.createElement('div');
+  cornerBottom.className = 'corner';
+  cornerBottom.innerHTML = 'TOTALS ➔';
+  unifiedBoard.appendChild(cornerBottom);
+
+  for(let i=0; i<n; i++){
+    const ct = document.createElement('div');
+    ct.className = 'target';
+    ct.id = `colTarget-${i}`;
+    ct.innerHTML = `<span>Col ${i+1}</span><b>${cs[i]}</b>`;
+    unifiedBoard.appendChild(ct);
+  }
+
+  msg.textContent = 'New puzzle ready. Solve it logically.';
+  msg.className = 'msg';
+  
+  startTimer();
+  liveValidate(); // Pre-validate given cells
+}
+
+function newPuzzle(){
+  initAudio();
+  msg.textContent = 'Generating...';
+  msg.className = 'msg';
+  setTimeout(() => {
+    if(!generate()){
+      msg.textContent='Could not generate a valid unique puzzle. Try again.';
+      msg.className='msg bad';
+      return
+    }
+    render();
+  }, 10);
+}
+
+function current(){
+  const n=LEVELS[state.lvl].size;
+  return Array.from({length:n},(_,r)=>Array.from({length:n},(_,c)=>{
+    const v=state.cells[r*n+c].value.trim();
+    return v===''?null:Number(v)
+  }))
+}
+
+function check(){
+  initAudio();
+  state.checks++; checksNo.textContent=state.checks;
+  const g=current(), rs=sumsRows(state.solution), cs=sumsCols(state.solution), seen=[];
+  
+  for(let r=0;r<g.length;r++) for(let c=0;c<g.length;c++) if(g[r][c]==null){
+    msg.textContent='Some cells are still empty.';
+    msg.className='msg bad';
+    sfx.error(); return;
+  }
+  for(let r=0;r<g.length;r++){
+    if(g[r].reduce((a,b)=>a+b,0) !== rs[r]){
+      msg.textContent=`Row ${r+1} total is wrong.`;
+      msg.className='msg bad';
+      state.streak = 0; streakDisplay.textContent = state.streak;
+      sfx.error(); return;
+    }
+  }
+  for(let c=0;c<g.length;c++){
+    let s=0; for(let r=0;r<g.length;r++) s+=g[r][c];
+    if(s !== cs[c]){
+      msg.textContent=`Column ${c+1} total is wrong.`;
+      msg.className='msg bad';
+      state.streak = 0; streakDisplay.textContent = state.streak;
+      sfx.error(); return;
+    }
+  }
+  for(const row of g) for(const v of row){
+    if(seen.includes(v)){
+      msg.textContent='Digit repeated. Use each digit once.';
+      msg.className='msg bad';
+      state.streak = 0; streakDisplay.textContent = state.streak;
+      sfx.error(); return;
+    }
+    seen.push(v)
+  }
+  
+  // SUCCESS!
+  clearInterval(state.timer);
+  sfx.win();
+  shootConfetti();
+  
+  // Update Stats
+  state.streak++;
+  streakDisplay.textContent = state.streak;
+  streakBox.classList.add('highlight');
+  setTimeout(()=>streakBox.classList.remove('highlight'), 500);
+  
+  state.totalScore += Math.floor(state.currentPoints) + (state.streak * 100);
+  scoreDisplay.textContent = state.totalScore;
+  
+  msg.textContent=`Excellent! +${Math.floor(state.currentPoints)} Brain Power!`;
+  msg.className='msg ok';
+  
+  // Lock grid
+  state.cells.forEach(c => c.disabled = true);
+
+  // Bhava session end
+  try {
+    if (window.BhavaSession && typeof BhavaSession.end === 'function') {
+      const raw = Math.min(100, Math.round((state.totalScore / 5000) * 100));
+      BhavaSession.end(raw);
+    }
+  } catch(e) { console.warn('BhavaSession.end:', e.message); }
+}
+
+function hint(){
+  initAudio();
+  const g=current(), n=LEVELS[state.lvl].size;
+  for(let r=0;r<n;r++){
+    const em=[];
+    for(let c=0;c<n;c++) if(g[r][c]==null) em.push(c);
+    if(em.length===1){
+      const c=em[0];
+      state.cells[r*n+c].value=state.solution[r][c];
+      state.cells[r*n+c].disabled=true;
+      state.cells[r*n+c].classList.add('fixed');
+      msg.textContent=`Row ${r+1} is forced. Hint used.`;
+      state.currentPoints = Math.max(0, state.currentPoints - 500); // Penalty
+      sfx.blip(); liveValidate(); return;
+    }
+  }
+  for(let c=0;c<n;c++){
+    const em=[];
+    for(let r=0;r<n;r++) if(g[r][c]==null) em.push(r);
+    if(em.length===1){
+      const r=em[0];
+      state.cells[r*n+c].value=state.solution[r][c];
+      state.cells[r*n+c].disabled=true;
+      state.cells[r*n+c].classList.add('fixed');
+      msg.textContent=`Column ${c+1} is forced. Hint used.`;
+      state.currentPoints = Math.max(0, state.currentPoints - 500); // Penalty
+      sfx.blip(); liveValidate(); return;
+    }
+  }
+  msg.textContent='No forced cell yet. Fill more cells first.';
+  sfx.error();
+}
+
+// Init
+document.getElementById('newBtn').onclick=newPuzzle;
+document.getElementById('checkBtn').onclick=check;
+document.getElementById('hintBtn').onclick=hint;
+document.getElementById('themeBtn').onclick=()=> {
+  initAudio(); sfx.blip();
+  document.body.style.filter=document.body.style.filter?'':'invert(0.95) hue-rotate(180deg)';
+};
+
+// Start
+document.addEventListener('click', initAudio, {once: true});
+renderLevels();
+newPuzzle();
+
+// Capacitor Android back button
+document.addEventListener('DOMContentLoaded', function() {
+  if(window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.App){
+    Capacitor.Plugins.App.addListener('backButton', function(e){
+      if(window.history.length > 1) window.history.back();
+      else Capacitor.Plugins.App.exitApp();
+    });
+  }
+});
+</script>
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Bhava Math Grid";</script>
+  <script src="bhava-bridge.js"></script>
+  <script src="bhava-session.js"></script>
+  <script src="bhava-game-nav.js"></script>
+</body>
+</html>

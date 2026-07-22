@@ -1,0 +1,508 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bhāvajālam — AI Assistant</title>
+  <link rel="icon" href="https://www.bhaavajaalam.com/assets/favicon.ico" type="image/x-icon"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..700;1,300..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --bg:#f5f3ee; --surface:#ffffff; --surface-2:#f0ede8;
+      --border:#e2dfd9; --text:#1c1a16; --text-muted:#6b6862;
+      --text-faint:#a8a5a0; --primary:#2d6a4f; --primary-hover:#1e4d38;
+      --primary-light:#d8ede4; --accent:#e07a1f; --accent-light:#fdf0e0;
+      --user-bubble:#2d6a4f; --bot-bubble:#ffffff;
+      --shadow-sm:0 1px 4px rgba(0,0,0,0.07); --shadow-md:0 4px 20px rgba(0,0,0,0.10);
+      --shadow-lg:0 8px 40px rgba(0,0,0,0.13);
+      --radius-sm:8px; --radius-md:14px; --radius-lg:22px; --radius-full:9999px;
+      --font-body:'Plus Jakarta Sans',sans-serif; --font-display:'Instrument Serif',serif;
+    }
+    [data-theme="dark"] {
+      --bg:#0f110e; --surface:#191c18; --surface-2:#21241f;
+      --border:#2c302a; --text:#e4e8e2; --text-muted:#888d85;
+      --text-faint:#555a52; --primary:#52b788; --primary-hover:#3a9e72;
+      --primary-light:#1a2e22; --accent:#f4a442; --accent-light:#2e2416;
+      --user-bubble:#2d6a4f; --bot-bubble:#21241f;
+      --shadow-sm:0 1px 4px rgba(0,0,0,0.3); --shadow-md:0 4px 20px rgba(0,0,0,0.45);
+      --shadow-lg:0 8px 40px rgba(0,0,0,0.6);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+    body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:16px;transition:background .3s,color .3s}
+
+    /* HEADER */
+    .header{width:100%;max-width:820px;display:flex;align-items:center;
+      justify-content:space-between;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo-img{width:44px;height:44px;border-radius:10px;object-fit:contain;background:transparent;}
+    .brand-text{display:flex;flex-direction:column}
+    .brand-name{font-family:var(--font-display);font-size:1.45rem;color:var(--text);
+      line-height:1;letter-spacing:-0.01em}
+    .brand-name em{color:var(--primary);font-style:italic}
+    .brand-tagline{font-size:.72rem;color:var(--text-muted);letter-spacing:.04em;margin-top:3px}
+    .header-right{display:flex;align-items:center;gap:10px}
+    .status-pill{display:flex;align-items:center;gap:7px;background:var(--surface);
+      border:1px solid var(--border);border-radius:var(--radius-full);
+      padding:5px 12px;font-size:.75rem;color:var(--text-muted)}
+    .dot-live{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .theme-btn{width:36px;height:36px;background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius-full);cursor:pointer;color:var(--text-muted);font-size:15px;
+      display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s}
+    .theme-btn:hover{background:var(--surface-2);color:var(--text)}
+
+    /* CHAT CARD */
+    .chat-card{width:100%;max-width:820px;background:var(--surface);
+      border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);
+      display:flex;flex-direction:column;overflow:hidden;height:72vh;min-height:440px}
+
+    /* TOPBAR */
+    .topbar{padding:14px 20px;border-bottom:1px solid var(--border);
+      display:flex;align-items:center;gap:12px;background:var(--surface)}
+    .bot-ava{width:42px;height:42px;
+      background:linear-gradient(135deg,var(--primary) 60%,var(--accent) 100%);
+      border-radius:var(--radius-full);display:flex;align-items:center;
+      justify-content:center;font-size:20px;flex-shrink:0}
+    .topbar-info h3{font-size:.95rem;font-weight:600;color:var(--text)}
+    .topbar-info p{font-size:.75rem;color:var(--text-muted);max-width:none;margin-top:2px}
+    .topbar-badge{margin-left:auto;background:var(--primary-light);color:var(--primary);
+      border-radius:var(--radius-full);font-size:.7rem;padding:3px 10px;font-weight:600}
+
+    /* MESSAGES */
+    .messages{flex:1;overflow-y:auto;padding:20px;display:flex;
+      flex-direction:column;gap:16px;scroll-behavior:smooth}
+    .messages::-webkit-scrollbar{width:4px}
+    .messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+    .msg{display:flex;gap:10px;align-items:flex-end;animation:fadeUp .28s cubic-bezier(.16,1,.3,1)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .msg.user{flex-direction:row-reverse}
+    .msg-ava{width:28px;height:28px;border-radius:var(--radius-full);
+      display:flex;align-items:center;justify-content:center;
+      font-size:11px;font-weight:700;flex-shrink:0}
+    .msg-ava.bot{background:var(--primary-light);color:var(--primary)}
+    .msg-ava.user{background:var(--primary);color:#fff}
+    .msg-wrap{display:flex;flex-direction:column;max-width:75%}
+    .msg.user .msg-wrap{align-items:flex-end}
+    .bubble{padding:11px 16px;border-radius:var(--radius-md);
+      font-size:.875rem;line-height:1.7;word-wrap:break-word}
+    .bubble.bot{background:var(--bot-bubble);border:1px solid var(--border);
+      border-bottom-left-radius:4px;color:var(--text);box-shadow:var(--shadow-sm)}
+    .bubble.user{background:var(--user-bubble);color:#fff;border-bottom-right-radius:4px}
+    .bubble a{color:var(--primary);font-weight:600;text-decoration:underline;
+      text-underline-offset:2px;transition:opacity .15s}
+    .bubble.user a{color:#a8f0d0}
+    .bubble a:hover{opacity:.75}
+
+    /* LINK CHIPS */
+    .link-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+    .chip{display:inline-flex;align-items:center;gap:5px;
+      background:var(--primary-light);color:var(--primary);
+      border:1px solid color-mix(in oklab,var(--primary) 30%,transparent);
+      border-radius:var(--radius-full);padding:4px 12px;
+      font-size:.75rem;font-weight:600;text-decoration:none;
+      transition:all .18s;white-space:nowrap}
+    .chip:hover{background:var(--primary);color:#fff}
+    .chip.accent{background:var(--accent-light);color:var(--accent);
+      border-color:color-mix(in oklab,var(--accent) 30%,transparent)}
+    .chip.accent:hover{background:var(--accent);color:#fff}
+    .bubble.user .chip{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.4)}
+    .bubble.user .chip:hover{background:rgba(255,255,255,.35)}
+
+    /* TYPING */
+    .typing{display:flex;gap:10px;align-items:flex-end}
+    .typing-bubble{background:var(--bot-bubble);border:1px solid var(--border);
+      border-radius:var(--radius-md);border-bottom-left-radius:4px;
+      padding:12px 16px;display:flex;gap:5px;align-items:center}
+    .typing-bubble span{width:7px;height:7px;background:var(--text-faint);
+      border-radius:50%;animation:bop 1.2s infinite}
+    .typing-bubble span:nth-child(2){animation-delay:.2s}
+    .typing-bubble span:nth-child(3){animation-delay:.4s}
+    @keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+    .msg-time{font-size:.67rem;color:var(--text-faint);margin-top:4px;padding:0 2px}
+
+    /* QUICK REPLIES */
+    .quick-area{padding:10px 20px;border-top:1px solid var(--border);
+      background:var(--surface-2);display:flex;flex-wrap:wrap;gap:8px}
+    .qbtn{background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius-full);padding:6px 13px;font-size:.75rem;
+      color:var(--text-muted);cursor:pointer;font-family:var(--font-body);transition:all .18s}
+    .qbtn:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
+
+    /* INPUT */
+    .input-row{padding:12px 20px;border-top:1px solid var(--border);
+      background:var(--surface);display:flex;gap:10px;align-items:flex-end}
+    .input-box{flex:1;background:var(--surface-2);border:1.5px solid var(--border);
+      border-radius:var(--radius-md);display:flex;align-items:center;
+      padding:8px 14px;transition:border-color .2s}
+    .input-box:focus-within{border-color:var(--primary)}
+    #inp{flex:1;background:transparent;border:none;outline:none;
+      font-family:var(--font-body);font-size:.875rem;color:var(--text);
+      resize:none;max-height:96px;line-height:1.5}
+    #inp::placeholder{color:var(--text-faint)}
+    .send{width:42px;height:42px;background:var(--primary);border:none;
+      border-radius:var(--radius-md);cursor:pointer;color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      transition:background .2s,transform .1s;flex-shrink:0}
+    .send:hover{background:var(--primary-hover)}
+    .send:active{transform:scale(.94)}
+    .send svg{width:17px;height:17px}
+    .powered{font-size:.68rem;color:var(--text-faint);text-align:center;
+      padding:6px 20px 8px;background:var(--surface)}
+    .powered strong{color:var(--primary)}
+    .footer{margin-top:14px;font-size:.72rem;color:var(--text-faint);text-align:center}
+    .footer a{color:var(--primary);text-decoration:none}
+
+    @media(max-width:600px){
+      .chat-card{height:80vh}
+      .msg-wrap{max-width:86%}
+      .brand-name{font-size:1.2rem}
+      .topbar-badge{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">
+    <img src="https://www.bhaavajaalam.com/assets/logo.png" alt="Bhāvajālam Logo" class="logo-img" width="44" height="44" loading="lazy"/>
+    <div class="brand-text">
+      <div class="brand-name">Bhāva<em>jālam</em></div>
+      <div class="brand-tagline">REWIRING HOW CHILDREN LEARN · VIZAG</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="status-pill"><span class="dot-live"></span> AI Online</div>
+    <button class="theme-btn" data-theme-toggle aria-label="Toggle dark mode">🌙</button>
+  </div>
+</div>
+
+<div class="chat-card">
+  <div class="topbar">
+    <div class="bot-ava"><img src="https://www.bhaavajaalam.com/assets/logo.png" alt="Bhāva Bot" width="28" height="28" style="border-radius:50%;object-fit:cover;" loading="lazy"/></div>
+    <div class="topbar-info">
+      <h3>Bhāva Assistant</h3>
+      <p>Ask about Brain Gym, games, pricing, courses, or how to join — with direct links</p>
+    </div>
+    <div class="topbar-badge">⚡ Instant Reply</div>
+  </div>
+
+  <div class="messages" id="messages" aria-live="polite"></div>
+
+  <div class="quick-area">
+    <button class="qbtn" onclick="sq('What is Bhāvajālam?')">🌱 About</button>
+    <button class="qbtn" onclick="sq('What is Brain Gym?')">🏋️ Brain Gym</button>
+    <button class="qbtn" onclick="sq('What games do you have?')">🎮 Games</button>
+    <button class="qbtn" onclick="sq('What are your subscription plans?')">💰 Pricing</button>
+    <button class="qbtn" onclick="sq('What courses do you offer?')">📚 Courses</button>
+    <button class="qbtn" onclick="sq('What is IQ EQ SQ training?')">🧠 IQ·EQ·SQ</button>
+    <button class="qbtn" onclick="sq('Where is your office?')">📍 Location</button>
+    <button class="qbtn" onclick="sq('How can I contact you?')">📞 Contact</button>
+    <button class="qbtn" onclick="sq('Who is this for?')">👶 Age Groups</button>
+    <button class="qbtn" onclick="sq('How to enroll or join?')">✅ Enroll</button>
+  </div>
+
+  <div class="input-row">
+    <div class="input-box">
+      <textarea id="inp" placeholder="Ask anything about Bhāvajālam…" rows="1" aria-label="Type your message"></textarea>
+    </div>
+    <button class="send" onclick="send()" aria-label="Send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+  <div class="powered">Powered by <strong>Bhāva Tech AI</strong> · All links open bhaavajaalam.com directly</div>
+</div>
+
+<div class="footer">
+  © 2026 <a href="https://bhaavajaalam.com" target="_blank" rel="noopener">Bhāvajālam</a> · 48-6-38, 2nd Floor, Ramatalkies Road, Visakhapatnam – 530016
+</div>
+
+<script>
+// ── Base URL ──
+const BASE = 'https://bhaavajaalam.com';
+
+// ── Helper: build clickable chip links ──
+function chips(list) {
+  return '<div class="link-chips">' +
+    list.map(c => `<a class="chip${c.accent?' accent':''}" href="${c.url}" target="_blank" rel="noopener">${c.icon} ${c.label}</a>`).join('') +
+    '</div>';
+}
+
+// ── Knowledge Base with embedded HTML links ──
+const KB = [
+  {
+    keys:["hello","hi","hey","namaste","good morning","good evening","greetings","start","hii","hai"],
+    ans:"Namaste! 🙏 Welcome to <strong>Bhāvajālam</strong> — where we rewire how children learn!\n\nI can help you explore our Brain Gym, IQ/EQ/SQ training, 20+ learning games, subscription plans, and courses. What would you like to know?",
+    links:[
+      {icon:"🌱",label:"Visit Website",url:BASE},
+      {icon:"🧠",label:"Free Brain Test",url:BASE+'/#pricing'},
+      {icon:"🎮",label:"All Games",url:BASE+'/#games'}
+    ]
+  },
+  {
+    keys:["what is bhava","bhava mean","bhavajalam","about bhava","explain","what is bhaava","meaning"],
+    ans:"<strong>Bhāva</strong> means <em>inner state</em> — the combination of Focus + Emotion + Intention that decides how a child truly learns. 🌱\n\n🌱 <strong>Bhāva</strong> (Inner State) → 🧠 <strong>Buddhi</strong> (Intellect) → 🎯 <strong>Behaviour</strong> (Real Action) → 🏆 <strong>Growth</strong> (Measurable)\n\nWhen we train the inner state first, intelligence opens naturally — resulting in original thinking, deep focus, and emotional wisdom.",
+    links:[
+      {icon:"🌐",label:"Learn More",url:BASE+'/#about'},
+      {icon:"🎯",label:"Start Free Test",url:BASE+'/#pricing'}
+    ]
+  },
+  {
+    keys:["about","who are you","company","mission","vision","bhaava tech"],
+    ans:"<strong>Bhāvajālam by Bhāva Tech</strong> 🌟 — An EdTech startup in Visakhapatnam dedicated to <strong>whole-brain cognitive development</strong> for children.\n\n🎯 <strong>Mission:</strong> While AI gets smarter, we make children wiser — training deep focus, original thinking, and analytical wisdom.\n\n📍 Physical Lab: Ramatalkies Road, Vizag\n🌍 Online: Available worldwide via live sessions",
+    links:[
+      {icon:"🏢",label:"Our Mission",url:BASE+'/#about'},
+      {icon:"📍",label:"Find Us",url:BASE+'/#contact'},
+      {icon:"🤝",label:"Partner With Us",url:BASE+'/#partners'}
+    ]
+  },
+  {
+    keys:["brain gym","braingym","brain exercise","what is brain gym"],
+    ans:"🏋️ <strong>Brain Gym</strong> trains your brain like a muscle!\n\n<strong>Without Brain Gym:</strong> ❌ Scattered attention ❌ Weak memory ❌ Emotional instability\n\n<strong>With Brain Gym:</strong> ✅ 30–45 min focus spans ✅ Stronger memory ✅ Emotional balance\n\n<strong>6 Layers of Brain Activation:</strong>\n1. Cross-Brain Integration\n2. Gamified Cognitive Challenges\n3. Meditation & Breathing\n4. Spaced Repetition & Memory\n5. Binaural Audio Environments\n6. Multilingual Language Activation\n\nAvailable in-person at Vizag and 🌍 live online worldwide!",
+    links:[
+      {icon:"🏋️",label:"Brain Gym Details",url:BASE+'/#braingym'},
+      {icon:"📞",label:"Book a Session",url:'https://wa.me/919573057516',accent:true},
+      {icon:"🌍",label:"Online Sessions",url:BASE+'/#contact'}
+    ]
+  },
+  {
+    keys:["iq","eq","sq","iq eq sq","intelligence","quotient","emotional intelligence"],
+    ans:"Bhāvajālam trains three pillars of human intelligence 🧠:\n\n🧠 <strong>IQ</strong> — Logic · Patterns · Problem-solving. Trained through gamified challenges.\n\n❤️ <strong>EQ</strong> — Emotional awareness · Empathy · Resilience. Trained through play and mindfulness.\n\n🤝 <strong>SQ</strong> — Communication · Collaboration · Leadership. Trained through group games and debates.\n\n🌟 <strong>Bhāva Power</strong> — Intention + Behaviour + Practice.",
+    links:[
+      {icon:"🧠",label:"IQ Games",url:BASE+'/#games'},
+      {icon:"❤️",label:"EQ Games",url:BASE+'/#games'},
+      {icon:"📊",label:"Take Assessment",url:BASE+'/#pricing'}
+    ]
+  },
+  {
+    keys:["game","games","apps","play","brain app","what games","list","brain games"],
+    ans:"🎮 <strong>20+ Bhāvajālam Games</strong> across 7 categories:\n\n🧠 <strong>IQ:</strong> Bhaava Brain Quest · MindSpark IQ · IQ Test Level 3 · Logical King · Neuro Ascend IQ\n❤️ <strong>Emotional:</strong> Empathy Quest · Day Hero · Day Super Hero · Heart Heroes\n🃏 <strong>Memory:</strong> Brain Garden · Memory Match · Memory Zoo 🆕 · Memory Match Ultimate\n➕ <strong>Math:</strong> Math Blitz · Number Garden · Percentile · Know Maths\nఅ <strong>Language:</strong> Telugu Script · Devanagari · English Grammar · Daily English\n🌍 <strong>Science:</strong> Planet Guardians &nbsp; ✅ <strong>Habits:</strong> Good Habits\n\nAll games accessible 24/7 from any device, any country!",
+    links:[
+      {icon:"🎮",label:"Play All Games",url:BASE+'/#games',accent:true},
+      {icon:"🧠",label:"IQ Games",url:BASE+'/#games'},
+      {icon:"❤️",label:"EQ Games",url:BASE+'/#games'},
+      {icon:"🃏",label:"Memory Games",url:BASE+'/#games'},
+      {icon:"➕",label:"Math Games",url:BASE+'/#games'}
+    ]
+  },
+  {
+    keys:["subscription","plan","price","cost","how much","fee","monthly","quarterly","annual","₹300","₹500","₹1200","pricing","pay"],
+    ans:"💰 <strong>Bhāvajālam Subscription Plans:</strong>\n\n📅 <strong>Monthly — ₹300/month</strong>\n✅ Unlimited Brain Tests ✅ All Games ✅ Progress Tracking ✅ Monthly Score Report\n\n⭐ <strong>Quarterly — ₹500 for 3 months</strong> <em>(Save ₹400!)</em>\n✅ All above + Parent Dashboard ✅ Quarterly Report\n\n🏆 <strong>Annual — ₹1,200/year</strong> <em>(Save ₹2,400!)</em>\n✅ All above + Full Annual Report ✅ Priority WhatsApp Support\n\n🎁 <strong>Try free for 5 minutes</strong> — no payment needed!\n💬 Pay via UPI · GPay · PhonePe · WhatsApp",
+    links:[
+      {icon:"📅",label:"Monthly ₹300",url:BASE+'/#pricing',accent:true},
+      {icon:"⭐",label:"Quarterly ₹500",url:BASE+'/#pricing',accent:true},
+      {icon:"🏆",label:"Annual ₹1,200",url:BASE+'/#pricing',accent:true},
+      {icon:"🎁",label:"Try Free",url:BASE+'/#pricing'}
+    ]
+  },
+  {
+    keys:["course","courses","enhancement","program","training","4 week","6 week","attention","memory course","eq course","mindfulness"],
+    ans:"📚 <strong>Enhancement Courses</strong> — One-time fee, lifetime access:\n\n🎯 <strong>Attention & Focus</strong> — ₹1,999 · 4 weeks · Ages 7–13\n🧠 <strong>Memory Enhancement</strong> — ₹2,499 · 6 weeks\n💜 <strong>EQ Building</strong> — ₹1,999 · 5 weeks\n🧘 <strong>Mindfulness for Children</strong> — ₹1,499 · 4 weeks · Ages 7–13\n\nAll courses are online with <strong>lifetime access</strong> 🌐",
+    links:[
+      {icon:"🎯",label:"Attention Course ₹1,999",url:BASE+'/#courses',accent:true},
+      {icon:"🧠",label:"Memory Course ₹2,499",url:BASE+'/#courses',accent:true},
+      {icon:"💜",label:"EQ Course ₹1,999",url:BASE+'/#courses',accent:true},
+      {icon:"🧘",label:"Mindfulness ₹1,499",url:BASE+'/#courses',accent:true}
+    ]
+  },
+  {
+    keys:["meditation","meditation lab","pranayama","mindfulness lab","breathing","calm","stress","adult","adults"],
+    ans:"🧘 <strong>Bhāvajālam Meditation Lab</strong> — A sanctuary for deep inner stillness.\n\n🎵 Binaural audio · 🔇 Sound-treated walls · 🌿 Natural lighting · ✨ Minimal stimulation\n\n<strong>For Children:</strong> Body-scan, breath-counting, visualisation, Pranayama.\n<strong>For Adults:</strong> Stress relief, burnout recovery, cognitive clarity.\n\n📍 In-person at Vizag · Book via WhatsApp",
+    links:[
+      {icon:"🧘",label:"Meditation Lab Info",url:BASE+'/#cognitive-lab'},
+      {icon:"📞",label:"Book Session",url:'https://wa.me/919573057516',accent:true}
+    ]
+  },
+  {
+    keys:["location","office","address","where","vizag","visakhapatnam","ramatalkies","visit"],
+    ans:"📍 <strong>Bhāvajālam Physical Office & Lab:</strong>\n\n🏢 48-6-38, 2nd Floor, Ramatalkies Road,\nVisakhapatnam – 530016, Andhra Pradesh\n\n⏰ <strong>Office Hours:</strong>\nMon–Sat: 9:00 AM – 6:00 PM IST\nSunday: By appointment only\n\n🌍 <strong>Online sessions</strong> available worldwide — we adjust to your time zone.",
+    links:[
+      {icon:"🗺️",label:"Get Directions",url:'https://maps.google.com/?q=48-6-38+Ramatalkies+Road+Visakhapatnam',accent:true},
+      {icon:"📞",label:"Call Us",url:'tel:+919573057516'},
+      {icon:"💬",label:"WhatsApp",url:'https://wa.me/919573057516',accent:true}
+    ]
+  },
+  {
+    keys:["contact","phone","whatsapp","email","call","reach","get in touch","number"],
+    ans:"📞 <strong>Contact Bhāvajālam:</strong>\n\n💬 <strong>WhatsApp / Phone:</strong>\n+91 95730 57516\n+91 96183 65156\n\n📧 <strong>Email:</strong> bhaavatech@gmail.com\n\n📍 48-6-38, 2nd Floor, Ramatalkies Road, Vizag – 530016\n\n⏰ Mon–Sat 9 AM – 6 PM IST · Sunday by appointment\n\nWe reply within <strong>24 hours</strong>! 🌍 International clients — we adjust to your time zone.",
+    links:[
+      {icon:"💬",label:"WhatsApp +91 95730 57516",url:'https://wa.me/919573057516',accent:true},
+      {icon:"💬",label:"WhatsApp +91 96183 65156",url:'https://wa.me/919618365156',accent:true},
+      {icon:"📧",label:"Email Us",url:'mailto:bhaavatech@gmail.com'},
+      {icon:"📍",label:"View on Map",url:'https://maps.google.com/?q=48-6-38+Ramatalkies+Road+Visakhapatnam'}
+    ]
+  },
+  {
+    keys:["age","who is it for","children","kids","child","age group","suitable","6","7","8","13","15"],
+    ans:"👶 <strong>Bhāvajālam is for:</strong>\n\n<strong>Children aged 6–15</strong> in three tiers:\n🌱 Ages 6–9 — Imagination & sensory play · Foundational memory\n🧩 Ages 10–12 — Logic puzzles · Emotional games · Memory training\n🚀 Ages 13–15 — Advanced IQ · EQ leadership · SQ purpose-clarity\n\n<strong>Adults</strong> — Stress relief & mindfulness at our Cognitive Lab, Vizag.\n\nBoth in-person (Vizag) and online (worldwide) available!",
+    links:[
+      {icon:"🌱",label:"Ages 6–9 Games",url:BASE+'/#games'},
+      {icon:"🧩",label:"Ages 10–12 Games",url:BASE+'/#games'},
+      {icon:"🚀",label:"Ages 13–15 Games",url:BASE+'/#games'},
+      {icon:"🧘",label:"Adults (Meditation Lab)",url:BASE+'/#cognitive-lab'}
+    ]
+  },
+  {
+    keys:["enroll","join","register","how to start","sign up","book","get started","begin","admission"],
+    ans:"✅ <strong>How to Enroll at Bhāvajālam:</strong>\n\n1. 🎁 <strong>Try free</strong> — Take the 5-min brain test (no payment needed)\n2. 💳 <strong>Choose a plan</strong> — Monthly ₹300 / Quarterly ₹500 / Annual ₹1,200\n3. 💬 <strong>Pay securely</strong> — UPI · GPay · PhonePe · WhatsApp\n4. 🚀 <strong>Get instant access</strong> — All games & tracking unlock immediately!\n\nFor in-person sessions at Vizag:\n📞 Call/WhatsApp: <strong>+91 95730 57516</strong>",
+    links:[
+      {icon:"🎁",label:"Start Free Test",url:BASE+'/#pricing',accent:true},
+      {icon:"📅",label:"Subscribe Now",url:BASE+'/#pricing',accent:true},
+      {icon:"💬",label:"WhatsApp to Enroll",url:'https://wa.me/919573057516',accent:true}
+    ]
+  },
+  {
+    keys:["partner","school","college","ngo","research","collaborate","partnership","institution"],
+    ans:"🤝 <strong>Partner With Bhāvajālam (2026):</strong>\n\n🏫 <strong>Schools</strong> — IQ/EQ tools, group Brain Gym, class-level reports\n🎓 <strong>Colleges</strong> — Research collab, B.Ed. & Psychology projects\n🔬 <strong>Research Orgs</strong> — Co-design studies, joint grants\n🌱 <strong>NGOs</strong> — Subsidised tools for underprivileged children\n💻 <strong>EdTech Companies</strong> — API access, white-label games, LMS integration",
+    links:[
+      {icon:"🤝",label:"Partnership Details",url:BASE+'/#partners'},
+      {icon:"📧",label:"Email to Partner",url:'mailto:bhaavatech@gmail.com',accent:true},
+      {icon:"💬",label:"WhatsApp",url:'https://wa.me/919573057516'}
+    ]
+  },
+  {
+    keys:["hire","job","career","vacancy","work with","join team","apply","content creator","designer","marketing"],
+    ans:"✨ <strong>Bhāvajālam is Hiring (2026)!</strong>\n\n🎨 <strong>UI/UX Designer</strong> — Cognitive games & learning dashboards\n✍️ <strong>Content Creator</strong> — Neuroscience translated for children\n📢 <strong>Marketing Expert</strong> — India & global reach\n📱 <strong>Social Media Expert</strong> — Instagram, YouTube, LinkedIn, X\n\n🌟 Every application read personally.",
+    links:[
+      {icon:"✨",label:"See All Openings",url:BASE+'/#careers'},
+      {icon:"📧",label:"Apply by Email",url:'mailto:bhaavatech@gmail.com',accent:true},
+      {icon:"💬",label:"WhatsApp Application",url:'https://wa.me/919573057516',accent:true}
+    ]
+  },
+  {
+    keys:["free","free trial","try free","5 minute","free test","no cost","demo"],
+    ans:"🎁 <strong>Yes! Bhāvajālam is free to try!</strong>\n\nTake the <strong>5-minute free brain evaluation</strong> — no signup needed, right on the website!\n\nAfter the free trial, choose a plan:\n📅 Monthly — ₹300\n📦 Quarterly — ₹500 <em>(Save ₹400)</em>\n🏆 Annual — ₹1,200 <em>(Save ₹2,400)</em>\n\n<strong>No pressure, no commitment</strong> — explore freely first! 🌱",
+    links:[
+      {icon:"🎁",label:"Start Free Test Now",url:BASE+'/#pricing',accent:true},
+      {icon:"🎮",label:"Try a Game First",url:BASE+'/#games'}
+    ]
+  },
+  {
+    keys:["app","download","android","windows","mobile","install","play store"],
+    ans:"📱 <strong>Bhāvajālam Apps:</strong>\n\n🤖 <strong>Android App</strong> — Available on Play Store\n💻 <strong>Windows App</strong> — Desktop application available\n🌐 <strong>Web</strong> — All 20+ games accessible at bhaavajaalam.com from any browser, 24/7\n\nNo download required — just open the website and start immediately!",
+    links:[
+      {icon:"🤖",label:"Android App",url:'https://play.google.com/store/search?q=bhaavajaalam',accent:true},
+      {icon:"🌐",label:"Play Online Now",url:BASE+'/#games',accent:true},
+      {icon:"💻",label:"Windows App",url:BASE}
+    ]
+  },
+  {
+    keys:["unique","different","why choose","why bhava","special","advantage","not tuition"],
+    ans:"🌟 <strong>What makes Bhāvajālam unique?</strong>\n\nWe are <strong>not</strong> another tuition class, coaching centre, or generic app.\n\n✅ We train the <strong>inner state (Bhāva) first</strong> — a focused child learns everything faster\n✅ <strong>Whole-brain</strong> — IQ + EQ + SQ together, not just academics\n✅ <strong>Screen-free offline games</strong> in our Vizag lab for deepest neural encoding\n✅ <strong>Science-backed</strong> — binaural audio, spaced repetition, cross-brain integration\n✅ <strong>Multilingual</strong> — Telugu, Devanagari, English script games\n✅ <strong>Physical + Online</strong> — the best of both worlds",
+    links:[
+      {icon:"🌟",label:"Our Approach",url:BASE+'/#unique'},
+      {icon:"🧪",label:"Cognitive Lab",url:BASE+'/#cognitive-lab'},
+      {icon:"🎁",label:"Try It Free",url:BASE+'/#pricing',accent:true}
+    ]
+  },
+  {
+    keys:["referral","refer","discount","coupon","code","10%","offer","off"],
+    ans:"⭐ <strong>Referral Offer!</strong>\n\nWere you referred by someone? Enter your referral code at checkout and get <strong>10% OFF</strong> on any course or subscription!\n\n💬 Share your referral code with friends and help more children access whole-brain education.",
+    links:[
+      {icon:"⭐",label:"Apply Referral Code",url:BASE+'/#pricing',accent:true},
+      {icon:"💬",label:"Ask on WhatsApp",url:'https://wa.me/919573057516'}
+    ]
+  }
+];
+
+function findAnswer(msg) {
+  const m = msg.toLowerCase().trim();
+  let best=null, bestScore=0;
+  for (const item of KB) {
+    const score = item.keys.filter(k=>m.includes(k)).length;
+    if(score>bestScore){bestScore=score;best=item;}
+  }
+  if(best&&bestScore>0) return best;
+  return {
+    ans:"Thank you for your question! 🙏 I'm here to help with anything about <strong>Bhāvajālam</strong> — our Brain Gym, IQ/EQ/SQ training, games, pricing, courses, or how to enroll. Use the quick buttons above or reach us directly!",
+    links:[
+      {icon:"🌐",label:"Visit Website",url:BASE},
+      {icon:"💬",label:"WhatsApp Us",url:'https://wa.me/919573057516',accent:true},
+      {icon:"🎮",label:"Play Games",url:BASE+'/#games'}
+    ]
+  };
+}
+
+function getTime(){return new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}
+
+function addMsg(ansObj, role) {
+  const box=document.getElementById('messages');
+  const d=document.createElement('div'); d.className=`msg ${role}`;
+  const ava=document.createElement('div'); ava.className=`msg-ava ${role}`;
+  ava.textContent=role==='bot'?'BJ':'U';
+  const wrap=document.createElement('div'); wrap.className='msg-wrap';
+  const bub=document.createElement('div'); bub.className=`bubble ${role}`;
+  const text=typeof ansObj==='string'?ansObj:ansObj.ans;
+  bub.innerHTML=text.replace(/\n/g,'<br>');
+  if(typeof ansObj==='object'&&ansObj.links&&role==='bot'){
+    bub.innerHTML+=chips(ansObj.links);
+  }
+  const tm=document.createElement('div'); tm.className='msg-time'; tm.textContent=getTime();
+  wrap.appendChild(bub); wrap.appendChild(tm);
+  d.appendChild(ava); d.appendChild(wrap);
+  box.appendChild(d); box.scrollTop=box.scrollHeight;
+}
+
+function showTyping(){
+  const box=document.getElementById('messages');
+  const d=document.createElement('div'); d.className='typing'; d.id='typing';
+  d.innerHTML=`<div class="msg-ava bot">BJ</div><div class="typing-bubble"><span></span><span></span><span></span></div>`;
+  box.appendChild(d); box.scrollTop=box.scrollHeight;
+}
+function hideTyping(){const e=document.getElementById('typing');if(e)e.remove();}
+
+async function send(){
+  const inp=document.getElementById('inp');
+  const txt=inp.value.trim(); if(!txt)return;
+  inp.value=''; inp.style.height='auto';
+  addMsg(txt,'user'); showTyping();
+  await new Promise(r=>setTimeout(r,600+Math.random()*500));
+  hideTyping();
+  addMsg(findAnswer(txt),'bot');
+}
+function sq(t){document.getElementById('inp').value=t;send();}
+
+document.getElementById('inp').addEventListener('input',function(){
+  this.style.height='auto';
+  this.style.height=Math.min(this.scrollHeight,96)+'px';
+});
+document.getElementById('inp').addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}
+});
+
+// ── Theme ──
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d); t.innerHTML=d==='dark'?'☀️':'🌙';
+  t.addEventListener('click',()=>{d=d==='dark'?'light':'dark';r.setAttribute('data-theme',d);t.innerHTML=d==='dark'?'☀️':'🌙';});
+})();
+
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    addMsg({
+      ans:"Namaste! 🙏 Welcome to <strong>Bhāvajālam</strong> — where we rewire how children learn!\n\nAsk me about our <strong>Brain Gym</strong>, <strong>IQ/EQ/SQ training</strong>, <strong>20+ games</strong>, <strong>subscription plans</strong>, <strong>courses</strong>, or how to <strong>enroll</strong> — every answer comes with <strong>direct links</strong> to the right page!",
+      links:[
+        {icon:"🎁",label:"Try Free Test",url:BASE+'/#pricing',accent:true},
+        {icon:"🎮",label:"All Games",url:BASE+'/#games'},
+        {icon:"💬",label:"WhatsApp Us",url:'https://wa.me/919573057516'}
+      ]
+    },'bot');
+  },500);
+});
+</script>
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Bhaavajaalam Chatbot";</script>
+  <script src="bhava-bridge.js"></script>
+<script src="bhava-session.js"></script>
+<script src="bhava-game-nav.js"></script>
+</body>
+</html>
+

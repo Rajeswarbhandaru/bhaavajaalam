@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhāva Tech — Build Your Bike</title>
+<link rel="stylesheet" href="css/themes.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+<div id="app-root">
+  <header id="app-header">
+    <h1 class="logo">Bhāva Tech <span>Build Your Bike</span></h1>
+    <div id="theme-toggle" role="button" tabindex="0" aria-label="Toggle theme">🌗</div>
+  </header>
+
+  <main id="screen-container" aria-live="polite"></main>
+
+  <template id="tpl-home-screen">
+    <section class="screen home-screen glass-panel">
+      <div class="workshop-bg" id="workshop-bg"></div>
+      <nav class="home-menu" role="navigation" aria-label="Main menu">
+        <button data-action="build" data-bike="single_speed">Build Bicycle</button>
+        <button data-action="build" data-bike="geared">Build Geared Bicycle</button>
+        <button data-action="build" data-bike="mountain">Build Mountain Bike</button>
+        <button data-action="build" data-bike="road">Build Road Bike</button>
+        <button data-action="build" data-bike="bmx">Build BMX</button>
+        <button data-action="build" data-bike="electric">Build Electric Bike</button>
+        <button data-action="anatomy">Bike Anatomy</button>
+        <button data-action="lessons">How Bikes Work</button>
+        <button data-action="lab">Component Laboratory</button>
+        <button data-action="repair">Repair Workshop</button>
+        <button data-action="challenges">Challenges</button>
+        <button data-action="invent">Invent Bike</button>
+        <button data-action="achievements">Achievements</button>
+        <button data-action="glossary">Glossary</button>
+        <button data-action="garage">Garage</button>
+        <button data-action="missions">Daily Missions</button>
+        <button data-action="continue">Continue</button>
+      </nav>
+    </section>
+  </template>
+
+  <template id="tpl-build-screen">
+    <section class="screen build-screen">
+      <aside id="parts-tray" class="glass-panel" aria-label="Parts tray"></aside>
+      <div id="bike-canvas-wrap">
+        <canvas id="bike-canvas" tabindex="0" aria-label="Bike build canvas"></canvas>
+        <div id="compat-alerts" aria-live="assertive"></div>
+      </div>
+      <aside id="inspector-panel" class="glass-panel" aria-label="Component inspector"></aside>
+    </section>
+  </template>
+</div>
+
+<script src="js/storage.js" type="module"></script>
+<script src="js/audio.js" type="module"></script>
+<script src="js/physics.js" type="module"></script>
+<script src="js/compatibility.js" type="module"></script>
+<script src="js/diagnostics.js" type="module"></script>
+<script src="js/scoring.js" type="module"></script>
+<script src="js/animation.js" type="module"></script>
+<script src="js/dragdrop.js" type="module"></script>
+<script src="js/achievements.js" type="module"></script>
+<script src="js/missions.js" type="module"></script>
+<script src="js/engine.js" type="module"></script>
+<script src="js/ui.js" type="module"></script>
+<script src="js/app.js" type="module"></script>
+
+<script src="bhava-tech-all.js"></script>
+<script src="bhava-bridge.js"></script>
+<script src="bhava-session.js"></script>
+<script src="bhava-game-nav.js"></script>
+
+</body>
+</html>

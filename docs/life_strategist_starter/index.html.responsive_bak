@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Life Strategist — Bhāva Tech</title>
+  <link rel="stylesheet" href="css/core/reset.css" />
+  <link rel="stylesheet" href="css/core/variables.css" />
+  <link rel="stylesheet" href="css/core/animations.css" />
+  <link rel="stylesheet" href="css/components/components.css" />
+  <link rel="stylesheet" href="css/screens/screens.css" />
+  <style>
+    /* ── Bhāva ☰ Menu Button ── */
+    #bhava-menu-btn {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 9999;
+      background: rgba(139, 92, 246, 0.85);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      width: 42px;
+      height: 42px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
+      transition: background 0.2s;
+    }
+    #bhava-menu-btn:hover { background: rgba(109, 40, 217, 0.95); }
+
+    /* ── Bhāva Overlay ── */
+    #bhava-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 9998;
+      align-items: center;
+      justify-content: center;
+    }
+    #bhava-overlay.open { display: flex; }
+    #bhava-overlay-box {
+      background: #1e1b4b;
+      border: 1px solid rgba(139,92,246,0.5);
+      border-radius: 16px;
+      padding: 28px 32px;
+      min-width: 280px;
+      text-align: center;
+      color: #e0e0ff;
+      box-shadow: 0 0 32px rgba(139,92,246,0.4);
+    }
+    #bhava-overlay-box h2 { font-size: 1.4rem; margin-bottom: 6px; color: #c4b5fd; }
+    #bhava-overlay-box p  { font-size: 0.9rem; color: #a0a0c0; margin-bottom: 20px; }
+    #bhava-overlay-box button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    #bhava-overlay-box button:hover { opacity: 0.85; }
+    .bhava-btn-home  { background: #4ade80; color: #052e16; }
+    .bhava-btn-back  { background: #60a5fa; color: #0c1a2e; }
+    .bhava-btn-close { background: rgba(255,255,255,0.08); color: #e0e0ff; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- Bhāva ☰ Menu Button -->
+  <button id="bhava-menu-btn" title="Bhāva Menu">☰</button>
+
+  <!-- Bhāva Overlay -->
+  <div id="bhava-overlay">
+    <div id="bhava-overlay-box">
+      <h2>🧭 Life Strategist</h2>
+      <p>Bhāva Tech Cognitive Games</p>
+      <button class="bhava-btn-home"  onclick="BhavaNav.goHome()">🏠 Home</button>
+      <button class="bhava-btn-back"  onclick="BhavaNav.goBack()">← Back</button>
+      <button class="bhava-btn-close" onclick="BhavaNav.closeMenu()">✕ Close</button>
+    </div>
+  </div>
+
+  <!-- Core game scripts -->
+  <script src="js/core/events.js"></script>
+  <script src="js/core/audio.js"></script>
+  <script src="js/core/particles.js"></script>
+  <script src="js/core/state.js"></script>
+  <script src="js/core/storage.js"></script>
+  <script src="js/core/router.js"></script>
+
+  <!-- Scenario data MUST come before scenario-loader -->
+  <script src="data/scenarios-data.js"></script>
+  <script src="js/engine/scenario-loader.js"></script>
+
+  <script src="js/engine/decision-engine.js"></script>
+  <script src="js/engine/scoring-engine.js"></script>
+  <script src="js/ui/renderer.js"></script>
+  <script src="js/ui/components.js"></script>
+  <script src="js/screens/home-screen.js"></script>
+  <script src="js/screens/level-screen.js"></script>
+  <script src="js/screens/scenario-screen.js"></script>
+  <script src="js/screens/report-screen.js"></script>
+  <script src="js/screens/consequence-screen.js"></script>
+  <script src="js/core/main.js"></script>
+
+  <!-- Bhāva External Scripts (relative paths — copied into game folder) -->
+  <script src="bhava-tech-all.js"></script>
+  <script src="bhava-bridge.js"></script>
+  <script src="bhava-session.js"></script>
+  <script src="bhava-game-nav.js"></script>
+
+  <script>
+    // ── Bhāva Menu & Navigation ──────────────────────────────────────────
+    var BhavaNav = {
+      openMenu: function() {
+        document.getElementById('bhava-overlay').classList.add('open');
+      },
+      closeMenu: function() {
+        document.getElementById('bhava-overlay').classList.remove('open');
+      },
+      goHome: function() {
+        this.closeMenu();
+        if (typeof Router !== 'undefined') {
+          Router.go('home');
+        } else if (typeof BhavaGameNav !== 'undefined') {
+          BhavaGameNav.goHome();
+        }
+      },
+      goBack: function() {
+        this.closeMenu();
+        if (typeof Router !== 'undefined') {
+          Router.go('levels');
+        } else {
+          window.history.back();
+        }
+      }
+    };
+
+    document.getElementById('bhava-menu-btn').addEventListener('click', function() {
+      BhavaNav.openMenu();
+    });
+
+    // Close overlay on background click
+    document.getElementById('bhava-overlay').addEventListener('click', function(e) {
+      if (e.target === this) BhavaNav.closeMenu();
+    });
+
+    // ── Capacitor Back Button ────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof Capacitor !== 'undefined' && Capacitor.Plugins && Capacitor.Plugins.App) {
+        Capacitor.Plugins.App.addListener('backButton', function() {
+          var overlay = document.getElementById('bhava-overlay');
+          if (overlay.classList.contains('open')) {
+            BhavaNav.closeMenu();
+          } else {
+            // Navigate back within the game
+            var currentRoute = (typeof Router !== 'undefined' && Router.current) ? Router.current : '';
+            if (currentRoute === 'home' || currentRoute === '') {
+              // At home — let app exit or do nothing
+            } else if (currentRoute === 'levels' || currentRoute === 'scenario-list') {
+              Router.go('home');
+            } else {
+              Router.go('levels');
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

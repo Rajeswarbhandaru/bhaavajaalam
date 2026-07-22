@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Secret of Silicon – The Heart of Modern Technology</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app" role="application" aria-label="The Secret of Silicon interactive discovery game">
+
+  <!-- ============ HEADER ============ -->
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">◈</span>
+      <div class="brand-text">
+        <h1>The Secret of Silicon</h1>
+        <p>The Heart of Modern Technology</p>
+      </div>
+    </div>
+    <div class="progress-wrap" aria-label="Overall progress">
+      <div class="progress-track">
+        <div id="progressFill" class="progress-fill" style="width:0%"></div>
+      </div>
+      <span id="progressLabel" class="progress-label">0 / 12 Levels</span>
+    </div>
+    <button id="badgesBtn" class="icon-btn" aria-haspopup="dialog" aria-controls="badgesPanel" title="Achievements">
+      🏆 <span id="badgeCount">0</span>
+    </button>
+  </header>
+
+  <div class="layout">
+    <!-- ============ LEVEL NAV ============ -->
+    <nav class="level-nav" aria-label="Level navigation">
+      <ol id="levelList" tabindex="0"></ol>
+    </nav>
+
+    <!-- ============ MAIN STAGE ============ -->
+    <main id="stage" class="stage" aria-live="polite">
+      <!-- Level sections injected here by JS -->
+    </main>
+  </div>
+
+  <!-- ============ FOOTER NAV ============ -->
+  <footer class="app-footer">
+    <button id="prevBtn" class="nav-btn" aria-label="Previous level">← Back</button>
+    <div id="curiosityBar" class="curiosity-bar" aria-live="polite"></div>
+    <button id="nextBtn" class="nav-btn primary" aria-label="Next level">Next →</button>
+  </footer>
+
+  <!-- ============ ACHIEVEMENT TOAST ============ -->
+  <div id="toast" class="toast" role="status" aria-live="assertive"></div>
+
+  <!-- ============ BADGES PANEL ============ -->
+  <div id="badgesPanel" class="panel-overlay hidden" role="dialog" aria-modal="true" aria-label="Achievements panel">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Achievements</h2>
+        <button id="closeBadges" class="icon-btn" aria-label="Close">✕</button>
+      </div>
+      <div id="badgesGrid" class="badges-grid"></div>
+    </div>
+  </div>
+
+  <!-- ============ TOOLTIP ============ -->
+  <div id="tooltip" class="tooltip hidden" role="tooltip"></div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

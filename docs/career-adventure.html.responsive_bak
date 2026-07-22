@@ -1,0 +1,1228 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Career Adventure — Bhāva Tech</title>
+<style>
+:root{
+  --bg:#050816;--panel:rgba(12,19,37,0.65);--line:rgba(255,255,255,0.08);
+  --txt:#eef2ff;--muted:#a8b3cf;--gold:#fbbf24;--cyan:#22d3ee;
+  --pink:#fb7185;--violet:#a78bfa;--green:#34d399;--blue:#60a5fa;--orange:#fb923c;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;min-height:100%;width:100%;}
+body{font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at top,#18264f 0%,#0b1022 35%,#050816 100%);color:var(--txt);overflow-x:hidden;}
+body:before{content:'';position:fixed;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 15% 20%,rgba(34,211,238,0.14),transparent 22%),
+             radial-gradient(circle at 82% 15%,rgba(244,114,182,0.12),transparent 20%),
+             radial-gradient(circle at 20% 82%,rgba(251,191,36,0.12),transparent 18%),
+             radial-gradient(circle at 86% 72%,rgba(167,139,250,0.12),transparent 18%);}
+a{color:inherit;}
+.wrap{max-width:1280px;margin:auto;padding:16px;}
+header{position:sticky;top:0;z-index:30;background:rgba(5,8,22,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--line);}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;padding:14px 0 18px;position:relative;}
+.brand h1{margin:0;font-size:22px;}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:12px;}
+.badgeRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.chip{padding:5px 10px;border-radius:999px;background:#0f172a;border:1px solid rgba(255,255,255,0.08);color:#dbeafe;font-size:11px;}
+.progress{height:5px;background:#0b1222;overflow:hidden;position:absolute;bottom:0;left:0;width:100%;}
+.bar{height:100%;width:0%;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink),var(--gold));background-size:300% 300%;border-radius:0 999px 999px 0;transition:width .1s ease-out;animation:progressGlow 5s ease infinite;}
+
+.hero{padding:18px 0 8px;animation:fadeUp .8s cubic-bezier(.16,1,.3,1) both;}
+.heroCard{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(96,165,250,.16),rgba(244,114,182,.12),rgba(251,191,36,.08));border:1px solid var(--line);border-radius:28px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.28);}
+.heroCard:before,.heroCard:after{content:'';position:absolute;width:200px;height:200px;border-radius:50%;filter:blur(12px);opacity:.5;animation:floaty 10s ease-in-out infinite;}
+.heroCard:before{right:-40px;top:-30px;background:rgba(34,211,238,.22);}
+.heroCard:after{left:-30px;bottom:-40px;background:rgba(251,191,36,.16);animation-delay:-3s;}
+.hero h2{margin:0;font-size:34px;line-height:1.1;max-width:900px;}
+.hero .sub{margin:12px 0 0;color:#e6ecff;max-width:900px;line-height:1.65;font-size:15px;}
+.btnRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+.btn{border:none;border-radius:999px;padding:11px 20px;font-weight:800;cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease;box-shadow:0 10px 28px rgba(0,0,0,.25);font-size:14px;}
+.btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 35px rgba(0,0,0,.35);}
+.btn.primary{background:linear-gradient(135deg,var(--gold),#fb7185);color:#1b1020;}
+.btn.alt{background:linear-gradient(135deg,var(--cyan),#818cf8);color:#04111c;}
+.btn.purple{background:linear-gradient(135deg,var(--violet),#c084fc);color:#11091a;}
+.btn.green{background:linear-gradient(135deg,var(--green),#059669);color:#012012;}
+
+.section{padding:10px 0 2px;}
+.sectionTitle{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:20px 0 12px;flex-wrap:wrap;}
+.sectionTitle h3{margin:0;font-size:19px;letter-spacing:-.02em;}
+.sectionTitle span{color:var(--muted);font-size:12px;}
+.grid{display:grid;gap:14px;}
+.g3{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}
+.g4{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));}
+.g2{grid-template-columns:repeat(auto-fill,minmax(360px,1fr));}
+
+.card,.task{background:var(--panel);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 16px 38px rgba(0,0,0,.2);transition:transform .3s cubic-bezier(.25,.8,.25,1),border-color .3s,box-shadow .3s;position:relative;overflow:hidden;}
+.card:hover,.task:hover{transform:translateY(-5px) scale(1.012);border-color:rgba(255,255,255,.2);box-shadow:0 22px 45px rgba(0,0,0,.35);}
+.card:after,.task:after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.04),transparent);transform:translateX(-120%);transition:transform .6s ease;}
+.card:hover:after,.task:hover:after{transform:translateX(120%);}
+.card h4,.task h4{margin:0 0 8px;font-size:16px;}
+.card p,.task p,.small{color:#dbe5f4;line-height:1.55;font-size:14px;}
+.small{font-size:12px;color:var(--muted);}
+.icon{font-size:22px;display:inline-block;animation:bob 2.8s ease-in-out infinite;margin-bottom:6px;}
+.badge{display:inline-block;padding:3px 8px;font-size:11px;font-weight:700;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:var(--cyan);margin:4px 3px 0 0;letter-spacing:.02em;}
+.badge.exam{color:var(--gold);border-color:rgba(251,191,36,.3);}
+.badge.fee{color:var(--green);border-color:rgba(52,211,153,.3);}
+.badge.salary{color:var(--pink);border-color:rgba(251,113,133,.3);}
+.badge.related{color:var(--violet);border-color:rgba(167,139,250,.3);}
+
+.glow-science{border-color:rgba(34,211,238,.25);box-shadow:0 0 0 1px rgba(34,211,238,.15),0 8px 30px rgba(34,211,238,.05);}
+.glow-commerce{border-color:rgba(52,211,153,.25);box-shadow:0 0 0 1px rgba(52,211,153,.15),0 8px 30px rgba(52,211,153,.05);}
+.glow-arts{border-color:rgba(251,113,133,.25);box-shadow:0 0 0 1px rgba(251,113,133,.15),0 8px 30px rgba(251,113,133,.05);}
+.glow-skills{border-color:rgba(167,139,250,.25);box-shadow:0 0 0 1px rgba(167,139,250,.15),0 8px 30px rgba(167,139,250,.05);}
+.glow-defence{border-color:rgba(251,191,36,.25);box-shadow:0 0 0 1px rgba(251,191,36,.15),0 8px 30px rgba(251,191,36,.05);}
+.glowBlue{box-shadow:0 0 0 1px rgba(96,165,250,.2),0 8px 30px rgba(96,165,250,.06);}
+.glowGold{box-shadow:0 0 0 1px rgba(251,191,36,.25),0 8px 30px rgba(251,191,36,.07);border-color:rgba(251,191,36,.2);}
+.glowGreen{box-shadow:0 0 0 1px rgba(52,211,153,.22),0 8px 30px rgba(52,211,153,.07);}
+.glowPink{box-shadow:0 0 0 1px rgba(244,114,182,.22),0 8px 30px rgba(244,114,182,.07);}
+.glowViolet{box-shadow:0 0 0 1px rgba(167,139,250,.22),0 8px 30px rgba(167,139,250,.07);}
+
+/* Level tabs */
+.levelTabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
+.ltab{padding:11px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:#0b1222;color:var(--muted);cursor:pointer;font-weight:700;font-size:13px;transition:all .3s cubic-bezier(.4,0,.2,1);}
+.ltab.active{color:#07111d;border-color:transparent;box-shadow:0 0 26px rgba(34,211,238,.2);transform:scale(1.04);}
+.ltab[data-level="10th"].active{background:linear-gradient(135deg,#fbbf24,#fb7185);}
+.ltab[data-level="12th"].active{background:linear-gradient(135deg,#22d3ee,#818cf8);}
+.ltab[data-level="grad"].active{background:linear-gradient(135deg,#34d399,#059669);}
+.ltab[data-level="combo"].active{background:linear-gradient(135deg,#a78bfa,#ec4899);}
+
+/* Domain filter bar */
+.filterBar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px;}
+.ftab{padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:#0b1222;color:var(--muted);cursor:pointer;font-size:12px;font-weight:600;transition:all .25s ease;}
+.ftab:hover{border-color:rgba(255,255,255,.25);color:var(--txt);}
+.ftab.active{background:rgba(255,255,255,.1);color:var(--txt);border-color:rgba(255,255,255,.25);}
+
+/* Search bar */
+.searchBar{display:flex;gap:10px;margin-bottom:18px;}
+.searchInput{flex:1;padding:12px 16px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:#08111f;color:var(--txt);outline:none;font-size:14px;transition:border-color .2s;}
+.searchInput:focus{border-color:var(--cyan);}
+
+/* Career detail drawer */
+.detailDrawer{display:none;margin-top:14px;background:rgba(8,17,31,.9);border:1px solid var(--cyan);border-radius:20px;padding:22px;animation:fadeUp .3s ease;}
+.detailDrawer.open{display:block;}
+.detailGrid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}
+.detailSection{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;}
+.detailSection h5{margin:0 0 10px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.detailSection ul{margin:0;padding-left:18px;color:#dbe5f4;font-size:13px;line-height:1.7;}
+.closeDrawer{float:right;background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:0 4px;}
+.closeDrawer:hover{color:var(--txt);}
+
+/* Archetype selector */
+.archetypeBar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+.atab{padding:9px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:#0b1222;color:var(--muted);cursor:pointer;font-size:12px;font-weight:700;transition:all .25s ease;}
+.atab.active[data-arch="vichara"]{background:rgba(96,165,250,.2);border-color:rgba(96,165,250,.5);color:#bfdbfe;}
+.atab.active[data-arch="srijan"]{background:rgba(244,114,182,.2);border-color:rgba(244,114,182,.5);color:#fbcfe8;}
+.atab.active[data-arch="vyapara"]{background:rgba(52,211,153,.2);border-color:rgba(52,211,153,.5);color:#a7f3d0;}
+.archFeedback{padding:12px 16px;border-radius:12px;background:rgba(0,0,0,.2);font-size:13px;color:var(--gold);font-weight:600;line-height:1.6;margin-bottom:16px;}
+.archMatch{outline:2px solid var(--gold);box-shadow:0 0 0 4px rgba(251,191,36,.12)!important;}
+
+/* Interconnected paths */
+.comboCard{background:linear-gradient(135deg,rgba(167,139,250,.12),rgba(244,114,182,.08),rgba(34,211,238,.08));border:1px solid rgba(167,139,250,.25);border-radius:20px;padding:20px;position:relative;overflow:hidden;}
+.comboCard:hover{border-color:rgba(167,139,250,.5);transform:translateY(-4px);}
+.comboCard .combo-tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--violet);background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.2);border-radius:999px;padding:3px 10px;margin-bottom:10px;}
+.comboCard h4{margin:0 0 8px;font-size:15px;}
+.steps{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;}
+.step{padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font-size:11px;font-weight:700;color:#dbe5f4;}
+.arrow{color:var(--muted);font-size:14px;}
+
+/* Saved drawer */
+.savedBar{background:rgba(15,23,42,.8);border:1px dashed var(--cyan);border-radius:16px;padding:14px;margin-bottom:16px;display:none;}
+.savedChipRow{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+
+/* Mindset cards */
+.mindsetCard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;}
+.mindsetCard .micon{font-size:20px;margin-bottom:8px;}
+.mindsetCard h4{margin:0 0 6px;font-size:15px;}
+
+/* Comparison table */
+.compareTable{width:100%;border-collapse:collapse;font-size:13px;}
+.compareTable th{background:rgba(255,255,255,.06);padding:10px 14px;text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);}
+.compareTable td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;}
+.compareTable tr:hover td{background:rgba(255,255,255,.03);}
+
+@keyframes progressGlow{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+@keyframes floaty{0%,100%{transform:translate3d(0,0,0);}50%{transform:translate3d(0,15px,0);}}
+
+@media(max-width:768px){
+  .hero h2{font-size:26px;}
+  .g3,.g4,.g2{grid-template-columns:1fr;}
+  .detailGrid{grid-template-columns:1fr;}
+  .levelTabs{gap:8px;}
+  .ltab{padding:9px 14px;font-size:12px;}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap top">
+    <div class="brand">
+      <h1>🌟 Career Adventure</h1>
+      <p>Discover your path — After 10th · After 12th · After Graduation</p>
+      <div class="badgeRow">
+        <span class="chip">35+ Career Domains</span>
+        <span class="chip">Interconnected Paths</span>
+        <span class="chip">India-Focused</span>
+        <span class="chip">Bhāva Tech</span>
+      </div>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Saved paths drawer -->
+  <div id="savedBar" class="savedBar">
+    <div class="small" style="color:var(--cyan);font-weight:bold;display:flex;justify-content:space-between;">
+      <span>📂 YOUR SAVED PATHS</span>
+      <span style="cursor:pointer" onclick="document.getElementById('savedBar').style.display='none'">✕ Close</span>
+    </div>
+    <div id="savedChips" class="savedChipRow"></div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="heroCard">
+      <h2>Choose a path that fits your mind, heart, and future.</h2>
+      <p class="sub">A complete career guide for Indian students. Explore every stream, understand what each path really involves — exams, colleges, fees, jobs — and discover how different fields connect to create powerful careers.</p>
+      <div class="btnRow">
+        <button class="btn primary" onclick="setLevel('10th');scrollTo('pathways')">🎒 After 10th</button>
+        <button class="btn alt" onclick="setLevel('12th');scrollTo('pathways')">🎓 After 12th</button>
+        <button class="btn green" onclick="setLevel('grad');scrollTo('pathways')">🏛️ After Graduation</button>
+        <button class="btn purple" onclick="setLevel('combo');scrollTo('pathways')">🔗 Mixed Paths</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mindset section -->
+  <section class="section">
+    <div class="sectionTitle"><h3>💡 Career Mindset</h3><span>Think clearly before you choose</span></div>
+    <div class="grid g3" id="mindsetGrid"></div>
+  </section>
+
+  <!-- Archetype framework -->
+  <section class="section">
+    <div class="sectionTitle"><h3>🧠 What Kind of Thinker Are You?</h3><span>Find paths that match your natural style</span></div>
+    <div class="card glowGold" style="padding:20px;">
+      <p class="small" style="margin:0 0 14px;">Tap your natural thinking style to highlight best-fit careers:</p>
+      <div class="archetypeBar">
+        <button class="atab" data-arch="vichara" onclick="setArch('vichara',this)">🔵 Vichāra — Logical &amp; Analytical</button>
+        <button class="atab" data-arch="srijan"  onclick="setArch('srijan',this)">🩷 Srijan — Creative &amp; Expressive</button>
+        <button class="atab" data-arch="vyapara" onclick="setArch('vyapara',this)">🟢 Vyāpāra — Business &amp; Leadership</button>
+      </div>
+      <div class="archFeedback" id="archFeedback">Select your thinking style above to highlight matching career domains below.</div>
+    </div>
+  </section>
+
+  <!-- Level tabs + pathways -->
+  <section class="section" id="pathways">
+    <div class="sectionTitle"><h3>🗺️ Explore Career Paths</h3><span>Browse all three decision points</span></div>
+    <div class="levelTabs">
+      <button class="ltab active" data-level="10th"  onclick="setLevel('10th')">🎒 After 10th</button>
+      <button class="ltab"        data-level="12th"  onclick="setLevel('12th')">🎓 After 12th</button>
+      <button class="ltab"        data-level="grad"  onclick="setLevel('grad')">🏛️ After Graduation</button>
+      <button class="ltab"        data-level="combo" onclick="setLevel('combo')">🔗 Interconnected Paths</button>
+    </div>
+
+    <!-- Search & filter -->
+    <div id="filterControls">
+      <div class="searchBar">
+        <input class="searchInput" id="searchInput" placeholder="Search careers, exams, subjects..." oninput="renderDomains()"/>
+      </div>
+      <div class="filterBar" id="filterBar"></div>
+    </div>
+
+    <!-- Domain grid -->
+    <div class="grid g3" id="domainGrid"></div>
+
+    <!-- Detail drawer -->
+    <div class="detailDrawer" id="detailDrawer">
+      <button class="closeDrawer" onclick="closeDetail()">✕</button>
+      <div id="detailContent"></div>
+    </div>
+  </section>
+
+  <!-- Self check -->
+  <section class="section">
+    <div class="sectionTitle"><h3>✅ Before You Decide</h3><span>Honest questions to ask yourself</span></div>
+    <div class="card glowBlue">
+      <ul style="margin:0 0 0 18px;line-height:2;color:#dbe5f4;font-size:14px;">
+        <li>What do I genuinely enjoy doing for hours without getting bored?</li>
+        <li>What am I naturally good at — not just what I'm pushed to do?</li>
+        <li>Which subjects energize me and which drain me?</li>
+        <li>What is my family's financial situation and how does it affect my options?</li>
+        <li>Do I prefer to study more years, or start working sooner?</li>
+        <li>Do I want to work in India, abroad, or be open to both?</li>
+        <li>Do I want a government job, corporate career, business, or creative work?</li>
+        <li>Have I talked to someone already working in the field I'm considering?</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Parent guidance -->
+  <section class="section">
+    <div class="sectionTitle"><h3>👨‍👩‍👧 For Parents</h3><span>Support without pressure</span></div>
+    <div class="grid g3">
+      <div class="card glowGreen"><div class="micon">👂</div><h4>Listen First</h4><p>Understand the student's real interests before suggesting a career path.</p></div>
+      <div class="card glowBlue"><div class="micon">🚫</div><h4>Avoid Comparisons</h4><p>Every student develops differently. Neighbor's child's path is not your child's path.</p></div>
+      <div class="card glowPink"><div class="micon">🌱</div><h4>Think Long-Term</h4><p>Focus on growth, skill, and wellbeing — not just marks or prestige.</p></div>
+      <div class="card glowViolet"><div class="micon">💬</div><h4>Talk to Experts</h4><p>Visit a career counselor, alumni, or working professional before finalizing a path.</p></div>
+      <div class="card glowGold"><div class="micon">📊</div><h4>Consider Finances Honestly</h4><p>Discuss fees, loans, and scholarships openly. No career is worth lifelong debt stress.</p></div>
+      <div class="card glowBlue"><div class="micon">🔄</div><h4>Paths Can Change</h4><p>A career change at 25 or 30 is normal. One choice at 16 does not seal a whole life.</p></div>
+    </div>
+  </section>
+
+  <p style="margin:32px 0 16px;color:#dbeafe;text-align:center;opacity:.9;font-size:15px;">Career is a direction, not a prison. One score does not decide a whole life. 🌱</p>
+
+</main>
+
+<script>
+// ─── DATA ──────────────────────────────────────────────────────────────────────
+
+const mindset = [
+  {icon:'💡',h:'Career Is a Long Journey',p:'It includes learning, work, growth, contribution, and change — not just one job title.'},
+  {icon:'💰',h:'Money Matters, But Not Alone',p:'Purpose, skill, stability, and daily satisfaction matter just as much as the pay cheque.'},
+  {icon:'🔍',h:'Curiosity Leads the Way',p:'Follow what genuinely interests you. Curiosity is the engine of mastery.'},
+  {icon:'🎯',h:'Marks Are One Signal',p:'Marks help open doors, but skills, habits, and communication open far more.'},
+  {icon:'🌈',h:'Low Scores Are Not the End',p:'Consistent effort, skill development, and resilience still build strong futures.'},
+  {icon:'🧭',h:'Career vs. Life Balance',p:'A career is one part of life. Health, relationships, and joy matter equally.'},
+  {icon:'🏅',h:'Sports and Arts Are Real Careers',p:'With training, support, and discipline — yes, they can be full careers.'},
+  {icon:'🏛️',h:'Govt Jobs Are Not the Only Path',p:'Government, private sector, business, freelance, and creative paths all count.'},
+  {icon:'🔄',h:'Pivoting Is Normal',p:'Many successful people changed fields at 25, 30, even 40. Learning never stops.'},
+];
+
+const DOMAINS = {
+  '10th': [
+    {
+      id:'10-sci', name:'Science Stream', emoji:'🔬', glow:'glow-science',
+      archetypes:['vichara'],
+      desc:'The broadest path after 10th. Opens doors to Engineering, Medicine, Architecture, Defence, Aviation, and more.',
+      tags:['PCM','PCB','PCMB','JEE Prep','NEET Prep'],
+      detail:{
+        what:'Choose PCM for Engineering/Defence/Aviation, PCB for Medicine/Pharmacy/Nursing, or PCMB for maximum flexibility.',
+        exams:['JEE Foundation (PCM)','NEET Foundation (PCB)','No entrance for admission to 11th — board merit'],
+        colleges:['Kendriya Vidyalaya (Central, All India)','Navodaya Vidyalaya (Central, Residential, Rural)','Government Junior Colleges (State, All States)','DPS/Ryan/Podar chains (Private)'],
+        fees:['Govt/KV: ₹0–₹12,000/year','Private: ₹30,000–₹2,00,000+/year'],
+        jobs:['Preparatory stage — no direct jobs yet'],
+        related:['Engineering','Medical/NEET','Paramedical','Architecture','Defence','Aviation','Agriculture','Computer Science'],
+        tip:'PCMB gives maximum flexibility if you are undecided between Engineering and Medicine.'
+      }
+    },
+    {
+      id:'10-comm', name:'Commerce Stream', emoji:'📈', glow:'glow-commerce',
+      archetypes:['vyapara','vichara'],
+      desc:'Foundation for finance, business, accounting, law, and entrepreneurship.',
+      tags:['Accounts','Business Studies','Economics','With Maths','Without Maths'],
+      detail:{
+        what:'With Maths: enables CA Foundation, Actuarial Science, Finance. Without Maths: BBA, B.Com General, Mass Comm.',
+        exams:['No entrance for Class 11 — board merit','CA Foundation registration (after 12th)'],
+        colleges:['Government Commerce Colleges (State, All States)','DPS/Ryan commerce stream (Private)'],
+        fees:['Govt: ₹0–₹15,000/year','Private: ₹30,000–₹1,50,000/year'],
+        jobs:['Preparatory stage'],
+        related:['B.Com / BBA','CA / CS / CMA','Law','Banking','MBA (after degree)','Fintech'],
+        tip:'Take Mathematics in Commerce if you want CA, Actuarial, or Fintech paths.'
+      }
+    },
+    {
+      id:'10-arts', name:'Arts / Humanities', emoji:'📚', glow:'glow-arts',
+      archetypes:['vyapara','srijan','vichara'],
+      desc:'Foundation for Civil Services, Law, Journalism, Psychology, Social Work, Literature, and Teaching.',
+      tags:['History','Political Science','Psychology','Geography','Literature'],
+      detail:{
+        what:'Often underrated — leads to some of India\'s most powerful careers: IAS, IPS, Lawyer, Journalist, Psychologist, Professor.',
+        exams:['CLAT prep (for Law)','UPSC prep (long-term for Civil Services)','No entrance for Class 11'],
+        colleges:['Govt. Humanities Colleges (State, All States)','Delhi Govt. Schools (CBSE)'],
+        fees:['Govt: ₹0–₹10,000/year','Private: ₹25,000–₹1,50,000/year'],
+        jobs:['Preparatory stage'],
+        related:['Law (CLAT)','UPSC/Civil Services','Journalism/Mass Comm','Psychology','Social Work','Teaching','NGO/Development Sector'],
+        tip:'Arts + English proficiency is one of the strongest combinations for UPSC and Law.'
+      }
+    },
+    {
+      id:'10-diploma', name:'Diploma / Polytechnic', emoji:'🛠️', glow:'glow-skills',
+      archetypes:['vichara'],
+      desc:'3-year engineering diploma under State Board of Technical Education (SBTE). Allows direct entry into B.Tech 2nd year (Lateral Entry).',
+      tags:['Civil','Mechanical','Electrical','Electronics','Computer','Lateral Entry to B.Tech'],
+      detail:{
+        what:'Structured 3-year technical program. NOT the same as ITI. Polytechnic diploma holders can skip 1st year of B.Tech through lateral entry exams (AP ECET, TS ECET, MH MHTCET Lateral, DCET Karnataka).',
+        exams:['AP POLYCET (Andhra Pradesh)','TS POLYCET (Telangana)','JEECUP (UP)','WB JEXPO (West Bengal)','MP PPT (Madhya Pradesh)','Kerala POLYCET','Karnataka DCET','DCECE (Bihar)','HP PAT (Himachal Pradesh)'],
+        colleges:['Government Polytechnic, Hyderabad (Telangana)','Government Polytechnic, Pune (Maharashtra)','BTE Delhi Polytechnics (Delhi)','Government Polytechnic, Chennai (Tamil Nadu)','Government Polytechnic, Bengaluru (Karnataka)'],
+        fees:['Govt: ₹5,000–₹15,000/year','Private: ₹20,000–₹60,000/year'],
+        jobs:['Junior Engineer: ₹18,000–₹35,000/month','CAD Technician: ₹15,000–₹30,000/month','Manufacturing Supervisor: ₹15,000–₹28,000/month'],
+        related:['Engineering (B.Tech Lateral Entry)','Government Technical Jobs','Railways','Manufacturing Sector'],
+        tip:'Lateral entry to B.Tech 2nd year saves 1 year of college fees and time.'
+      }
+    },
+    {
+      id:'10-iti', name:'ITI — Industrial Training', emoji:'🏭', glow:'glow-skills',
+      archetypes:['vichara'],
+      desc:'Short skill-based training (6 months–2 years) under NCVT. Trade certificate for direct industry/government employment. Exits school system.',
+      tags:['Electrician','Fitter','Welder','COPA','Mechanic','NTC Certificate'],
+      detail:{
+        what:'DIFFERENT from Polytechnic. ITI is a vocational trade training institute — you leave the school system and earn a National Trade Certificate (NTC). Class 8 or Class 10 pass required. Duration: 6 months to 2 years depending on trade.',
+        exams:['Merit-based state counseling (Class 10 marks)','ITI Admission Portals (state-wise)','No national entrance exam'],
+        colleges:['Central Training Institute (CTI), Chennai (Central)','Government ITI, Hyderabad (Telangana)','Government ITI, Ahmedabad (Gujarat)','Ramakrishna Mission ITI, West Bengal (Private Aided)','Government ITI, Bengaluru (Karnataka)'],
+        fees:['Govt ITI: ₹1,000–₹3,000/year (SC/ST often free)','Private ITI: ₹15,000–₹60,000/year'],
+        jobs:['Electrician: ₹12,000–₹25,000/month (Govt: higher)','Mechanic Motor Vehicle: ₹13,000–₹30,000/month','Draughtsman Civil: ₹15,000–₹35,000/month','Welder: ₹12,000–₹28,000/month','COPA: ₹10,000–₹20,000/month'],
+        related:['Railways (Technical)','Defence (Technical Roles)','Manufacturing','Apprenticeship Act Training','Diploma Lateral Entry (some states)'],
+        tip:'After ITI, apprenticeship training under the Apprenticeship Act allows you to earn while learning in industry.'
+      }
+    },
+    {
+      id:'10-voc', name:'Vocational NSQF', emoji:'🎓', glow:'glow-skills',
+      archetypes:['vyapara','vichara'],
+      desc:'Stays within Class 11–12 school system. NSQF-aligned skill subject added alongside core academics. DIFFERENT from ITI.',
+      tags:['IT/ITeS','Healthcare','Beauty & Wellness','Retail','Agriculture','Banking','Hospitality'],
+      detail:{
+        what:'Students remain in Class 11–12 but add a vocational skill elective under Samagra Shiksha / CBSE Skill Education. Earns NSQF Level 3–4 certification recognized for PMKVY and some direct employment.',
+        exams:['No entrance exam — part of school enrollment','School-based assessment'],
+        colleges:['CBSE / State Board schools with vocational lab','Any school offering NSQF under Skill Education'],
+        fees:['Usually included in school fees (₹0–₹5,000 extra)'],
+        jobs:['IT Help Desk: ₹10,000–₹18,000/month','Retail Associate: ₹10,000–₹15,000/month','Healthcare Assistant: ₹10,000–₹20,000/month','Auto Service Technician: ₹12,000–₹20,000/month'],
+        related:['IT Sector (Entry Level)','Paramedical (Healthcare track)','Retail & FMCG','Agriculture','PMKVY further training'],
+        tip:'NSQF Level 4 gives credit transfer benefits to some ITI programs and direct employment in organized retail/IT sector.'
+      }
+    },
+    {
+      id:'10-defence', name:'Defence Foundation', emoji:'🪖', glow:'glow-defence',
+      archetypes:['vichara','vyapara'],
+      desc:'Specialized foundation for Armed Forces careers. Sainik Schools, RIMC, and NDA preparation start here.',
+      tags:['Sainik School','RIMC','NDA Prep','Army','Navy','Air Force'],
+      detail:{
+        what:'Entry into Army, Navy, or Air Force Officer career typically starts with Sainik School (Class 6 or 9) or RIMC Dehradun (Class 8). After 12th PCM, eligible for NDA examination.',
+        exams:['AISSEE (Sainik School Entrance) — Class 6 & 9 — conducted by NTA','RIMC Entrance Exam — Class 8 — conducted by Ministry of Defence (twice/year)','Rashtriya Military School CET — conducted by Army'],
+        colleges:['Sainik School (33 schools nationwide, Multiple States)','RIMC Dehradun (Uttarakhand, Central/MoD)','Rashtriya Military Schools (Bengaluru, Ajmer, Belgaum, Chail, Dholpur)'],
+        fees:['Sainik Schools: ₹1,00,000–₹3,00,000/year (residential)','RIMC: ₹3,50,000–₹4,50,000/year','SC/ST subsidies available'],
+        jobs:['Lieutenant (NDA route): ₹56,100 basic + allowances ≈ ₹80,000–1,00,000/month','JCO: ₹35,000–₹55,000/month'],
+        related:['NDA (After 12th PCM)','UPSC/CDS (After Graduation)','Engineering (Technical Branch)','Aviation (Air Force)'],
+        tip:'NDA is the fastest route to commissioned officer rank — taken directly after 12th. You receive a salary from Day 1 of training.'
+      }
+    },
+    {
+      id:'10-finearts', name:'Fine Arts & Performing Arts', emoji:'🎨', glow:'glow-arts',
+      archetypes:['srijan'],
+      desc:'Visual arts, music, dance, theatre. Foundation for BFA, Film, Design, and creative careers.',
+      tags:['Painting','Sculpture','Classical Dance','Music','Theatre','Portfolio'],
+      detail:{
+        what:'Can be pursued through Art stream in Class 11–12, dedicated arts schools, or pre-professional conservatories. Leads to BFA (degree), Film Schools, NID/NIFT (design), and professional performing arts.',
+        exams:['Institute-specific auditions and portfolio reviews','No national entrance at this stage'],
+        colleges:['Delhi College of Art (Delhi, State)','JJ School of Art, Mumbai (Maharashtra, State)','Kalabhavan, Visva Bharati, Santiniketan (West Bengal, Central)','Govt. College of Arts & Crafts (Kolkata, Chennai, Lucknow)','Gandharva Mahavidyalaya — Music (Delhi + nationwide branches)'],
+        fees:['Govt arts schools: ₹5,000–₹20,000/year','Private: ₹30,000–₹1,50,000/year'],
+        jobs:['Art Teacher (school): ₹15,000–₹35,000/month','Freelance Artist/Illustrator: ₹10,000–₹40,000+/month','Performing Artist: Variable (₹10,000–₹2,00,000+ per project)'],
+        related:['BFA (After 12th)','FTII / Film Schools','NID / NIFT Design','Fashion (NIFT)','Mass Communication'],
+        tip:'Start building a portfolio early — NID, NIFT, and Film School admissions are heavily based on creative work samples.'
+      }
+    },
+    {
+      id:'10-nios', name:'Open Schooling — NIOS', emoji:'📖', glow:'glow-skills',
+      archetypes:['vichara','srijan','vyapara'],
+      desc:'India\'s largest open school system. Flexible Class 10 & 12 certification equivalent to CBSE. For alternative learners, dropouts, and working students.',
+      tags:['Class 10 Equivalence','Class 12 Equivalence','Flexible Timing','On-Demand Exam','Vocational Courses'],
+      detail:{
+        what:'Ministry of Education body offering Secondary (Class 10) and Senior Secondary (Class 12) certificates recognized by all Indian universities. Rolling admissions, two exam cycles per year. Students who failed Class 10/12 Board exams can clear failed subjects through NIOS "On Demand Examination."',
+        exams:['No entrance exam — direct registration through NIOS study centres or online','Exam cycles: April/May and October/November'],
+        colleges:['NIOS Study Centres (nationwide)','Online registration: nios.ac.in'],
+        fees:['Class 10 (5 subjects): ₹1,800–₹3,500 total','Class 12 (5 subjects): ₹2,000–₹4,000 total','Vocational modules: ₹500–₹2,000 extra'],
+        jobs:['Opens all mainstream career paths after obtaining the certificate'],
+        related:['All mainstream paths post Class 10/12 — NIOS certificate is recognized everywhere'],
+        tip:'NIOS On-Demand Examination lets failed students attempt specific subjects within 45 days of result. Extremely valuable for students who narrowly miss pass marks.'
+      }
+    },
+  ],
+
+  '12th': [
+    {
+      id:'12-eng', name:'Engineering', emoji:'⚙️', glow:'glow-science',
+      archetypes:['vichara'],
+      desc:'B.Tech / B.E. in 40+ specializations. Leads to software, core engineering, systems, AI, robotics, aerospace, and PSU careers.',
+      tags:['B.Tech','B.E.','JEE','State CET','4 Years'],
+      detail:{
+        what:'4-year degree in specializations: CS, IT, ECE, EEE, Mechanical, Civil, Chemical, Aerospace, Biotech, Mining, Petroleum, Metallurgy, Naval Architecture, Agricultural Engineering.',
+        exams:['JEE Main (NTA) — NITs, IIITs, CFTIs','JEE Advanced — 23 IITs only','BITSAT — BITS Pilani/Goa/Hyderabad','MHT-CET (Maharashtra)','KCET / COMEDK UGET (Karnataka)','AP EAPCET (Andhra Pradesh)','TS EAMCET (Telangana)','WBJEE (West Bengal)','GUJCET (Gujarat)','KEAM (Kerala)','TNEA (Tamil Nadu — merit-based)','OJEE (Odisha)','REAP (Rajasthan)','JCECE/BCECE (Jharkhand/Bihar)','Assam CEE','HPCET (HP)','CG PET (Chhattisgarh)','JKCET (J&K)','TJEE (Tripura)','VITEEE, SRMJEEE, MET Manipal'],
+        colleges:['IIT Bombay — Mumbai, Maharashtra (Central)','IIT Delhi — New Delhi, Delhi (Central)','IIT Madras — Chennai, Tamil Nadu (Central)','NIT Warangal — Warangal, Telangana (Central)','NIT Trichy — Tiruchirappalli, Tamil Nadu (Central)','BITS Pilani — Pilani, Rajasthan (Deemed)','VIT Vellore — Vellore, Tamil Nadu (Private)','COEP Pune — Pune, Maharashtra (State Autonomous)','IIIT Hyderabad — Hyderabad, Telangana (Central)'],
+        fees:['IITs: ₹2,00,000/year (total ~₹8–10 lakh)','NITs: ₹62,500–₹1,25,000/year','BITS: ₹4,00,000–₹5,00,000/year','State Govt Colleges: ₹20,000–₹75,000/year','Private Colleges: ₹80,000–₹3,00,000/year'],
+        jobs:['Software Eng (IIT/NIT): ₹12–50 LPA','Software Eng (Tier-2/3): ₹4–8 LPA','Core Mechanical/Civil: ₹4–8 LPA','PSU Engineer (ONGC/BHEL/SAIL): ₹8–12 LPA','Govt Engineer (CPWD/PWD): ₹6–9 LPA'],
+        related:['Computer Science / IT','Design (UI/UX route)','Architecture','Defence (DRDO)','MBA (after B.Tech)','M.Tech/GATE','Patent Law'],
+        tip:'Most engineering admissions happen through STATE exams (EAMCET, MHT-CET, KCET), not JEE. JEE Advanced is only for IITs.'
+      }
+    },
+    {
+      id:'12-med', name:'Medical / NEET', emoji:'🩺', glow:'glow-science',
+      archetypes:['vichara','vyapara'],
+      desc:'MBBS, BDS, BAMS, BHMS, BUMS, B.V.Sc — all via NEET-UG. AIIMS and JIPMER are part of NEET-UG since 2020.',
+      tags:['MBBS','BDS','BAMS','BHMS','NEET-UG','5.5 Years'],
+      detail:{
+        what:'All medical admissions in India — including AIIMS Delhi and JIPMER Puducherry — happen exclusively through NEET-UG (since 2020). AIIMS and JIPMER no longer conduct separate entrance exams.',
+        exams:['NEET-UG (NTA) — single exam for ALL medical colleges in India','MCC for 15% All India Quota and AIIMS/JIPMER/AFMC','State counseling: DMER Maharashtra, DME AP, DME Karnataka, CEE Kerala, DMER UP, TNMGRMU Tamil Nadu'],
+        colleges:['AIIMS New Delhi — New Delhi, Delhi (Central)','JIPMER — Puducherry (Central)','CMC Vellore — Vellore, Tamil Nadu (Private Aided)','AFMC Pune — Pune, Maharashtra (Central/Defence)','BHU IMS — Varanasi, UP (Central)','KMC Manipal — Manipal, Karnataka (Deemed)','NIA Jaipur — Jaipur, Rajasthan (Central, BAMS)'],
+        fees:['AIIMS: ₹1,628/year (total ~₹9,000)','Govt Medical Colleges: ₹5,000–₹70,000/year','Private MBBS (Mgmt Quota): ₹5,00,000–₹20,00,000/year','BAMS/BHMS Govt: ₹60,000–₹2,50,000 total course'],
+        jobs:['MBBS Doctor (Govt Hospital): ₹75,000–₹1,20,000/month','BDS Dentist: ₹30,000–₹60,000/month','BAMS Doctor: ₹25,000–₹60,000/month','AIIMS Senior Resident (post-MD): ₹1,50,000+/month'],
+        related:['Paramedical / Allied Health','NEET-PG (After Graduation)','Public Health / MPH','Medical Research','Hospital Administration'],
+        tip:'NEET-UG is one exam for everything — AIIMS, JIPMER, Govt Colleges, Private Colleges, AYUSH. Prepare for NEET only, not multiple separate exams.'
+      }
+    },
+    {
+      id:'12-para', name:'Paramedical / Allied Health', emoji:'🏥', glow:'glow-science',
+      archetypes:['vichara','vyapara'],
+      desc:'B.Sc Nursing, B.Pharm, Physiotherapy, BMLT, DMLT, Radiology, Optometry. High demand, abroad opportunities especially for Nursing.',
+      tags:['B.Sc Nursing','B.Pharm','BPT','BMLT','Radiology','Optometry'],
+      detail:{
+        what:'One of the most underrated paths for PCB students. High employment demand domestically and internationally (especially Nursing in USA, UK, Gulf). Shorter courses than MBBS with strong job prospects.',
+        exams:['NEET-UG score (required for B.Sc Nursing in some states & B.Pharm in many states)','AIIMS Nursing Entrance (for AIIMS B.Sc Nursing)','JIPMER Nursing Entrance','KCET (Pharmacy, Karnataka)','State CETs: AP, Telangana, Maharashtra, Kerala','University-level entrance for private institutions'],
+        colleges:['AIIMS (B.Sc Nursing) — New Delhi (Central)','CMC Vellore Nursing — Vellore, Tamil Nadu (Private)','PGIMER Chandigarh — Chandigarh (Central)','NIMHANS — Bengaluru, Karnataka (Central)','Manipal College of Nursing — Manipal, Karnataka (Private)','JSS College of Pharmacy — Mysuru, Karnataka (Private)','Amrita School of Pharmacy — Kochi, Kerala (Private)'],
+        fees:['B.Sc Nursing Govt: ₹8,500–₹50,000/year','B.Sc Nursing Private: ₹60,000–₹1,30,000/year','B.Pharm Govt: ₹15,000–₹60,000/year','BPT Govt: ₹25,000–₹80,000/year','BMLT/DMLT: ₹20,000–₹80,000/year'],
+        jobs:['Staff Nurse (Govt Hospital): ₹25,000–₹50,000/month','Staff Nurse (Abroad/USA/Gulf): ₹3–6 lakh/month','Clinical Pharmacist: ₹20,000–₹40,000/month','Physiotherapist (fresher): ₹20,000–₹35,000/month','Lab Technician (BMLT): ₹15,000–₹35,000/month','Radiographer: ₹20,000–₹40,000/month'],
+        related:['Medical / NEET','Public Health / MPH','Hospital Administration','Research'],
+        tip:'B.Sc Nursing + NCLEX-RN (USA licensing exam) or NMC OET (UK) is one of the highest-earning career paths available from a science background.'
+      }
+    },
+    {
+      id:'12-law', name:'Law', emoji:'⚖️', glow:'glow-arts',
+      archetypes:['vichara','vyapara'],
+      desc:'5-year integrated BA LLB / BBA LLB after 12th. Leads to Corporate Law, Judiciary, Public Prosecutor, Legal Advisor roles.',
+      tags:['BA LLB','BBA LLB','CLAT','AILET','5 Years','Integrated'],
+      detail:{
+        what:'5-year integrated law degree after 12th (BA LLB, BBA LLB, B.Sc LLB, BCom LLB). CLAT covers only 22 NLUs — many excellent law schools admit through LSAT India, AILET, or state law CETs.',
+        exams:['CLAT — 22 NLUs (not NLU Delhi)','AILET — NLU Delhi only','LSAT India — 50+ private law schools','AP/TS LAWCET (AP/Telangana)','MH CET Law (Maharashtra)','KLEE (Kerala)','DU LLB Entrance (Delhi University)','Symbiosis SET — Symbiosis Law School (Pune, Hyderabad, Noida)','BHU UET Law','IPU CET Law (Delhi)'],
+        colleges:['NLSIU Bengaluru — Bengaluru, Karnataka (National)','NLU Delhi (via AILET) — New Delhi (National)','NALSAR Hyderabad — Hyderabad, Telangana (National)','WBNUJS Kolkata — Kolkata, West Bengal (National)','NLU Jodhpur — Jodhpur, Rajasthan (National)','GNLU Gandhinagar — Gandhinagar, Gujarat (National)','Faculty of Law DU — New Delhi (Central)','Symbiosis Law School — Pune, Maharashtra (Private Deemed)'],
+        fees:['NLUs (CLAT): ₹2,30,000–₹5,00,000/year','NLU Delhi: ₹3,95,000/year','DU Faculty of Law: ₹10,000–₹50,000/year (3-yr LLB route)','Private Law: ₹3,00,000–₹5,00,000/year'],
+        jobs:['Corporate Lawyer (NLU placement): ₹12–25 LPA','Advocate (independent): ₹10,000–₹50,000+/month (variable)','Judiciary (State/Central): ₹50,000–₹1,00,000/month','Legal Advisor (PSU/Corporate): ₹6–15 LPA','Public Prosecutor: ₹40,000–₹80,000/month'],
+        related:['UPSC / Civil Services (Law Optional)','LLM (After Graduation)','Patent Law (Engineering + Law combo)','Media Law','Human Rights / NGO'],
+        tip:'CLAT failure is not the end of law. LSAT India, state CETs (LAWCET, MH CET Law), and DU direct entry cover hundreds of excellent law schools.'
+      }
+    },
+    {
+      id:'12-commerce', name:'Commerce & Finance', emoji:'💼', glow:'glow-commerce',
+      archetypes:['vyapara','vichara'],
+      desc:'B.Com, BBA, CA Foundation, CS Foundation, CMA Foundation. Gateway to finance, accounting, business, and corporate careers.',
+      tags:['B.Com','BBA','CA Foundation','CS Foundation','CMA','CUET'],
+      detail:{
+        what:'Undergraduate pathways after 12th Commerce. NOTE: MBA is postgraduate (needs a bachelor\'s degree first) — it is NOT part of this stage. CA Foundation, CS Foundation, CMA Foundation can be registered right after 12th.',
+        exams:['CUET — Central Universities (B.Com/BBA)','DU JAT — Delhi University BMS/BBA','IPMAT — IIM Indore/Rohtak (5-year Integrated MBA — special early route)','SET Symbiosis — BBA at Symbiosis','NPAT NMIMS — BBA/BBA Finance','CA Foundation — ICAI (register after 12th)','CS Foundation — ICSI','CMA Foundation — ICMAI'],
+        colleges:['SRCC, DU — New Delhi, Delhi (Central)','Hindu College (B.Com Hons) — New Delhi (Central)','Loyola College — Chennai, Tamil Nadu (Private Aided)','Christ University — Bengaluru, Karnataka (Deemed)','Narsee Monjee NMIMS — Mumbai, Maharashtra (Deemed)','Symbiosis BBA — Pune, Maharashtra (Deemed)','IIM Indore (5-yr) — Indore, MP (Central)'],
+        fees:['B.Com at DU/State Univ: ₹5,000–₹40,000/year','BBA Private: ₹80,000–₹3,00,000/year','CA Foundation: ₹9,000 registration (one-time)','CS Foundation: ₹4,500 registration','CMA Foundation: ₹6,000 registration'],
+        jobs:['B.Com Graduate (Accounts): ₹18,000–₹35,000/month','BBA Graduate: ₹20,000–₹40,000/month','CA Qualified Fresher: ₹6–12 LPA (Big 4)','CS Qualified: ₹5–10 LPA','CMA Qualified: ₹4–8 LPA'],
+        related:['MBA (After Graduation)','Banking/IBPS','CA/CS/CMA Final (After Graduation)','Fintech / Stock Market','UPSC (Commerce Optional)'],
+        tip:'CA + B.Com combination is extremely powerful. Many students pursue both simultaneously — CA Foundation and B.Com during the same 3 years.'
+      }
+    },
+    {
+      id:'12-design', name:'Design & Creative', emoji:'🖍️', glow:'glow-arts',
+      archetypes:['srijan'],
+      desc:'Product, Communication, Fashion, UI/UX, Industrial, Animation Design via NID, NIFT, IIT Design Schools.',
+      tags:['NID DAT','NIFT','UCEED','B.Des','Fashion','UI/UX','Industrial Design'],
+      detail:{
+        what:'Design degrees: B.Des (4 years), BFTech (NIFT, 4 years), BFA. Specializations: Product, Communication, Textile, Furniture, Ceramic, Graphic, UI/UX, Interaction, Animation, Industrial, Jewelry.',
+        exams:['NID DAT (Prelims + Mains) — 16 NIDs nationwide','NIFT Entrance Test (CAT + GAT + Situation Test) — 20 NIFT campuses','UCEED (IIT Bombay) — IIT Bombay, Delhi, Guwahati, Hyderabad, Indore, Roorkee B.Des','FDDI AIST — Footwear Design & Dev. Institute','Pearl Academy Entrance','Symbiosis Design Entrance (SID Pune)'],
+        colleges:['NID Ahmedabad — Ahmedabad, Gujarat (Central Autonomous)','NID Delhi — New Delhi (Central)','NIFT Mumbai — Mumbai, Maharashtra (Central)','NIFT Delhi — New Delhi (Central)','IIT Bombay B.Des — Mumbai (Central)','IIT Delhi B.Des — New Delhi (Central)','Pearl Academy — Delhi/Mumbai/Bengaluru (Private)','MIT Institute of Design — Pune (Private)'],
+        fees:['NID (4 years): ₹8,00,000–₹12,00,000 total','NIFT (4 years): ~₹14,00,000 total','IIT B.Des: ₹8,00,000–₹10,00,000 total','Pearl Academy: ₹7,00,000–₹9,00,000/year'],
+        jobs:['Product Designer (NID/IIT): ₹6–18 LPA','UX/UI Designer: ₹5–15 LPA','Fashion Designer (NIFT): ₹4–10 LPA','Graphic Designer: ₹3–8 LPA','Industrial Designer: ₹5–12 LPA'],
+        related:['Engineering (CS — UI/UX route)','Architecture','Fashion & Textile','Fine Arts','Film Production / Animation'],
+        tip:'NID DAT and NIFT require a strong portfolio and creative problem-solving — start building practice projects at least 1 year before the exam.'
+      }
+    },
+    {
+      id:'12-cs', name:'Computer Science / IT', emoji:'💻', glow:'glow-science',
+      archetypes:['vichara','srijan'],
+      desc:'BCA, B.Sc CS, B.Sc IT — pathway to software, web, data, AI, and cybersecurity careers.',
+      tags:['BCA','B.Sc CS','B.Sc IT','CUET','3 Years','Software'],
+      detail:{
+        what:'BCA (3 years) or B.Sc CS/IT (3 years) — faster to software jobs than B.Tech. Many pursue MCA or M.Sc CS after for higher roles. B.Tech CS is the engineering route (4 years via JEE/State CET).',
+        exams:['CUET — Central Universities BCA/B.Sc CS','IPU CET — BCA at GGSIPU Delhi','MHT-CET BCA — Maharashtra','KCET B.Sc CS/BCA — Karnataka','Christ University Entrance','Symbiosis, Manipal University entrances'],
+        colleges:['JNU School of CS — New Delhi (Central)','Delhi University (multiple colleges) — New Delhi (Central)','IIIT Hyderabad — Hyderabad, Telangana (Central)','PSG College of Technology — Coimbatore, Tamil Nadu (Private Aided)','Christ University BCA — Bengaluru, Karnataka (Private)','Symbiosis SCIT — Pune, Maharashtra (Private)'],
+        fees:['BCA Govt/State: ₹10,000–₹50,000/year','BCA Private: ₹50,000–₹1,50,000/year','B.Sc CS Govt: ₹5,000–₹30,000/year'],
+        jobs:['Software Developer (BCA): ₹3–8 LPA','Web Developer: ₹2.5–7 LPA','QA Tester: ₹3–6 LPA','System Admin: ₹3–6 LPA','Data Entry/IT Support: ₹2–4 LPA'],
+        related:['Engineering (B.Tech CS for higher roles)','MCA (After Graduation)','Data Science / AI','Fintech','UI/UX Design'],
+        tip:'BCA + MCA is a strong alternative to B.Tech CS — covers similar content, often more affordable, with strong placement at good colleges.'
+      }
+    },
+    {
+      id:'12-agri', name:'Agriculture & Allied', emoji:'🌾', glow:'glow-commerce',
+      archetypes:['vichara'],
+      desc:'B.Sc Agriculture, Horticulture, Forestry, Fisheries, Veterinary. Gateway to Agri-tech, food systems, and sustainability.',
+      tags:['B.Sc Agriculture','CUET (ICAR)','State Agri CET','4 Years','Agri-tech'],
+      detail:{
+        what:'4-year B.Sc Agriculture and allied programs. ICAR AIEEA-UG replaced by CUET from 2023 for national-level admissions. High government job opportunities in agriculture extension services and research.',
+        exams:['CUET (replaces ICAR AIEEA-UG from 2023) — ~70 State Agricultural Universities','ANGRAU CET — Andhra Pradesh (ANGRAU Guntur)','TS PGLCET — Telangana','TNAU CET — Tamil Nadu','PAU CET — Punjab Agricultural University','UAS CET — Karnataka (Bengaluru/Dharwad/Raichur)','BAU CET — Bihar','JNKVV CET — Madhya Pradesh'],
+        colleges:['IARI — New Delhi (Central)','GBPUAT Pantnagar — Pantnagar, Uttarakhand (State, Central funded)','PAU Ludhiana — Ludhiana, Punjab (State)','TNAU Coimbatore — Coimbatore, Tamil Nadu (State)','BHU Agriculture — Varanasi, UP (Central)','ANGRAU Guntur — Guntur, Andhra Pradesh (State)','IVRI (Veterinary) — Izatnagar, UP (Central)'],
+        fees:['Govt Agricultural Universities: ₹15,000–₹40,000/year','IARI: ₹26,000/year (PG)'],
+        jobs:['Agricultural Officer (State Govt): ₹35,000–₹60,000/month','Agri-tech Startup (data/sensor roles): ₹4–10 LPA','Food Technologist: ₹4–8 LPA','Research Scientist (after M.Sc/PhD): ₹8–15 LPA','Horticulture Officer: ₹30,000–₹55,000/month'],
+        related:['Agriculture + Engineering = Agri-tech','Agriculture + Food Technology','Agriculture + MBA = Agri-business','ICAR Research (After Graduation)'],
+        tip:'Agriculture has strong government job opportunities through state agriculture departments, ICAR, and FCI. Private Agri-tech sector is growing fast.'
+      }
+    },
+    {
+      id:'12-aviation', name:'Aviation', emoji:'✈️', glow:'glow-defence',
+      archetypes:['vichara','vyapara'],
+      desc:'Commercial Pilot License (CPL), Airport Management, Cabin Crew, Aerospace Engineering.',
+      tags:['DGCA CPL','Commercial Pilot','Airport Management','Cabin Crew','Aerospace'],
+      detail:{
+        what:'Pilot training (CPL) requires PCM in 12th and DGCA medical fitness. High cost — ₹45–55 lakh for CPL. Airport operations and cabin crew are alternate lower-cost aviation paths.',
+        exams:['DGCA Class 1 Medical','DGCA CPL exams (7 theory papers + flying hours)','NCHMCT JEE (Airport Hospitality path)','Airlines direct recruitment (Cabin Crew)','IGRUA entrance (flying academy)'],
+        colleges:['IGRUA — Amethi, UP (Govt Flying Academy)','Indira Gandhi Rashtriya Uran Akademi','CAE Oxford Aviation — Gondia, Maharashtra (Private)','Rajiv Gandhi Aviation Academy — Hyderabad','Bombay Flying Club — Mumbai','Air India Flight Training Academy (AIFTA) — Delhi'],
+        fees:['CPL (full course): ₹45–55 lakh','Airport Management (BBA): ₹80,000–₹2,00,000/year','Cabin Crew training: ₹80,000–₹2,50,000 (3–6 months)'],
+        jobs:['Commercial Pilot (domestic): ₹3–5 lakh/month (after type rating)','First Officer (junior): ₹1.5–2.5 lakh/month','Cabin Crew: ₹40,000–₹1,00,000/month','Airport Operations Officer: ₹30,000–₹60,000/month'],
+        related:['Engineering (Aerospace)','Defence (Air Force — NDA/AFCAT route — free training)','Tourism & Hospitality'],
+        tip:'Air Force via NDA or AFCAT is a free alternative to paid CPL training and leads to a pilot career with full benefits.'
+      }
+    },
+    {
+      id:'12-nda', name:'Defence / NDA', emoji:'🎖️', glow:'glow-defence',
+      archetypes:['vichara','vyapara'],
+      desc:'National Defence Academy (NDA) after 12th PCM — Army, Navy, Air Force officer. Salary from Day 1 of training.',
+      tags:['NDA','Army','Navy','Air Force','UPSC','TES'],
+      detail:{
+        what:'NDA exam is conducted by UPSC twice a year. 12th PCM (for Navy/Air Force) or 12th any stream (for Army). Training at NDA Khadakwasla (Pune) is 3 years — includes a B.Sc/BA degree from JNU. Salary starts from Day 1 of training.',
+        exams:['NDA & NA Examination (UPSC) — twice per year','TES (Technical Entry Scheme) — PCM 12th, direct entry to Army','Coast Guard (Navik) — 12th PCM/Commerce','SSB Interview (Service Selection Board) — after written test'],
+        colleges:['NDA Khadakwasla — Pune, Maharashtra (MoD)','OTA Chennai — Chennai, Tamil Nadu (Army Officer Training Academy)','AFA Hyderabad — Hyderabad, Telangana (Air Force Academy)','INS Mandovi — Goa (Naval Academy)'],
+        fees:['Zero fees — training fully funded by Government','Stipend during training: ₹56,100/month (as of 2024)'],
+        jobs:['Lieutenant (Army/Navy/AF): ₹56,100 basic + allowances ≈ ₹80,000–₹1,00,000/month','Full career progression to senior officer ranks'],
+        related:['Engineering (Technical Corps)','Aviation (Air Force Pilot)','UPSC/CDS (After Graduation — alternate defence route)'],
+        tip:'NDA is one of India\'s best career paths — free education, salary during training, job security, prestige. Requires consistent physical fitness and academic preparation.'
+      }
+    },
+    {
+      id:'12-arch', name:'Architecture', emoji:'🏛️', glow:'glow-arts',
+      archetypes:['vichara','srijan'],
+      desc:'B.Arch (5 years) via NATA or JEE Paper 2. Combines technical drawing, design, and structural knowledge.',
+      tags:['B.Arch','NATA','JEE Paper 2','5 Years','SPA','NIT Arch'],
+      detail:{
+        what:'5-year B.Arch program. Requires PCM in 12th. Two national-level entrance exams: NATA (Council of Architecture) and JEE Paper 2 (for NITs, SPAs, IITs). Combines creative design with engineering and urban planning.',
+        exams:['NATA (National Aptitude Test in Architecture) — Council of Architecture (CoA)','JEE Paper 2 (B.Arch) — for NIT, SPA, IIT architecture programs','State-level: MHT-CET B.Arch, KCET Arch, AP EAPCET Arch','AMUEEE (AMU)','BHU UET B.Arch'],
+        colleges:['SPA New Delhi — New Delhi (Central)','SPA Bhopal — Bhopal, MP (Central)','SPA Vijayawada — Vijayawada, AP (Central)','NIT Trichy B.Arch — Tiruchirappalli, Tamil Nadu (Central)','NIT Calicut — Calicut, Kerala (Central)','CEPT University — Ahmedabad, Gujarat (Autonomous)','Manipal School of Architecture — Manipal, Karnataka (Private)'],
+        fees:['SPA / NIT Arch (Govt): ₹50,000–₹1,50,000/year','Private B.Arch: ₹1,00,000–₹3,00,000/year'],
+        jobs:['Architect (fresher): ₹3–7 LPA','Government Architect (PWD/CPWD): ₹5–10 LPA','Urban Planner: ₹5–10 LPA','Interior Designer: ₹3–8 LPA','Project Manager (Construction): ₹8–20 LPA (experienced)'],
+        related:['Engineering (Civil)','Design (NID/NIFT)','Urban Planning (After Graduation)','Landscape Architecture'],
+        tip:'NATA can be taken multiple times in a year. Practice creative drawing and analytical ability alongside academics.'
+      }
+    },
+    {
+      id:'12-massmedia', name:'Mass Communication / Journalism', emoji:'📡', glow:'glow-arts',
+      archetypes:['srijan','vyapara'],
+      desc:'BJMC, BA Mass Communication, Journalism, Public Relations, Digital Media, Film Production.',
+      tags:['BJMC','Journalism','Public Relations','Digital Media','IIMC','Symbiosis'],
+      detail:{
+        what:'3-4 year undergraduate programs in journalism, media production, public relations, digital content, and film. High growth with digital media boom.',
+        exams:['IIMC Entrance (Indian Institute of Mass Communication) — New Delhi','Symbiosis Institute of Media & Comm (SIMC) entrance','XIC (Xavier Institute of Comm) entrance — Mumbai','AJK-MCRC, Jamia Millia Islamia entrance','IPU CET Mass Comm — Delhi','CUET for Central University BJMC programs','State-level university entrances'],
+        colleges:['IIMC — New Delhi (Central)','AJK-MCRC, Jamia — New Delhi (Central)','SIMC Pune — Pune, Maharashtra (Deemed)','XIC Mumbai — Mumbai, Maharashtra (Private Aided)','Christ University — Bengaluru (Deemed)','Manipal School of Communication — Manipal, Karnataka (Private)'],
+        fees:['IIMC/Jamia: ₹30,000–₹80,000/year','Private Colleges: ₹1,00,000–₹3,00,000/year'],
+        jobs:['Journalist (Print/Digital): ₹20,000–₹60,000/month','PR Executive: ₹25,000–₹50,000/month','Social Media Manager: ₹25,000–₹60,000/month','Content Strategist: ₹30,000–₹70,000/month','Video Producer/Editor: ₹25,000–₹60,000/month'],
+        related:['Fine Arts / Film Production (FTII)','Law (Media Law)','Public Policy','Advertising & Marketing'],
+        tip:'Build your portfolio before applications — internships, YouTube channels, college newspapers, and photography all count as real experience.'
+      }
+    },
+    {
+      id:'12-hospitality', name:'Hospitality & Tourism', emoji:'🏨', glow:'glow-commerce',
+      archetypes:['vyapara','srijan'],
+      desc:'BHM, B.Sc Hospitality & Hotel Administration via NCHMCT JEE. Leads to global hotel chains, airlines, and event management.',
+      tags:['BHM','NCHMCT JEE','IHM','Hotel Management','Tourism','Global'],
+      detail:{
+        what:'3-year BHM / B.Sc Hospitality program. NCHMCT JEE conducted by NTA for 83 IHMs (Institute of Hotel Management) nationwide. Strong global career opportunities.',
+        exams:['NCHMCT JEE (NTA) — 83 IHMs across India','NCHM JEE — Separate exam for B.Sc Hospitality at IHM-Pusa, Delhi','IIHM entrance (International Institute of Hotel Management)','Christ University / Manipal University entrances'],
+        colleges:['IHM Pusa — New Delhi (Central/NCHMCT)','IHM Mumbai — Mumbai, Maharashtra (Central)','IHM Bengaluru — Bengaluru, Karnataka (Central)','IHM Hyderabad — Hyderabad, Telangana (Central)','IHM Chennai — Chennai, Tamil Nadu (Central)','IIHM Kolkata — Kolkata, West Bengal (Private)'],
+        fees:['IHMs (Govt): ₹90,000–₹1,20,000/year','Private Hotel Mgmt Colleges: ₹1,00,000–₹3,00,000/year'],
+        jobs:['Management Trainee (5-star hotel): ₹25,000–₹45,000/month','Food & Beverage Executive: ₹30,000–₹60,000/month','Event Manager: ₹30,000–₹70,000/month','Tourism Officer: ₹25,000–₹50,000/month','International hotels (after 5 years): ₹3–8 LPA + accommodation'],
+        related:['Aviation (Cabin Crew / Airport Ops)','Mass Communication (Event PR)','Business / MBA (Hotel Chain Management)','Tourism Entrepreneurship'],
+        tip:'IHM graduates from government IHMs have strong placement with Taj, Oberoi, Marriott, and international hotel chains. NCHMCT JEE is the key exam.'
+      }
+    },
+    {
+      id:'12-finearts2', name:'Fine Arts / Performing Arts Degree', emoji:'🎭', glow:'glow-arts',
+      archetypes:['srijan'],
+      desc:'BFA, B.Mus, B.PA, Film & Television Institute admissions. Distinct from Design — focuses on pure creative expression.',
+      tags:['BFA','B.Mus','FTII','SRFTI','Performing Arts','Portfolio'],
+      detail:{
+        what:'Bachelor of Fine Arts (4 years), Bachelor of Music, Bachelor of Performing Arts. FTII (Film and Television Institute of India) and SRFTI offer professional diploma programs in film direction, cinematography, editing, sound design.',
+        exams:['FTII Entrance (Film & Television Institute of India) — Pune','SRFTI Entrance (Satyajit Ray Film & Television Institute) — Kolkata','NDA for specific arts colleges','Portfolio/Audition-based admissions for most arts programs','Visva-Bharati Sangit Bhavana entrance — Music'],
+        colleges:['FTII Pune — Pune, Maharashtra (Central/Ministry of I&B)','SRFTI Kolkata — Kolkata, West Bengal (Central)','Faculty of Fine Arts, BHU — Varanasi, UP (Central)','Kalabhavan, Visva Bharati — Santiniketan, West Bengal (Central)','College of Art, Delhi — New Delhi (State)','Government College of Arts & Crafts — Chennai, Tamil Nadu (State)','Faculty of Music & Fine Arts, DU — New Delhi (Central)'],
+        fees:['Govt/Central Arts Colleges: ₹5,000–₹50,000/year','FTII/SRFTI (Diploma): ₹2,00,000–₹3,00,000/year','Private: ₹50,000–₹3,00,000/year'],
+        jobs:['Film Director/Cinematographer (FTII): ₹Variable (₹3–50 LPA+)','Musician (Classical/Film): ₹Variable','Art Curator: ₹30,000–₹70,000/month','Art Teacher (College): ₹40,000–₹80,000/month (with NET)'],
+        related:['Mass Communication','Design (NID/NIFT)','Fashion & Textile','Music Therapy (niche, growing)'],
+        tip:'FTII and SRFTI are among Asia\'s top film schools. They are highly competitive — entrance tests include aptitude for aesthetics, film analysis, and general knowledge of world cinema.'
+      }
+    },
+    {
+      id:'12-sports', name:'Sports Science & Physical Education', emoji:'⚽', glow:'glow-defence',
+      archetypes:['vichara','vyapara'],
+      desc:'B.P.Ed, B.Sc Sports Science, Sports Management. SAI (Sports Authority of India) pathways for elite athletes.',
+      tags:['B.P.Ed','B.Sc Sports Science','SAI','NIS Patiala','Sports Management'],
+      detail:{
+        what:'Physical education degrees (B.P.Ed) and Sports Science programs leading to coaching, physiotherapy in sports, sports management, and academic teaching.',
+        exams:['CUET for B.P.Ed at Central Universities','State B.P.Ed CET (Maharashtra, UP, AP, etc.)','NIS Patiala (National Institute of Sports) — Coaching diploma entrance','SAI (Sports Authority of India) — Training Centre admissions','Lakshmibai National Institute of Physical Education (LNIPE) entrance'],
+        colleges:['LNIPE Gwalior — Gwalior, MP (Central)','NIS Patiala — Patiala, Punjab (Central/SAI)','Tamil Nadu Physical Education University — Chennai, Tamil Nadu (State)','Amity University B.P.Ed — Multiple states (Private)','Government Colleges of Physical Education (State, All States)'],
+        fees:['Govt B.P.Ed: ₹15,000–₹40,000/year','Private: ₹40,000–₹1,20,000/year'],
+        jobs:['School Physical Education Teacher: ₹25,000–₹55,000/month','Sports Coach (State/National): ₹30,000–₹80,000/month','Sports Physiotherapist (with BPT): ₹25,000–₹60,000/month','Sports Manager (IPL/ISL/clubs): ₹4–15 LPA'],
+        related:['Physiotherapy / BPT (Paramedical)','Psychology (Sports Psychology combo)','Nutrition Science','Defence (physical fitness roles)'],
+        tip:'Competitive athletes can access SAI Training Centres for specialized coaching while pursuing a degree simultaneously.'
+      }
+    },
+    {
+      id:'12-social', name:'Social Work & Development', emoji:'🤝', glow:'glow-commerce',
+      archetypes:['vyapara'],
+      desc:'BSW, BA Social Work. Leads to NGOs, development sector, policy, government welfare departments.',
+      tags:['BSW','Social Work','NGO','Development Sector','Human Rights','Policy'],
+      detail:{
+        what:'3-year BSW (Bachelor of Social Work). Career in NGOs, government welfare departments, community development, child rights, women empowerment, rural development, and human rights organizations.',
+        exams:['CUET — Central Universities BSW','TISS (Tata Institute of Social Sciences) — entrance for BSW/BA programs','Jamia Millia entrance','State university direct admissions (merit-based)'],
+        colleges:['TISS Mumbai — Mumbai, Maharashtra (Deemed, Central-funded)','Delhi School of Social Work, DU — New Delhi (Central)','Madras School of Social Work — Chennai, Tamil Nadu (Aided)','XISS Ranchi — Ranchi, Jharkhand (Jesuit Private)','NISWASS Bhubaneswar — Odisha (Regional)'],
+        fees:['Govt/Central: ₹5,000–₹30,000/year','Private/Aided: ₹40,000–₹1,50,000/year'],
+        jobs:['NGO Program Officer: ₹20,000–₹45,000/month','Government Welfare Officer: ₹25,000–₹55,000/month','CSR Executive (Corporate): ₹30,000–₹60,000/month','UN/UNICEF/WHO Intern (postgrad): stipend-based'],
+        related:['Law (Human Rights track)','UPSC (Social Policy)','Psychology','Public Health','International Development (MSW + abroad)'],
+        tip:'TISS is India\'s premier social work institution. Its BSW/BA programs are highly competitive but offer excellent placements in government, NGOs, and international organizations.'
+      }
+    },
+  ],
+
+  'grad': [
+    {
+      id:'g-upsc', name:'UPSC Civil Services', emoji:'🏛️', glow:'glow-defence',
+      archetypes:['vichara','vyapara'],
+      desc:'IAS, IPS, IFS, IRS — India\'s most prestigious competitive exams. Open to graduates from any stream.',
+      tags:['IAS','IPS','IFS','UPSC CSE','Prelims','Mains','Interview'],
+      detail:{
+        what:'Three stages: Prelims (objective) → Mains (written) → Interview (personality test). Any graduate can appear. Preparation typically takes 1–3 years. Age limit: 21–32 (General), 21–37 (SC/ST), relaxation for OBC.',
+        exams:['UPSC CSE Prelims (GS Paper I + CSAT)','UPSC CSE Mains (9 papers — GS I–IV, Essay, Optional x2)','Personality Test (Interview)'],
+        colleges:['LBSNAA — Mussoorie, Uttarakhand (IAS Training)','SVP National Police Academy — Hyderabad (IPS Training)','IFS Training Institute — Dehradun','IAAS/IRS/IPS — Service-specific academies'],
+        fees:['UPSC Application: ₹100 (SC/ST free)','Self-study or coaching: ₹50,000–₹3,00,000 (coaching)','Online resources: NCERT, PRS, RSTV — free'],
+        jobs:['IAS District Collector: ₹56,100–₹2,25,000/month + perks','IPS Deputy SP: ₹56,100 base + accommodation, vehicle','IFS Foreign Service: ₹56,100 + housing abroad','IRS Tax Inspector: ₹44,900–₹1,42,400/month'],
+        related:['State PSC (alternative route)','Law (background advantage)','Economics/Political Science graduates (Optional subject benefit)','Teaching/Research (NET/SET — alternative govt career)'],
+        tip:'Optional subject choice is strategic — Geography, History, PSIR, Sociology, Anthropology are among the most popular. Choose what you genuinely know well.'
+      }
+    },
+    {
+      id:'g-statepsc', name:'State PSC', emoji:'🗺️', glow:'glow-defence',
+      archetypes:['vichara','vyapara'],
+      desc:'APPSC, TSPSC, MPSC, TNPSC — state-level civil services for Group I, II, III officers.',
+      tags:['APPSC','TSPSC','MPSC','TNPSC','Group I','Group II','State Cadre'],
+      detail:{
+        what:'Each state has its own Public Service Commission conducting Group I (senior officers), Group II (assistant-level), and Group III (clerical) exams. Pattern similar to UPSC but state-focused syllabus.',
+        exams:['APPSC — Andhra Pradesh (Group I, II, III, IV)','TSPSC — Telangana (Group I, II, III, IV)','MPSC — Maharashtra (State Services, Engineering, Medical)','TNPSC — Tamil Nadu (Group I, II, IIA, IV)','KPSC — Karnataka','BPSC — Bihar','UPPSC — Uttar Pradesh','RPSC — Rajasthan','MPPSC — Madhya Pradesh','OPSC — Odisha','GPSC — Gujarat','HPSC — Haryana','PPSC — Punjab'],
+        colleges:['State Administrative Training Institutes (ATIs) — each state has one'],
+        fees:['Application: ₹50–₹500 (varies by state and category)'],
+        jobs:['Deputy Collector / DSP (Group I): ₹37,100–₹67,000/month + DA','Revenue/Sub-Registrar (Group II): ₹35,000–₹55,000/month','Junior Asst / Jr Steno (Group III/IV): ₹25,000–₹40,000/month'],
+        related:['UPSC (for All-India Services)','Banking (IBPS alternative govt career)','Teaching (State PG Teacher exams)'],
+        tip:'State PSC exams often have regional language papers. Fluency in the state language (Telugu, Tamil, Marathi etc.) is a significant advantage.'
+      }
+    },
+    {
+      id:'g-mba', name:'MBA / Management', emoji:'📊', glow:'glow-commerce',
+      archetypes:['vyapara','vichara'],
+      desc:'MBA via CAT, XAT, GMAT — 2-year postgraduate management degree. IIMs, XLRI, IIFT, ISB.',
+      tags:['MBA','CAT','XAT','GMAT','IIM','XLRI','2 Years PG'],
+      detail:{
+        what:'2-year postgraduate program in management. Requires a bachelor\'s degree (any stream). Major specializations: Finance, Marketing, Operations, HR, Strategy, Entrepreneurship, International Business.',
+        exams:['CAT (Common Admission Test) — IIMs and 100+ B-schools','XAT (XLRI) — XLRI Jamshedpur, XLRI Delhi','IIFT Entrance — IIF Delhi, Kolkata, Kakinada','SNAP (Symbiosis) — Symbiosis campuses','NMAT (NMIMS) — NMIMS campuses','CMAT (NTA) — AICTE-approved MBA programs','MAT (AIMA) — 300+ B-schools','GMAT — International programs, ISB, IIM programs for foreign students','MAH CET — Maharashtra MBA admissions','TANCET — Tamil Nadu','KMAT — Karnataka'],
+        colleges:['IIM Ahmedabad — Ahmedabad, Gujarat (Central)','IIM Bangalore — Bengaluru, Karnataka (Central)','IIM Calcutta — Kolkata, West Bengal (Central)','XLRI Jamshedpur — Jamshedpur, Jharkhand (Private)','ISB Hyderabad — Hyderabad, Telangana (Private)','FMS Delhi — New Delhi (Central, very low fee)','IIFT Delhi — New Delhi (Central)','MDI Gurgaon — Gurgaon, Haryana (Govt)','SPJIMR Mumbai — Mumbai, Maharashtra (Private)'],
+        fees:['IIM A/B/C: ₹23–27 lakh (2 years)','FMS Delhi: ₹20,760 total (2 years — government subsidized)','ISB: ₹40+ lakh (1 year)','Tier-2 IIMs: ₹12–18 lakh','Private B-schools: ₹5–20 lakh'],
+        jobs:['IIM Fresher (Management Trainee): ₹25–35 LPA','Tier-2 MBA Fresher: ₹8–15 LPA','Marketing Manager (3–5 years post-MBA): ₹15–25 LPA','Investment Banker (IIM + Finance): ₹25–50 LPA','Startup Founder (MBA + experience): Variable'],
+        related:['B.Tech + MBA = Technology Management','Commerce + MBA = Finance/Banking Leadership','Engineering + MBA = Product Management','Law + MBA = Corporate Strategy'],
+        tip:'FMS Delhi offers IIM-comparable education at ₹20,000 total fees — one of the best ROI educational options in the world.'
+      }
+    },
+    {
+      id:'g-mtech', name:'M.Tech / M.Sc', emoji:'🔬', glow:'glow-science',
+      archetypes:['vichara'],
+      desc:'M.Tech via GATE, M.Sc via JAM — advanced technical and science degrees for research and senior roles.',
+      tags:['M.Tech','M.Sc','GATE','JAM','IIT','NIT','Research','DRDO'],
+      detail:{
+        what:'2-year postgraduate programs. GATE is for M.Tech (IITs, NITs, IIITs) and also used for PSU recruitment (ONGC, BHEL, NTPC, IOCL, GAIL etc.). JAM is for M.Sc in sciences (IITs, IISc, NITs).',
+        exams:['GATE (Graduate Aptitude Test in Engineering) — IITs/NITs M.Tech + PSU jobs','JAM (Joint Admission Test for MSc) — IIT M.Sc programs','JEST (Physics/CS) — research programs at TIFR, IISc','JGEEBILS (Biology) — research institutes','State University PG entrances'],
+        colleges:['IIT Bombay M.Tech — Mumbai, Maharashtra (Central)','IIT Delhi M.Tech — New Delhi (Central)','IISc Bengaluru (M.Tech/M.Sc) — Bengaluru, Karnataka (Central)','NIT Warangal M.Tech — Warangal, Telangana (Central)','IIT Hyderabad — Hyderabad, Telangana (Central)','IISER campuses — Multiple states (Research focus)'],
+        fees:['IIT M.Tech: ₹18,000–₹1,20,000/year (GATE scholars get stipend ₹12,400/month)','NIT M.Tech: ₹35,000–₹75,000/year','M.Sc IIT: ₹18,000–₹60,000/year'],
+        jobs:['Senior Software Engineer (IIT M.Tech): ₹15–40 LPA','Research Scientist (DRDO/ISRO): ₹9–14 LPA','PSU Engineer via GATE (ONGC/BHEL): ₹8–14 LPA','Academic faculty (after PhD): ₹15–25 LPA (IIT/NIT)'],
+        related:['PhD / Research (after M.Tech)','DRDO / ISRO (Defence research)','PSU Jobs (GATE score used)','Engineering (B.Tech foundation)'],
+        tip:'GATE-qualified M.Tech students receive ₹12,400/month stipend at IITs/NITs. GATE score is also directly used for PSU recruitment without an M.Tech degree.'
+      }
+    },
+    {
+      id:'g-banking', name:'Banking & Finance', emoji:'🏦', glow:'glow-commerce',
+      archetypes:['vyapara','vichara'],
+      desc:'IBPS PO/Clerk, SBI PO, RBI Grade B — government banking jobs for graduates of any stream.',
+      tags:['IBPS PO','SBI PO','RBI Grade B','Bank Clerk','NABARD','Government Bank'],
+      detail:{
+        what:'Government banking careers are among the most stable in India. IBPS conducts common exams for 11 public sector banks. RBI Grade B is the most competitive bank exam with officer-level entry.',
+        exams:['IBPS PO (Probationary Officer) — 11 PSBs','IBPS Clerk — 11 PSBs','IBPS SO (Specialist Officer) — IT/HR/Law/Agriculture officer','SBI PO — State Bank of India','SBI Clerk — State Bank of India','RBI Grade B — Reserve Bank of India (hardest banking exam)','RBI Assistant','NABARD Grade A/B — Agriculture Development Bank','SIDBI/NHB/EXIM Bank exams'],
+        colleges:['Bank Staff College, Hyderabad (training)','Bankers Institute of Rural Development (BIRD), Lucknow','State-level banking training institutes'],
+        fees:['IBPS Application: ₹175 (SC/ST), ₹850 (General)','No course fee — self-study or coaching: ₹20,000–₹80,000'],
+        jobs:['IBPS PO (Probationary Officer): ₹36,000–₹52,000/month (basic + allowances)','SBI PO: ₹41,960/month basic + DA, HRA','RBI Grade B: ₹55,200–₹63,840/month + perks','Bank Clerk: ₹20,000–₹30,000/month'],
+        related:['CA / CS / CMA (Finance professional route)','MBA Finance (corporate banking)','SSC CGL (alternative government job)','Stock Market / SEBI careers'],
+        tip:'RBI Grade B is one of India\'s best job opportunities — excellent pay, prestige, and career growth. Requires serious preparation (Economics + Finance + General Awareness).'
+      }
+    },
+    {
+      id:'g-ssc', name:'SSC — Staff Selection Commission', emoji:'📋', glow:'glow-commerce',
+      archetypes:['vichara','vyapara'],
+      desc:'SSC CGL, CHSL, MTS, GD Constable — central government jobs for graduates and 12th pass candidates.',
+      tags:['SSC CGL','SSC CHSL','SSC MTS','CBI','Income Tax','Excise'],
+      detail:{
+        what:'SSC conducts exams for Grade B and C posts in central government ministries, departments, and offices. SSC CGL (Graduate Level) covers prestigious posts like Income Tax Inspector, CBI Sub-Inspector, Assistant in MEA/Ministries.',
+        exams:['SSC CGL (Combined Graduate Level) — Inspector/Asst level','SSC CHSL (Combined Higher Secondary) — LDC/DEO level','SSC MTS (Multi Tasking Staff)','SSC GD Constable — CRPF/BSF/CISF/SSB/ITBP','SSC CPO (Central Police Organizations) — Sub-Inspector','SSC JE (Junior Engineer)','SSC Stenographer Grade C & D'],
+        colleges:['Central Training Institutes after selection (service-specific)'],
+        fees:['SSC Application: ₹100 (SC/ST/Women/ExSM free)'],
+        jobs:['Income Tax Inspector (SSC CGL): ₹44,900–₹1,42,400 (Level 7)','CBI Sub-Inspector: ₹44,900/month base','Asst Section Officer (MoD/MEA): ₹44,900/month base','LDC (CHSL): ₹19,900–₹63,200/month (Level 2)','GD Constable: ₹21,700–₹69,100/month'],
+        related:['UPSC (senior govt career)','Railway (RRB)','Banking (IBPS)','State PSC'],
+        tip:'SSC CGL Income Tax Inspector post is one of the most sought-after — good pay, urban posting, and clear promotion path to DCIT/ACIT level.'
+      }
+    },
+    {
+      id:'g-railways', name:'Railways — RRB', emoji:'🚂', glow:'glow-defence',
+      archetypes:['vichara'],
+      desc:'RRB NTPC, RRB JE, RRB Group D — Indian Railways is India\'s largest employer.',
+      tags:['RRB NTPC','RRB JE','RRB Group D','ALP','Loco Pilot','Station Master'],
+      detail:{
+        what:'Indian Railways is one of the world\'s largest employers. Multiple exams cover different grades — from Group D (helper/trackman) to NTPC (graduate-level clerk/station master) to JE (diploma-level engineer) to ALP (Assistant Loco Pilot).',
+        exams:['RRB NTPC (Non-Technical Popular Categories) — Station Master, Guard, Jr Clerk','RRB JE (Junior Engineer) — Technical/Engineering diploma/degree','RRB ALP (Assistant Loco Pilot) — 10th + ITI/Diploma','RRB Group D — 10th pass level','RITES / IRCON / IRCTC direct recruitment','UPSC CAPF / RPS for Railway Protection Force (RPF)'],
+        colleges:['Railway Training Institutes (RTIs) — after selection, multiple cities'],
+        fees:['RRB Application: ₹250 (SC/ST/Women ₹250 refundable)'],
+        jobs:['Station Master (NTPC): ₹29,200–₹92,300/month','Junior Clerk-cum-Typist: ₹19,900–₹63,200/month','Junior Engineer (RRB JE): ₹35,400–₹1,12,400/month','ALP (Loco Pilot eventually): ₹19,900 to ₹56,900+','Group D: ₹18,000–₹56,900/month'],
+        related:['SSC JE (alternative engineering govt job)','ITI (technical trades relevant to Railways)','Diploma/Polytechnic (RRB JE eligibility)'],
+        tip:'RRB NTPC posts like Station Master and Traffic Asst have defined promotion paths leading to Senior Station Master, Divisional level roles over 15–20 years.'
+      }
+    },
+    {
+      id:'g-teaching', name:'Teaching & Research', emoji:'📐', glow:'glow-arts',
+      archetypes:['vichara','srijan'],
+      desc:'UGC NET, State SET, PhD — college/university teaching and research careers.',
+      tags:['UGC NET','State SET','B.Ed','PhD','Assistant Professor','Researcher'],
+      detail:{
+        what:'Teaching at school level requires B.Ed (1–2 years after degree) + TET/CTET. Teaching at college/university level requires NET/SET qualification. PhD is required for Assistant Professor at central universities.',
+        exams:['UGC NET (National Eligibility Test) — Assistant Professor + JRF (Junior Research Fellowship)','State SET (AP SET, TS SET, Maharashtra SET, Karnataka SET, etc.)','CTET (Central Teacher Eligibility Test) — Class 1–8 school teaching','State TET (APTET, TSTET, etc.) — school teaching','B.Ed entrance exams (DUET, IPU CET, state-level)','PhD entrance: GATE/NET + university-level interviews'],
+        colleges:['Central Universities (JNU, DU, BHU, HCU, EFLU)','State Universities (for SET)','IITs/IIMs — for PhD research in Engineering/Management','NITs and IISERs — research positions'],
+        fees:['B.Ed: ₹20,000–₹1,50,000/year','UGC NET Application: ₹1,000 (Gen), ₹500 (OBC), ₹250 (SC/ST/PwD)','PhD: IIT/NIT — fellowship ₹31,000–₹35,000/month (JRF/SRF)'],
+        jobs:['School Teacher (Govt, with TET): ₹25,000–₹60,000/month','PGT/TGT Teacher (KVS/NVS): ₹44,900–₹1,42,400/month','Assistant Professor (Central Univ): ₹57,700–₹98,000/month','Associate Professor: ₹1,31,400/month','Professor: ₹1,44,200/month','Research Scientist (after PhD): ₹8–20 LPA'],
+        related:['UPSC (academic optional advantage)','Content Writing / EdTech (online teaching)','DRDO/ISRO Research (after PhD Engineering)','Journalism (Writing + Research combo)'],
+        tip:'UGC JRF fellowship (₹31,000/month rising to ₹35,000) makes PhD financially viable at IITs and central universities — you get paid to research.'
+      }
+    },
+    {
+      id:'g-medpg', name:'Medical Postgraduate', emoji:'🏥', glow:'glow-science',
+      archetypes:['vichara'],
+      desc:'NEET-PG, INI-CET — MD, MS, Diploma. Superspecialty MCh/DM via NEET-SS.',
+      tags:['NEET-PG','MD','MS','INI-CET','Superspecialty','MCh','DM'],
+      detail:{
+        what:'After MBBS, doctors pursue MD (Medicine branches) or MS (Surgical branches) through NEET-PG. For AIIMS, JIPMER, PGI, NIMHANS — INI-CET is the common exam. After MD/MS, superspecialty MCh/DM via NEET-SS.',
+        exams:['NEET-PG (NTA) — All MD/MS admissions across India','INI-CET — AIIMS, JIPMER, PGI Chandigarh, NIMHANS, SCTIMST','NEET-SS — Superspecialty (MCh/DM) admissions','USMLE (for USA residency — optional international route)'],
+        colleges:['AIIMS New Delhi (MD/MS/MCh/DM)','PGI Chandigarh','JIPMER Puducherry','NIMHANS Bengaluru (Psychiatry/Neurology)','KEM Hospital Mumbai','All state medical colleges (via NEET-PG)'],
+        fees:['Govt MD/MS: ₹10,000–₹1,50,000/year','Private MD/MS: ₹5,00,000–₹50,00,000/year (NRI/management quota)','Senior Resident stipend (AIIMS): ₹1,50,000+/month during training'],
+        jobs:['MD/MS Doctor (Specialist): ₹1,50,000–₹5,00,000+/month (private practice)','Govt Specialist: ₹1,00,000–₹2,50,000/month','Superspecialist (MCh/DM): ₹3,00,000–₹10,00,000+/month','Medical Research Scientist: ₹8–25 LPA'],
+        related:['Medical Research (ICMR)','Public Health (MPH)','Hospital Administration (MBA Hospital Mgmt)'],
+        tip:'NEET-PG competition is very high (1.5–2 lakh candidates for ~25,000 seats). Preparation should start in MBBS 3rd year itself.'
+      }
+    },
+    {
+      id:'g-ca', name:'CA / CS / CMA Final', emoji:'💹', glow:'glow-commerce',
+      archetypes:['vichara','vyapara'],
+      desc:'Complete CA (ICAI), CS (ICSI), or CMA (ICMAI) professional qualifications — among India\'s most valued credentials.',
+      tags:['CA Final','CS Final','CMA Final','ICAI','Big 4','CFO'],
+      detail:{
+        what:'CA (Chartered Accountant) is India\'s premier finance qualification. 3 levels: Foundation → Intermediate → Final + Articleship (3 years paid training). Average pass rate for CA Final is 10–15%. Highly respected globally.',
+        exams:['CA Final (ICAI) — 2 groups, 8 papers','CS Final (ICSI) — 3 modules','CMA Final (ICMAI) — 2 groups','CFA (Level I/II/III) — Global qualification (optional)'],
+        colleges:['ICAI Study Circles (nationwide)','ICSI chapters','ICMAI regional councils'],
+        fees:['CA Final Registration: ₹22,000 (both groups)','CS Final: ₹12,000','CMA Final: ₹17,000','Coaching: ₹50,000–₹2,00,000 (optional)'],
+        jobs:['CA Fresher (Big 4 — Deloitte/EY/KPMG/PwC): ₹7–12 LPA','CA with 3 years experience: ₹15–25 LPA','CFO (20+ years, large company): ₹50–3,00,00,000 LPA','CS (Compliance Officer): ₹6–12 LPA (fresher)','CMA (Cost Manager): ₹5–10 LPA (fresher)'],
+        related:['MBA Finance (combined with CA for maximum value)','UPSC (Commerce & Accountancy optional)','Banking / RBI Grade B','Corporate Law'],
+        tip:'CA + MBA from a top B-school is considered one of the most powerful combinations in Indian corporate finance — many CFOs hold both.'
+      }
+    },
+    {
+      id:'g-international', name:'Study Abroad / International', emoji:'🌍', glow:'glow-science',
+      archetypes:['vichara','srijan','vyapara'],
+      desc:'GRE, GMAT, IELTS, TOEFL — graduate programs in USA, UK, Canada, Germany, Australia, Japan.',
+      tags:['GRE','GMAT','IELTS','TOEFL','MS USA','MBA Abroad','Free Germany'],
+      detail:{
+        what:'Graduate study abroad is accessible from any discipline. Germany offers free/very low tuition at public universities. USA/Canada have strong scholarships. UK has 1-year MBA options. Australia is growing for healthcare and IT.',
+        exams:['GRE (Graduate Record Examination) — MS/PhD in USA, Canada, Australia','GMAT (Graduate Management Admission Test) — MBA worldwide','IELTS / TOEFL / PTE — English proficiency for all countries','SAT (undergraduate — USA)','DAAD scholarship exam (Germany)'],
+        colleges:['USA: MIT, Stanford, CMU, UC Berkeley, University of Michigan (MS/PhD)','UK: Oxford, Cambridge, Imperial, UCL, LSE (1-year MBA/MSc)','Germany: TU Munich, RWTH Aachen, Heidelberg (often free tuition for MS)','Canada: University of Toronto, UBC, McGill','Australia: Melbourne, UNSW, ANU','Japan: Tokyo University (MEXT scholarship — free)','Taiwan: National Taiwan University (MoFATW scholarship — free)'],
+        fees:['Germany Public Universities: €0–€1,500/year tuition (pay living costs only)','USA MS: $25,000–$60,000/year','UK MSc: £15,000–£35,000/year','Canada: CAD 20,000–40,000/year','Japan (MEXT): Free tuition + ₹70,000–₹80,000/month stipend','Taiwan (MoFATW): Free tuition + TWD 15,000/month living allowance'],
+        jobs:['MS CS (USA top university): $90,000–$1,50,000/year starting','MBA (top US school): $1,20,000–$1,80,000/year','Germany MS Engineering: €40,000–€70,000/year','UK MSc Finance: £50,000–£80,000/year (London)'],
+        related:['Engineering (MS route)','MBA (GMAT route)','Research / PhD','Medical (USMLE route for USA residency)'],
+        tip:'Germany public universities charge almost no tuition for international students. DAAD scholarships additionally cover living expenses. German MS in Engineering is one of the best ROI options globally.'
+      }
+    },
+  ],
+
+  'combo': [
+    {
+      id:'c-engmba', name:'Engineering + MBA', emoji:'⚙️📊',
+      tags:['B.Tech → MBA','Product Management','Tech Leadership','IIT + IIM'],
+      what:'Technology Management, Product Management, Consulting. Most in-demand combination in Indian corporate sector.',
+      path:['B.Tech (4 years)','2–3 years work experience','CAT/GMAT','MBA (2 years)'],
+      leads:'Product Manager, Tech Consultant, CTO, Startup Founder',
+      salary:'₹25–60 LPA (top IIM + IIT combo)',
+      example:'IIT Delhi → TCS (2 years) → IIM Ahmedabad → Product Manager, Amazon'
+    },
+    {
+      id:'c-englaw', name:'Engineering + Law', emoji:'⚙️⚖️',
+      tags:['Patent Law','IP Rights','B.Tech + LLB','DIPP'],
+      what:'Patent Attorney / Intellectual Property (IP) Rights. Rare and extremely well-paying combination.',
+      path:['B.Tech (4 years)','LLB (3 years after B.Tech) OR 5-yr BBA LLB (work in IP firm part-time)','Patent Bar / Indian Patent Office registration'],
+      leads:'Patent Attorney, IP Counsel, DIPP Examiner, Technology Lawyer',
+      salary:'₹12–40 LPA (Patent Attorneys at top firms)',
+      example:'B.Tech ECE → NALSAR LLB → Patent Firm → In-house IP Counsel at Qualcomm India'
+    },
+    {
+      id:'c-medresearch', name:'Medicine + Research', emoji:'🩺🔬',
+      tags:['MBBS + PhD','Medical Scientist','ICMR','AIIMS Research'],
+      what:'Medical Scientist / Clinical Researcher. Combines clinical practice with laboratory/translational research.',
+      path:['MBBS (5.5 years)','MD in research-oriented specialty','PhD (3–5 years, JRF fellowship)'],
+      leads:'Medical Scientist, Clinical Researcher, ICMR Fellow, Drug Development Expert',
+      salary:'₹15–40 LPA (pharma R&D) or academic salary scale',
+      example:'AIIMS MBBS → MD Pharmacology → PhD at NCBS → Senior Scientist, Sun Pharma'
+    },
+    {
+      id:'c-designcs', name:'Design + Computer Science', emoji:'🖍️💻',
+      tags:['UI/UX','Product Design','B.Des + CS','IIT Design'],
+      what:'UX/Product Designer — highest growing role in tech. Combines visual thinking with programming.',
+      path:['B.Des (NID/IIT) OR BCA/B.Tech CS (4 years)','Learn complementary skill (design/coding)','Portfolio of 5–8 real projects','Internships at product companies'],
+      leads:'UX Designer, Product Designer, Design Lead, Creative Director (Tech)',
+      salary:'₹8–30 LPA (fresher to 5 years)',
+      example:'NID Ahmedabad Product Design → 2 years at Zomato (UX) → Senior Designer, Google India'
+    },
+    {
+      id:'c-agritech', name:'Agriculture + Technology', emoji:'🌾💻',
+      tags:['Agri-tech','B.Sc Agri + CS','Precision Farming','FoodTech','Drone Tech'],
+      what:'Precision Agriculture, FoodTech, Drone-based farming, Agricultural Data Science. Fastest growing rural tech sector.',
+      path:['B.Sc Agriculture (4 years) + learn Python/Data Science (self-study/SWAYAM)','OR B.Tech Agriculture Engineering','M.Sc Agri-tech / MBA Agri-business (optional)'],
+      leads:'Agri-tech Product Manager, FoodTech Startup, Precision Farming Specialist, Agricultural Data Analyst',
+      salary:'₹6–20 LPA (fast growing)',
+      example:'B.Sc Agriculture ANGRAU → Data Science bootcamp → Product Manager, DeHaat (Agri-tech startup)'
+    },
+    {
+      id:'c-commlaw', name:'Commerce + CA + Law', emoji:'💼⚖️',
+      tags:['Taxation','Corporate Finance + Law','CA + LLB','Tax Lawyer'],
+      what:'Tax Lawyer / Corporate Finance Counsel. Handles corporate taxation, mergers, compliance. Rare triple combination with very high demand.',
+      path:['B.Com + CA Foundation simultaneously','Complete CA Intermediate & Articleship','LLB (3 years after B.Com)','Join Tax Practice / Law Firm'],
+      leads:'Tax Lawyer, Corporate Law Counsel, Compliance Head, CFO (with dual qualification)',
+      salary:'₹15–50 LPA (top tax law firms)',
+      example:'B.Com DU + CA Articleship (EY) → DU Faculty of Law LLB → Tax Partner track, AZB & Partners'
+    },
+    {
+      id:'c-artsupsc', name:'Arts + UPSC / Policy', emoji:'📚🏛️',
+      tags:['History + IAS','Political Science + IPS','Civil Services','Policy Analyst'],
+      what:'Civil Services / Policy. Arts + Humanities background is statistically the most successful combination for UPSC Mains.',
+      path:['BA History/Political Science/Sociology/Economics (3 years)','Start UPSC prep during graduation','Attempt UPSC CSE from final year or after graduation'],
+      leads:'IAS, IPS, IFS, Policy Analyst, Think Tank Researcher',
+      salary:'₹56,100–₹2,25,000/month (IAS) + perks',
+      example:'BA History, St. Stephen\'s Delhi → UPSC CSE Rank 12 → IAS, Andhra Pradesh cadre'
+    },
+    {
+      id:'c-medialaw', name:'Mass Comm + Law', emoji:'📡⚖️',
+      tags:['Media Law','Digital Rights','Journalism + LLB','Press Freedom'],
+      what:'Media Lawyer / Digital Rights Lawyer. Handles defamation, press freedom, digital content rights, RTI, and cyber law.',
+      path:['BJMC or BA Mass Comm (3 years)','LLB (3 years) OR 5-year integrated BA LLB with Media Law focus','Internships with media companies, digital rights NGOs, press freedom organizations'],
+      leads:'Media Lawyer, Digital Rights Activist, In-house Legal (News Corp/OTT), RTI Practitioner',
+      salary:'₹8–25 LPA',
+      example:'IIMC Journalism → DU LLB → Media Law Practice → Legal Head, Netflix India'
+    },
+    {
+      id:'c-sportspsych', name:'Sports + Psychology', emoji:'⚽🧠',
+      tags:['Sports Psychology','Performance Coach','B.P.Ed + MA Psychology'],
+      what:'Sports Psychologist / Performance Coach. Emerging high-demand role with Olympic academies, IPL/ISL/Pro Kabaddi franchises.',
+      path:['B.P.Ed or B.Sc Sports Science (3 years)','MA/M.Sc Psychology with Sports Psychology specialization','Certification: BASES (UK) or AASP (USA) — optional'],
+      leads:'Sports Psychologist, Performance Coach, Mental Conditioning Coach, Olympic Team Support Staff',
+      salary:'₹5–20 LPA (growing fast with IPL/ISL boom)',
+      example:'B.P.Ed, LNIPE → M.Sc Sports Psychology, LNIPE → Mental Conditioning Coach, Hyderabad FC (ISL)'
+    },
+    {
+      id:'c-nursingabroad', name:'Nursing + International License', emoji:'🏥🌍',
+      tags:['B.Sc Nursing','NCLEX-RN','NMC OET','USA','UK','Gulf'],
+      what:'International Nursing Career. B.Sc Nursing + NCLEX-RN (USA) or NMC-OET (UK) is one of the highest-earning paths from a science background.',
+      path:['B.Sc Nursing (4 years)','Indian Nursing Council Registration','NCLEX-RN (USA) OR NMC OET (UK) OR DHP Gulf licensing','Job in USA/UK/Gulf hospital'],
+      leads:'Registered Nurse (USA/UK/Gulf), ICU Specialist, Nurse Practitioner (USA)',
+      salary:'USA: ₹3–6 lakh/month. UK: £28,000–£45,000/year. Gulf: AED 8,000–15,000/month',
+      example:'B.Sc Nursing, Manipal → 2 years India experience → NCLEX-RN → RN, NYU Langone, USA'
+    },
+    {
+      id:'c-fashbiz', name:'Fashion + Business', emoji:'👗💼',
+      tags:['NIFT + MBA','Fashion Business','Retail Management','Brand Management'],
+      what:'Fashion Business / Retail Brand Management. Combines creative fashion education with business strategy.',
+      path:['NIFT / Pearl Academy / NID Fashion (4 years)','Work experience in fashion retail or brand (2 years)','MBA Marketing / Luxury Brand Management (India or abroad)'],
+      leads:'Brand Manager (Fashion), Retail Chain Head, Fashion Business Entrepreneur, Buying & Merchandising Director',
+      salary:'₹8–25 LPA (India), €40,000–€70,000 (Europe fashion houses)',
+      example:'NIFT Delhi Fashion Communication → 2 years Myntra → MBA NIFT School of Fashion Technology → Brand Manager, Manyavar'
+    },
+    {
+      id:'c-fintech', name:'Commerce + Data Science', emoji:'💼📊',
+      tags:['Fintech','B.Com + Python','Data Analytics','Stock Market Analytics','RBI'],
+      what:'Fintech Data Analyst / Quantitative Analyst. High demand as financial services go digital.',
+      path:['B.Com / BBA / Economics (3 years)','Simultaneously learn Python, SQL, Excel Advanced (SWAYAM/Coursera — free)','CFA Level I (optional but valued)','MBA Business Analytics OR M.Sc Data Science'],
+      leads:'Fintech Analyst, Quantitative Researcher, Risk Analyst, Business Intelligence Lead',
+      salary:'₹8–30 LPA',
+      example:'B.Com SRCC + Python certification → KPMG Data Analytics → MBA IIMA → Quant Analyst, Goldman Sachs India'
+    },
+    {
+      id:'c-archurban', name:'Architecture + Urban Planning', emoji:'🏛️🌆',
+      tags:['B.Arch + Urban Planning','Smart Cities','SPA','RICS'],
+      what:'Urban Planner / Smart Cities Specialist. India\'s Smart Cities Mission and rapid urbanization create massive demand.',
+      path:['B.Arch (5 years)','M.Plan / M.Sc Urban Planning (CEPT, SPA, IIT Kharagpur)','RICS certification (Real Estate — optional)'],
+      leads:'Urban Planner, Smart City Consultant, Real Estate Developer, Government Town Planner',
+      salary:'₹8–30 LPA (Smart City/Real Estate)',
+      example:'B.Arch SPA Delhi → M.Plan CEPT Ahmedabad → Smart City Consultant, Hyderabad Metropolitan Development Authority'
+    },
+    {
+      id:'c-hospitalitymba', name:'Hospitality + MBA', emoji:'🏨📊',
+      tags:['IHM + MBA','Hotel Chain Management','Tourism Entrepreneurship','F&B Business'],
+      what:'Hotel Chain Management / Hospitality Entrepreneur. IHM degree + MBA opens general management roles in multinational hotel chains.',
+      path:['BHM / IHM (3 years)','Work 2–3 years in hotel operations','MBA Hospitality Management OR MBA General (CAT/XAT)'],
+      leads:'Hotel General Manager, F&B Director, Hospitality Entrepreneur, Tourism Policy Officer',
+      salary:'₹10–35 LPA (hotel chains), higher internationally',
+      example:'IHM Mumbai → Taj Hotels (3 years operations) → MBA, Institute of Hotel Management → General Manager, Marriott Hyderabad'
+    },
+    {
+      id:'c-pharmresearch', name:'Pharmacy + Research', emoji:'💊🔬',
+      tags:['B.Pharm','PharmD','Clinical Trials','Drug Development','Biotech'],
+      what:'Drug Development Scientist / Clinical Research Associate. India is a major global hub for clinical trials and pharmaceutical manufacturing.',
+      path:['B.Pharm (4 years) OR Pharm.D (6 years — combined)','M.Pharm / M.Sc Pharmacology / Clinical Research PG diploma','Internship at pharma company (Sun, Cipla, Dr. Reddy\'s, Biocon)'],
+      leads:'Clinical Research Associate, Drug Development Scientist, Pharmacovigilance Specialist, Regulatory Affairs Officer',
+      salary:'₹6–20 LPA (India), $60,000–$1,20,000 (USA/Europe)',
+      example:'B.Pharm, JSS College Mysuru → M.Pharm Clinical Research → CRA, IQVIA (Global CRO) → Drug Safety Head, Cipla'
+    },
+  ]
+};
+
+// ─── STATE ─────────────────────────────────────────────────────────────────────
+let currentLevel = '10th';
+let activeArch   = null;
+let savedPaths   = [];
+try { savedPaths = JSON.parse(localStorage.getItem('bhaavaSavedPaths') || '[]'); } catch(e) {}
+
+// ─── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  renderMindset();
+  setLevel('10th');
+  renderSavedBar();
+
+  window.addEventListener('scroll', () => {
+    const s = document.documentElement.scrollTop;
+    const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    document.getElementById('bar').style.width = ((s/h)*100) + '%';
+  });
+});
+
+// ─── RENDER MINDSET ────────────────────────────────────────────────────────────
+function renderMindset() {
+  document.getElementById('mindsetGrid').innerHTML = mindset.map((m,i) => `
+    <div class="mindsetCard glowBlue" style="animation:fadeUp .4s ease both ${i*60}ms">
+      <div class="micon">${m.icon}</div>
+      <h4>${m.h}</h4>
+      <p style="margin:0;font-size:13px;color:#dbe5f4">${m.p}</p>
+    </div>`).join('');
+}
+
+// ─── SET LEVEL ─────────────────────────────────────────────────────────────────
+function setLevel(level) {
+  currentLevel = level;
+  document.querySelectorAll('.ltab').forEach(t => t.classList.toggle('active', t.dataset.level === level));
+  document.getElementById('filterControls').style.display = level === 'combo' ? 'none' : 'block';
+  closeDetail();
+  renderDomains();
+}
+
+// ─── ARCHETYPE ────────────────────────────────────────────────────────────────
+function setArch(arch, btn) {
+  if (activeArch === arch) {
+    activeArch = null;
+    document.querySelectorAll('.atab').forEach(t => t.classList.remove('active'));
+    document.getElementById('archFeedback').textContent = 'Select your thinking style above to highlight matching career domains below.';
+  } else {
+    activeArch = arch;
+    document.querySelectorAll('.atab').forEach(t => t.classList.toggle('active', t.dataset.arch === arch));
+    const msgs = {
+      vichara: '🔵 Vichāra (Logical & Analytical): You think in systems, patterns, and analysis. Highlighted below: Science, Engineering, Medicine, Law, Research, Computer Science, UPSC.',
+      srijan:  '🩷 Srijan (Creative & Expressive): You think in visuals, stories, and original ideas. Highlighted: Design, Fine Arts, Mass Communication, Architecture, Fashion.',
+      vyapara: '🟢 Vyāpāra (Business & Leadership): You think in people, systems, and results. Highlighted: Commerce, MBA, Hospitality, Law, Banking, Civil Services.'
+    };
+    document.getElementById('archFeedback').textContent = msgs[arch];
+  }
+  renderDomains();
+}
+
+// ─── RENDER DOMAINS ────────────────────────────────────────────────────────────
+function renderDomains() {
+  const grid = document.getElementById('domainGrid');
+  const q = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+
+  if (currentLevel === 'combo') {
+    grid.innerHTML = DOMAINS.combo.map((c,i) => `
+      <div class="comboCard" style="animation:fadeUp .4s ease both ${i*50}ms;cursor:default">
+        <div class="combo-tag">🔗 Interconnected Path</div>
+        <h4>${c.emoji} ${c.name}</h4>
+        <p style="font-size:13px;color:#dbe5f4;margin:0 0 10px">${c.what}</p>
+        <div class="steps">
+          ${c.path.map(s => `<span class="step">${s}</span><span class="arrow">→</span>`).join('').replace(/→$/, '')}
+        </div>
+        <div style="margin-top:12px">
+          <span class="badge salary">💼 ${c.leads}</span>
+          <span class="badge fee">₹ ${c.salary}</span>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--muted);font-style:italic">${c.example}</div>
+      </div>`).join('');
+    return;
+  }
+
+  const domains = DOMAINS[currentLevel] || [];
+  const filtered = domains.filter(d => {
+    if (!q) return true;
+    return d.name.toLowerCase().includes(q) ||
+           d.desc.toLowerCase().includes(q) ||
+           d.tags.some(t => t.toLowerCase().includes(q)) ||
+           (d.detail.exams && d.detail.exams.some(e => e.toLowerCase().includes(q)));
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="card" style="grid-column:1/-1;text-align:center;padding:32px;color:var(--muted)">No matches found. Try a different search term.</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map((d,i) => {
+    const isMatch = activeArch && d.archetypes && d.archetypes.includes(activeArch);
+    const isSaved = savedPaths.includes(d.id);
+    return `
+      <div class="card ${d.glow} ${isMatch ? 'archMatch' : ''}" data-id="${d.id}"
+           style="cursor:pointer;animation:fadeUp .4s ease both ${i*55}ms"
+           onclick="toggleDetail('${d.id}')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="icon">${d.emoji}</div>
+          <button onclick="event.stopPropagation();toggleSave('${d.id}')" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--gold);padding:0">${isSaved ? '⭐' : '☆'}</button>
+        </div>
+        <h4 style="margin:8px 0 6px">${d.name}</h4>
+        <p style="margin:0 0 10px;font-size:13px">${d.desc}</p>
+        <div>${d.tags.slice(0,4).map(t => `<span class="badge">${t}</span>`).join('')}</div>
+      </div>`;
+  }).join('');
+}
+
+// ─── DETAIL DRAWER ─────────────────────────────────────────────────────────────
+function toggleDetail(id) {
+  const drawer = document.getElementById('detailDrawer');
+  const allDomains = [...DOMAINS['10th'], ...DOMAINS['12th'], ...DOMAINS['grad']];
+  const d = allDomains.find(x => x.id === id);
+  if (!d) return;
+
+  if (drawer.dataset.open === id) { closeDetail(); return; }
+  drawer.dataset.open = id;
+
+  const isSaved = savedPaths.includes(id);
+  document.getElementById('detailContent').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+      <h3 style="margin:0;font-size:20px">${d.emoji} ${d.name}</h3>
+      <button onclick="toggleSave('${id}')" style="background:none;border:none;cursor:pointer;color:var(--gold);font-size:22px;padding:0 8px">${isSaved ? '⭐ Saved' : '☆ Save'}</button>
+    </div>
+    <p style="color:#e6ecff;margin:0 0 16px;line-height:1.65">${d.detail.what}</p>
+    <div class="detailGrid">
+      <div class="detailSection">
+        <h5>📝 Entrance Exams</h5>
+        <ul>${d.detail.exams.map(e => `<li>${e}</li>`).join('')}</ul>
+      </div>
+      <div class="detailSection">
+        <h5>🏛️ Top Colleges</h5>
+        <ul>${d.detail.colleges.map(c => `<li>${c}</li>`).join('')}</ul>
+      </div>
+      <div class="detailSection">
+        <h5>💰 Fees (Annual)</h5>
+        <ul>${d.detail.fees.map(f => `<li>${f}</li>`).join('')}</ul>
+      </div>
+      <div class="detailSection">
+        <h5>💼 Jobs & Salary</h5>
+        <ul>${d.detail.jobs.map(j => `<li>${j}</li>`).join('')}</ul>
+      </div>
+    </div>
+    ${d.detail.related ? `<div style="margin-top:14px"><span style="font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase">Connected Paths: </span>${d.detail.related.map(r => `<span class="badge related">🔗 ${r}</span>`).join('')}</div>` : ''}
+    ${d.detail.tip ? `<div style="margin-top:14px;padding:12px 16px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:12px;font-size:13px;color:var(--gold)">💡 <strong>Tip:</strong> ${d.detail.tip}</div>` : ''}
+  `;
+
+  drawer.classList.add('open');
+  setTimeout(() => drawer.scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
+}
+
+function closeDetail() {
+  const drawer = document.getElementById('detailDrawer');
+  drawer.classList.remove('open');
+  drawer.dataset.open = '';
+}
+
+// ─── SAVE ─────────────────────────────────────────────────────────────────────
+function toggleSave(id) {
+  savedPaths = savedPaths.includes(id) ? savedPaths.filter(p => p !== id) : [...savedPaths, id];
+  try { localStorage.setItem('bhaavaSavedPaths', JSON.stringify(savedPaths)); } catch(e) {}
+  renderDomains();
+  renderSavedBar();
+}
+
+function renderSavedBar() {
+  const bar = document.getElementById('savedBar');
+  if (!savedPaths.length) { bar.style.display = 'none'; return; }
+  bar.style.display = 'block';
+  const allDomains = [...DOMAINS['10th'], ...DOMAINS['12th'], ...DOMAINS['grad']];
+  document.getElementById('savedChips').innerHTML = savedPaths.map(id => {
+    const d = allDomains.find(x => x.id === id);
+    if (!d) return '';
+    return `<span class="chip" style="border-color:var(--cyan);cursor:pointer" onclick="jumpTo('${id}')">${d.emoji} ${d.name} ✕</span>`;
+  }).join('');
+}
+
+function jumpTo(id) {
+  const level = DOMAINS['10th'].some(x => x.id === id) ? '10th' :
+                DOMAINS['12th'].some(x => x.id === id) ? '12th' : 'grad';
+  setLevel(level);
+  scrollTo('pathways');
+  setTimeout(() => toggleDetail(id), 400);
+}
+
+// ─── SCROLL ───────────────────────────────────────────────────────────────────
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior:'smooth' });
+}
+</script>
+
+<!-- ── Back to Home Button (injected) ── -->
+<style>
+  #bhava-back-btn {
+    position: fixed;
+    bottom: 28px;
+    left: 24px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(10,10,26,0.92);
+    color: #67e8f9;
+    border: 1.5px solid #67e8f9;
+    border-radius: 32px;
+    padding: 10px 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(103,232,249,0.18);
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  #bhava-back-btn:hover {
+    background: rgba(103,232,249,0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(103,232,249,0.28);
+  }
+  #bhava-back-btn svg {
+    flex-shrink: 0;
+  }
+</style>
+
+<a id="bhava-back-btn" href="index.html" title="Back to Bhāva Home">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 12H5M12 5l-7 7 7 7"/>
+  </svg>
+  Back to Home
+</a>
+<script src="bhava-bridge.js"></script>
+<script src="bhava-session.js"></script>
+<script src="bhava-game-nav.js"></script>
+</body>
+</html>
+

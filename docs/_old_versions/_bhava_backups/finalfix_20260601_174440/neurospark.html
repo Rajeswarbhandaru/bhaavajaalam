@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-bhava-game="NeuroSpark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuroSpark — Brain Power Game</title>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════════════════ */
+:root {
+  --font-display: 'Cabinet Grotesk', 'Arial Black', sans-serif;
+  --font-body: 'Satoshi', 'Helvetica Neue', sans-serif;
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+  --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+  --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem;
+  --space-4: 1rem; --space-6: 1.5rem; --space-8: 2rem;
+  --space-10: 2.5rem; --space-12: 3rem; --space-16: 4rem;
+
+  /* Dark cosmic palette */
+  --color-bg: #080b14;
+  --color-surface: #0d1220;
+  --color-surface-2: #111827;
+  --color-border: rgba(255,255,255,0.1);
+  --color-text: #e8eaf6;
+  --color-text-muted: #9ca3c4;
+  --color-text-faint: #525c7a;
+  --color-primary: #6c63ff;
+  --color-primary-glow: rgba(108,99,255,0.35);
+  --color-emerald: #10d9a0;
+  --color-emerald-glow: rgba(16,217,160,0.3);
+  --color-gold: #ffd166;
+  --color-gold-glow: rgba(255,209,102,0.3);
+  --color-coral: #ff6b6b;
+  --color-coral-glow: rgba(255,107,107,0.3);
+  --color-violet: #c77dff;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 18px; --radius-xl: 24px;
+  --radius-full: 9999px;
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.6);
+
+  /* Level colors */
+  --l1: #10d9a0;  --l1-glow: rgba(16,217,160,0.3);
+  --l2: #6c63ff;  --l2-glow: rgba(108,99,255,0.3);
+  --l3: #ff6b6b;  --l3-glow: rgba(255,107,107,0.3);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══════════════════════════════════════════════════════
+   ANIMATED BACKGROUND
+══════════════════════════════════════════════════════ */
+#starfield {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.star {
+  position: absolute; border-radius: 50%;
+  background: white; opacity: 0;
+  animation: twinkle var(--dur, 3s) ease-in-out infinite var(--delay, 0s);
+}
+@keyframes twinkle {
+  0%,100%{opacity:0;transform:scale(0.5)}
+  50%{opacity:var(--op,0.7);transform:scale(1)}
+}
+.nebula {
+  position: fixed; border-radius: 50%; filter: blur(80px);
+  pointer-events: none; z-index: 0; animation: nebula-drift 15s ease-in-out infinite alternate;
+}
+.nebula-1 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(108,99,255,0.12), transparent 70%); top: -100px; left: -100px; }
+.nebula-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(16,217,160,0.08), transparent 70%); bottom: -150px; right: -100px; animation-delay: -7s; }
+.nebula-3 { width: 350px; height: 350px; background: radial-gradient(circle, rgba(255,107,107,0.07), transparent 70%); top: 40%; left: 50%; animation-delay: -3s; }
+@keyframes nebula-drift { from{transform:translate(0,0)} to{transform:translate(30px,20px)} }
+
+/* ══════════════════════════════════════════════════════
+   SCREENS SYSTEM
+══════════════════════════════════════════════════════ */
+.screen { position: relative; z-index: 1; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: var(--space-8) var(--space-4); }
+.screen.hidden { display: none !important; }
+
+/* ══════════════════════════════════════════════════════
+   LANDING SCREEN
+══════════════════════════════════════════════════════ */
+#landing-screen {
+  gap: var(--space-8);
+  text-align: center;
+}
+.logo-mark {
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-emerald));
+  border-radius: var(--radius-xl);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.2rem; margin: 0 auto;
+  box-shadow: 0 0 40px var(--color-primary-glow);
+  animation: logo-pulse 3s ease-in-out infinite;
+}
+@keyframes logo-pulse {
+  0%,100%{box-shadow:0 0 40px var(--color-primary-glow)}
+  50%{box-shadow:0 0 70px var(--color-primary-glow), 0 0 100px rgba(16,217,160,0.15)}
+}
+.brand-name {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 900;
+  background: linear-gradient(90deg, var(--color-emerald), var(--color-primary), var(--color-violet));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.brand-tagline {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  max-width: 500px;
+  line-height: 1.6;
+}
+.levels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 900px;
+}
+.level-card {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease;
+  overflow: hidden;
+  text-align: left;
+}
+.level-card::before {
+  content: ''; position: absolute; inset: 0; opacity: 0;
+  background: radial-gradient(circle at 50% 0%, var(--glow-col,rgba(108,99,255,0.2)) 0%, transparent 70%);
+  transition: opacity 0.3s ease;
+}
+.level-card:hover { transform: translateY(-6px) scale(1.01); }
+.level-card:hover::before { opacity: 1; }
+.level-card[data-level="1"] { --glow-col: rgba(16,217,160,0.2); border-top: 2px solid var(--l1); }
+.level-card[data-level="2"] { --glow-col: rgba(108,99,255,0.2); border-top: 2px solid var(--l2); }
+.level-card[data-level="3"] { --glow-col: rgba(255,107,107,0.2); border-top: 2px solid var(--l3); }
+
+.level-badge {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 4px 12px;
+  border-radius: var(--radius-full); margin-bottom: var(--space-4);
+}
+[data-level="1"] .level-badge { background: rgba(16,217,160,0.15); color: var(--l1); }
+[data-level="2"] .level-badge { background: rgba(108,99,255,0.15); color: var(--l2); }
+[data-level="3"] .level-badge { background: rgba(255,107,107,0.15); color: var(--l3); }
+
+.level-title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  margin-bottom: var(--space-2);
+}
+.level-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: var(--space-4);
+}
+.level-meta {
+  display: flex; gap: var(--space-3); flex-wrap: wrap;
+}
+.meta-chip {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 3px 10px; border-radius: var(--radius-full);
+}
+.level-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-3);
+  display: block;
+  animation: float-icon 4s ease-in-out infinite;
+}
+@keyframes float-icon { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+[data-level="2"] .level-icon { animation-delay: -1.3s; }
+[data-level="3"] .level-icon { animation-delay: -2.6s; }
+
+/* ══════════════════════════════════════════════════════
+   GAME SCREEN SHELL
+══════════════════════════════════════════════════════ */
+#game-screen {
+  padding: var(--space-4);
+  justify-content: flex-start;
+  gap: var(--space-4);
+}
+.game-hud {
+  display: flex; justify-content: space-between; align-items: center;
+  width: 100%; max-width: 800px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.hud-pill {
+  display: flex; align-items: center; gap: var(--space-2);
+  font-size: var(--text-sm); font-weight: 600;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.hud-pill .val {
+  color: var(--color-text); font-weight: 700;
+}
+.hud-icon { font-size: 1rem; }
+.progress-track {
+  width: 100%; max-width: 800px;
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%; border-radius: var(--radius-full);
+  transition: width 0.4s cubic-bezier(0.16,1,0.3,1);
+  background: linear-gradient(90deg, var(--l-color, var(--color-primary)), var(--l-color2, var(--color-emerald)));
+}
+.game-body {
+  width: 100%; max-width: 800px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: var(--space-4);
+}
+.back-btn {
+  display: flex; align-items: center; gap: var(--space-2);
+  background: transparent; border: 1px solid var(--color-border);
+  color: var(--color-text-muted); font-family: var(--font-body);
+  font-size: var(--text-sm); padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full); cursor: pointer;
+  transition: all 0.2s ease;
+}
+.back-btn:hover { border-color: rgba(255,255,255,0.25); color: var(--color-text); }
+
+/* ══════════════════════════════════════════════════════
+   QUESTION CARD
+══════════════════════════════════════════════════════ */
+.q-card {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  animation: card-enter 0.4s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes card-enter {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.q-type-label {
+  font-size: var(--text-xs); font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--l-accent); margin-bottom: var(--space-3);
+  display: flex; align-items: center; gap: var(--space-2);
+}
+.q-stem {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: var(--space-4);
+  color: var(--color-text);
+}
+/* Options grid */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+.opt-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s cubic-bezier(0.16,1,0.3,1);
+  position: relative; overflow: hidden;
+}
+.opt-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+.opt-btn:active:not(:disabled) { transform: translateY(0); }
+.opt-btn.correct {
+  background: rgba(16,217,160,0.2) !important;
+  border-color: var(--color-emerald) !important;
+  color: var(--color-emerald) !important;
+  animation: correct-flash 0.4s ease;
+}
+.opt-btn.wrong {
+  background: rgba(255,107,107,0.2) !important;
+  border-color: var(--color-coral) !important;
+  color: var(--color-coral) !important;
+  animation: wrong-shake 0.4s ease;
+}
+@keyframes correct-flash { 0%{transform:scale(1)} 30%{transform:scale(1.04)} 100%{transform:scale(1)} }
+@keyframes wrong-shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 60%{transform:translateX(6px)} }
+.opt-btn:disabled { cursor: not-allowed; }
+
+/* ══════════════════════════════════════════════════════
+   FEEDBACK TOAST
+══════════════════════════════════════════════════════ */
+.feedback-toast {
+  position: fixed; bottom: var(--space-8);
+  left: 50%; transform: translateX(-50%) translateY(100px);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+  font-weight: 700; font-size: var(--text-base);
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+  z-index: 100; pointer-events: none; white-space: nowrap;
+  opacity: 0;
+}
+.feedback-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.feedback-toast.good { color: var(--color-emerald); border-color: rgba(16,217,160,0.3); }
+.feedback-toast.bad { color: var(--color-coral); border-color: rgba(255,107,107,0.3); }
+
+/* Streak badge */
+.streak-badge {
+  position: fixed; top: 80px; right: var(--space-4);
+  background: linear-gradient(135deg, var(--color-gold), #ff9500);
+  color: #000; font-weight: 800; font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  box-shadow: 0 8px 24px rgba(255,209,102,0.4);
+  z-index: 50; pointer-events: none;
+  animation: streak-pop 0.5s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes streak-pop { from{transform:scale(0) rotate(-10deg)} to{transform:scale(1) rotate(0deg)} }
+
+/* ══════════════════════════════════════════════════════
+   LEVEL 1 — PATTERN RECOGNITION (3×3 MATRIX)
+══════════════════════════════════════════════════════ */
+.matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 280px;
+  margin: 0 auto var(--space-4);
+  background: rgba(255,255,255,0.03);
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.matrix-cell {
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.06);
+  border-radius: var(--radius-sm);
+  font-size: 1.5rem; font-weight: 800;
+  color: var(--color-text);
+  border: 1px solid rgba(255,255,255,0.07);
+  transition: all 0.2s ease;
+}
+.matrix-cell.missing {
+  background: rgba(255,209,102,0.1);
+  border: 2px dashed var(--color-gold);
+  font-size: 1.8rem;
+  color: var(--color-gold);
+  animation: missing-pulse 1.5s ease-in-out infinite;
+}
+@keyframes missing-pulse {
+  0%,100%{background:rgba(255,209,102,0.1)} 50%{background:rgba(255,209,102,0.2)}
+}
+
+/* ══════════════════════════════════════════════════════
+   LEVEL 2 — SEQUENCE COMPLETION
+══════════════════════════════════════════════════════ */
+.sequence-display {
+  display: flex; align-items: center; gap: var(--space-3);
+  flex-wrap: wrap; justify-content: center;
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.seq-item {
+  min-width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.07);
+  border-radius: var(--radius-md);
+  font-size: 1.2rem; font-weight: 800;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+}
+.seq-item.blank {
+  background: rgba(108,99,255,0.15);
+  border: 2px dashed var(--color-primary);
+  color: var(--color-primary);
+  font-size: 1.6rem;
+  animation: seq-blink 1.2s ease-in-out infinite;
+}
+@keyframes seq-blink { 0%,100%{opacity:1} 50%{opacity:0.5} }
+.seq-arrow {
+  color: var(--color-text-faint);
+  font-size: 1.2rem;
+}
+
+/* ══════════════════════════════════════════════════════
+   LEVEL 3 — ADVANCED ANALOGY / VISUAL LOGIC
+══════════════════════════════════════════════════════ */
+.analogy-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-6);
+  margin-bottom: var(--space-4);
+  text-align: center;
+}
+.analogy-display {
+  display: flex; align-items: center;
+  gap: var(--space-3); justify-content: center;
+  font-size: var(--text-lg);
+  font-weight: 700; flex-wrap: wrap;
+  margin-bottom: var(--space-3);
+}
+.analogy-pair {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.analogy-word {
+  background: rgba(255,107,107,0.12);
+  border: 1px solid rgba(255,107,107,0.2);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-size: var(--text-base); font-weight: 700;
+  color: var(--color-text);
+}
+.analogy-rel {
+  font-size: var(--text-xs); color: var(--color-text-faint);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.analogy-colon {
+  font-size: 1.8rem; color: var(--color-text-faint); font-weight: 300;
+  align-self: center;
+}
+.analogy-blank {
+  background: rgba(255,107,107,0.12);
+  border: 2px dashed rgba(255,107,107,0.4);
+  border-radius: var(--radius-sm);
+  padding: 6px 24px;
+  font-size: var(--text-base); color: var(--color-coral);
+  animation: missing-pulse 1.5s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════════════════
+   VISUAL PATTERN BLOCK (Level 2 visual items)
+══════════════════════════════════════════════════════ */
+.visual-pattern {
+  display: flex; gap: var(--space-2);
+  flex-wrap: wrap; justify-content: center;
+  margin-bottom: var(--space-3);
+}
+.vp-shape {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ══════════════════════════════════════════════════════
+   RESULTS SCREEN
+══════════════════════════════════════════════════════ */
+#result-screen {
+  gap: var(--space-6);
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+}
+.result-trophy {
+  font-size: 5rem;
+  animation: trophy-bounce 1s cubic-bezier(0.36,0.07,0.19,0.97) infinite;
+}
+@keyframes trophy-bounce {
+  0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-10px) rotate(3deg)}
+}
+.result-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 900;
+}
+.result-grade {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--color-gold), var(--color-emerald));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: grade-glow 2s ease-in-out infinite;
+}
+@keyframes grade-glow { 0%,100%{filter:drop-shadow(0 0 8px rgba(255,209,102,0.5))} 50%{filter:drop-shadow(0 0 20px rgba(255,209,102,0.8))} }
+.result-stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-3); max-width: 600px; width: 100%;
+}
+.stat-box {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+.stat-val {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 800;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+.stat-lbl {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-top: var(--space-1);
+}
+.result-msg {
+  max-width: 460px;
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+.result-btns {
+  display: flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-violet));
+  color: white; font-family: var(--font-body); font-weight: 700;
+  font-size: var(--text-sm);
+  border: none; padding: var(--space-3) var(--space-8);
+  border-radius: var(--radius-full); cursor: pointer;
+  box-shadow: 0 8px 24px var(--color-primary-glow);
+  transition: all 0.25s ease;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px var(--color-primary-glow); }
+.btn-secondary {
+  background: transparent;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-family: var(--font-body); font-weight: 600;
+  font-size: var(--text-sm);
+  padding: var(--space-3) var(--space-8);
+  border-radius: var(--radius-full); cursor: pointer;
+  transition: all 0.25s ease;
+}
+.btn-secondary:hover { border-color: rgba(255,255,255,0.25); color: var(--color-text); }
+
+/* Confetti */
+.confetti-piece {
+  position: fixed; width: 10px; height: 14px;
+  pointer-events: none; z-index: 200;
+  animation: confetti-fall var(--dur) linear var(--delay) forwards;
+  opacity: 0;
+}
+@keyframes confetti-fall {
+  0%{top:-20px;opacity:1;transform:rotate(0deg) translateX(0)}
+  100%{top:100vh;opacity:0.8;transform:rotate(calc(var(--rot)*360deg)) translateX(var(--drift))}
+}
+
+/* ══════════════════════════════════════════════════════
+   TIMER RING
+══════════════════════════════════════════════════════ */
+.timer-ring {
+  position: relative; width: 44px; height: 44px;
+}
+.timer-svg { transform: rotate(-90deg); }
+.timer-bg { fill: none; stroke: rgba(255,255,255,0.08); stroke-width: 3; }
+.timer-arc { fill: none; stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.5s ease; }
+
+/* Score pop animation */
+.score-pop {
+  position: fixed;
+  font-family: var(--font-display);
+  font-size: 1.4rem; font-weight: 900;
+  pointer-events: none; z-index: 150;
+  animation: score-float 1.2s ease-out forwards;
+  color: var(--color-gold);
+  text-shadow: 0 0 20px var(--color-gold-glow);
+}
+@keyframes score-float {
+  0%{opacity:1;transform:translateY(0) scale(1)}
+  100%{opacity:0;transform:translateY(-80px) scale(0.7)}
+}
+
+/* Mobile */
+@media (max-width: 500px) {
+  .options-grid { grid-template-columns: 1fr; }
+  .levels-grid { grid-template-columns: 1fr; }
+  .analogy-display { gap: var(--space-2); }
+}
+</style>
+</head>
+<body>
+
+<!-- Starfield background -->
+<div id="starfield"></div>
+<div class="nebula nebula-1"></div>
+<div class="nebula nebula-2"></div>
+<div class="nebula nebula-3"></div>
+
+<!-- Feedback Toast -->
+<div class="feedback-toast" id="feedback-toast"></div>
+
+<!-- ══ LANDING SCREEN ══ -->
+<div class="screen" id="landing-screen">
+  <div class="logo-mark">🧠</div>
+  <div>
+    <h1 class="brand-name">NeuroSpark</h1>
+    <p class="brand-tagline">A neuroscience-designed brain training game. Sharpen pattern recognition, logical reasoning, and cognitive flexibility.</p>
+  </div>
+  <div class="levels-grid">
+    <div class="level-card" data-level="1" onclick="startLevel(1)">
+      <span class="level-icon">🔷</span>
+      <span class="level-badge">Level 1 · Easy</span>
+      <h2 class="level-title">Pattern Matrix</h2>
+      <p class="level-desc">Identify missing elements in 3×3 visual grids. Trains spatial intelligence and visual working memory.</p>
+      <div class="level-meta">
+        <span class="meta-chip">🧩 10 Questions</span>
+        <span class="meta-chip">⏱ 20s each</span>
+        <span class="meta-chip">🧬 Visual IQ</span>
+      </div>
+    </div>
+    <div class="level-card" data-level="2" onclick="startLevel(2)">
+      <span class="level-icon">⚡</span>
+      <span class="level-badge">Level 2 · Medium</span>
+      <h2 class="level-title">Sequence Logic</h2>
+      <p class="level-desc">Decode number & symbol sequences using multiple rules. Exercises fluid intelligence and abstract reasoning.</p>
+      <div class="level-meta">
+        <span class="meta-chip">🧩 10 Questions</span>
+        <span class="meta-chip">⏱ 25s each</span>
+        <span class="meta-chip">🔢 Logical IQ</span>
+      </div>
+    </div>
+    <div class="level-card" data-level="3" onclick="startLevel(3)">
+      <span class="level-icon">🌀</span>
+      <span class="level-badge">Level 3 · Hard</span>
+      <h2 class="level-title">Cognitive Analogy</h2>
+      <p class="level-desc">Complex word analogies, multi-step deductions, and verbal reasoning. Demands crystallized and fluid intelligence.</p>
+      <div class="level-meta">
+        <span class="meta-chip">🧩 10 Questions</span>
+        <span class="meta-chip">⏱ 30s each</span>
+        <span class="meta-chip">🔮 Full IQ</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ GAME SCREEN ══ -->
+<div class="screen hidden" id="game-screen">
+  <div style="width:100%;max-width:800px;display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-2);">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div id="level-label" style="font-size:var(--text-xs);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-text-faint);">Level 1</div>
+  </div>
+  <div class="game-hud">
+    <div class="hud-pill"><span class="hud-icon">📝</span> Q <span class="val" id="hud-q">1/10</span></div>
+    <div class="hud-pill">
+      <div class="timer-ring" id="timer-ring">
+        <svg class="timer-svg" width="44" height="44" viewBox="0 0 44 44">
+          <circle class="timer-bg" cx="22" cy="22" r="19"/>
+          <circle class="timer-arc" id="timer-arc" cx="22" cy="22" r="19" stroke-dasharray="119.4" stroke-dashoffset="0" stroke="var(--color-emerald)"/>
+        </svg>
+        <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:var(--text-xs);font-weight:800;font-variant-numeric:tabular-nums;" id="timer-val">20</span>
+      </div>
+    </div>
+    <div class="hud-pill">⚡ Streak <span class="val" id="hud-streak">0</span></div>
+    <div class="hud-pill">🏆 Score <span class="val" id="hud-score">0</span></div>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+  <div class="game-body" id="game-body">
+    <!-- question injected here -->
+  </div>
+</div>
+
+<!-- ══ RESULT SCREEN ══ -->
+<div class="screen hidden" id="result-screen">
+  <div class="result-trophy" id="result-trophy">🏆</div>
+  <h2 class="result-title" id="result-title">Level Complete!</h2>
+  <div class="result-grade" id="result-grade">A+</div>
+  <p class="result-msg" id="result-msg"></p>
+  <div class="result-stats">
+    <div class="stat-box"><div class="stat-val" id="res-score">--</div><div class="stat-lbl">Score</div></div>
+    <div class="stat-box"><div class="stat-val" id="res-correct">--</div><div class="stat-lbl">Correct</div></div>
+    <div class="stat-box"><div class="stat-val" id="res-accuracy">--</div><div class="stat-lbl">Accuracy</div></div>
+    <div class="stat-box"><div class="stat-val" id="res-streak">--</div><div class="stat-lbl">Best Streak</div></div>
+  </div>
+  <div class="result-btns">
+    <button class="btn-primary" id="next-level-btn" onclick="nextLevel()">Next Level →</button>
+    <button class="btn-secondary" onclick="restartLevel()">Retry Level</button>
+    <button class="btn-secondary" onclick="goHome()">🏠 Menu</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// STARFIELD
+// ══════════════════════════════════════════════════════
+(function(){
+  const sf = document.getElementById('starfield');
+  for(let i=0; i<120; i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random()*2.5+0.5;
+    s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${2+Math.random()*4}s;--delay:${-Math.random()*6}s;--op:${0.4+Math.random()*0.6}`;
+    sf.appendChild(s);
+  }
+})();
+
+// ══════════════════════════════════════════════════════
+// QUESTION BANKS
+// ══════════════════════════════════════════════════════
+
+// LEVEL 1 — Pattern Matrix (10 questions, visual 3x3 grids)
+const L1_QUESTIONS = [
+  {
+    type: 'matrix', typeLabel: '🔷 Visual Pattern',
+    stem: 'Find the missing piece to complete the pattern',
+    hint: 'Row-by-row rule',
+    grid: ['🔴','🔴','🔴', '🔵','🔵','🔵', '🟢','🟢','?'],
+    answer: '🟢', options: ['🟢','🔴','🔵','🟡']
+  },
+  {
+    type: 'matrix', typeLabel: '🔢 Number Grid',
+    stem: 'What number completes the 3×3 pattern?',
+    grid: ['2','4','6', '3','6','9', '4','8','?'],
+    answer: '12', options: ['10','11','12','14']
+  },
+  {
+    type: 'matrix', typeLabel: '🔷 Shape Logic',
+    stem: 'Which emoji logically fills the blank?',
+    grid: ['⭐','⭐','⭐', '🌙','🌙','🌙', '☀️','☀️','?'],
+    answer: '☀️', options: ['🌙','⭐','☀️','🌟']
+  },
+  {
+    type: 'matrix', typeLabel: '🔢 Diagonal Rule',
+    stem: 'Spot the diagonal pattern and find the missing value',
+    grid: ['1','2','3', '2','4','6', '3','6','?'],
+    answer: '9', options: ['7','8','9','12']
+  },
+  {
+    type: 'matrix', typeLabel: '🎨 Color Shift',
+    stem: 'Colors cycle in a pattern — what is missing?',
+    grid: ['🔴','🟡','🟢', '🟡','🟢','🔴', '🟢','🔴','?'],
+    answer: '🟡', options: ['🔴','🟡','🟢','🔵']
+  },
+  {
+    type: 'matrix', typeLabel: '✖️ Column Multiply',
+    stem: 'Each column follows a multiplication rule',
+    grid: ['1','2','4', '2','4','8', '3','6','?'],
+    answer: '12', options: ['9','10','12','18']
+  },
+  {
+    type: 'matrix', typeLabel: '🌀 Rotation',
+    stem: 'Objects rotate 90° across rows — find the missing one',
+    grid: ['→','↓','←', '↑','→','↓', '←','↑','?'],
+    answer: '→', options: ['↑','→','↓','←']
+  },
+  {
+    type: 'matrix', typeLabel: '➕ Row Sum',
+    stem: 'Each row sums to the same total',
+    grid: ['1','3','6', '2','4','4', '3','2','?'],
+    answer: '5', options: ['3','4','5','7']
+  },
+  {
+    type: 'matrix', typeLabel: '🦋 Symmetry',
+    stem: 'The grid is horizontally symmetric — what is missing?',
+    grid: ['🌸','💎','🌸', '💎','🌟','💎', '🌸','?','🌸'],
+    answer: '💎', options: ['🌸','💎','🌟','🔷']
+  },
+  {
+    type: 'matrix', typeLabel: '🔢 +3 Pattern',
+    stem: 'Each element increases by 3 across rows',
+    grid: ['3','6','9', '6','9','12', '9','12','?'],
+    answer: '15', options: ['13','14','15','18']
+  }
+];
+
+// LEVEL 2 — Sequence Logic (10 questions)
+const L2_QUESTIONS = [
+  {
+    type: 'sequence', typeLabel: '🔢 Number Sequence',
+    stem: 'Complete the sequence',
+    items: ['2','5','10','17','26','?'],
+    answer: '37', options: ['33','35','37','40'],
+    rule: '+3, +5, +7, +9, +11...' 
+  },
+  {
+    type: 'sequence', typeLabel: '🔢 Fibonacci-Style',
+    stem: 'Find the next number',
+    items: ['1','1','2','3','5','8','?'],
+    answer: '13', options: ['11','12','13','15'],
+    rule: 'Each = sum of previous two'
+  },
+  {
+    type: 'sequence', typeLabel: '⚡ Powers',
+    stem: 'What comes next in this power sequence?',
+    items: ['2','4','8','16','32','?'],
+    answer: '64', options: ['48','56','64','72'],
+    rule: '×2 each step'
+  },
+  {
+    type: 'sequence', typeLabel: '🔤 Alphabet Code',
+    stem: 'Letters skip forward — find the next',
+    items: ['A','C','F','J','O','?'],
+    answer: 'U', options: ['S','T','U','V'],
+    rule: '+2, +3, +4, +5, +6'
+  },
+  {
+    type: 'sequence', typeLabel: '🎯 Mixed Rule',
+    stem: 'Alternate +5 and ×2 — complete the pattern',
+    items: ['1','6','12','17','34','?'],
+    answer: '39', options: ['36','38','39','40'],
+    rule: '+5, ×2, +5, ×2, +5...'
+  },
+  {
+    type: 'sequence', typeLabel: '🌀 Squares',
+    stem: 'Perfect square series — what\'s missing?',
+    items: ['1','4','9','16','25','?'],
+    answer: '36', options: ['30','34','36','49'],
+    rule: '1², 2², 3²...'
+  },
+  {
+    type: 'sequence', typeLabel: '🔢 Prime Numbers',
+    stem: 'These are prime numbers — find the next',
+    items: ['2','3','5','7','11','13','?'],
+    answer: '17', options: ['15','16','17','19'],
+    rule: 'Consecutive primes'
+  },
+  {
+    type: 'sequence', typeLabel: '♟ Chess Moves',
+    stem: 'A knight\'s jumping pattern — next position?',
+    items: ['1','3','6','10','15','?'],
+    answer: '21', options: ['18','20','21','25'],
+    rule: '+2, +3, +4, +5, +6'
+  },
+  {
+    type: 'sequence', typeLabel: '🌡 Temperature Logic',
+    stem: 'Pattern alternates add then subtract',
+    items: ['10','20','15','25','20','?'],
+    answer: '30', options: ['25','28','30','35'],
+    rule: '+10, -5, +10, -5...'
+  },
+  {
+    type: 'sequence', typeLabel: '🔣 Symbol Count',
+    stem: 'Count the shapes — what\'s the missing quantity?',
+    items: ['🔶×1','🔶×2','🔶×4','🔶×7','🔶×11','?'],
+    answer: '🔶×16', options: ['🔶×13','🔶×14','🔶×16','🔶×17'],
+    rule: '+1, +2, +3, +4, +5'
+  }
+];
+
+// LEVEL 3 — Cognitive Analogy & Advanced Logic (10 questions)
+const L3_QUESTIONS = [
+  {
+    type: 'analogy', typeLabel: '📚 Word Analogy',
+    stem: 'Complete the analogy',
+    pair1: ['Doctor','Hospital'], rel1: 'works at',
+    rel2: 'works at',
+    word3: 'Judge',
+    answer: 'Courtroom', options: ['Library','Courtroom','School','Arena']
+  },
+  {
+    type: 'analogy', typeLabel: '🔬 Science Analogy',
+    stem: 'Apply the same relationship',
+    pair1: ['Leaf','Photosynthesis'], rel1: 'performs',
+    rel2: 'performs',
+    word3: 'Brain',
+    answer: 'Cognition', options: ['Respiration','Locomotion','Cognition','Digestion']
+  },
+  {
+    type: 'analogy', typeLabel: '🌍 Geography Logic',
+    stem: 'Find the parallel relationship',
+    pair1: ['Paris','France'], rel1: 'is capital of',
+    rel2: 'is capital of',
+    word3: 'Tokyo',
+    answer: 'Japan', options: ['China','Korea','Japan','Thailand']
+  },
+  {
+    type: 'analogy', typeLabel: '🎵 Category Analogy',
+    stem: 'Complete the pattern',
+    pair1: ['Violin','String'], rel1: 'instrument type',
+    rel2: 'instrument type',
+    word3: 'Trumpet',
+    answer: 'Brass', options: ['Wind','Percussion','Brass','String']
+  },
+  {
+    type: 'analogy', typeLabel: '🧮 Numerical Analogy',
+    stem: 'Apply the same mathematical relationship',
+    pair1: ['4','16'], rel1: 'x² = ',
+    rel2: 'x² = ',
+    word3: '7',
+    answer: '49', options: ['14','28','42','49']
+  },
+  {
+    type: 'analogy', typeLabel: '🌿 Nature Analogy',
+    stem: 'Mirror the biological relationship',
+    pair1: ['Caterpillar','Butterfly'], rel1: 'transforms into',
+    rel2: 'transforms into',
+    word3: 'Tadpole',
+    answer: 'Frog', options: ['Fish','Newt','Frog','Toad']
+  },
+  {
+    type: 'analogy', typeLabel: '🕹 Action Analogy',
+    stem: 'Find the tool–action match',
+    pair1: ['Pen','Write'], rel1: 'used to',
+    rel2: 'used to',
+    word3: 'Scalpel',
+    answer: 'Incise', options: ['Measure','Incise','Weld','Drill']
+  },
+  {
+    type: 'analogy', typeLabel: '🏛 History Analogy',
+    stem: 'Apply the same causal relationship',
+    pair1: ['Darkness','Light'], rel1: 'opposite of',
+    rel2: 'opposite of',
+    word3: 'Silence',
+    answer: 'Sound', options: ['Music','Echo','Sound','Noise']
+  },
+  {
+    type: 'analogy', typeLabel: '🔭 Science Analogy',
+    stem: 'Scale relationship — apply to the pair',
+    pair1: ['Atom','Molecule'], rel1: 'builds up to',
+    rel2: 'builds up to',
+    word3: 'Cell',
+    answer: 'Tissue', options: ['Organ','Tissue','Organism','Protein']
+  },
+  {
+    type: 'analogy', typeLabel: '⚙️ Function Analogy',
+    stem: 'What plays the same role?',
+    pair1: ['Lungs','Breathing'], rel1: 'enables',
+    rel2: 'enables',
+    word3: 'Heart',
+    answer: 'Circulation', options: ['Digestion','Thought','Circulation','Vision']
+  }
+];
+
+const LEVELS = {
+  1: { questions: L1_QUESTIONS, time: 20, color: 'var(--l1)', color2: '#00ff87', glow: 'var(--l1-glow)', accent: 'var(--l1)' },
+  2: { questions: L2_QUESTIONS, time: 25, color: 'var(--l2)', color2: 'var(--color-violet)', glow: 'var(--l2-glow)', accent: 'var(--l2)' },
+  3: { questions: L3_QUESTIONS, time: 30, color: 'var(--l3)', color2: 'var(--color-gold)', glow: 'var(--l3-glow)', accent: 'var(--l3)' }
+};
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let state = {
+  level: 1, qIndex: 0, score: 0,
+  streak: 0, bestStreak: 0,
+  correct: 0, answered: 0,
+  timer: null, timeLeft: 20,
+  questions: [], answered_arr: [],
+  levelData: null
+};
+
+// ══════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════
+function show(id) {
+  ['landing-screen','game-screen','result-screen'].forEach(s => {
+    document.getElementById(s).classList.toggle('hidden', s !== id);
+  });
+}
+
+function goHome() {
+  clearInterval(state.timer);
+  show('landing-screen');
+}
+
+function startLevel(lvl) {
+  state.level = lvl;
+  state.qIndex = 0; state.score = 0; state.streak = 0;
+  state.bestStreak = 0; state.correct = 0; state.answered = 0;
+  state.levelData = LEVELS[lvl];
+  // Shuffle questions
+  state.questions = [...state.levelData.questions].sort(() => Math.random() - 0.5);
+
+  // Set level colors on progress fill
+  const pf = document.getElementById('progress-fill');
+  pf.style.setProperty('--l-color', state.levelData.color);
+  pf.style.setProperty('--l-color2', state.levelData.color2);
+
+  document.getElementById('level-label').textContent = `Level ${lvl} — ${['Pattern Matrix','Sequence Logic','Cognitive Analogy'][lvl-1]}`;
+  document.getElementById('level-label').style.color = state.levelData.color;
+
+  show('game-screen');
+  renderQuestion();
+}
+
+function restartLevel() { startLevel(state.level); }
+function nextLevel() {
+  if(state.level < 3) startLevel(state.level + 1);
+  else goHome();
+}
+
+// ══════════════════════════════════════════════════════
+// QUESTION RENDERING
+// ══════════════════════════════════════════════════════
+function renderQuestion() {
+  if(state.qIndex >= state.questions.length) { showResult(); return; }
+  const q = state.questions[state.qIndex];
+  const ld = state.levelData;
+
+  // Update HUD
+  document.getElementById('hud-q').textContent = `${state.qIndex+1}/10`;
+  document.getElementById('hud-score').textContent = state.score;
+  document.getElementById('hud-streak').textContent = state.streak;
+  document.getElementById('progress-fill').style.width = `${(state.qIndex/10)*100}%`;
+
+  // Build card
+  const body = document.getElementById('game-body');
+  let inner = '';
+
+  if(q.type === 'matrix') {
+    inner = buildMatrixQ(q, ld);
+  } else if(q.type === 'sequence') {
+    inner = buildSequenceQ(q, ld);
+  } else if(q.type === 'analogy') {
+    inner = buildAnalogyQ(q, ld);
+  }
+
+  body.innerHTML = inner;
+
+  // Shuffle options
+  const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+  const ogrid = body.querySelector('.options-grid');
+  if(ogrid) {
+    ogrid.innerHTML = shuffled.map(opt => 
+      `<button class="opt-btn" onclick="selectAnswer(this, '${q.answer}', '${opt}')">${opt}</button>`
+    ).join('');
+  }
+
+  startTimer();
+}
+
+function buildMatrixQ(q, ld) {
+  const cells = q.grid.map((c,i) => 
+    `<div class="matrix-cell${c==='?' ? ' missing' : ''}">${c==='?' ? '?' : c}</div>`
+  ).join('');
+  return `<div class="q-card">
+    <div class="q-type-label" style="color:${ld.color}">${q.typeLabel}</div>
+    <div class="q-stem">${q.stem}</div>
+    <div class="matrix-grid">${cells}</div>
+    <div class="options-grid"></div>
+  </div>`;
+}
+
+function buildSequenceQ(q, ld) {
+  const seqItems = q.items.map((it,i) => {
+    const isLast = i === q.items.length-1;
+    return `<div class="seq-item${isLast ? ' blank' : ''}">${isLast ? '?' : it}</div>` + 
+           (i < q.items.length-1 ? '<div class="seq-arrow">›</div>' : '');
+  }).join('');
+  return `<div class="q-card">
+    <div class="q-type-label" style="color:${ld.color}">${q.typeLabel}</div>
+    <div class="q-stem">${q.stem}</div>
+    <div class="sequence-display">${seqItems}</div>
+    <div class="options-grid"></div>
+  </div>`;
+}
+
+function buildAnalogyQ(q, ld) {
+  return `<div class="q-card">
+    <div class="q-type-label" style="color:${ld.color}">${q.typeLabel}</div>
+    <div class="q-stem">${q.stem}</div>
+    <div class="analogy-card">
+      <div class="analogy-display">
+        <div class="analogy-pair">
+          <div class="analogy-word">${q.pair1[0]}</div>
+          <div class="analogy-rel">${q.rel1}</div>
+          <div class="analogy-word">${q.pair1[1]}</div>
+        </div>
+        <div class="analogy-colon">::</div>
+        <div class="analogy-pair">
+          <div class="analogy-word">${q.word3}</div>
+          <div class="analogy-rel">${q.rel2}</div>
+          <div class="analogy-blank">?</div>
+        </div>
+      </div>
+    </div>
+    <div class="options-grid"></div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// TIMER
+// ══════════════════════════════════════════════════════
+function startTimer() {
+  clearInterval(state.timer);
+  state.timeLeft = state.levelData.time;
+  updateTimerUI();
+  state.timer = setInterval(() => {
+    state.timeLeft--;
+    updateTimerUI();
+    if(state.timeLeft <= 0) {
+      clearInterval(state.timer);
+      timeUp();
+    }
+  }, 1000);
+}
+
+function updateTimerUI() {
+  const t = state.timeLeft, max = state.levelData.time;
+  const pct = t / max;
+  const circ = 119.4;
+  const arc = document.getElementById('timer-arc');
+  const val = document.getElementById('timer-val');
+  if(!arc) return;
+  arc.style.strokeDashoffset = circ * (1 - pct);
+  val.textContent = t;
+  // Color shift as time runs low
+  if(pct > 0.5) arc.style.stroke = 'var(--color-emerald)';
+  else if(pct > 0.25) arc.style.stroke = 'var(--color-gold)';
+  else arc.style.stroke = 'var(--color-coral)';
+}
+
+function timeUp() {
+  state.streak = 0;
+  document.getElementById('hud-streak').textContent = 0;
+  showToast('⏰ Time\'s up!', 'bad');
+  disableOptions();
+  setTimeout(() => { state.qIndex++; renderQuestion(); }, 1000);
+}
+
+// ══════════════════════════════════════════════════════
+// ANSWER LOGIC
+// ══════════════════════════════════════════════════════
+function selectAnswer(btn, correct, chosen) {
+  clearInterval(state.timer);
+  disableOptions();
+  state.answered++;
+
+  const isCorrect = chosen === correct;
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+
+  if(!isCorrect) {
+    // Show correct answer
+    document.querySelectorAll('.opt-btn').forEach(b => {
+      if(b.textContent === correct) b.classList.add('correct');
+    });
+  }
+
+  if(isCorrect) {
+    state.correct++;
+    state.streak++;
+    if(state.streak > state.bestStreak) state.bestStreak = state.streak;
+    const bonus = state.streak >= 3 ? 20 : state.streak >= 2 ? 15 : 10;
+    const timeBonus = Math.floor(state.timeLeft * 0.5);
+    const pts = bonus + timeBonus;
+    state.score += pts;
+    showScorePop(`+${pts}`, btn);
+    showToast(state.streak >= 3 ? `🔥 Streak ×${state.streak}!` : '✅ Correct!', 'good');
+    if(state.streak >= 3) showStreakBadge(state.streak);
+  } else {
+    state.streak = 0;
+    showToast(`❌ Answer: ${correct}`, 'bad');
+  }
+
+  document.getElementById('hud-score').textContent = state.score;
+  document.getElementById('hud-streak').textContent = state.streak;
+
+  setTimeout(() => {
+    state.qIndex++;
+    renderQuestion();
+  }, 1400);
+}
+
+function disableOptions() {
+  document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+}
+
+// ══════════════════════════════════════════════════════
+// FEEDBACK
+// ══════════════════════════════════════════════════════
+function showToast(msg, type) {
+  const t = document.getElementById('feedback-toast');
+  t.textContent = msg;
+  t.className = `feedback-toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 1600);
+}
+
+function showScorePop(text, anchor) {
+  const el = document.createElement('div');
+  el.className = 'score-pop';
+  el.textContent = text;
+  const rect = anchor.getBoundingClientRect();
+  el.style.left = rect.left + rect.width/2 - 25 + 'px';
+  el.style.top = rect.top - 10 + 'px';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1200);
+}
+
+function showStreakBadge(n) {
+  const old = document.querySelector('.streak-badge');
+  if(old) old.remove();
+  const el = document.createElement('div');
+  el.className = 'streak-badge';
+  el.textContent = `🔥 ${n}× Streak!`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2200);
+}
+
+// ══════════════════════════════════════════════════════
+// RESULTS
+// ══════════════════════════════════════════════════════
+// [Bhāva Phase 1] Save game score — auto-injected by Patch-SessionEnd.ps1
+if (typeof BhavaSession !== 'undefined') { BhavaSession.end(score); }
+function showResult() {
+  clearInterval(state.timer);
+  const acc = Math.round((state.correct / 10) * 100);
+
+  let grade, trophy, msg;
+  if(acc >= 90) { grade = 'S'; trophy = '🏆'; msg = 'Outstanding! Your pattern recognition and reasoning are exceptional. Neuroscientists call this level of fluid intelligence "cognitive excellence."'; }
+  else if(acc >= 75) { grade = 'A'; trophy = '🥇'; msg = 'Excellent work! You demonstrate strong abstract reasoning — a key marker of crystallized intelligence.'; }
+  else if(acc >= 60) { grade = 'B'; trophy = '🥈'; msg = 'Good performance! Your working memory and logical reasoning are above average. Keep practicing to push further.'; }
+  else if(acc >= 40) { grade = 'C'; trophy = '🥉'; msg = 'Decent attempt! Cognitive flexibility takes practice. Try again — neuroplasticity means your brain can and will improve.'; }
+  else { grade = 'D'; trophy = '🧠'; msg = 'Every attempt builds neural pathways! The brain grows through challenge — don\'t give up.'; }
+
+  document.getElementById('result-trophy').textContent = trophy;
+  document.getElementById('result-title').textContent = `Level ${state.level} Complete!`;
+  document.getElementById('result-grade').textContent = grade;
+  document.getElementById('result-msg').textContent = msg;
+  document.getElementById('res-score').textContent = state.score;
+  document.getElementById('res-correct').textContent = `${state.correct}/10`;
+  document.getElementById('res-accuracy').textContent = `${acc}%`;
+  document.getElementById('res-streak').textContent = state.bestStreak;
+
+  const nextBtn = document.getElementById('next-level-btn');
+  if(state.level >= 3) {
+    nextBtn.textContent = '🏠 All Done!';
+    nextBtn.onclick = goHome;
+  } else {
+    nextBtn.textContent = `Level ${state.level+1} →`;
+    nextBtn.onclick = nextLevel;
+  }
+
+  show('result-screen');
+  if(acc >= 60) launchConfetti();
+}
+
+function launchConfetti() {
+  const colors = ['#6c63ff','#10d9a0','#ffd166','#ff6b6b','#c77dff','#00d2ff'];
+  for(let i = 0; i < 60; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
+      --dur:${1.5+Math.random()*2}s;
+      --delay:${Math.random()*0.8}s;
+      --rot:${Math.random()*3};
+      --drift:${(Math.random()-0.5)*200}px;
+    `;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+</script>
+<script src="bhava-game-nav.js"></script>
+
+<script src="../bhava-session.js"></script>
+</body>
+</html>

@@ -1,0 +1,728 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bhāva Games — Play & Learn</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <style>
+    :root,[data-theme="light"]{
+      --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);
+      --text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+      --text-base:clamp(1rem,.95rem + .25vw,1.125rem);
+      --text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+      --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+      --text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+      --sp1:.25rem;--sp2:.5rem;--sp3:.75rem;--sp4:1rem;--sp5:1.25rem;--sp6:1.5rem;--sp8:2rem;--sp10:2.5rem;--sp12:3rem;--sp16:4rem;
+      --bg:#f7f6f2;--surface:#f9f8f5;--surface2:#fbfbf9;--surfoff:#f3f0ec;
+      --divider:#dcd9d5;--border:#d4d1ca;
+      --text:#28251d;--muted:#7a7974;--faint:#bab9b4;
+      --primary:#01696f;--primary-h:#0c4e54;
+      --font-d:'Cabinet Grotesk',sans-serif;--font-b:'Satoshi',sans-serif;
+      --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.5rem;--r-full:9999px;
+      --sh-sm:0 1px 2px oklch(.2 .01 80/.06);--sh-md:0 4px 12px oklch(.2 .01 80/.08);--sh-lg:0 12px 32px oklch(.2 .01 80/.12);
+      --tr:180ms cubic-bezier(.16,1,.3,1);
+    }
+    [data-theme="dark"]{
+      --bg:#171614;--surface:#1c1b19;--surface2:#201f1d;--surfoff:#1d1c1a;
+      --divider:#262523;--border:#393836;
+      --text:#cdccca;--muted:#797876;--faint:#5a5957;
+      --primary:#4f98a3;--primary-h:#227f8b;
+      --sh-sm:0 1px 2px oklch(0 0 0/.2);--sh-md:0 4px 12px oklch(0 0 0/.3);--sh-lg:0 12px 32px oklch(0 0 0/.4);
+    }
+    @media(prefers-color-scheme:dark){:root:not([data-theme]){
+      --bg:#171614;--surface:#1c1b19;--surface2:#201f1d;--surfoff:#1d1c1a;
+      --divider:#262523;--border:#393836;--text:#cdccca;--muted:#797876;--faint:#5a5957;
+      --primary:#4f98a3;--primary-h:#227f8b;
+      --sh-sm:0 1px 2px oklch(0 0 0/.2);--sh-md:0 4px 12px oklch(0 0 0/.3);--sh-lg:0 12px 32px oklch(0 0 0/.4);
+    }}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;scroll-padding-top:var(--sp16)}
+    body{min-height:100dvh;font-family:var(--font-b);font-size:var(--text-base);color:var(--text);background:var(--bg);line-height:1.6}
+    img,svg{display:block;max-width:100%}
+    button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+    a,button{transition:color var(--tr),background var(--tr),box-shadow var(--tr),border-color var(--tr)}
+    :focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:var(--r-sm)}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+    .container{max-width:1200px;margin-inline:auto;padding-inline:var(--sp6)}
+
+    /* ── HEADER ── */
+    .site-header{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--bg) 85%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid oklch(from var(--text) l c h/.08)}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;gap:var(--sp4);padding-block:var(--sp4);flex-wrap:wrap}
+    .logo{display:flex;align-items:center;gap:var(--sp3);text-decoration:none}
+    .logo-mark{width:34px;height:34px;flex-shrink:0;color:var(--primary)}
+    .logo-text{font-family:var(--font-d);font-weight:800;font-size:var(--text-lg);color:var(--text);letter-spacing:-.02em}
+    .logo-text span{color:var(--primary)}
+    .header-right{display:flex;align-items:center;gap:var(--sp3);flex-wrap:wrap}
+
+    /* filter tabs */
+    .filter-bar{display:flex;align-items:center;gap:var(--sp2);flex-wrap:wrap}
+    .f-btn{padding:var(--sp1) var(--sp3);border-radius:var(--r-full);font-size:var(--text-sm);font-weight:500;border:1px solid transparent;color:var(--muted);transition:all var(--tr)}
+    .f-btn:hover{background:var(--surfoff);color:var(--text)}
+    .f-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .theme-btn{width:36px;height:36px;border-radius:var(--r-md);display:grid;place-items:center;color:var(--muted);border:1px solid oklch(from var(--text) l c h/.1)}
+    .theme-btn:hover{color:var(--text);background:var(--surfoff)}
+
+    /* ── HERO ── */
+    .hero{padding-block:clamp(var(--sp10),6vw,var(--sp16));text-align:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:var(--sp2);background:color-mix(in oklch,var(--primary) 10%,var(--surface));color:var(--primary);border-radius:var(--r-full);padding:var(--sp1) var(--sp4);font-size:var(--text-xs);font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:var(--sp6)}
+    .hero-title{font-family:var(--font-d);font-weight:800;font-size:var(--text-2xl);line-height:1.1;letter-spacing:-.03em;max-width:16ch;margin-inline:auto;margin-bottom:var(--sp4)}
+    .hero-title em{font-style:normal;color:var(--primary)}
+    .hero-sub{font-size:var(--text-base);color:var(--muted);max-width:54ch;margin-inline:auto;margin-bottom:var(--sp8)}
+    .stats-row{display:flex;align-items:center;justify-content:center;gap:var(--sp8);flex-wrap:wrap}
+    .stat{text-align:center}
+    .stat-num{font-family:var(--font-d);font-weight:800;font-size:var(--text-xl);color:var(--primary);line-height:1}
+    .stat-label{font-size:var(--text-xs);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:var(--sp1)}
+
+    /* ── SEARCH ── */
+    .search-wrap{padding-bottom:var(--sp8)}
+    .search-inner{position:relative;max-width:500px;margin-inline:auto}
+    .s-icon{position:absolute;left:var(--sp4);top:50%;transform:translateY(-50%);color:var(--faint);pointer-events:none;width:18px;height:18px}
+    .s-input{width:100%;padding:var(--sp3) var(--sp4) var(--sp3) calc(var(--sp4) + 26px);border-radius:var(--r-full);border:1px solid var(--border);background:var(--surface);font-family:var(--font-b);font-size:var(--text-sm);color:var(--text);transition:border-color var(--tr),box-shadow var(--tr)}
+    .s-input::placeholder{color:var(--faint)}
+    .s-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in oklch,var(--primary) 18%,transparent)}
+
+    /* ── GRID ── */
+    .games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:var(--sp6);padding-bottom:var(--sp16)}
+
+    /* ── CARD ── */
+    .game-card{background:var(--surface);border:1px solid oklch(from var(--text) l c h/.08);border-radius:var(--r-2xl);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--sh-sm);transition:box-shadow var(--tr),transform var(--tr);cursor:pointer}
+    .game-card:hover{box-shadow:var(--sh-lg);transform:translateY(-3px)}
+    .card-banner{height:110px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .card-banner::before{content:'';position:absolute;inset:0;background:var(--bc);opacity:.14}
+    .card-banner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,var(--bc) 0%,transparent 70%);opacity:.18}
+    .banner-icon{font-size:2.8rem;position:relative;z-index:1;transition:transform var(--tr)}
+    .game-card:hover .banner-icon{transform:scale(1.18) rotate(-6deg)}
+    .card-body{padding:var(--sp4) var(--sp5) var(--sp5);flex:1;display:flex;flex-direction:column;gap:var(--sp3)}
+    .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp2)}
+    .card-title{font-family:var(--font-d);font-weight:700;font-size:var(--text-lg);line-height:1.2;letter-spacing:-.01em}
+    .age-badge{flex-shrink:0;padding:2px var(--sp2);border-radius:var(--r-full);font-size:var(--text-xs);font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+    .ag-early{background:color-mix(in oklch,#f59e0b 14%,transparent);color:#92400e}
+    .ag-mid{background:color-mix(in oklch,#3b82f6 14%,transparent);color:#1e3a8a}
+    .ag-upper{background:color-mix(in oklch,#8b5cf6 14%,transparent);color:#4c1d95}
+    [data-theme="dark"] .ag-early{color:#fbbf24}
+    [data-theme="dark"] .ag-mid{color:#60a5fa}
+    [data-theme="dark"] .ag-upper{color:#a78bfa}
+    .card-desc{font-size:var(--text-sm);color:var(--muted);line-height:1.65;flex:1}
+    .skill-chips{display:flex;flex-wrap:wrap;gap:var(--sp2);margin-top:var(--sp2)}
+    .chip{padding:var(--sp1) var(--sp2);border-radius:var(--r-sm);font-size:var(--text-xs);font-weight:500;background:var(--surfoff);color:var(--muted);border:1px solid var(--divider)}
+    .card-foot{display:flex;align-items:center;justify-content:space-between;padding:var(--sp3) var(--sp5);border-top:1px solid oklch(from var(--text) l c h/.07)}
+    .card-meta{font-size:var(--text-xs);color:var(--faint)}
+    .learn-btn{display:inline-flex;align-items:center;gap:var(--sp2);padding:var(--sp2) var(--sp4);background:var(--primary);color:#fff;border-radius:var(--r-full);font-size:var(--text-sm);font-weight:600;transition:background var(--tr),box-shadow var(--tr)}
+    .learn-btn:hover{background:var(--primary-h);box-shadow:0 4px 12px color-mix(in oklch,var(--primary) 40%,transparent)}
+
+    /* ── MODAL ── */
+    .backdrop{position:fixed;inset:0;z-index:200;background:oklch(.15 .01 80/.65);backdrop-filter:blur(8px);display:grid;place-items:center;padding:var(--sp6);opacity:0;pointer-events:none;transition:opacity 220ms ease}
+    .backdrop.open{opacity:1;pointer-events:all}
+    .modal{background:var(--surface);border:1px solid oklch(from var(--text) l c h/.1);border-radius:var(--r-2xl);box-shadow:var(--sh-lg);max-width:580px;width:100%;overflow:hidden;transform:scale(.95) translateY(14px);transition:transform 280ms cubic-bezier(.16,1,.3,1);max-height:90dvh;overflow-y:auto}
+    .backdrop.open .modal{transform:scale(1) translateY(0)}
+    .m-banner{height:130px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-shrink:0}
+    .m-banner::before{content:'';position:absolute;inset:0;background:var(--bc);opacity:.15}
+    .m-icon{font-size:3.5rem;position:relative;z-index:1}
+    .m-body{padding:var(--sp6)}
+    .m-header{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp3);margin-bottom:var(--sp5)}
+    .m-title{font-family:var(--font-d);font-weight:800;font-size:var(--text-xl);letter-spacing:-.02em;line-height:1.1}
+    .close-btn{width:32px;height:32px;border-radius:var(--r-md);display:grid;place-items:center;flex-shrink:0;color:var(--muted);border:1px solid var(--border)}
+    .close-btn:hover{background:var(--surfoff);color:var(--text)}
+    .sec-label{font-size:var(--text-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:var(--sp2)}
+    .m-desc{font-size:var(--text-sm);color:var(--muted);line-height:1.72;margin-bottom:var(--sp5)}
+    .how-box{background:var(--surfoff);border-radius:var(--r-lg);padding:var(--sp4);margin-bottom:var(--sp5)}
+    .steps{list-style:none;display:flex;flex-direction:column;gap:var(--sp2);margin-top:var(--sp3)}
+    .step{display:flex;gap:var(--sp3);align-items:flex-start}
+    .snum{width:22px;height:22px;border-radius:var(--r-full);flex-shrink:0;background:var(--primary);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+    .stxt{font-size:var(--text-sm);color:var(--muted);line-height:1.55}
+    .m-chips{display:flex;flex-wrap:wrap;gap:var(--sp2);margin-bottom:var(--sp6)}
+    .m-actions{display:flex;gap:var(--sp3)}
+    .btn-play{flex:1;padding:var(--sp3) var(--sp5);background:var(--primary);color:#fff;border-radius:var(--r-full);font-size:var(--text-sm);font-weight:700;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:var(--sp2)}
+    .btn-play:hover{background:var(--primary-h)}
+    .btn-later{padding:var(--sp3) var(--sp5);border-radius:var(--r-full);font-size:var(--text-sm);font-weight:600;border:1px solid var(--border);color:var(--muted)}
+    .btn-later:hover{background:var(--surfoff);color:var(--text)}
+
+    /* no results */
+    .no-res{grid-column:1/-1;text-align:center;padding:var(--sp16) var(--sp8);color:var(--muted)}
+    .no-res-ico{font-size:3rem;margin-bottom:var(--sp4)}
+    .no-res h3{font-family:var(--font-d);font-weight:700;font-size:var(--text-lg);color:var(--text);margin-bottom:var(--sp2)}
+
+    /* category section headers */
+    .cat-header{grid-column:1/-1;display:flex;align-items:center;gap:var(--sp4);padding-top:var(--sp4)}
+    .cat-title{font-family:var(--font-d);font-weight:800;font-size:var(--text-lg);color:var(--text);white-space:nowrap}
+    .cat-line{flex:1;height:1px;background:var(--divider)}
+    .cat-count{font-size:var(--text-xs);color:var(--faint);white-space:nowrap}
+
+    /* footer */
+    .site-footer{border-top:1px solid var(--divider);padding-block:var(--sp8);text-align:center;color:var(--faint);font-size:var(--text-xs)}
+
+    @media(max-width:600px){
+      .filter-bar{display:none}
+      .m-actions{flex-direction:column}
+      .btn-later{text-align:center}
+      .stats-row{gap:var(--sp6)}
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#" class="logo" aria-label="Bhāva Tech">
+      <svg class="logo-mark" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+        <rect width="34" height="34" rx="9" fill="currentColor" opacity=".12"/>
+        <path d="M9 9 L17 5 L25 9 L25 20 L17 29 L9 20 Z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
+        <circle cx="17" cy="17" r="3" fill="currentColor"/>
+        <path d="M17 8 L17 14 M17 20 L17 26 M8 17 L14 17 M20 17 L26 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
+      </svg>
+      <span class="logo-text">Bhāva <span>Games</span></span>
+    </a>
+    <div class="header-right">
+      <nav class="filter-bar" role="tablist" aria-label="Filter games">
+        <button class="f-btn active" data-filter="all" role="tab" aria-selected="true">All Games</button>
+        <button class="f-btn" data-filter="early" role="tab" aria-selected="false">Ages 5–7</button>
+        <button class="f-btn" data-filter="mid" role="tab" aria-selected="false">Ages 8–11</button>
+        <button class="f-btn" data-filter="upper" role="tab" aria-selected="false">Ages 12+</button>
+        <button class="f-btn" data-filter="lang" role="tab" aria-selected="false">Language</button>
+        <button class="f-btn" data-filter="social" role="tab" aria-selected="false">Social–Emotional</button>
+      </nav>
+      <button class="theme-btn" data-theme-toggle aria-label="Toggle dark mode">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="eyebrow">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+        Bhāva Tech · Cognitive Learning Platform
+      </div>
+      <h1 class="hero-title" id="hero-heading">Every game trains a <em>real skill</em></h1>
+      <p class="hero-sub">Tap any game below to understand what it trains and how to play — before you begin. Each activity is grounded in brain-based learning science.</p>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-num">31</div><div class="stat-label">Games</div></div>
+        <div class="stat"><div class="stat-num">12+</div><div class="stat-label">Cognitive Skills</div></div>
+        <div class="stat"><div class="stat-num">5+</div><div class="stat-label">Age</div></div>
+        <div class="stat"><div class="stat-num">3</div><div class="stat-label">Languages</div></div>
+      </div>
+    </section>
+
+    <div class="search-wrap" role="search">
+      <div class="search-inner">
+        <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="s-input" type="search" id="search" placeholder="Search by name, skill, or topic…" aria-label="Search games">
+      </div>
+    </div>
+
+    <div class="games-grid" id="grid" role="list" aria-label="Game library"></div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>© 2026 Bhāva Tech · Cognitive Learning Platform · Singapore · Designed for curious minds</p>
+  </div>
+</footer>
+
+<!-- Modal -->
+<div class="backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="m-title">
+  <div class="modal" id="modal">
+    <div class="m-banner" id="m-banner"><span class="m-icon" id="m-icon" aria-hidden="true"></span></div>
+    <div class="m-body">
+      <div class="m-header">
+        <h2 class="m-title" id="m-title"></h2>
+        <button class="close-btn" id="close-btn" aria-label="Close">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <p class="sec-label">About this game</p>
+      <p class="m-desc" id="m-desc"></p>
+      <div class="how-box">
+        <p class="sec-label">How to play</p>
+        <ol class="steps" id="m-steps" role="list"></ol>
+      </div>
+      <p class="sec-label">Skills trained</p>
+      <div class="m-chips" id="m-chips"></div>
+      <div class="m-actions">
+        <a href="#" id="m-play" class="btn-play" target="_blank" rel="noopener noreferrer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg>
+          Play Now
+        </a>
+        <button class="btn-later" id="m-cancel">Maybe later</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const GAMES = [
+  /* ══════════════ MEMORY ══════════════ */
+  {
+    id:"memory-match-puzzle",file:"memory-match-puzzle.html",
+    title:"Memory Match Puzzle",icon:"🃏",color:"#01696f",
+    age:"early",ageLabel:"Ages 5+",ageCls:"ag-early",
+    short:"Flip picture cards and find matching pairs before time runs out.",
+    full:"Memory Match Puzzle presents a grid of face-down illustrated cards. Players flip two cards at a time, trying to find identical pairs. Each correct match earns points and keeps the cards revealed; mismatches flip them back. The grid grows with each level, pushing working memory capacity further.",
+    steps:["A grid of face-down cards appears on screen.","Tap any card to reveal its picture.","Tap a second card — if they match, both stay revealed!","If they don't match, both flip back — remember their positions.","Clear the full board to complete the level."],
+    skills:["Working Memory","Visual Recall","Concentration"],
+    duration:"3–6 min",diff:"★★☆"
+  },
+  {
+    id:"memory-match-ultimate",file:"memory-match-ultimate.html",
+    title:"Memory Match Ultimate",icon:"🏆",color:"#0891b2",
+    age:"mid",ageLabel:"Ages 5+",ageCls:"ag-mid",
+    short:"An advanced memory challenge with larger grids, themes, and time pressure.",
+    full:"Memory Match Ultimate takes the classic match game to a competitive level. Larger grids, themed card sets (animals, flags, science symbols), and a countdown timer combine to challenge both short-term and long-term visual memory. Score multipliers reward rapid sequential matches.",
+    steps:["Choose a theme and difficulty before starting.","Memorise card positions during the brief 'peek' phase.","Flip and match pairs against the countdown timer.","Chain consecutive matches for score multipliers.","Complete all levels to unlock the Ultimate trophy!"],
+    skills:["Working Memory","Visual Memory","Processing Speed"],
+    duration:"5–10 min",diff:"★★★"
+  },
+  {
+    id:"memory-zoo-puzzle",file:"memory-zoo-puzzle.html",
+    title:"Memory Zoo Puzzle",icon:"🦒",color:"#16a34a",
+    age:"early",ageLabel:"Ages 5+",ageCls:"ag-early",
+    short:"Match adorable zoo animals hidden behind enclosure doors.",
+    full:"Memory Zoo Puzzle wraps the memory card game in a lively zoo theme. Animals peek from behind enclosure doors; young players flip doors to find matching animal pairs. Cheerful animations and animal sounds provide instant positive reinforcement, making it ideal for early childhood cognitive warm-ups.",
+    steps:["Enter the zoo — a grid of closed enclosure doors is shown.","Tap a door to reveal the animal inside.","Tap another door to find its match.","Matched pairs open permanently with a celebration animation.","Rescue all animal pairs to complete the zoo!"],
+    skills:["Working Memory","Visual Attention","Object Recognition"],
+    duration:"3–5 min",diff:"★☆☆"
+  },
+  {
+    id:"neuroflash-memory",file:"neuroflash-memory.html",
+    title:"NeuroFlash Memory",icon:"⚡",color:"#7c3aed",
+    age:"upper",ageLabel:"Ages 7+",ageCls:"ag-upper",
+    short:"Lightning-fast sequential memory — recall longer and longer chains of stimuli.",
+    full:"NeuroFlash Memory is a forward and backward digit/symbol span task presented at speed. A sequence of coloured flashes, symbols, or numbers appears briefly; the player must reproduce the exact sequence from memory. Both the length and the display speed increase as scores improve, directly measuring and training working memory span.",
+    steps:["Watch the sequence of flashes or symbols carefully.","After the sequence ends, reproduce it in the correct order.","Use the on-screen grid or keyboard to enter your answer.","Correct → the sequence grows by one item next round.","Reach the highest span level to set your NeuroFlash record."],
+    skills:["Working Memory Span","Sequential Recall","Auditory-Visual Integration"],
+    duration:"4–8 min",diff:"★★★"
+  },
+
+  /* ══════════════ ATTENTION ══════════════ */
+  {
+    id:"focus-under-distraction",file:"focus-under-distraction.html",
+    title:"Focus Under Distraction",icon:"🎯",color:"#dc2626",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
+    short:"Identify the target stimulus while ignoring a flood of distractors.",
+    full:"Focus Under Distraction simulates real-world attention demands by surrounding the target stimulus with visually and cognitively competing distractors — moving objects, colour noise, and irrelevant text. Players must selectively attend to the correct target while filtering out interference. Both accuracy and response time are scored, rewarding calm, focused reactions over impulsive tapping.",
+    steps:["A target object is shown to you at the start of the round.","A stream of stimuli — targets mixed with distractors — appears.","Tap only when you see the exact target.","Tapping a distractor reduces your score — stay selective!","Survive all waves to complete the focus challenge."],
+    skills:["Selective Attention","Inhibitory Control","Distractibility Resistance"],
+    duration:"4–7 min",diff:"★★★"
+  },
+  {
+    id:"brain-quest",file:"brain-quest.html",
+    title:"Brain Quest",icon:"🧩",color:"#0284c7",
+    age:"mid",ageLabel:"Ages 23+",ageCls:"ag-mid",
+    short:"A multi-stage cognitive quest that tests attention, memory, and reasoning.",
+    full:"Brain Quest is a structured multi-domain assessment game that cycles through short attention, memory, and reasoning challenges in a single adaptive session. The game tracks performance across domains and dynamically adjusts difficulty, giving a broad snapshot of a child's cognitive profile while keeping engagement high with quest-style progression.",
+    steps:["Start your quest and meet your guide character.","Complete short timed challenges in each cognitive domain.","Earn 'brain gems' for each domain you master.","Between stages, your score is shown with a brief explainer.","Collect all gems to finish the quest and view your Brain Map."],
+    skills:["Sustained Attention","Working Memory","Logical Reasoning"],
+    duration:"8–15 min",diff:"★★☆"
+  },
+  {
+    id:"neurospark",file:"neurospark.html",
+    title:"NeuroSpark",icon:"✨",color:"#f59e0b",
+    age:"upper",ageLabel:"Ages 12+",ageCls:"ag-upper",
+    short:"High-speed multi-tasking challenges that push executive function to the limit.",
+    full:"NeuroSpark presents simultaneous or rapidly alternating cognitive tasks that demand flexible attention-switching and executive control. Players manage two or more rule sets at once — for example, sorting shapes by colour while counting sounds — directly training the dual-task processing and cognitive flexibility that underpin academic multitasking.",
+    steps:["Two task streams are explained before the round begins.","Both streams run simultaneously on screen.","Switch your focus between tasks as prompted.","Errors in either stream count against your NeuroSpark score.","Reach the top tier to unlock the 'Spark Master' badge."],
+    skills:["Cognitive Flexibility","Dual-Task Processing","Executive Function"],
+    duration:"5–9 min",diff:"★★★"
+  },
+
+  /* ══════════════ LOGIC & REASONING ══════════════ */
+  {
+    id:"logic-game",file:"logic-game.html",
+    title:"Logic Game",icon:"🔢",color:"#2563eb",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
+    short:"Solve puzzles using deductive reasoning — who sits where, what belongs to whom?",
+    full:"Logic Game presents classic grid-based deductive puzzles. Clues narrow down the possibilities cell by cell until only one arrangement is logically valid. Adapted from Einstein-style grid puzzles, the game systematically builds deductive reasoning, elimination strategies, and logical inference in an age-appropriate format.",
+    steps:["Read the set of clues shown on the left.","Use the grid to mark what IS and is NOT possible.","Eliminate options step by step using each clue.","When only one option remains in a cell, it is the answer.","Fill in the complete grid correctly to solve the puzzle!"],
+    skills:["Deductive Reasoning","Logical Inference","Elimination Strategy"],
+    duration:"6–12 min",diff:"★★★"
+  },
+  {
+    id:"logic-grid-puzzle",file:"logic-grid-puzzle.html",
+    title:"Logic Grid Puzzle",icon:"📐",color:"#4f46e5",
+    age:"upper",ageLabel:"Ages 12+",ageCls:"ag-upper",
+    short:"Multi-variable logic grids with increasing complexity — from 3×3 to 5×5.",
+    full:"Logic Grid Puzzle offers a full progression from simple 3-variable grids to complex 5-category problems involving colours, names, professions, objects, and locations. Each puzzle has a unique solution derivable purely through logical elimination, providing a rigorous and satisfying workout for analytical thinking.",
+    steps:["Study the attributes and clues provided.","Use ✓ and ✗ to mark the grid as you eliminate options.","Apply each clue systematically — order matters!","Chain your deductions until the grid is fully solved.","A perfect solve with no wrong marks earns a Gold Star."],
+    skills:["Logical Reasoning","Systematic Thinking","Analytical Processing"],
+    duration:"8–20 min",diff:"★★★"
+  },
+  {
+    id:"mindspark-iq",file:"mindspark-iq.html",
+    title:"MindSpark IQ",icon:"💡",color:"#0e7490",
+    age:"upper",ageLabel:"Ages 12+",ageCls:"ag-upper",
+    short:"A structured IQ-style assessment covering pattern, spatial, verbal, and numerical reasoning.",
+    full:"MindSpark IQ is a standardised cognitive assessment game that measures reasoning across four classic domains: figural patterns, spatial orientation, verbal analogies, and number series. Timed and adaptive, the game generates a domain-specific performance profile used in Bhāva's comprehensive student cognitive report.",
+    steps:["Choose a domain or take the full combined assessment.","Each question is multiple-choice with a timer.","Answer as many as you can accurately — skip if unsure.","At the end, your domain scores are shown on a spider chart.","Retake any domain to track progress over time."],
+    skills:["Fluid Intelligence","Pattern Recognition","Verbal Reasoning","Numerical Reasoning"],
+    duration:"10–20 min",diff:"★★★"
+  },
+  {
+    id:"mindscape-pro",file:"mindscape-pro.html",
+    title:"Mindscape Pro",icon:"🌌",color:"#6d28d9",
+    age:"upper",ageLabel:"Ages 12+",ageCls:"ag-upper",
+    short:"Advanced abstract reasoning — matrices, analogies, and series at competitive level.",
+    full:"Mindscape Pro targets fluid reasoning at an advanced level suitable for academic enrichment and gifted screening. It draws from matrix reasoning, abstract analogy, and number series formats, presenting items of increasing complexity. Performance data is used to compute a percentile score against the Bhāva normative sample.",
+    steps:["Read the instructions for each reasoning type before starting.","Study the matrix or series shown.","Select the answer that best completes the pattern.","Work quickly — partial credit is given for unattempted items.","Review your Mindscape Score and percentile after the session."],
+    skills:["Fluid Reasoning","Abstract Thinking","Matrix Reasoning","Analogical Reasoning"],
+    duration:"15–25 min",diff:"★★★"
+  },
+  {
+    id:"iq-test-level-3",file:"iq-test-level-3.html",
+    title:"IQ Test Level 3",icon:"🔬",color:"#0f766e",
+    age:"upper",ageLabel:"Ages 12+",ageCls:"ag-upper",
+    short:"Senior-level cognitive reasoning assessment — the hardest tier in Bhāva's IQ suite.",
+    full:"IQ Test Level 3 is the most demanding reasoning assessment in Bhāva's suite, targeting secondary-school students. Drawn from advanced Raven-style matrices, number series, and verbal analogies, this level benchmarks students against national-level difficulty norms and feeds directly into Bhāva's full cognitive report.",
+    steps:["Confirm you have a quiet 20-minute window before starting.","Each item is strictly timed — answer or skip before the clock ends.","Patterns become significantly more abstract as you progress.","Do not guess randomly — unattempted items are marked separately.","A detailed breakdown of correct, incorrect, and skipped items is shown at the end."],
+    skills:["Advanced Fluid Reasoning","Abstract Pattern Analysis","Quantitative Reasoning"],
+    duration:"20–30 min",diff:"★★★"
+  },
+  {
+    id:"percentile-game",file:"percentile-game.html",
+    title:"Percentile Challenge",icon:"📊",color:"#b45309",
+    age:"upper",ageLabel:"Ages 10+",ageCls:"ag-upper",
+    short:"Compete against the norm — where does your score rank among your peers?",
+    full:"Percentile Challenge presents mixed cognitive items (reasoning, attention, memory) and, at the end, shows the student their percentile rank against the Bhāva normative database. It is designed to motivate self-improvement by giving students a meaningful comparison point rather than a raw score.",
+    steps:["Answer the mixed cognitive items at your own pace.","Each item type is labelled so you know what skill is being measured.","Submit your answers when the timer ends.","Your raw score is converted to a percentile against age peers.","A personalised strengths and growth summary is displayed."],
+    skills:["Mixed Cognitive Domains","Self-Awareness","Benchmarked Performance"],
+    duration:"12–18 min",diff:"★★☆"
+  },
+
+  /* ══════════════ SPATIAL ══════════════ */
+  {
+    id:"mental-rotation-game",file:"mental-rotation-game.html",
+    title:"Mental Rotation",icon:"🔄",color:"#059669",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
+    short:"Rotate 3-D shapes mentally and match them to the correct silhouette.",
+    full:"Mental Rotation presents a three-dimensional object rendered on screen and asks the player to mentally rotate it to match one of four silhouette options. Difficulty increases from simple 2-D shapes to complex 3-D objects at compound rotation angles. This skill is strongly linked to mathematics, engineering thinking, and spatial navigation.",
+    steps:["A 3-D object is shown at a particular rotation angle.","Four silhouette options appear below.","Mentally rotate the object to find which silhouette it matches.","Tap your answer — faster responses earn bonus points.","Consecutive correct answers unlock the next difficulty tier."],
+    skills:["Spatial Reasoning","Mental Rotation","Visual Processing","STEM Readiness"],
+    duration:"5–9 min",diff:"★★★"
+  },
+  {
+    id:"imaginia-quest",file:"imaginia-quest.html",
+    title:"Imaginia Quest",icon:"🌈",color:"#7c3aed",
+    age:"early",ageLabel:"Ages 12+",ageCls:"ag-early",
+    short:"Use your imagination to complete half-drawn pictures and create stories.",
+    full:"Imaginia Quest combines spatial visualisation with creative thinking. Children are shown incomplete or abstract line drawings and asked to identify what the shape could be and then extend it into a full drawing or story scene. Research shows that this type of creative spatial play strengthens both divergent thinking and visual-spatial processing.",
+    steps:["A partial or abstract drawing is shown on the canvas.","Tap on what you think it could be — or draw your own idea!","Add details to complete your picture.","Give your creation a name and a one-sentence story.","Share your Imaginia with the class gallery."],
+    skills:["Creative Thinking","Spatial Visualisation","Divergent Reasoning","Narrative Expression"],
+    duration:"5–10 min",diff:"★☆☆"
+  },
+
+  /* ══════════════ NUMERACY ══════════════ */
+  {
+    id:"math-blitz",file:"math-blitz.html",
+    title:"Math Blitz",icon:"🔢",color:"#ea580c",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
+    short:"Rapid-fire arithmetic drills — push your mental math speed to the limit.",
+    full:"Math Blitz is a speed-based arithmetic fluency game covering addition, subtraction, multiplication, and division. Problems appear one at a time with a strict time limit; players tap the correct answer from four options. Adaptive difficulty ensures problems stay just challenging enough to trigger improvement without causing frustration.",
+    steps:["Select an operation or choose 'Mixed' for all four.","A problem appears with four answer options.","Tap the correct answer before the timer bar empties.","Correct answers extend the timer slightly.","Score as many correct answers as you can in 90 seconds."],
+    skills:["Arithmetic Fluency","Numerical Reasoning","Processing Speed"],
+    duration:"2–5 min",diff:"★★☆"
+  },
+  {
+    id:"number-garden-quest",file:"number-garden-quest.html",
+    title:"Number Garden Quest",icon:"🌱",color:"#16a34a",
+    age:"early",ageLabel:"Ages 5–8",ageCls:"ag-early",
+    short:"Water the right number of plants to help your garden grow!",
+    full:"Number Garden Quest teaches early numeracy and number sense through a gardening metaphor. Children count objects, match quantities to numerals, and solve simple addition problems by 'planting' or 'watering' the correct number of seeds or plants. Concrete-to-abstract scaffolding makes this ideal for foundational maths learning.",
+    steps:["A garden bed with a number label is shown.","Count the correct number of seeds or plants to add.","Drag and drop items into the garden bed.","Match the quantity to the numeral shown.","Grow all your gardens to unlock the harvest celebration!"],
+    skills:["Number Sense","Counting","Early Numeracy","Quantity Matching"],
+    duration:"4–8 min",diff:"★☆☆"
+  },
+  {
+    id:"neuro-ascend-iq",file:"neuro-ascend-iq.html",
+    title:"Neuro Ascend IQ",icon:"🚀",color:"#1d4ed8",
+    age:"upper",ageLabel:"Ages 12+",ageCls:"ag-upper",
+    short:"Ascend through escalating cognitive levels — from basic processing to advanced reasoning.",
+    full:"Neuro Ascend IQ structures cognitive challenges as a tower of ascending levels, each harder than the last. Lower levels test processing speed and attention; middle levels add working memory and pattern recognition; the peak tests fluid reasoning and complex problem-solving. The highest level reached becomes the student's Ascend Score.",
+    steps:["Start at Level 1 — complete the challenge to unlock Level 2.","Each new level introduces a new or harder cognitive demand.","A brief rest screen appears every 5 levels.","If you fail a level, you may retry once before moving on.","Your final Ascend Score is the highest level completed correctly."],
+    skills:["Multi-domain Cognition","Fluid Reasoning","Processing Speed","Working Memory"],
+    duration:"10–25 min",diff:"★★★"
+  },
+
+  /* ══════════════ LANGUAGE ══════════════ */
+  {
+    id:"grammar-pro",file:"grammar-pro.html",
+    title:"Grammar Pro",icon:"📝",color:"#0369a1",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
+    short:"Master English grammar through interactive sentence-repair challenges.",
+    full:"Grammar Pro presents grammatically incorrect sentences for players to identify and fix. The game covers subject-verb agreement, tense consistency, punctuation, and parts of speech. A detective-style theme frames errors as 'clues to crack', making grammar practice feel investigative rather than rote.",
+    steps:["A sentence appears on screen with one or more errors.","Tap the word or punctuation mark that is incorrect.","Choose the correct replacement from the options shown.","Chain correct fixes to earn 'Grammar Detective' streak bonuses.","Complete a chapter to unlock the Grammar Galaxy map!"],
+    skills:["Grammar Awareness","Proofreading","Linguistic Analysis","Verbal Reasoning"],
+    duration:"5–10 min",diff:"★★☆"
+  },
+  {
+    id:"grammar-galaxy",file:"grammar-galaxy.html",
+    title:"Grammar Galaxy",icon:"🌟",color:"#7c3aed",
+    age:"mid",ageLabel:"Ages 23+",ageCls:"ag-mid",
+    short:"Explore galaxies of words — parts of speech, sentence structure, and more.",
+    full:"Grammar Galaxy is a visually rich language game where grammar concepts are mapped to an illustrated galaxy. Each planet represents a grammar topic (nouns, verbs, adjectives, conjunctions). Players travel to each planet and complete themed challenges — matching, gap-fill, sentence construction — before moving to the next world.",
+    steps:["Choose a planet to visit on the Galaxy Map.","Read the grammar concept introduced for that planet.","Complete the planet's challenges to earn a star.","All five stars unlock the Galaxy Champion badge.","Revisit any planet to strengthen weak areas."],
+    skills:["Grammar Knowledge","Parts of Speech","Sentence Construction","Vocabulary"],
+    duration:"6–12 min",diff:"★★☆"
+  },
+  {
+    id:"telugu-script-game",file:"telugu-script-game.html",
+    title:"Telugu Script Game",icon:"అ",color:"#b45309",
+    age:"early",ageLabel:"Ages 5+",ageCls:"ag-early",
+    short:"Learn to read and write Telugu script through tracing and recognition games.",
+    full:"Telugu Script Game introduces the Telugu alphabet through multisensory engagement — children trace akshara letterforms with their finger, match syllables to pictures, and identify letters in simple words. The game is sequenced following standard Telugu varnamala order, making it ideal as a complement to classroom instruction.",
+    steps:["Choose a letter or syllable group to practise.","Watch the stroke animation, then trace over the dotted guide.","A matching challenge shows the letter — tap the correct picture.","Listen to the pronunciation and repeat the sound.","Complete a row of the varnamala to earn a Telugu Tara (star)!"],
+    skills:["Telugu Literacy","Phonological Awareness","Fine Motor-Script Connection","Letter Recognition"],
+    duration:"5–10 min",diff:"★☆☆"
+  },
+
+  /* ══════════════ SOCIAL–EMOTIONAL ══════════════ */
+  {
+    id:"empathy-quest",file:"empathy-quest.html",
+    title:"Empathy Quest",icon:"💛",color:"#f59e0b",
+    age:"early",ageLabel:"Ages 8+",ageCls:"ag-early",
+    short:"Walk in someone else's shoes — recognise feelings and choose kind responses.",
+    full:"Empathy Quest builds emotional intelligence through illustrated story scenarios. Children observe a character experiencing a situation, identify the emotion being felt, and choose the most empathetic response from a set of options. Across levels, the emotional complexity increases — from basic happy/sad to nuanced emotions like embarrassment or loneliness.",
+    steps:["A story scene is shown with a character and a situation.","Look carefully at the character's expression and body language.","Choose from four emotion labels — which best fits?","Now choose the kindest response to the character.","A short animation shows what happens next — and why it matters."],
+    skills:["Emotional Recognition","Empathy","Perspective-Taking","Social Awareness"],
+    duration:"5–10 min",diff:"★☆☆"
+  },
+  {
+    id:"empathy-conversation",file:"empathy-conversation.html",
+    title:"Empathy Conversation",icon:"💬",color:"#0891b2",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
+    short:"Practice real conversations — navigate social situations with empathy and confidence.",
+    full:"Empathy Conversation presents branching social scenarios as interactive dialogue trees. Students choose what to say at each step; their choices affect the emotional trajectory of the conversation. The game models active listening, non-judgmental language, and repair strategies, making it a powerful SEL tool for classroom use.",
+    steps:["A social scenario is introduced — read the context carefully.","A character speaks to you — read their message and body language.","Choose your response from three options.","Each choice leads to a different branch of the conversation.","At the end, a reflection screen shows how your choices affected the outcome."],
+    skills:["Active Listening","Empathetic Communication","Social Problem-Solving","Emotional Regulation"],
+    duration:"6–12 min",diff:"★★☆"
+  },
+  {
+    id:"heart-heroes",file:"heart-heroes.html",
+    title:"Heart Heroes",icon:"❤️",color:"#e11d48",
+    age:"early",ageLabel:"Ages 5–8",ageCls:"ag-early",
+    short:"Help the Heart Heroes spread kindness — match kind actions to feelings.",
+    full:"Heart Heroes is a values-based SEL game for young children. The Heart Heroes characters each represent a core value — kindness, courage, honesty, patience. Children help these heroes by choosing the right action in everyday scenarios, building a concrete vocabulary for prosocial behaviour and character development.",
+    steps:["A Heart Hero presents a challenge situation.","Read or listen to what is happening.","Choose the action that matches the Hero's value.","Correct choices fill the Heart Hero's energy bar.","Complete all four Hero missions to light up the Heart Heroes map!"],
+    skills:["Prosocial Behaviour","Values Education","Character Development","Moral Reasoning"],
+    duration:"5–8 min",diff:"★☆☆"
+  },
+  {
+    id:"calm-zone",file:"calm-zone.html",
+    title:"Calm Zone",icon:"🌿",color:"#059669",
+    age:"early",ageLabel:"Ages 8+",ageCls:"ag-early",
+    short:"Breathe, relax, and re-centre — guided calming activities for school and home.",
+    full:"Calm Zone is a guided mindfulness and self-regulation tool rather than a competitive game. It offers breathing exercises (box breathing, 4-7-8), progressive muscle relaxation prompts, and visualisation journeys set in calming nature environments. Designed for use before assessments, during transitions, or after conflict resolution.",
+    steps:["Choose an activity: Breathe, Relax, or Visualise.","Follow the animated guide — breathe in, hold, breathe out.","For Relax: tense and release each muscle group as guided.","For Visualise: close your eyes and follow the audio journey.","Rate how you feel before and after to track your calm score."],
+    skills:["Self-Regulation","Mindfulness","Emotional Calm","Stress Management"],
+    duration:"3–8 min",diff:"★☆☆"
+  },
+  {
+    id:"Good-Habits",file:"Good-Habits.html",
+    title:"Good Habits",icon:"⭐",color:"#ca8a04",
+    age:"early",ageLabel:"Ages 5–9",ageCls:"ag-early",
+    short:"Build daily healthy habits — a fun routine tracker for young learners.",
+    full:"Good Habits is a habit-formation game grounded in behavioural science. Children select healthy habits (sleep, exercise, water, reading, screen-time limits) and check them off each day within the app. Streaks, stars, and animated characters celebrate consistency, building intrinsic motivation for healthy routines.",
+    steps:["Set up your Habit Hero profile and pick three habits to start.","Each day, check off the habits you completed.","Keep your streak alive — your character grows with every day!","Earn star rewards to decorate your Habit Hero's world.","After 21 days, your Habit Certificate is ready to download."],
+    skills:["Self-Discipline","Routine Building","Goal Setting","Behavioural Consistency"],
+    duration:"2–5 min/day",diff:"★☆☆"
+  },
+
+  /* ══════════════ WELLNESS & CREATIVITY ══════════════ */
+  {
+    id:"brain-garden",file:"brain-garden.html",
+    title:"Brain Garden",icon:"🌻",color:"#16a34a",
+    age:"early",ageLabel:"Ages 8+",ageCls:"ag-early",
+    short:"Grow your brain garden by completing cognitive mini-games every day.",
+    full:"Brain Garden is a daily cognitive engagement platform wrapped in a gardening metaphor. Each mini-game waters, fertilises, or harvests a different plant in the child's personal garden — memory games grow sunflowers, attention games water ferns, reasoning puzzles ripen fruit. Daily play keeps the garden alive and growing, encouraging consistent cognitive engagement.",
+    steps:["Visit your Brain Garden each day.","Choose a plant to tend — each one links to a different cognitive game.","Complete the mini-game to tend your plant.","Check the garden health bar to see which areas need more attention.","Reach a full, blooming garden to earn the Master Gardener award."],
+    skills:["Multi-domain Cognition","Daily Habit Formation","Intrinsic Motivation","Holistic Brain Training"],
+    duration:"5–15 min",diff:"★★☆"
+  },
+  {
+    id:"day-hero-game",file:"day-hero-game.html",
+    title:"Day Hero",icon:"🦸",color:"#dc2626",
+    age:"early",ageLabel:"Ages 5–9",ageCls:"ag-early",
+    short:"Plan your hero day — manage time, tasks, and energy to complete your missions.",
+    full:"Day Hero teaches executive function through a time-management and planning game. Children plan a character's day by assigning tasks to time slots, balancing energy levels, and anticipating what happens if they skip important routines (sleep, food, exercise). The game builds planning, sequencing, and consequence-thinking skills.",
+    steps:["Meet your Day Hero — read their daily mission.","Drag task cards into the day planner's time slots.","Balance must-dos (sleep, food, school) with fun activities.","Press 'Play Day' to see how your plan plays out.","Adjust your plan to improve your Hero Score!"],
+    skills:["Planning & Organisation","Time Management","Sequencing","Executive Function"],
+    duration:"5–10 min",diff:"★★☆"
+  },
+  {
+    id:"day-super-hero",file:"day-super-hero.html",
+    title:"Day Super Hero",icon:"🦸‍♀️",color:"#7c3aed",
+    age:"mid",ageLabel:"Ages 8–12",ageCls:"ag-mid",
+    short:"Advanced day-planning — juggle goals, priorities, and unexpected challenges.",
+    full:"Day Super Hero extends Day Hero with added complexity: unexpected events interrupt the planned day (a friend needs help, the bus is late), and the player must reprioritise and adapt. The game directly trains cognitive flexibility and contingency planning alongside the core executive function skills of the original Day Hero.",
+    steps:["Build your Super Hero's week-long plan.","Set goals for each day and assign priority levels.","As unexpected events pop up, decide how to respond.","Some decisions affect the next day's energy or opportunities.","Maximise your Week Score by balancing goals, rest, and flexibility."],
+    skills:["Cognitive Flexibility","Prioritisation","Contingency Planning","Executive Function"],
+    duration:"8–15 min",diff:"★★★"
+  },
+  {
+    id:"planet-guardians",file:"planet-guardians.html",
+    title:"Planet Guardians",icon:"🌍",color:"#0369a1",
+    age:"mid",ageLabel:"Ages 12+",ageCls:"ag-mid",
+    short:"Protect your planet — solve eco-challenges using science reasoning and teamwork.",
+    full:"Planet Guardians frames environmental science within a problem-solving game. Players become guardians of a planet facing ecological threats and must apply reasoning, classification, and cause-effect thinking to solve challenges like reducing pollution, planting forests, or saving water. Science vocabulary and environmental literacy are woven throughout.",
+    steps:["Choose a planet challenge from the Guardians map.","Read the threat briefing — understand what is causing the problem.","Select and apply solutions from your Guardian toolkit.","Use cause-and-effect reasoning to predict the outcome.","Save your planet's health score to earn Guardian status!"],
+    skills:["Scientific Reasoning","Cause-Effect Thinking","Environmental Literacy","Classification"],
+    duration:"6–12 min",diff:"★★☆"
+  }
+];
+
+/* ── Render ── */
+const grid = document.getElementById("grid");
+let activeFilter = "all";
+let query = "";
+
+function matchFilter(g) {
+  if (activeFilter === "all") return true;
+  if (activeFilter === "lang") return ["grammar-pro","grammar-galaxy","telugu-script-game"].includes(g.id);
+  if (activeFilter === "social") return ["empathy-quest","empathy-conversation","heart-heroes","calm-zone","Good-Habits"].includes(g.id);
+  return g.age === activeFilter;
+}
+function matchQuery(g) {
+  if (!query) return true;
+  const q = query.toLowerCase();
+  return g.title.toLowerCase().includes(q) ||
+    g.short.toLowerCase().includes(q) ||
+    g.skills.some(s => s.toLowerCase().includes(q));
+}
+
+function renderGrid() {
+  const visible = GAMES.filter(g => matchFilter(g) && matchQuery(g));
+  grid.innerHTML = "";
+  if (!visible.length) {
+    grid.innerHTML = `<div class="no-res"><div class="no-res-ico">🔍</div><h3>No games found</h3><p>Try a different filter or search.</p></div>`;
+    return;
+  }
+  visible.forEach(g => {
+    const art = document.createElement("article");
+    art.className = "game-card";
+    art.setAttribute("role","listitem");
+    art.setAttribute("tabindex","0");
+    art.setAttribute("aria-label", g.title + ", " + g.ageLabel);
+    art.innerHTML = `
+      <div class="card-banner" style="--bc:${g.color}">
+        <span class="banner-icon" aria-hidden="true">${g.icon}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-top">
+          <h2 class="card-title">${g.title}</h2>
+          <span class="age-badge ${g.ageCls}">${g.ageLabel}</span>
+        </div>
+        <p class="card-desc">${g.short}</p>
+        <div class="skill-chips">${g.skills.map(s=>`<span class="chip">${s}</span>`).join("")}</div>
+      </div>
+      <div class="card-foot">
+        <span class="card-meta">⏱ ${g.duration} · ${g.diff}</span>
+        <button class="learn-btn" aria-label="Learn more about ${g.title}">
+          How to Play
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>`;
+    art.addEventListener("click", () => openModal(g));
+    art.addEventListener("keydown", e => { if(e.key==="Enter"||e.key===" "){e.preventDefault();openModal(g);}});
+    grid.appendChild(art);
+  });
+}
+
+/* ── Modal ── */
+const backdrop = document.getElementById("backdrop");
+function openModal(g) {
+  document.getElementById("m-icon").textContent = g.icon;
+  document.getElementById("m-banner").style.setProperty("--bc", g.color);
+  document.getElementById("m-title").textContent = g.title;
+  document.getElementById("m-desc").textContent = g.full;
+  document.getElementById("m-play").href = g.file;
+  document.getElementById("m-steps").innerHTML = g.steps.map((s,i)=>
+    `<li class="step"><span class="snum">${i+1}</span><span class="stxt">${s}</span></li>`).join("");
+  document.getElementById("m-chips").innerHTML = g.skills.map(s=>
+    `<span class="chip" style="border-color:color-mix(in oklch,${g.color} 30%,transparent);background:color-mix(in oklch,${g.color} 10%,transparent);color:${g.color}">${s}</span>`).join("");
+  backdrop.classList.add("open");
+  document.body.style.overflow = "hidden";
+  document.getElementById("close-btn").focus();
+}
+function closeModal() {
+  backdrop.classList.remove("open");
+  document.body.style.overflow = "";
+}
+document.getElementById("close-btn").addEventListener("click", closeModal);
+document.getElementById("m-cancel").addEventListener("click", closeModal);
+backdrop.addEventListener("click", e => { if(e.target===backdrop) closeModal(); });
+document.addEventListener("keydown", e => { if(e.key==="Escape") closeModal(); });
+
+/* ── Filter & Search ── */
+document.querySelectorAll(".f-btn").forEach(b => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll(".f-btn").forEach(x=>{x.classList.remove("active");x.setAttribute("aria-selected","false");});
+    b.classList.add("active"); b.setAttribute("aria-selected","true");
+    activeFilter = b.dataset.filter;
+    renderGrid();
+  });
+});
+document.getElementById("search").addEventListener("input", e => { query = e.target.value.trim(); renderGrid(); });
+
+/* ── Theme ── */
+(function(){
+  const t=document.querySelector("[data-theme-toggle]"),r=document.documentElement;
+  let d=matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";
+  r.setAttribute("data-theme",d);
+  if(t) t.addEventListener("click",()=>{
+    d=d==="dark"?"light":"dark"; r.setAttribute("data-theme",d);
+    t.setAttribute("aria-label","Switch to "+(d==="dark"?"light":"dark")+" mode");
+    t.innerHTML=d==="dark"
+      ?`<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`
+      :`<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+  });
+})();
+
+renderGrid();
+</script>
+
+<!-- ── Back to Home Button (injected) ── -->
+<style>
+  #bhava-back-btn {
+    position: fixed;
+    bottom: 28px;
+    left: 24px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(10,10,26,0.92);
+    color: #67e8f9;
+    border: 1.5px solid #67e8f9;
+    border-radius: 32px;
+    padding: 10px 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(103,232,249,0.18);
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  #bhava-back-btn:hover {
+    background: rgba(103,232,249,0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(103,232,249,0.28);
+  }
+  #bhava-back-btn svg {
+    flex-shrink: 0;
+  }
+</style>
+
+<a id="bhava-back-btn" href="index.html" title="Back to Bhāva Home">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 12H5M12 5l-7 7 7 7"/>
+  </svg>
+  Back to Home
+</a>
+</body>
+</html>

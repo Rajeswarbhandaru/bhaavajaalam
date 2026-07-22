@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bhava-mobile="nudge">
 <head>
   <meta charset="UTF-8" />
   <title>Google Search Lab – Deep Web Tech Explorer v2</title>
@@ -128,6 +128,7 @@
     @media(max-width:900px){.shell{height:auto;min-height:100vh;border-radius:0;}main{grid-template-columns:1fr;}}
     @media(max-width:540px){.lab-grid{grid-template-columns:1fr;}.dc-grid{grid-template-columns:1fr 1fr;}.node-grid{grid-template-columns:1fr 1fr;}}
   </style>
+  <link rel="stylesheet" href="bhava-responsive.css">
 </head>
 <body>
   <div class="shell">
@@ -803,5 +804,6 @@
     updateProgress();
     showPanel('intro');
   </script>
+  <script src="bhava-responsive.js"></script>
 </body>
 </html>

@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en" data-bhava-game="">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bhāva — Student Import</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:   #1B4F5A;
+    --teal2:  #23636F;
+    --amber:  #F5A623;
+    --green:  #27AE60;
+    --red:    #E74C3C;
+    --bg:     #F4F7F9;
+    --card:   #FFFFFF;
+    --border: #D8E2E7;
+    --text:   #1A2B35;
+    --muted:  #6B8A99;
+    --radius: 10px;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg); color: var(--text);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--teal); color: #fff;
+    padding: 0 28px; height: 58px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  header h1 { font-size: 1.05rem; font-weight: 700; }
+  header h1 span { color: var(--amber); }
+  .school-badge {
+    font-size: 0.8rem; font-weight: 600; opacity: 0.85;
+    background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 20px;
+  }
+
+  .main { max-width: 1000px; margin: 0 auto; padding: 26px 18px; }
+
+  /* ── School selector ── */
+  .school-bar {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 20px;
+    display: flex; align-items: center; gap: 14px; margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  .school-bar label { font-size: 0.82rem; font-weight: 700; color: var(--muted); text-transform: uppercase; }
+  .school-bar input {
+    padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 7px;
+    font-size: 0.92rem; width: 240px; text-transform: uppercase;
+  }
+  .school-bar input:focus { outline: none; border-color: var(--teal); }
+
+  /* ── Tabs ── */
+  .tabs {
+    display: flex; gap: 4px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 5px;
+    margin-bottom: 22px; width: fit-content;
+  }
+  .tab-btn {
+    padding: 8px 22px; border-radius: 7px; border: none;
+    background: none; font-size: 0.88rem; font-weight: 500;
+    color: var(--muted); cursor: pointer; transition: all 0.18s;
+  }
+  .tab-btn.active { background: var(--teal); color: #fff; font-weight: 600; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px 24px; margin-bottom: 20px;
+  }
+  .card h3 {
+    font-size: 0.95rem; color: var(--teal); font-weight: 700;
+    margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
+  }
+
+  /* ── CSV upload ── */
+  .upload-zone {
+    border: 2.5px dashed var(--border); border-radius: var(--radius);
+    padding: 36px 20px; text-align: center; cursor: pointer;
+    transition: all 0.2s; background: #fafcfd;
+  }
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: var(--teal); background: #eef6f8;
+  }
+  .upload-zone input { display: none; }
+  .upload-icon { font-size: 2.2rem; margin-bottom: 10px; }
+  .upload-zone p { color: var(--muted); font-size: 0.88rem; }
+  .upload-zone strong { color: var(--teal); cursor: pointer; }
+
+  .csv-template {
+    margin-top: 14px; padding: 12px 16px;
+    background: #f0f8f4; border-radius: 8px; border: 1px solid #c3e6d0;
+  }
+  .csv-template p { font-size: 0.82rem; color: #1e7a47; font-weight: 600; margin-bottom: 6px; }
+  .csv-template code {
+    font-size: 0.8rem; color: var(--text); display: block;
+    background: #fff; padding: 8px 10px; border-radius: 6px;
+    border: 1px solid #c3e6d0; white-space: pre; overflow-x: auto;
+  }
+
+  /* ── Preview table ── */
+  .preview-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px;
+  }
+  .preview-header span { font-size: 0.85rem; color: var(--muted); }
+  .count-badge {
+    display: inline-block; background: var(--teal); color: #fff;
+    font-size: 0.75rem; font-weight: 700; padding: 2px 10px;
+    border-radius: 20px; margin-left: 8px;
+  }
+
+  .table-wrap { overflow-x: auto; max-height: 340px; overflow-y: auto; border-radius: 8px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+  th {
+    background: #eef3f6; color: var(--muted); font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 1;
+  }
+  td { padding: 9px 12px; border-bottom: 1px solid #eef2f5; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fbfc; }
+  .td-err { color: var(--red); font-size: 0.8rem; }
+  .td-ok  { color: var(--green); font-size: 0.8rem; }
+  .empty-row td { text-align: center; color: var(--muted); padding: 28px; }
+
+  /* ── Manual add form ── */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  input, select {
+    padding: 9px 11px; border: 1.5px solid var(--border); border-radius: 7px;
+    font-size: 0.9rem; color: var(--text);
+  }
+  input:focus, select:focus { outline: none; border-color: var(--teal); }
+  input::placeholder { color: #b0bec5; }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    padding: 10px 26px; background: var(--teal); color: #fff;
+    border: none; border-radius: 8px; font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; transition: background 0.18s;
+  }
+  .btn-primary:hover { background: var(--teal2); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .btn-outline {
+    padding: 9px 20px; background: none; color: var(--teal);
+    border: 1.5px solid var(--teal); border-radius: 8px;
+    font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.18s;
+  }
+  .btn-outline:hover { background: #eef6f8; }
+
+  .btn-danger {
+    padding: 5px 12px; border-radius: 6px;
+    background: #fdf0ee; color: var(--red);
+    border: 1px solid #f5c0bb; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  }
+  .btn-danger:hover { background: #fde2de; }
+
+  .form-actions { margin-top: 16px; display: flex; align-items: center; gap: 14px; }
+  .form-msg { font-size: 0.85rem; font-weight: 500; }
+  .form-msg.ok  { color: var(--green); }
+  .form-msg.err { color: var(--red); }
+
+  /* ── Import result ── */
+  .import-result {
+    margin-top: 14px; padding: 14px 18px;
+    border-radius: 8px; font-size: 0.88rem; font-weight: 500;
+    display: none;
+  }
+  .import-result.ok  { background: #eafaf2; color: #1e7a47; border: 1px solid #a9e4c4; }
+  .import-result.err { background: #fdf0ee; color: var(--red); border: 1px solid #f5c0bb; }
+
+  /* ── Students list ── */
+  .list-controls {
+    display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap;
+  }
+  .search-input {
+    padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 7px;
+    font-size: 0.88rem; width: 220px;
+  }
+  .search-input:focus { outline: none; border-color: var(--teal); }
+  .filter-select {
+    padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 7px;
+    font-size: 0.85rem; color: var(--text);
+  }
+  .filter-select:focus { outline: none; border-color: var(--teal); }
+
+  .badge-active   { display:inline-block;padding:2px 8px;border-radius:12px;font-size:0.73rem;font-weight:700;background:#e8f8f0;color:var(--green); }
+  .badge-inactive { display:inline-block;padding:2px 8px;border-radius:12px;font-size:0.73rem;font-weight:700;background:#fdf0ee;color:var(--red); }
+
+  @media (max-width: 700px) {
+    .form-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Bhāva <span>Student</span> Import</h1>
+  <span class="school-badge" id="schoolBadge">No school selected</span>
+</header>
+
+<div class="main">
+
+  <!-- School selector -->
+  <div class="school-bar">
+    <label>School ID</label>
+    <input type="text" id="schoolIdInput" placeholder="BHAVA-SVN-001"
+      value="BHAVA-SVN-001" oninput="onSchoolChange()"/>
+    <button class="btn-primary" onclick="loadStudents()">Load Students</button>
+    <button class="btn-primary" id="syncCloudBtn" onclick="syncToCloud()"
+      style="background:linear-gradient(135deg,#0ea5e9,#6366f1);margin-left:8px"
+      title="Upload all students to cloud so they can login from any device">
+      ☁️ Sync to Cloud
+    </button>
+    <span class="form-msg" id="school-msg"></span>
+    <span class="form-msg" id="sync-msg"></span>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('csv')">CSV Import</button>
+    <button class="tab-btn" onclick="showTab('manual')">Add Manually</button>
+    <button class="tab-btn" onclick="showTab('list')">View All Students</button>
+  </div>
+
+  <!-- ══ CSV Import Tab ══ -->
+  <div class="tab-panel active" id="tab-csv">
+    <div class="card">
+      <h3>Import Students from CSV</h3>
+
+      <!-- Template -->
+      <div class="csv-template">
+        <p>CSV format (first row = header, columns in any order):</p>
+        <code>roll_no,name,class,section
+1,Arjun Reddy,6,A
+2,Priya Sharma,6,A
+3,Kavya Nair,6,B</code>
+      </div>
+
+      <br/>
+
+      <!-- Drop zone -->
+      <div class="upload-zone" id="dropZone"
+        onclick="document.getElementById('csvFile').click()"
+        ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <input type="file" id="csvFile" accept=".csv,.txt" onchange="onFileSelect(event)"/>
+        <div class="upload-icon">📄</div>
+        <p><strong>Click to choose a CSV file</strong> or drag and drop it here</p>
+        <p style="margin-top:6px;font-size:0.8rem">Supports .csv and .txt files</p>
+      </div>
+
+      <!-- Preview -->
+      <div id="previewSection" style="display:none;margin-top:20px">
+        <div class="preview-header">
+          <span>Preview<span class="count-badge" id="previewCount">0</span></span>
+          <button class="btn-outline" onclick="clearPreview()">Clear</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th><th>Roll No</th><th>Name</th><th>Class</th><th>Section</th><th>PIN</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="previewBody"></tbody>
+          </table>
+        </div>
+        <div class="form-actions" style="margin-top:16px">
+          <button class="btn-primary" id="importBtn" onclick="doImport()">Import All Students</button>
+          <span class="form-msg" id="import-msg"></span>
+        </div>
+        <div class="import-result" id="importResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ Manual Add Tab ══ -->
+  <div class="tab-panel" id="tab-manual">
+    <div class="card">
+      <h3>Add Single Student</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Roll No</label>
+          <input type="text" id="m_roll" placeholder="e.g. 1"/>
+        </div>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="m_name" placeholder="e.g. Arjun Reddy"/>
+        </div>
+        <div class="form-group">
+          <label>Class</label>
+          <input type="text" id="m_class" placeholder="e.g. 6"/>
+        </div>
+        <div class="form-group">
+          <label>Section</label>
+          <input type="text" id="m_section" placeholder="e.g. A"/>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" onclick="addManual()">Add Student</button>
+        <span class="form-msg" id="manual-msg"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ View All Students Tab ══ -->
+  <div class="tab-panel" id="tab-list">
+    <div class="card">
+      <h3>All Students</h3>
+      <div class="list-controls">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search name or roll no…" oninput="filterStudents()"/>
+        <select class="filter-select" id="filterClass" onchange="filterStudents()">
+          <option value="">All Classes</option>
+        </select>
+        <select class="filter-select" id="filterSection" onchange="filterStudents()">
+          <option value="">All Sections</option>
+        </select>
+        <button class="btn-outline" onclick="loadStudents()">↻ Refresh</button>
+      </div>
+      <div class="table-wrap" style="max-height:480px">
+        <table>
+          <thead>
+            <tr>
+              <th>Roll No</th><th>Name</th><th>Class</th><th>Section</th><th>PIN</th><th>Status</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="studentBody">
+            <tr class="empty-row"><td colspan="6">Load a school to view students.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px;font-size:0.82rem;color:var(--muted)" id="listCount"></div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+'use strict';
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let schoolId    = 'BHAVA-SVN-001';
+let parsedRows  = [];   // CSV preview rows
+let allStudents = [];   // loaded from DB
+
+// ── School ────────────────────────────────────────────────────────────────────
+function onSchoolChange() {
+  schoolId = document.getElementById('schoolIdInput').value.trim().toUpperCase();
+  document.getElementById('schoolBadge').textContent = schoolId || 'No school selected';
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`tab-${name}`).classList.add('active');
+  const labels = { csv: 'csv import', manual: 'add manually', list: 'view all' };
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    if (b.textContent.toLowerCase().includes(labels[name]?.split(' ')[0])) b.classList.add('active');
+  });
+  if (name === 'list') loadStudents();
+}
+
+// ── CSV Parsing ───────────────────────────────────────────────────────────────
+function onDragOver(e)  { e.preventDefault(); document.getElementById('dropZone').classList.add('drag-over'); }
+function onDragLeave(e) { document.getElementById('dropZone').classList.remove('drag-over'); }
+function onDrop(e) {
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) parseCSVFile(file);
+}
+function onFileSelect(e) {
+  const file = e.target.files[0];
+  if (file) parseCSVFile(file);
+}
+
+function parseCSVFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const text = e.target.result;
+    parseCSVText(text);
+  };
+  reader.readAsText(file);
+}
+
+function parseCSVText(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l);
+  if (lines.length < 2) { alert('CSV must have a header row and at least one data row.'); return; }
+
+  // Parse header — find column indices (case-insensitive)
+  const header = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[^a-z_]/g, ''));
+  const idx = {
+    roll_no: header.indexOf('roll_no'),
+    name:    header.findIndex(h => h === 'name' || h === 'student_name' || h === 'studentname'),
+    class:   header.findIndex(h => h === 'class' || h === 'grade'),
+    section: header.findIndex(h => h === 'section' || h === 'div'),
+  };
+
+  // Fallback: positional (roll_no, name, class, section)
+  if (idx.roll_no < 0) idx.roll_no = 0;
+  if (idx.name    < 0) idx.name    = 1;
+  if (idx.class   < 0) idx.class   = 2;
+  if (idx.section < 0) idx.section = 3;
+
+  parsedRows = [];
+  const errors = [];
+
+  for (let i = 1; i < lines.length; i++) {
+    const cols = lines[i].split(',').map(c => c.trim());
+    const roll = cols[idx.roll_no] || '';
+    const name = cols[idx.name]    || '';
+    const cls  = cols[idx.class]   || '';
+    const sec  = cols[idx.section] || '';
+
+    if (!roll || !name) {
+      errors.push(`Row ${i + 1}: missing roll_no or name`);
+      continue;
+    }
+
+    parsedRows.push({ roll_no: roll, name, class: cls, section: sec, school_id: schoolId, pin: genPin() });
+  }
+
+  renderPreview(parsedRows, errors);
+}
+
+function renderPreview(rows, errors) {
+  document.getElementById('previewSection').style.display = 'block';
+  document.getElementById('previewCount').textContent = rows.length;
+
+  const tbody = document.getElementById('previewBody');
+  let html = rows.map((r, i) => `
+    <tr>
+      <td style="color:var(--muted)">${i + 1}</td>
+      <td>${r.roll_no}</td><td style="font-weight:700;color:#38bdf8;letter-spacing:2px;font-family:monospace;">${r.pin || "auto"}</td>
+      <td><strong>${r.name}</strong></td>
+      <td>${r.class}</td>
+      <td>${r.section || '—'}</td>
+      <td class="td-ok">✓ Ready</td>
+    </tr>
+  `).join('');
+
+  if (errors.length > 0) {
+    html += errors.map(e => `
+      <tr>
+        <td colspan="5" class="td-err">⚠ ${e}</td>
+        <td class="td-err">Skipped</td>
+      </tr>
+    `).join('');
+  }
+
+  tbody.innerHTML = html || '<tr class="empty-row"><td colspan="6">No valid rows found.</td></tr>';
+}
+
+function clearPreview() {
+  parsedRows = [];
+  document.getElementById('previewSection').style.display = 'none';
+  document.getElementById('csvFile').value = '';
+  document.getElementById('importResult').style.display = 'none';
+}
+
+// ── Import ────────────────────────────────────────────────────────────────────
+async function doImport() {
+  if (!schoolId) { alert('Enter a School ID first.'); return; }
+  if (!parsedRows.length) { alert('No rows to import.'); return; }
+
+  // Attach school_id to all rows
+  const rows = parsedRows.map(r => ({ ...r, school_id: schoolId }));
+
+  const btn = document.getElementById('importBtn');
+  btn.disabled = true; btn.textContent = `Importing ${rows.length} students…`;
+
+  try {
+    const result = await window.bhava.importStudents(rows);
+    const resEl  = document.getElementById('importResult');
+
+    if (result.ok) {
+      resEl.className = 'import-result ok';
+      resEl.style.display = 'block';
+      const errCount = result.errors?.length || 0;
+      resEl.textContent = `✓ ${rows.length - errCount} students imported successfully to ${schoolId}.` +
+        (errCount ? ` ${errCount} rows had errors.` : '');
+      clearPreview();
+      // Switch to list tab to see results
+      setTimeout(() => { showTab('list'); }, 1500);
+    } else {
+      resEl.className = 'import-result err';
+      resEl.style.display = 'block';
+      resEl.textContent = `✗ Import failed: ${result.error}`;
+    }
+  } catch (e) {
+    const resEl = document.getElementById('importResult');
+    resEl.className = 'import-result err';
+    resEl.style.display = 'block';
+    resEl.textContent = `✗ Error: ${e.message}`;
+  } finally {
+    btn.disabled = false; btn.textContent = 'Import All Students';
+  }
+}
+
+// ── Manual Add ────────────────────────────────────────────────────────────────
+async function addManual() {
+  const roll    = document.getElementById('m_roll').value.trim();
+  const name    = document.getElementById('m_name').value.trim();
+  const cls     = document.getElementById('m_class').value.trim();
+  const section = document.getElementById('m_section').value.trim().toUpperCase();
+  const msg     = document.getElementById('manual-msg');
+
+  if (!roll || !name || !cls) {
+    showMsg(msg, 'Roll No, Name, and Class are required.', false); return;
+  }
+  if (!schoolId) {
+    showMsg(msg, 'Enter a School ID at the top first.', false); return;
+  }
+
+  try {
+    const result = await window.bhava.importStudents([
+      { roll_no: roll, name, class: cls, section, school_id: schoolId, pin: genPin() }
+    ]);
+    if (result.ok) {
+      showMsg(msg, `"${name}" added successfully.`, true);
+      document.getElementById('m_roll').value    = '';
+      document.getElementById('m_name').value    = '';
+      document.getElementById('m_class').value   = '';
+      document.getElementById('m_section').value = '';
+    } else {
+      showMsg(msg, result.error || 'Failed.', false);
+    }
+  } catch (e) {
+    showMsg(msg, e.message, false);
+  }
+}
+
+// ── Load & Display Students ───────────────────────────────────────────────────
+async function loadStudents() {
+  schoolId = document.getElementById('schoolIdInput').value.trim().toUpperCase();
+  document.getElementById('schoolBadge').textContent = schoolId || 'No school selected';
+
+  if (!schoolId) {
+    showMsg(document.getElementById('school-msg'), 'Enter a School ID.', false); return;
+  }
+
+  try {
+    allStudents = await window.bhava.getStudents(schoolId);
+    renderStudentList(allStudents);
+    populateFilters(allStudents);
+    showMsg(document.getElementById('school-msg'), `${allStudents.length} students loaded.`, true);
+  } catch (e) {
+    showMsg(document.getElementById('school-msg'), 'Error loading students.', false);
+  }
+}
+
+function populateFilters(students) {
+  const classes   = [...new Set(students.map(s => s.class))].sort();
+  const sections  = [...new Set(students.map(s => s.section).filter(Boolean))].sort();
+
+  const clsSel = document.getElementById('filterClass');
+  clsSel.innerHTML = '<option value="">All Classes</option>' +
+    classes.map(c => `<option value="${c}">Class ${c}</option>`).join('');
+
+  const secSel = document.getElementById('filterSection');
+  secSel.innerHTML = '<option value="">All Sections</option>' +
+    sections.map(s => `<option value="${s}">Section ${s}</option>`).join('');
+}
+
+function filterStudents() {
+  const search  = document.getElementById('searchInput').value.toLowerCase();
+  const cls     = document.getElementById('filterClass').value;
+  const section = document.getElementById('filterSection').value;
+
+  const filtered = allStudents.filter(s => {
+    const matchSearch  = !search  || s.name.toLowerCase().includes(search) || String(s.roll_no).includes(search);
+    const matchClass   = !cls     || String(s.class) === cls;
+    const matchSection = !section || s.section === section;
+    return matchSearch && matchClass && matchSection;
+  });
+
+  renderStudentList(filtered);
+}
+
+function renderStudentList(students) {
+  const tbody = document.getElementById('studentBody');
+  document.getElementById('listCount').textContent =
+    `Showing ${students.length} of ${allStudents.length} students`;
+
+  if (!students.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No students found.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = students.map(s => `
+    <tr>
+      <td style="font-weight:600">${s.roll_no}</td><td style="font-weight:700;color:#38bdf8;letter-spacing:2px;font-family:monospace;">${s.pin || "—"}</td>
+      <td>${s.name}</td>
+      <td style="text-align:center">${s.class}</td>
+      <td style="text-align:center">${s.section || '—'}</td>
+      <td><span class="${s.is_active ? 'badge-active' : 'badge-inactive'}">${s.is_active ? 'Active' : 'Inactive'}</span></td>
+      <td style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <a href="bhava-student-report.html?sid=${s.id}"
+           style="padding:4px 10px;border-radius:6px;background:#e8f4f6;color:#1B4F5A;font-size:0.72rem;font-weight:700;text-decoration:none">
+          📊 Report
+        </a>
+        <a href="bhava-parent-report.html?sid=${s.id}"
+           style="padding:4px 10px;border-radius:6px;background:#1B4F5A;color:#fff;font-size:0.72rem;font-weight:700;text-decoration:none">
+          🖨 Parent PDF
+        </a>
+        ${s.is_active
+          ? `<button class="btn-danger" onclick="removeStudent(${s.id},'${s.name.replace(/'/g,'')}')">Remove</button>`
+          : '—'}
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function removeStudent(id, name) {
+  if (!confirm(`Remove "${name}" from active students?\nThey will no longer be able to log in.`)) return;
+  try {
+    await window.bhava.deleteStudent(id);
+    await loadStudents();
+  } catch (e) {
+    alert('Error removing student: ' + e.message);
+  }
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function showMsg(el, text, ok) {
+  el.textContent = text;
+  el.className   = `form-msg ${ok ? 'ok' : 'err'}`;
+  if (ok) setTimeout(() => { el.textContent = ''; }, 4000);
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+(function init() {
+  schoolId = document.getElementById('schoolIdInput').value.trim().toUpperCase();
+  document.getElementById('schoolBadge').textContent = schoolId;
+})();
+
+function printPinSheet() {
+  var rows = document.querySelectorAll('#studentsTable tbody tr');
+  if (!rows.length) { alert('No students loaded.'); return; }
+  var html = `<!DOCTYPE html><html><head><title>Bhāva Tech — Student PIN Sheet</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 30px; }
+    h2 { color: #1e3a5f; margin-bottom: 4px; }
+    p { color: #64748b; margin-bottom: 20px; font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #1e3a5f; color: #fff; padding: 10px 12px; text-align: left; font-size: 13px; }
+    td { padding: 9px 12px; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
+    .pin { font-weight: 800; color: #0f766e; letter-spacing: 3px; font-size: 15px; }
+    @media print { button { display: none; } }
+  </style></head><body>
+  <h2>Bhāva Tech — Student Login PINs</h2>
+  <p>Share each student's PIN privately. Do not display this sheet publicly.</p>
+  <table>
+    <thead><tr><th>#</th><th>Roll No</th><th>Name</th><th>Class</th><th>PIN</th></tr></thead>
+    <tbody>`;
+
+  rows.forEach(function(row, i) {
+    var cells = row.querySelectorAll('td');
+    if (cells.length < 5) return;
+    var roll = cells[0].textContent;
+    var name = cells[1].textContent;
+    var cls  = cells[2].textContent;
+    var pin  = cells[4].textContent;
+    html += `<tr><td>${i+1}</td><td>${roll}</td><td>${name}</td><td>${cls}</td><td class="pin">${pin}</td></tr>`;
+  });
+
+  html += `</tbody></table>
+  <p style="margin-top:20px;font-size:11px;color:#94a3b8;">
+    Generated by Bhāva Tech Admin Panel · Confidential
+  </p></body></html>`;
+
+  var w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+  w.print();
+}
+
+// ── Sync to Cloud ───────────────────────────────────────────────────────────────
+async function syncToCloud() {
+  if (!schoolId) { alert('Enter a School ID first.'); return; }
+
+  const btn  = document.getElementById('syncCloudBtn');
+  const msg  = document.getElementById('sync-msg');
+  btn.disabled = true;
+  btn.textContent = '⏳ Syncing…';
+  msg.style.color = '#64748b';
+  msg.textContent = 'Uploading students to cloud…';
+
+  try {
+    // Get all students from local DB via IPC
+    const students = await window.bhava.getStudents(schoolId);
+    if (!students || students.length === 0) {
+      msg.style.color = '#f59e0b';
+      msg.textContent = '⚠️ No students found. Load students first.';
+      return;
+    }
+
+    // POST to cloud
+    const res = await fetch('https://bhava-cloud.onrender.com/sync/students', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-bhava-sync-key': '0042bfd36ef4a5a219e0bbb206e58ec7b84c7d9334b75c7e'
+      },
+      body: JSON.stringify({
+        school_id: schoolId,
+        students: students.map(s => ({
+          id:        s.id,
+          roll_no:   s.roll_no || s.roll_number,
+          name:      s.name,
+          class:     s.class,
+          section:   s.section || '',
+          pin:       s.pin || '',
+          is_active: s.is_active !== false
+        }))
+      })
+    });
+
+    const result = await res.json();
+    if (res.ok) {
+      msg.style.color = '#22c55e';
+      msg.textContent = `✓ ${students.length} students synced to cloud. Login works from any device now.`;
+    } else {
+      msg.style.color = '#ef4444';
+      msg.textContent = `✗ Sync failed: ${result.error || 'Unknown error'}`;
+    }
+  } catch (e) {
+    msg.style.color = '#ef4444';
+    msg.textContent = `✗ Error: ${e.message}`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '☁️ Sync to Cloud';
+  }
+}
+
+</script>
+</body>
+</html>

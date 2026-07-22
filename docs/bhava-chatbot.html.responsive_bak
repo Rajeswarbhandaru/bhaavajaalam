@@ -1,0 +1,646 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bhāva Tech — AI Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --color-bg: #f7f6f2;
+      --color-surface: #ffffff;
+      --color-surface-2: #f3f0ec;
+      --color-border: #e0ddd8;
+      --color-text: #1a1814;
+      --color-text-muted: #6b6966;
+      --color-text-faint: #a8a6a2;
+      --color-primary: #01696f;
+      --color-primary-hover: #0c4e54;
+      --color-primary-light: #e0f0f0;
+      --color-user-bubble: #01696f;
+      --color-bot-bubble: #ffffff;
+      --color-accent: #f0a500;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.07);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.13);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-display: 'Instrument Serif', serif;
+      --space-1: 4px; --space-2: 8px; --space-3: 12px;
+      --space-4: 16px; --space-5: 20px; --space-6: 24px;
+      --space-8: 32px; --space-10: 40px; --space-12: 48px;
+    }
+    [data-theme="dark"] {
+      --color-bg: #131210;
+      --color-surface: #1c1b18;
+      --color-surface-2: #242320;
+      --color-border: #2e2d2a;
+      --color-text: #e8e6e2;
+      --color-text-muted: #8a8886;
+      --color-text-faint: #5a5856;
+      --color-primary: #3fa8b0;
+      --color-primary-hover: #2d8f97;
+      --color-primary-light: #1a3538;
+      --color-user-bubble: #3fa8b0;
+      --color-bot-bubble: #242320;
+      --color-accent: #f0a500;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--font-body);
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-4);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* === HEADER === */
+    .header {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-5);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+    }
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--color-text);
+      letter-spacing: -0.01em;
+    }
+    .brand-name span {
+      color: var(--color-primary);
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    .theme-btn {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      transition: all 0.2s;
+      font-size: 16px;
+    }
+    .theme-btn:hover { background: var(--color-surface-2); color: var(--color-text); }
+    .status-dot {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: var(--space-1) var(--space-3);
+    }
+    .dot {
+      width: 7px; height: 7px;
+      background: #22c55e;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* === CHAT WINDOW === */
+    .chat-window {
+      width: 100%;
+      max-width: 800px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      height: 72vh;
+      min-height: 420px;
+    }
+
+    /* Chat top bar */
+    .chat-topbar {
+      padding: var(--space-4) var(--space-5);
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-surface);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .bot-avatar {
+      width: 40px; height: 40px;
+      background: var(--color-primary);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .chat-topbar-info h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+    .chat-topbar-info p {
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+      max-width: none;
+    }
+
+    /* Messages area */
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      scroll-behavior: smooth;
+    }
+    .messages::-webkit-scrollbar { width: 4px; }
+    .messages::-webkit-scrollbar-track { background: transparent; }
+    .messages::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 4px; }
+
+    /* Message bubbles */
+    .message {
+      display: flex;
+      gap: var(--space-3);
+      align-items: flex-end;
+      animation: msgIn 0.3s cubic-bezier(0.16,1,0.3,1);
+    }
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .message.user { flex-direction: row-reverse; }
+    .msg-avatar {
+      width: 30px; height: 30px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .msg-avatar.bot { background: var(--color-primary-light); color: var(--color-primary); font-weight: 700; }
+    .msg-avatar.user { background: var(--color-primary); color: #fff; font-weight: 700; }
+    .bubble {
+      max-width: 72%;
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      word-wrap: break-word;
+    }
+    .bubble.bot {
+      background: var(--color-bot-bubble);
+      border: 1px solid var(--color-border);
+      border-bottom-left-radius: 4px;
+      color: var(--color-text);
+      box-shadow: var(--shadow-sm);
+    }
+    .bubble.user {
+      background: var(--color-user-bubble);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .bubble-time {
+      font-size: 0.7rem;
+      color: var(--color-text-faint);
+      margin-top: var(--space-1);
+      text-align: right;
+    }
+    .bubble.user + .bubble-time { text-align: right; }
+
+    /* Typing indicator */
+    .typing-indicator {
+      display: flex;
+      gap: var(--space-3);
+      align-items: flex-end;
+    }
+    .typing-dots {
+      background: var(--color-bot-bubble);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      border-bottom-left-radius: 4px;
+      padding: var(--space-3) var(--space-4);
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .typing-dots span {
+      width: 7px; height: 7px;
+      background: var(--color-text-faint);
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+    }
+
+    /* Quick replies */
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-5);
+      border-top: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+    }
+    .quick-reply-btn {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: var(--space-2) var(--space-3);
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: var(--font-body);
+    }
+    .quick-reply-btn:hover {
+      background: var(--color-primary-light);
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    /* Input area */
+    .input-area {
+      padding: var(--space-4) var(--space-5);
+      border-top: 1px solid var(--color-border);
+      background: var(--color-surface);
+      display: flex;
+      gap: var(--space-3);
+      align-items: flex-end;
+    }
+    .input-wrap {
+      flex: 1;
+      background: var(--color-surface-2);
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      padding: var(--space-2) var(--space-3);
+      transition: border-color 0.2s;
+    }
+    .input-wrap:focus-within {
+      border-color: var(--color-primary);
+    }
+    #chat-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--color-text);
+      resize: none;
+      max-height: 100px;
+      line-height: 1.5;
+    }
+    #chat-input::placeholder { color: var(--color-text-faint); }
+    .send-btn {
+      width: 42px; height: 42px;
+      background: var(--color-primary);
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      transition: background 0.2s, transform 0.1s;
+      flex-shrink: 0;
+    }
+    .send-btn:hover { background: var(--color-primary-hover); }
+    .send-btn:active { transform: scale(0.95); }
+    .send-btn svg { width: 18px; height: 18px; }
+
+    /* Footer */
+    .footer {
+      margin-top: var(--space-4);
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--color-text-faint);
+    }
+    .footer a { color: var(--color-primary); text-decoration: none; }
+
+    /* Suggestion chips below input */
+    .powered-by {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 0.7rem;
+      color: var(--color-text-faint);
+      padding: 0 var(--space-5) var(--space-2);
+    }
+    .powered-by span { color: var(--color-primary); font-weight: 600; }
+
+    @media (max-width: 600px) {
+      .chat-window { height: 80vh; }
+      .bubble { max-width: 85%; }
+      .brand-name { font-size: 1.2rem; }
+      .quick-replies { gap: var(--space-1); }
+      .quick-reply-btn { font-size: 0.72rem; padding: 5px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">
+      <svg class="brand-logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Bhāva Tech Logo">
+        <rect width="40" height="40" rx="10" fill="#01696f"/>
+        <path d="M10 28 L20 12 L30 28" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M14 22 L26 22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="20" cy="12" r="2.5" fill="#f0a500"/>
+      </svg>
+      <span class="brand-name">Bhāva <span>Tech</span></span>
+    </div>
+    <div class="header-actions">
+      <div class="status-dot"><span class="dot"></span> AI Online</div>
+      <button class="theme-btn" data-theme-toggle aria-label="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+
+  <!-- Chat Window -->
+  <div class="chat-window" role="main">
+    <!-- Top bar -->
+    <div class="chat-topbar">
+      <div class="bot-avatar">🤖</div>
+      <div class="chat-topbar-info">
+        <h3>Bhāva Assistant</h3>
+        <p>EdTech & AI Products · Visakhapatnam, India · Replies instantly</p>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="messages" id="messages" aria-live="polite" aria-label="Chat messages">
+      <!-- Welcome message injected by JS -->
+    </div>
+
+    <!-- Quick replies -->
+    <div class="quick-replies" id="quick-replies">
+      <button class="quick-reply-btn" onclick="sendQuick('What does Bhāva Tech build?')">🏗️ Our Products</button>
+      <button class="quick-reply-btn" onclick="sendQuick('What services do you offer?')">💼 Services</button>
+      <button class="quick-reply-btn" onclick="sendQuick('What is your tech stack?')">⚙️ Tech Stack</button>
+      <button class="quick-reply-btn" onclick="sendQuick('How much does a project cost?')">💰 Pricing</button>
+      <button class="quick-reply-btn" onclick="sendQuick('I want to contact Bhāva Tech')">📬 Contact</button>
+      <button class="quick-reply-btn" onclick="sendQuick('Can I request a demo?')">🎯 Request Demo</button>
+    </div>
+
+    <!-- Input -->
+    <div class="input-area">
+      <div class="input-wrap">
+        <textarea id="chat-input" placeholder="Ask about our products, services, pricing…" rows="1" aria-label="Type your message"></textarea>
+      </div>
+      <button class="send-btn" onclick="sendMessage()" aria-label="Send message">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+    <div class="powered-by">Powered by <span>Bhāva Tech AI</span> · Python NLP + RAG Pipeline</div>
+  </div>
+
+  <div class="footer">
+    Built by <a href="#" target="_blank" rel="noopener">Bhāva Tech</a> · Visakhapatnam, India
+  </div>
+
+<script>
+  // ── Theme Toggle ──
+  (function(){
+    const t=document.querySelector('[data-theme-toggle]');
+    const r=document.documentElement;
+    let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+    r.setAttribute('data-theme',d);
+    t.innerHTML = d==='dark'?'☀️':'🌙';
+    t&&t.addEventListener('click',()=>{
+      d=d==='dark'?'light':'dark';
+      r.setAttribute('data-theme',d);
+      t.innerHTML=d==='dark'?'☀️':'🌙';
+      t.setAttribute('aria-label','Switch to '+(d==='dark'?'light':'dark')+' mode');
+    });
+  })();
+
+  // ── Knowledge Base (client-side RAG simulation) ──
+  const KB = [
+    {
+      keywords:["hello","hi","hey","namaste","good morning","good evening","greetings","start","hii"],
+      answer:"Namaste! 🙏 Welcome to Bhāva Tech! I'm your AI assistant. I can help you learn about our **products**, **services**, **technology**, **pricing**, or how to **contact us**. What would you like to know?"
+    },
+    {
+      keywords:["about","who","company","what is bhava","bhava tech","founded","startup","vision","mission"],
+      answer:"Bhāva Tech is an EdTech startup based in Visakhapatnam, Andhra Pradesh, India 🇮🇳. We build educational technology products — from learning games and AI language tools to cognitive assessment platforms and custom web & mobile applications for schools, institutes, and learners worldwide."
+    },
+    {
+      keywords:["product","app","game","tool","build","offer","platform","make","create","what do"],
+      answer:"Bhāva Tech builds:\n🎮 **Educational browser games** for children (language, grammar, cognitive skills)\n🧠 **AI language tools** — Sanskrit NLP (Rishi AI) & grammar correction (Sulekhikaa)\n📱 **Mobile-ready learning apps** using React + Capacitor\n📊 **Cognitive assessment & brain training** platforms\n🌐 **Custom websites & web apps** for schools and EdTech clients"
+    },
+    {
+      keywords:["service","hire","freelance","develop","custom","project","work","help","outsource","need"],
+      answer:"Our development services include:\n✅ Full-stack web development (React, TypeScript, Node.js)\n✅ AI & NLP pipeline development (Python, PyTorch, Transformers)\n✅ Educational game & app development\n✅ Mobile apps (Android, Capacitor)\n✅ LMS & EdTech platform development\n✅ AI chatbot development\n\nInterested? Type **'contact'** to get in touch!"
+    },
+    {
+      keywords:["contact","reach","email","phone","talk","connect","discuss","get in touch","message","location"],
+      answer:"You can reach Bhāva Tech at:\n📧 **Email:** contact@bhavatech.in\n📍 **Location:** Visakhapatnam, Andhra Pradesh, India\n🕐 **Response time:** Within 24 hours\n\nWe'd love to discuss your project and find the best solution for you!"
+    },
+    {
+      keywords:["demo","trial","try","see","show","example","sample","preview","demonstration","schedule"],
+      answer:"We'd love to show you a live demo! 🎯\n\nPlease share:\n• Your name & organization\n• What type of product you're looking for\n• Preferred date/time for a call\n\nEmail us at **contact@bhavatech.in** and we'll schedule a personalized demo session!"
+    },
+    {
+      keywords:["price","cost","charge","rate","budget","how much","fee","pay","quote","estimate","expensive"],
+      answer:"Our pricing is flexible based on project scope 💼:\n\n• **Fixed-price projects** — for well-defined scopes\n• **Hourly engagement** — for ongoing development\n• **Packaged EdTech solutions** — for standard products\n\nBallpark ranges:\n🌐 Websites: $300–$1,000\n📱 Web Apps: $500–$2,500\n🤖 AI Tools: $500–$3,000\n\nContact us for a **free custom quote**!"
+    },
+    {
+      keywords:["tech","stack","language","framework","python","react","node","typescript","technology","tools","use","built with"],
+      answer:"Bhāva Tech's core tech stack ⚙️:\n\n**Frontend:** React, TypeScript, Vite, HTML/CSS\n**Backend:** Python, Node.js, Express, REST APIs\n**AI/ML:** PyTorch, Hugging Face Transformers, NLP\n**Mobile:** Capacitor, Android\n**Cloud:** Google Cloud, Firebase\n**Databases:** MySQL, Firebase, Google Sheets API"
+    },
+    {
+      keywords:["nlp","ai","sanskrit","rishi","sulekhika","grammar","language model","fine-tune","transformer","bert","gpt","llm"],
+      answer:"Our AI & NLP expertise 🧠:\n\n• **Rishi AI** — Sanskrit language processing & grammar analysis\n• **Sulekhikaa** — Grammar correction for Indian languages\n• OCR post-correction & text annotation pipelines\n• Transformer model fine-tuning (FLAN-T5, BERT, GPT)\n• Document Q&A using RAG pipelines\n• Multilingual NLP for Indian languages"
+    },
+    {
+      keywords:["education","school","child","kid","learn","student","teacher","cognitive","brain","edtech","learning"],
+      answer:"Bhāva Tech specializes in educational technology 📚:\n\n• Language & grammar **learning games** for children\n• **Cognitive development** & brain training tools\n• **Assessment platforms** for schools & institutes\n• **Personalized learning** experiences powered by AI\n• Support for Hindi, Sanskrit, Telugu & other Indian languages"
+    },
+    {
+      keywords:["chatbot","chat bot","ai assistant","conversational","bot","chat","rag","retrieval"],
+      answer:"Great question! 🤖 We build AI chatbots exactly like this one using:\n• **Python** backend with RAG pipeline\n• **React** frontend with real-time chat UI\n• **Document Q&A** (ingests your PDFs, knowledge base)\n• **Multi-platform** deployment (web + mobile)\n\nThis very chatbot was built by Bhāva Tech as a live demo! Interested in one for your business?"
+    },
+    {
+      keywords:["mobile","android","ios","app","capacitor","phone","tablet","cross-platform"],
+      answer:"We build mobile applications using:\n📱 **Capacitor** — converts React web apps to Android/iOS\n🔧 **Android Studio** — native Android development\n🌐 **PWA** — Progressive Web App for cross-platform reach\n\nOur mobile apps work seamlessly on phones, tablets, and web browsers from a single codebase."
+    }
+  ];
+
+  function findAnswer(msg) {
+    const m = msg.toLowerCase().trim();
+    let best = null, bestScore = 0;
+    for (const item of KB) {
+      const score = item.keywords.filter(kw => m.includes(kw)).length;
+      if (score > bestScore) { bestScore = score; best = item; }
+    }
+    if (best && bestScore > 0) return best.answer;
+    return "Thank you for your message! 🙏 I'm here to help with questions about Bhāva Tech's **products**, **services**, **technology**, or **pricing**. You can also use the quick buttons below, or type **'contact'** to reach our team directly!";
+  }
+
+  function formatMessage(text) {
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+  }
+
+  function getTime() {
+    return new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+  }
+
+  function addMessage(text, role) {
+    const messages = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = `message ${role}`;
+    const avatar = document.createElement('div');
+    avatar.className = `msg-avatar ${role}`;
+    avatar.textContent = role === 'bot' ? 'BT' : 'You'[0];
+    const bubble = document.createElement('div');
+    bubble.className = `bubble ${role}`;
+    bubble.innerHTML = formatMessage(text);
+    const wrap = document.createElement('div');
+    wrap.style.display = 'flex';
+    wrap.style.flexDirection = 'column';
+    wrap.style.alignItems = role === 'user' ? 'flex-end' : 'flex-start';
+    wrap.appendChild(bubble);
+    const time = document.createElement('div');
+    time.className = 'bubble-time';
+    time.textContent = getTime();
+    wrap.appendChild(time);
+    div.appendChild(avatar);
+    div.appendChild(wrap);
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function showTyping() {
+    const messages = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'typing-indicator';
+    div.id = 'typing';
+    div.innerHTML = `
+      <div class="msg-avatar bot">BT</div>
+      <div class="typing-dots"><span></span><span></span><span></span></div>`;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function hideTyping() {
+    const el = document.getElementById('typing');
+    if (el) el.remove();
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    input.style.height = 'auto';
+    addMessage(text, 'user');
+    showTyping();
+    // Simulate network delay for realistic feel
+    await new Promise(r => setTimeout(r, 700 + Math.random() * 600));
+    hideTyping();
+    // Try backend first, fall back to client-side KB
+    let reply;
+    try {
+      const res = await fetch('http://localhost:5000/chat', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({message: text}),
+        signal: AbortSignal.timeout(3000)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        reply = data.reply;
+      } else { throw new Error(); }
+    } catch {
+      reply = findAnswer(text);
+    }
+    addMessage(reply, 'bot');
+  }
+
+  function sendQuick(text) {
+    document.getElementById('chat-input').value = text;
+    sendMessage();
+  }
+
+  // Auto-resize textarea
+  document.getElementById('chat-input').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+  });
+
+  // Enter to send, Shift+Enter for newline
+  document.getElementById('chat-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  // Welcome message on load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      addMessage("Namaste! 🙏 Welcome to **Bhāva Tech**! I'm your AI assistant. Ask me about our educational products, AI tools, development services, or pricing — or tap a quick button below!", 'bot');
+    }, 500);
+  });
+</script>
+
+  <!-- Bhava Tech Session Tracker -->
+  <script>document.title = "Bhava Chatbot";</script>
+  <script src="bhava-bridge.js"></script>
+<script src="bhava-session.js"></script>
+<script src="bhava-game-nav.js"></script>
+</body>
+</html>
+

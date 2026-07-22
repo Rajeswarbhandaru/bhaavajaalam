@@ -1,0 +1,876 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Bhāva Tech — Cognitive Progress Report</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+  /* ══════════════════════════════════════════════════════
+     BASE
+  ══════════════════════════════════════════════════════ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:    #1B4F5A;
+    --teal-lt: #e8f4f6;
+    --amber:   #F5A623;
+    --amber-lt:#fff8ec;
+    --green:   #2d7a4f;
+    --green-lt:#e8f5ee;
+    --purple:  #5b3fa6;
+    --purple-lt:#f0ecfa;
+    --rose:    #b83255;
+    --rose-lt: #fceef3;
+    --sky:     #1a6fa8;
+    --sky-lt:  #eaf3fb;
+    --text:    #1a1a2e;
+    --muted:   #5a6577;
+    --border:  #dde3ea;
+    --bg:      #f7f9fb;
+    --white:   #ffffff;
+    --radius:  10px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ══════════════════════════════════════════════════════
+     PRINT
+  ══════════════════════════════════════════════════════ */
+  @media print {
+    body { background: #fff; font-size: 12px; }
+    .no-print { display: none !important; }
+    .page-wrap { max-width: 100%; padding: 0; box-shadow: none; }
+    .section-card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+    .cap-bar-fill { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .letterhead { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page { margin: 18mm 16mm; size: A4; }
+  }
+
+  /* ══════════════════════════════════════════════════════
+     LAYOUT
+  ══════════════════════════════════════════════════════ */
+  .page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 24px 48px;
+  }
+
+  /* ── Print button ── */
+  .print-bar {
+    display: flex; justify-content: flex-end; gap: 10px;
+    margin-bottom: 20px;
+  }
+  .btn-print {
+    background: var(--teal); color: #fff;
+    border: none; border-radius: 8px;
+    padding: 10px 22px; font-size: 0.88rem;
+    font-weight: 700; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-print:hover { background: #143e47; }
+
+  /* ══════════════════════════════════════════════════════
+     LETTERHEAD
+  ══════════════════════════════════════════════════════ */
+  .letterhead {
+    background: linear-gradient(135deg, var(--teal) 0%, #0f3540 100%);
+    color: #fff;
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 32px 36px 28px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .lh-logo {
+    width: 56px; height: 56px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+  }
+
+  .lh-center { flex: 1; }
+  .lh-brand  { font-family: 'Lora', serif; font-size: 1.3rem; font-weight: 700; letter-spacing: 0.02em; }
+  .lh-report { font-size: 0.78rem; opacity: 0.7; margin-top: 2px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .lh-right { text-align: right; font-size: 0.8rem; opacity: 0.75; line-height: 1.8; }
+  .lh-date  { font-weight: 700; opacity: 1; font-size: 0.88rem; }
+
+  /* ══════════════════════════════════════════════════════
+     STUDENT IDENTITY BAND
+  ══════════════════════════════════════════════════════ */
+  .student-band {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: none;
+    padding: 18px 36px;
+    display: flex; align-items: center; gap: 18px;
+  }
+
+  .student-avatar {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--teal-lt);
+    border: 3px solid var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; font-weight: 800; color: var(--teal);
+    flex-shrink: 0;
+  }
+
+  .student-name   { font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 700; }
+  .student-meta   { font-size: 0.8rem; color: var(--muted); margin-top: 3px; }
+  .student-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 5px; }
+  .badge {
+    font-size: 0.72rem; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px;
+    background: var(--teal-lt); color: var(--teal);
+  }
+
+  /* ══════════════════════════════════════════════════════
+     SECTION CARDS
+  ══════════════════════════════════════════════════════ */
+  .section-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-top: 18px;
+    overflow: hidden;
+  }
+
+  .section-head {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .section-head-icon { font-size: 1.1rem; }
+  .section-head-title {
+    font-size: 0.88rem; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--teal);
+  }
+
+  .section-body { padding: 20px 24px; }
+
+  /* ══════════════════════════════════════════════════════
+     QUOTIENT GRID
+  ══════════════════════════════════════════════════════ */
+  .quotient-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .q-card {
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    text-align: center;
+    border: 1.5px solid var(--border);
+  }
+
+  .q-card.iq { background: var(--purple-lt); border-color: #c4b5f4; }
+  .q-card.eq { background: var(--rose-lt);   border-color: #f4b8cc; }
+  .q-card.sq { background: var(--sky-lt);    border-color: #a8d4f0; }
+
+  .q-label  { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .q-score  { font-family: 'Lora', serif; font-size: 2.4rem; font-weight: 700; line-height: 1.1; margin: 6px 0 4px; }
+  .q-card.iq .q-score { color: var(--purple); }
+  .q-card.eq .q-score { color: var(--rose); }
+  .q-card.sq .q-score { color: var(--sky); }
+
+  .q-level {
+    font-size: 0.75rem; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px; display: inline-block;
+  }
+  .q-card.iq .q-level { background: rgba(91,63,166,0.12); color: var(--purple); }
+  .q-card.eq .q-level { background: rgba(184,50,85,0.12);  color: var(--rose); }
+  .q-card.sq .q-level { background: rgba(26,111,168,0.12); color: var(--sky); }
+
+  .q-desc { font-size: 0.76rem; color: var(--muted); margin-top: 8px; line-height: 1.5; font-style: italic; }
+
+  /* ══════════════════════════════════════════════════════
+     CAPACITY BARS
+  ══════════════════════════════════════════════════════ */
+  .cap-row {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 13px;
+  }
+  .cap-label {
+    width: 140px; flex-shrink: 0;
+    font-size: 0.82rem; font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .cap-bar-wrap {
+    flex: 1; background: #eaeff4;
+    border-radius: 6px; height: 10px; overflow: hidden;
+  }
+  .cap-bar-fill {
+    height: 100%; border-radius: 6px;
+    transition: width 1.2s cubic-bezier(.22,1,.36,1);
+  }
+  .cap-score { width: 36px; flex-shrink: 0; font-size: 0.82rem; font-weight: 700; text-align: right; }
+  .cap-level { width: 110px; flex-shrink: 0; font-size: 0.72rem; color: var(--muted); }
+  .cap-na    { font-size: 0.72rem; color: #aab; font-style: italic; }
+
+  /* ══════════════════════════════════════════════════════
+     TIPS SECTION
+  ══════════════════════════════════════════════════════ */
+  .tip-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .tip-card {
+    border-radius: 8px; padding: 14px 16px;
+    border-left: 3px solid;
+  }
+
+  .tip-card.strength {
+    background: var(--green-lt);
+    border-color: var(--green);
+  }
+  .tip-card.nurture {
+    background: var(--amber-lt);
+    border-color: var(--amber);
+  }
+
+  .tip-card-label {
+    font-size: 0.68rem; font-weight: 800;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .tip-card.strength .tip-card-label { color: var(--green); }
+  .tip-card.nurture  .tip-card-label { color: #c47a00; }
+
+  .tip-cap  { font-size: 0.82rem; font-weight: 700; margin-bottom: 4px; }
+  .tip-text { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  /* ══════════════════════════════════════════════════════
+     ACTIVITY SUMMARY
+  ══════════════════════════════════════════════════════ */
+  .activity-row {
+    display: flex; gap: 12px;
+  }
+
+  .act-card {
+    flex: 1; border-radius: 8px;
+    background: var(--bg); border: 1px solid var(--border);
+    padding: 14px 16px; text-align: center;
+  }
+  .act-value { font-family: 'Lora', serif; font-size: 1.6rem; font-weight: 700; color: var(--teal); }
+  .act-label { font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
+
+  /* ══════════════════════════════════════════════════════
+     DISCLAIMER
+  ══════════════════════════════════════════════════════ */
+  .disclaimer-box {
+    margin-top: 18px;
+    background: #fffdf4;
+    border: 1px solid #f0e0b0;
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-size: 0.76rem;
+    color: #7a6030;
+    line-height: 1.6;
+  }
+  .disclaimer-box strong { color: #5a4010; }
+
+  /* ══════════════════════════════════════════════════════
+     FOOTER
+  ══════════════════════════════════════════════════════ */
+  .report-footer {
+    margin-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.74rem; color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+  }
+
+  /* ══════════════════════════════════════════════════════
+     LOADING / ERROR
+  ══════════════════════════════════════════════════════ */
+  .state-screen {
+    text-align: center; padding: 80px 40px;
+    color: var(--muted);
+  }
+  .state-screen h2 { font-size: 1.1rem; margin-top: 16px; }
+  .state-screen p  { font-size: 0.85rem; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- Print button (hidden on print) -->
+  <div class="print-bar no-print">
+    <button class="btn-print" onclick="window.print()">
+      🖨️ Print / Save as PDF
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div id="loadingState" class="state-screen">
+    <div style="font-size:2rem">⏳</div>
+    <h2>Loading report…</h2>
+  </div>
+
+  <!-- Error -->
+  <div id="errorState" class="state-screen" style="display:none">
+    <div style="font-size:2rem">⚠️</div>
+    <h2>Could not load report</h2>
+    <p id="errorMsg">Student not found.</p>
+    <a href="index.html" style="margin-top:16px;display:inline-block;color:var(--teal);font-weight:700">← Back to Home</a>
+  </div>
+
+  <!-- Report (hidden until data loads) -->
+  <div id="reportWrap" style="display:none">
+
+    <!-- ══ LETTERHEAD ══ -->
+    <div class="letterhead">
+      <div class="lh-logo">🧠</div>
+      <div class="lh-center">
+        <div class="lh-brand">Bhāva Tech</div>
+        <div class="lh-report">Cognitive Progress Report</div>
+        <div style="font-size:0.82rem;opacity:0.8;margin-top:6px" id="lhSchool"></div>
+      </div>
+      <div class="lh-right">
+        <div class="lh-date" id="lhDate"></div>
+        <div>Academic Year <span id="lhYear"></span></div>
+        <div>Confidential</div>
+      </div>
+    </div>
+
+    <!-- ══ STUDENT BAND ══ -->
+    <div class="student-band">
+      <div class="student-avatar" id="srAvatar">?</div>
+      <div>
+        <div class="student-name" id="srName">—</div>
+        <div class="student-meta" id="srMeta"></div>
+        <div class="student-badges">
+          <span class="badge" id="srRoll"></span>
+          <span class="badge" id="srClass"></span>
+          <span class="badge" id="srSchool"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ QUOTIENTS ══ -->
+    <div class="section-card">
+      <div class="section-head">
+        <span class="section-head-icon">📊</span>
+        <span class="section-head-title">Overall Quotient Scores</span>
+      </div>
+      <div class="section-body">
+        <div class="quotient-grid">
+          <div class="q-card iq">
+            <div class="q-label">Intelligence Quotient</div>
+            <div class="q-score" id="qIQ">—</div>
+            <div class="q-level" id="qIQLevel">—</div>
+            <div class="q-desc" id="qIQDesc"></div>
+          </div>
+          <div class="q-card eq">
+            <div class="q-label">Emotional Quotient</div>
+            <div class="q-score" id="qEQ">—</div>
+            <div class="q-level" id="qEQLevell">—</div>
+            <div class="q-desc" id="qEQDesc"></div>
+          </div>
+          <div class="q-card sq">
+            <div class="q-label">Social Quotient</div>
+            <div class="q-score" id="qSQ">—</div>
+            <div class="q-level" id="qSQLevel">—</div>
+            <div class="q-desc" id="qSQDesc"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CAPACITY PROFILE ══ -->
+    <div class="section-card">
+      <div class="section-head">
+        <span class="section-head-icon">🧩</span>
+        <span class="section-head-title">Cognitive Capacity Profile</span>
+      </div>
+      <div class="section-body">
+        <p style="font-size:0.8rem;color:var(--muted);margin-bottom:16px" id="capConfidenceNote"></p>
+        <div id="capBars"></div>
+        <p style="font-size:0.75rem;color:#aab;margin-top:12px;font-style:italic" id="capLowNote" style="display:none"></p>
+      </div>
+    </div>
+
+    <!-- ══ HOME TIPS ══ -->
+    <div class="section-card">
+      <div class="section-head">
+        <span class="section-head-icon">🏡</span>
+        <span class="section-head-title">Guidance for Parents</span>
+      </div>
+      <div class="section-body">
+        <p style="font-size:0.82rem;color:var(--muted);margin-bottom:16px">
+          The following suggestions are simple activities you can weave into your daily home life
+          to gently support your child's development — no extra time or effort required.
+        </p>
+        <div class="tip-grid" id="tipGrid"></div>
+      </div>
+    </div>
+
+    <!-- ══ ACTIVITY SUMMARY ══ -->
+    <div class="section-card">
+      <div class="section-head">
+        <span class="section-head-icon">🎮</span>
+        <span class="section-head-title">Activity Summary</span>
+      </div>
+      <div class="section-body">
+        <div class="activity-row">
+          <div class="act-card">
+            <div class="act-value" id="actSessions">—</div>
+            <div class="act-label">Total Sessions</div>
+          </div>
+          <div class="act-card">
+            <div class="act-value" id="actAvgScore">—</div>
+            <div class="act-label">Avg. Game Score</div>
+          </div>
+          <div class="act-card">
+            <div class="act-value" id="actBestDomain">—</div>
+            <div class="act-label">Strongest Domain</div>
+          </div>
+          <div class="act-card">
+            <div class="act-value" id="actGames">—</div>
+            <div class="act-label">Games Explored</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ DISCLAIMER ══ -->
+    <div class="disclaimer-box">
+      <strong>Important Disclaimer</strong><br><br>
+      This report has been generated by Bhāva Tech's cognitive learning platform based on your
+      child's in-app game performance. <strong>These scores are proprietary algorithmic estimates
+      and are not clinically validated cognitive assessments.</strong> They are intended solely
+      as progress indicators to support your child's holistic development.<br><br>
+      Results may vary across sessions and should not be used to label, rank, or make definitive
+      judgments about your child's intelligence, potential, or future outcomes. Every child
+      develops at their own pace — these scores reflect current engagement patterns, not fixed
+      ability.<br><br>
+      For any concerns or queries about your child's development, please speak with their class
+      teacher or a qualified educational professional.
+    </div>
+
+    <!-- ══ FOOTER ══ -->
+    <div class="report-footer">
+      <span>Bhāva Tech · <span id="ftSchool"></span></span>
+      <span>Generated on <span id="ftDate"></span></span>
+    </div>
+
+  </div><!-- /reportWrap -->
+</div><!-- /page-wrap -->
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════ */
+
+// ── Score levels ──────────────────────────────────────
+function getLevel(s) {
+  if (s >= 125) return 'Exceptional';
+  if (s >= 110) return 'Thriving';
+  if (s >= 95)  return 'Developing Well';
+  if (s >= 80)  return 'Growing';
+  return 'Needs Nurturing';
+}
+
+// ── Quotient descriptions ─────────────────────────────
+const Q_DESC = {
+  IQ: {
+    'Exceptional':    'Demonstrates outstanding analytical and reasoning ability across subjects.',
+    'Thriving':       'Shows strong logical thinking and problem-solving in daily activities.',
+    'Developing Well':'Reasoning and analytical skills are steadily growing and strengthening.',
+    'Growing':        'Logical thinking is developing — consistent practice will build confidence.',
+    'Needs Nurturing':'Foundational reasoning skills are emerging — gentle encouragement helps greatly.',
+  },
+  EQ: {
+    'Exceptional':    'Displays remarkable empathy, self-awareness, and emotional understanding.',
+    'Thriving':       'Handles emotions thoughtfully and shows genuine care for others.',
+    'Developing Well':'Emotional awareness is growing — responses are becoming more considered.',
+    'Growing':        'Beginning to recognise and name feelings — a positive and important stage.',
+    'Needs Nurturing':'Emotional vocabulary is building — calm, supportive conversations at home help.',
+  },
+  SQ: {
+    'Exceptional':    'Naturally builds relationships and understands social situations with ease.',
+    'Thriving':       'Works well with others and navigates social situations with confidence.',
+    'Developing Well':'Social skills are growing — increasing comfort in group and team settings.',
+    'Growing':        'Social awareness is developing — positive peer interactions are building.',
+    'Needs Nurturing':'Social confidence is at an early stage — shared family activities support growth.',
+  }
+};
+
+// ── Capacity definitions ──────────────────────────────
+const CAPS = [
+  { key:'focus',       label:'🕯️ Focus',        color:'#d97706' },
+  { key:'attention',   label:'👁️ Attention',     color:'#059669' },
+  { key:'memory',      label:'🧠 Memory',        color:'#7c3aed' },
+  { key:'imagination', label:'🌸 Imagination',   color:'#be185d' },
+  { key:'creativity',  label:'🎨 Creativity',    color:'#16a34a' },
+  { key:'awareness',   label:'🪞 Self-Awareness', color:'#0369a1' },
+];
+
+// ── Home tips: [level] → { name, strength_tip, nurture_tip } ─────────────────
+// 6 capacities × 5 levels = 30 tips
+const HOME_TIPS = {
+  focus: {
+    'Exceptional':    {
+      s: 'Your child sustains deep concentration with remarkable ease — a rare and valuable quality.',
+      n: 'Introduce longer creative projects — building models, writing stories, or learning a musical instrument — to keep this focus purposefully engaged.',
+    },
+    'Thriving':       {
+      s: 'Your child focuses well and completes tasks with commitment — a strong foundation for learning.',
+      n: 'Try reducing screen interruptions during study time. Even 20 minutes of uninterrupted quiet reading daily deepens this capacity further.',
+    },
+    'Developing Well':{
+      s: 'Your child shows good focus when engaged — this is growing steadily.',
+      n: 'Create a consistent, distraction-free corner at home for homework. Predictable routines help focus develop naturally.',
+    },
+    'Growing':        {
+      s: 'Focus is building — your child is beginning to stay with tasks longer.',
+      n: 'Try short, timed activities together — "let\'s draw for just 10 minutes." Gradually extend the time as it becomes comfortable.',
+    },
+    'Needs Nurturing':{
+      s: 'Every child\'s focus develops at its own pace — and it can be strengthened.',
+      n: 'Start with 5-minute quiet activities your child enjoys — colouring, simple puzzles, or sorting objects. Daily consistency matters more than duration.',
+    },
+  },
+  attention: {
+    'Exceptional':    {
+      s: 'Your child notices details that most people miss — a gift for observation and precision.',
+      n: 'Encourage nature walks or "observation journals" where they record small things they notice each day. This channels their attention beautifully.',
+    },
+    'Thriving':       {
+      s: 'Your child listens and observes carefully — a quality that serves them in every subject.',
+      n: 'Play "spot the difference" games or read short stories aloud and ask one or two questions afterward. These sharpen attention naturally.',
+    },
+    'Developing Well':{
+      s: 'Attention is growing — your child is becoming more observant and present.',
+      n: 'During meals, ask your child to describe one new thing they noticed today. This simple habit builds sustained attention over time.',
+    },
+    'Growing':        {
+      s: 'Your child is beginning to tune in more carefully to conversations and tasks.',
+      n: 'Reduce background noise during study or reading time. Give instructions one step at a time and gently confirm understanding.',
+    },
+    'Needs Nurturing':{
+      s: 'Attention grows naturally with the right environment — your support makes the difference.',
+      n: 'Simple listening games help greatly — clap a rhythm and ask your child to repeat it, or ask "what sound do you hear right now?" during quiet moments.',
+    },
+  },
+  memory: {
+    'Exceptional':    {
+      s: 'Your child recalls information and experiences with impressive clarity and depth.',
+      n: 'Ask them to retell a story, film, or day\'s events in detail — storytelling strengthens and organises memory at a higher level.',
+    },
+    'Thriving':       {
+      s: 'Your child retains learning well — a strong asset for academic and everyday life.',
+      n: 'Play memory card games together once or twice a week. Even five minutes of this keeps memory circuits active and growing.',
+    },
+    'Developing Well':{
+      s: 'Memory is developing steadily — your child is retaining more and connecting ideas.',
+      n: 'Review the day\'s learning briefly at bedtime — "what was one interesting thing you learned today?" Spaced recall is the most natural memory strengthener.',
+    },
+    'Growing':        {
+      s: 'Memory is building — your child is beginning to make connections between what they learn.',
+      n: 'Use simple rhymes or visual associations to help remember things. Cooking together — following a recipe step by step — is an excellent natural memory exercise.',
+    },
+    'Needs Nurturing':{
+      s: 'Memory is a muscle — it strengthens with regular, gentle practice.',
+      n: 'Start with short-term recall games: "I went to the market and bought…" adding one item each turn. Keep it playful and pressure-free.',
+    },
+  },
+  imagination: {
+    'Exceptional':    {
+      s: 'Your child\'s imagination is vivid and expansive — they see possibilities where others see constraints.',
+      n: 'Provide open-ended materials — blank paper, clay, cardboard — with no instructions. Ask "what can you make with this?" and step back completely.',
+    },
+    'Thriving':       {
+      s: 'Your child imagines freely and creates original ideas with ease.',
+      n: 'Encourage storytelling at bedtime — take turns adding one sentence to a shared story. This builds imaginative depth beautifully.',
+    },
+    'Developing Well':{
+      s: 'Imagination is flowering — your child is beginning to think beyond the obvious.',
+      n: 'Ask open "what if" questions during everyday moments — "what if we cooked dinner without using fire?" There are no wrong answers.',
+    },
+    'Growing':        {
+      s: 'Creative thinking is emerging — your child is beginning to explore new possibilities.',
+      n: 'Read picture books or folk tales together and ask: "how do you think this story could end differently?" Imagination grows through narrative.',
+    },
+    'Needs Nurturing':{
+      s: 'Imagination is a seed — the right environment helps it grow at its own pace.',
+      n: 'Give your child unstructured free time with simple objects — sticks, stones, old cloth. Unstructured play is the single most powerful imagination builder.',
+    },
+  },
+  creativity: {
+    'Exceptional':    {
+      s: 'Your child generates original ideas fluidly — a deeply creative and inventive mind.',
+      n: 'Introduce them to a craft, instrument, or art form outside their current experience. Creative minds thrive when given genuinely new problems to solve.',
+    },
+    'Thriving':       {
+      s: 'Your child approaches problems creatively and finds unexpected solutions.',
+      n: 'When a problem arises at home, involve your child in finding the solution: "How do you think we could fix this?" Their creative input matters.',
+    },
+    'Developing Well':{
+      s: 'Creative thinking is growing — your child is beginning to approach things in their own way.',
+      n: 'Encourage making things by hand — drawing, building with blocks, or helping in the kitchen. The act of making develops creative confidence naturally.',
+    },
+    'Growing':        {
+      s: 'Creativity is beginning to emerge — your child is exploring personal expression.',
+      n: 'Praise the process, not just the result. "I love how you decided to do it that way" encourages creative risk-taking far more than praising the outcome.',
+    },
+    'Needs Nurturing':{
+      s: 'Creative ability grows when children feel safe to experiment without judgment.',
+      n: 'Set aside 15 minutes once a week for "make anything you want" time — no themes, no instructions. Presence without expectation is the greatest creative gift.',
+    },
+  },
+  awareness: {
+    'Exceptional':    {
+      s: 'Your child shows remarkable self-awareness and empathy — a deeply emotionally intelligent young person.',
+      n: 'Have regular conversations about feelings — not just "how was school?" but "was there a moment today where you felt proud, or uncomfortable?" Depth matters.',
+    },
+    'Thriving':       {
+      s: 'Your child understands their own emotions and responds to others with genuine care.',
+      n: 'Read stories with complex characters together and discuss: "why do you think she felt that way?" Emotional vocabulary grows through narrative.',
+    },
+    'Developing Well':{
+      s: 'Self-awareness is growing — your child is learning to identify and express feelings.',
+      n: 'Name feelings aloud in daily life: "I notice you seem a little quiet today — are you feeling tired, or something else?" This models emotional vocabulary naturally.',
+    },
+    'Growing':        {
+      s: 'Emotional awareness is beginning to develop — your child is learning to notice their inner world.',
+      n: 'End each day with one question: "what was the best and hardest moment today?" Consistency over months builds deep self-awareness.',
+    },
+    'Needs Nurturing':{
+      s: 'Emotional intelligence grows steadily in a safe and accepting home environment.',
+      n: 'Never dismiss a feeling — even small upsets. "It makes sense you feel that way" teaches the child that their inner world is valid and worth understanding.',
+    },
+  },
+};
+
+/* ═══════════════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════════════ */
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val || '—';
+}
+
+function renderQuotient(prefix, score, type) {
+  const lvl = getLevel(score);
+  setText(prefix, score);
+  document.getElementById(prefix + 'Level') && (document.getElementById(prefix + 'Level').textContent = lvl);
+  // handle typo in EQ level id
+  const lvlEl = document.getElementById(prefix + 'Levell') || document.getElementById(prefix + 'Level');
+  if (lvlEl) lvlEl.textContent = lvl;
+  const descEl = document.getElementById(prefix + 'Desc');
+  if (descEl) descEl.textContent = Q_DESC[type]?.[lvl] || '';
+}
+
+function renderCapBars(scores, sessionCount, confidence) {
+  const note = document.getElementById('capConfidenceNote');
+  if (confidence === 'high')
+    note.textContent = 'Profile based on ' + sessionCount + ' sessions — reliable estimate.';
+  else if (confidence === 'medium')
+    note.textContent = 'Profile based on ' + sessionCount + ' sessions — indicative, will strengthen with more play.';
+  else
+    note.textContent = 'Early profile — based on ' + sessionCount + ' session(s). Scores will become more accurate as your child plays more games.';
+
+  const wrap = document.getElementById('capBars');
+  wrap.innerHTML = '';
+
+  CAPS.forEach(cap => {
+    const score = scores[cap.key];
+    const row = document.createElement('div');
+    row.className = 'cap-row';
+
+    if (!score) {
+      row.innerHTML =
+        '<div class="cap-label">' + cap.label + '</div>' +
+        '<div class="cap-bar-wrap"><div class="cap-bar-fill" style="background:#dde3ea;width:20%"></div></div>' +
+        '<div class="cap-score" style="color:#aab">—</div>' +
+        '<div class="cap-level cap-na">Play more games</div>';
+    } else {
+      const pct = Math.round(((score - 60) / 100) * 100);
+      row.innerHTML =
+        '<div class="cap-label">' + cap.label + '</div>' +
+        '<div class="cap-bar-wrap"><div class="cap-bar-fill" id="pb_' + cap.key + '" style="background:' + cap.color + ';width:0%"></div></div>' +
+        '<div class="cap-score" style="color:' + cap.color + '">' + score + '</div>' +
+        '<div class="cap-level">' + getLevel(score) + '</div>';
+      setTimeout(() => {
+        const el = document.getElementById('pb_' + cap.key);
+        if (el) el.style.width = pct + '%';
+      }, 120);
+    }
+    wrap.appendChild(row);
+  });
+}
+
+function renderTips(scores) {
+  const grid = document.getElementById('tipGrid');
+  grid.innerHTML = '';
+
+  // Find top 2 strongest and top 2 weakest from available scores
+  const available = CAPS.filter(c => scores[c.key]);
+  if (!available.length) {
+    grid.innerHTML = '<p style="color:var(--muted);font-size:0.82rem;">Play more games to unlock personalised home tips.</p>';
+    return;
+  }
+
+  const sorted = [...available].sort((a, b) => (scores[b.key] || 0) - (scores[a.key] || 0));
+  const top    = sorted.slice(0, 2);
+  const bottom = sorted.slice(-2).reverse();
+
+  // Strengths
+  top.forEach(cap => {
+    const lvl  = getLevel(scores[cap.key]);
+    const tips = HOME_TIPS[cap.key]?.[lvl];
+    if (!tips) return;
+    const card = document.createElement('div');
+    card.className = 'tip-card strength';
+    card.innerHTML =
+      '<div class="tip-card-label">✦ Strength to celebrate</div>' +
+      '<div class="tip-cap">' + cap.label + ' · ' + lvl + '</div>' +
+      '<div class="tip-text">' + tips.s + '</div>';
+    grid.appendChild(card);
+  });
+
+  // Nurture
+  bottom.forEach(cap => {
+    const lvl  = getLevel(scores[cap.key]);
+    const tips = HOME_TIPS[cap.key]?.[lvl];
+    if (!tips) return;
+    const card = document.createElement('div');
+    card.className = 'tip-card nurture';
+    card.innerHTML =
+      '<div class="tip-card-label">🌱 To gently nurture at home</div>' +
+      '<div class="tip-cap">' + cap.label + ' · ' + lvl + '</div>' +
+      '<div class="tip-text">' + tips.n + '</div>';
+    grid.appendChild(card);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   LOAD
+═══════════════════════════════════════════════════════ */
+async function loadReport() {
+  const params = new URLSearchParams(window.location.search);
+  const sid = params.get('sid');
+
+  if (!sid) {
+    showError('No student ID provided. Please open this report from the Admin panel.');
+    return;
+  }
+
+  if (!window.bhava) {
+    showError('This report must be opened inside the Bhāva Tech app.');
+    return;
+  }
+
+  try {
+    // Fetch all data in parallel
+    const [report, capResult] = await Promise.all([
+      window.bhava.getStudentReport(sid),
+      window.bhava.getCapacityScores(sid),
+    ]);
+
+    if (!report || report.error) {
+      showError(report?.error || 'Student data not found.');
+      return;
+    }
+
+    const s   = report.student || {};
+    const iq  = report.iq  || {};
+    const eq  = report.eq  || {};
+    const sq  = report.sq  || {};
+    const act = report.activity || {};
+
+    // ── Date / school ──
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' });
+    const year = now.getFullYear() + '–' + (now.getFullYear() + 1);
+
+    setText('lhDate', dateStr);
+    setText('lhYear', year);
+    setText('lhSchool', s.school_name || s.school_id || '');
+    setText('ftDate',   dateStr);
+    setText('ftSchool', s.school_name || s.school_id || '');
+
+    // ── Student identity ──
+    const name = s.name || s.student_name || 'Student';
+    const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+    document.getElementById('srAvatar').textContent = initials;
+    setText('srName',   name);
+    setText('srMeta',   'Cognitive progress report generated by Bhāva Tech');
+    setText('srRoll',   s.roll_no   ? 'Roll: ' + s.roll_no   : '');
+    setText('srClass',  s.class_name ? 'Class: ' + s.class_name : s.grade ? 'Grade: ' + s.grade : '');
+    setText('srSchool', s.school_id || '');
+
+    // ── Quotients ──
+    renderQuotient('qIQ', iq.score || 80, 'IQ');
+    renderQuotient('qEQ', eq.score || 80, 'EQ');
+    renderQuotient('qSQ', sq.score || 80, 'SQ');
+
+    // ── Capacity bars ──
+    const scores     = capResult?.scores || {};
+    const sessionCnt = capResult?.sessionCount || 0;
+    const confidence = capResult?.confidence || 'low';
+    renderCapBars(scores, sessionCnt, confidence);
+
+    // ── Home tips ──
+    renderTips(scores);
+
+    // ── Activity ──
+    setText('actSessions',  act.totalSessions  || sessionCnt || '—');
+    setText('actAvgScore',  act.avgScore       ? Math.round(act.avgScore) + '/100' : '—');
+    setText('actBestDomain', act.bestDomain    || '—');
+    setText('actGames',     act.uniqueGames    || '—');
+
+    // ── Show report ──
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('reportWrap').style.display   = '';
+
+  } catch (e) {
+    console.error('[ParentReport]', e);
+    showError('An error occurred: ' + e.message);
+  }
+}
+
+function showError(msg) {
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('errorState').style.display   = '';
+  setText('errorMsg', msg);
+}
+
+loadReport();
+</script>
+<button class="bv-menu-btn" onclick="bvOpenMenu()">☰</button>
+    <div class="bv-overlay" id="bvOverlay" onclick="bvCloseMenu()">
+        <div class="bv-box" onclick="event.stopPropagation()">
+<a href="index.html">Home</a>
+<a onclick="history.back()">Go Back</a>
+</div>
+    </div>
+<script src="bhava-bridge.js"></script>
+<script src="bhava-session.js"></script>
+<script src="bhava-game-nav.js"></script>
+</body>
+</html>
+

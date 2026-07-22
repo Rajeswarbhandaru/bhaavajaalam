@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en" data-bhava-game="Bhava Music Tool">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bhāva Nādopāsanā</title>
+    <script type="module" crossorigin src="/nadopaasana/assets/index-xjd9MyXo.js"></script>
+    <link rel="modulepreload" crossorigin href="/nadopaasana/assets/vendor-Cxi_VyKz.js">
+    <link rel="stylesheet" crossorigin href="/nadopaasana/assets/index-CPi29IDz.css">
+
+    <style>
+      /* ── Bhāva ☰ Menu Button ── */
+      #bhava-menu-btn {
+        position: fixed;
+        top: 14px;
+        right: 16px;
+        z-index: 9999;
+        background: #7c3aed;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(124,58,237,0.4);
+        transition: background 0.2s;
+      }
+      #bhava-menu-btn:hover { background: #6d28d9; }
+
+      /* ── Bhāva Menu Overlay ── */
+      #bhava-menu-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9998;
+        background: rgba(0,0,0,0.55);
+        backdrop-filter: blur(2px);
+        align-items: center;
+        justify-content: center;
+      }
+      #bhava-menu-overlay.open { display: flex; }
+
+      #bhava-menu-box {
+        background: #1e1b4b;
+        border: 1px solid #7c3aed44;
+        border-radius: 16px;
+        padding: 32px 28px 24px;
+        min-width: 280px;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(124,58,237,0.3);
+      }
+      #bhava-menu-box h2 {
+        color: #c4b5fd;
+        font-size: 1.1rem;
+        margin: 0 0 6px;
+        font-family: sans-serif;
+        letter-spacing: 0.04em;
+      }
+      #bhava-menu-box p {
+        color: #a78bfa;
+        font-size: 0.82rem;
+        margin: 0 0 24px;
+        font-family: sans-serif;
+      }
+      .bhava-menu-btn-row {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .bhava-menu-action {
+        background: #7c3aed;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 11px 0;
+        font-size: 0.95rem;
+        cursor: pointer;
+        font-family: sans-serif;
+        transition: background 0.2s;
+      }
+      .bhava-menu-action:hover { background: #6d28d9; }
+      .bhava-menu-action.secondary {
+        background: transparent;
+        border: 1px solid #7c3aed88;
+        color: #c4b5fd;
+      }
+      .bhava-menu-action.secondary:hover { background: #7c3aed22; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- ── Bhāva ☰ Menu Button ── -->
+    <button id="bhava-menu-btn" title="Bhāva Menu">☰</button>
+
+    <!-- ── Bhāva Menu Overlay ── -->
+    <div id="bhava-menu-overlay">
+      <div id="bhava-menu-box">
+        <h2>Bhāva Nādopāsanā</h2>
+        <p>Carnatic Music Learning Tool</p>
+        <div class="bhava-menu-btn-row">
+          <button class="bhava-menu-action" onclick="window.location.href='../index.html'">🏠 Home</button>
+          <button class="bhava-menu-action secondary" id="bhava-close-btn">✕ Close Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Bhāva Tech Scripts ── -->
+    <script src="../bhava-tech-all.js"></script>
+    <script src="../bhava-bridge.js"></script>
+    <script src="../bhava-session.js"></script>
+    <script src="../bhava-game-nav.js"></script>
+
+    <script>
+      // ── Bhāva ☰ Menu toggle ──
+      const _bmtMenuBtn     = document.getElementById('bhava-menu-btn');
+      const _bmtMenuOverlay = document.getElementById('bhava-menu-overlay');
+      const _bmtCloseBtn    = document.getElementById('bhava-close-btn');
+
+      _bmtMenuBtn.addEventListener('click', () => _bmtMenuOverlay.classList.add('open'));
+      _bmtCloseBtn.addEventListener('click', () => _bmtMenuOverlay.classList.remove('open'));
+      _bmtMenuOverlay.addEventListener('click', (e) => {
+        if (e.target === _bmtMenuOverlay) _bmtMenuOverlay.classList.remove('open');
+      });
+
+      // ── Capacitor back button ──
+      document.addEventListener('deviceready', function () {
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+          window.Capacitor.Plugins.App.addListener('backButton', function () {
+            if (_bmtMenuOverlay.classList.contains('open')) {
+              _bmtMenuOverlay.classList.remove('open');
+            } else {
+              window.location.href = '../index.html';
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
