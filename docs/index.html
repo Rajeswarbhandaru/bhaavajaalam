@@ -3720,161 +3720,6 @@ function bgtMode(mode){
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════
-     END COLLABORATIONS SECTION
-     ═══════════════════════════════════════════════════════════ -->
- <!-- ===== FAQ ===== -->
-  <section id="faq">
-    <div class="container">
-      <div class="section-header section-animate">
-        <h2>Frequently Asked <span class="accent">Questions</span></h2>
-        <p>Everything you need to know before booking</p>
-      </div>
-      <div id="faq-list" class="faq-list">
-        </div>
-      </div>
-      <!-- Populated dynamically by script.js -->
-      <div id="faq-list" class="faq-list"></div>
-    </div>
-  </section>
-
-  <!-- ===== CONTACT ===== -->
-  <section id="contact" data-public-only class="section-light">
-    <div class="container">
-      <div class="section-header section-animate">
-        <h2>Contact <span class="accent">Us</span></h2>
-        <p>WhatsApp, email, or call us — we respond within 24 hours</p>
-        <p>Walk in, call, WhatsApp or write to us — we respond within 24 hours</p>
-      </div>
-      <div class="contact-grid">
-        <div class="contact-info section-animate">
-          <div class="contact-item">
-            <span class="contact-icon">📍</span>
-            <div>
-              <strong>Physical Office (Visakhapatnam)</strong>
-              <strong>Office Address</strong>
-              <p>48-6-38, 2nd Floor, Ramatalkies Road,<br />Visakhapatnam – 530016, Andhra Pradesh</p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <span class="contact-icon">📞</span>
-            <div>
-              <strong>Phone / WhatsApp</strong>
-              <p>
-                <a href="tel:+919573057516">+91 95730 57516</a><br />
-                <a href="tel:+919618365156">+91 96183 65156</a>
-              </p>
-              <a href="https://wa.me/919573057516" target="_blank" style="color:#25d366;font-weight:600;">💬 Click to Chat on WhatsApp</a>
-              <p><a href="tel:+919573057516">+91 9573057516</a><br /><a href="tel:+919618365156">+91 9618365156</a></p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <span class="contact-icon">✉️</span>
-            <div>
-              <strong>Email</strong>
-              <p><a href="mailto:bhaavatech@gmail.com">bhaavatech@gmail.com</a></p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <span class="contact-icon">🕐</span>
-            <div>
-              <strong>Office Hours</strong>
-              <p>Monday – Saturday: 9:00 AM – 6:00 PM <strong>IST</strong><br />Sunday: By appointment only</p>
-              <p class="timezone-note">IST = Indian Standard Time (UTC+5:30)<br/>International clients: we adjust to your time zone</p>
-              <p>Monday – Saturday: 9:00 AM – 6:00 PM<br />Sunday: By appointment only</p>
-            </div>
-          </div>
-         <!-- ===== OFFICE LOCATION MAP ===== -->
-<div style="
-  width: 100%;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  margin-top: 24px;
-">
-  <!-- PASTE YOUR COPIED IFRAME HERE — replace the src below -->
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3800.3491352011456!2d83.30783551073823!3d17.72818111632194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a39433258955d9b%3A0xd23df369e5f92ff6!2sBhava%20Tech!5e0!3m2!1sen!2sin!4v1776083669062!5m2!1sen!2sin" width="1300" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
-
-
-          </ul>
-        </div>
-		
-      <!-- Step 2: Confirm Booking -->
-      <div id="pm-step-2" hidden>
-        <p class="pm-step-title">✅ Great! Please confirm your details below:</p>
-        <form id="booking-confirm-form">
-
-          <input type="text"  name="full_name"      placeholder="Your Full Name *" required />
-          <input type="tel"   name="phone"           placeholder="WhatsApp Number (with country code) *" required />
-          <input type="email" name="email"           placeholder="Email Address *" required />
-          <select name="timezone" required>
-            <option value="" disabled selected>Your Time Zone *</option>
-            <option>IST — India (UTC+5:30)</option>
-            <option>GST — UAE (UTC+4)</option>
-            <option>EST — US East (UTC-5)</option>
-            <option>PST — US West (UTC-8)</option>
-            <option>GMT — UK (UTC+0)</option>
-            <option>AEST — Australia (UTC+10)</option>
-            <option>SGT — Singapore (UTC+8)</option>
-            <option>Other (mention in message)</option>
-          </select>
-          <input type="text"  name="transaction_id"  placeholder="UPI Transaction ID / PayPal Order ID *" required />
-          <button type="submit" class="btn btn-primary btn-full">Confirm &amp; Schedule Session →</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scripts -->
-  <script>
-    // FAQ toggle
-    document.querySelectorAll('.faq-question').forEach(q => {
-      q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
-    });
-
-    // Footer year
-    const fyEl = document.getElementById('footer-year'); if (fyEl) fyEl.textContent = new Date().getFullYear();
-
-    // Payment method toggle
-    function showPayMethod(method) {
-      document.getElementById('pay-upi-box').style.display = method === 'upi' ? 'block' : 'none';
-      document.getElementById('pay-paypal-box').style.display = method === 'paypal' ? 'block' : 'none';
-      document.getElementById('pay-card-box').style.display = method === 'card' ? 'block' : 'none';
-      document.querySelectorAll('.pay-option-btn').forEach(b => b.classList.remove('active'));
-      event.target.classList.add('active');
-    }
-
-    // Scroll progress
- <script>
-// ── Back To Top — universal (desktop + mobile) ──
-(function () {
-  var btn = document.getElementById('back-to-top');
-  if (!btn) return;
-
-  // Show after scrolling past hero (~100vh)
-  window.addEventListener('scroll', function () {
-    if (window.scrollY > window.innerHeight * 0.8) {
-      btn.style.display = 'flex';
-    } else {
-      btn.style.display = 'none';
-    }
-  }, { passive: true });
-})();
-</script>
-<script>
-  // ── Scroll To Top Button ──
-  const backToTopBtn = document.getElementById('back-to-top');
-
-  window.addEventListener('scroll', function () {
-    if (window.scrollY > 300) {
-      if (backToTopBtn) backToTopBtn.style.display = 'block';
-    } else {
-      if (backToTopBtn) backToTopBtn.style.display = 'none';
-    }
-  });
-</script>
-  <!-- ============ FOOTER ============ -->
-  
 <style>
 /* CAREERS — fully scoped */
 careers { position: relative; overflow: hidden; background: linear-gradient(160deg, #0a0a1a 0%, #0f0c29 55%, #0a0a1a 100%); padding: 100px 0 130px; scroll-margin-top: 70px; }
@@ -4231,6 +4076,126 @@ careers { position: relative; overflow: hidden; background: linear-gradient(160d
 })();
 </script>
 
+
+<!-- ═══════════════════════════════════════════════════════════
+     END COLLABORATIONS SECTION
+     ═══════════════════════════════════════════════════════════ -->
+ <!-- ===== FAQ ===== -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-header section-animate">
+        <h2>Frequently Asked <span class="accent">Questions</span></h2>
+        <p>Everything you need to know before booking</p>
+      </div>
+      <div id="faq-list" class="faq-list">
+        </div>
+      </div>
+      <!-- Populated dynamically by script.js -->
+      <div id="faq-list" class="faq-list"></div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" data-public-only class="section-light">
+    <div class="container">
+      <div class="section-header section-animate">
+        <h2>Contact <span class="accent">Us</span></h2>
+        <p>WhatsApp, email, or call us — we respond within 24 hours</p>
+        <p>Walk in, call, WhatsApp or write to us — we respond within 24 hours</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info section-animate">
+         <!-- ===== OFFICE LOCATION MAP ===== -->
+<div style="
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  margin-top: 24px;
+">
+  <!-- PASTE YOUR COPIED IFRAME HERE — replace the src below -->
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3800.3491352011456!2d83.30783551073823!3d17.72818111632194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a39433258955d9b%3A0xd23df369e5f92ff6!2sBhava%20Tech!5e0!3m2!1sen!2sin!4v1776083669062!5m2!1sen!2sin" width="1300" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+
+
+          </ul>
+        </div>
+		
+      <!-- Step 2: Confirm Booking -->
+      <div id="pm-step-2" hidden>
+        <p class="pm-step-title">✅ Great! Please confirm your details below:</p>
+        <form id="booking-confirm-form">
+
+          <input type="text"  name="full_name"      placeholder="Your Full Name *" required />
+          <input type="tel"   name="phone"           placeholder="WhatsApp Number (with country code) *" required />
+          <input type="email" name="email"           placeholder="Email Address *" required />
+          <select name="timezone" required>
+            <option value="" disabled selected>Your Time Zone *</option>
+            <option>IST — India (UTC+5:30)</option>
+            <option>GST — UAE (UTC+4)</option>
+            <option>EST — US East (UTC-5)</option>
+            <option>PST — US West (UTC-8)</option>
+            <option>GMT — UK (UTC+0)</option>
+            <option>AEST — Australia (UTC+10)</option>
+            <option>SGT — Singapore (UTC+8)</option>
+            <option>Other (mention in message)</option>
+          </select>
+          <input type="text"  name="transaction_id"  placeholder="UPI Transaction ID / PayPal Order ID *" required />
+          <button type="submit" class="btn btn-primary btn-full">Confirm &amp; Schedule Session →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // FAQ toggle
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
+    });
+
+    // Footer year
+    const fyEl = document.getElementById('footer-year'); if (fyEl) fyEl.textContent = new Date().getFullYear();
+
+    // Payment method toggle
+    function showPayMethod(method) {
+      document.getElementById('pay-upi-box').style.display = method === 'upi' ? 'block' : 'none';
+      document.getElementById('pay-paypal-box').style.display = method === 'paypal' ? 'block' : 'none';
+      document.getElementById('pay-card-box').style.display = method === 'card' ? 'block' : 'none';
+      document.querySelectorAll('.pay-option-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    // Scroll progress
+ <script>
+// ── Back To Top — universal (desktop + mobile) ──
+(function () {
+  var btn = document.getElementById('back-to-top');
+  if (!btn) return;
+
+  // Show after scrolling past hero (~100vh)
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > window.innerHeight * 0.8) {
+      btn.style.display = 'flex';
+    } else {
+      btn.style.display = 'none';
+    }
+  }, { passive: true });
+})();
+</script>
+<script>
+  // ── Scroll To Top Button ──
+  const backToTopBtn = document.getElementById('back-to-top');
+
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 300) {
+      if (backToTopBtn) backToTopBtn.style.display = 'block';
+    } else {
+      if (backToTopBtn) backToTopBtn.style.display = 'none';
+    }
+  });
+</script>
+  <!-- ============ FOOTER ============ -->
+  
 <footer id="main-footer">
   
     <div class="container">
