@@ -1,0 +1,94 @@
+{
+  "glossary": [
+    {
+      "term": "ESC",
+      "definition": "Stands for Electronic Speed Controller. It translates digital signals into motor power, acting like a gas pedal for your drone![cite: 1]"
+    },
+    {
+      "term": "FC",
+      "definition": "Stands for Flight Controller. The computer brain of the drone that helps it fly perfectly steady.[cite: 1]"
+    },
+    {
+      "term": "LiPo",
+      "definition": "Stands for Lithium Polymer battery. This is a powerful battery with a high discharge rate chemistry used in drones to give them the energy they need to fly.[cite: 1]"
+    },
+    {
+      "term": "KV",
+      "definition": "Stands for RPM per Volt, which tells you how fast the motor spins. Lower KV is used for higher voltages (6S) or larger props.[cite: 1]"
+    },
+    {
+      "term": "VTX",
+      "definition": "Stands for Video Transmitter. It sends the camera feed to the pilot's goggles so you can see exactly where you are zooming around![cite: 1]"
+    },
+    {
+      "term": "FPV",
+      "definition": "Stands for First Person View. This means flying using goggles that show the drone's perspective, making you feel like a tiny pilot sitting inside![cite: 1]"
+    },
+    {
+      "term": "Frame",
+      "definition": "The tough skeleton of the drone. It holds all of your cool electronic parts together safely."
+    },
+    {
+      "term": "Motors",
+      "definition": "The strong muscles of the drone! They spin super fast to lift your drone into the sky."
+    },
+    {
+      "term": "Propellers",
+      "definition": "The spinning plastic blades that push the air down so your drone can fly up."
+    },
+    {
+      "term": "Battery",
+      "definition": "The fuel tank! It holds all the electricity the drone needs to wake up and fly."
+    },
+    {
+      "term": "Receiver",
+      "definition": "The ears of the drone. It listens carefully to the secret commands from your remote control."
+    },
+    {
+      "term": "VideoDownlink",
+      "definition": "A special invisible bridge that beams live video from your flying drone straight to your screen."
+    },
+    {
+      "term": "ActionCam",
+      "definition": "A tough little camera you strap to the top to record awesome, high-quality videos of your adventures."
+    },
+    {
+      "term": "GimbalCamera",
+      "definition": "A camera on a robotic arm that keeps your video super smooth, even when the drone is doing flips!"
+    },
+    {
+      "term": "LEDStrip",
+      "definition": "Bright, colorful flashing lights that make your drone look awesome and help you see it at night."
+    },
+    {
+      "term": "GPS",
+      "definition": "A space-satellite tool that helps the drone know exactly where it is in the world so it never gets lost."
+    },
+    {
+      "term": "ObstacleAvoidance",
+      "definition": "Special robot eyes that help the drone see walls and trees so it doesn't bump into them."
+    }
+  ],
+  "learn": [
+    {
+      "id": "l1",
+      "title": "Thrust-to-Weight Ratio",
+      "body": "A drone needs thrust greater than its weight to fly.[cite: 2] Slower cinematic drones aim for 2:1 for smooth flight, but racing drones aim for 5:1 or higher for instant punch-outs![cite: 2]"
+    },
+    {
+      "id": "l2",
+      "title": "Battery Voltage (Cells)",
+      "body": "LiPo batteries are made of little power blocks called 'Cells' (S).[cite: 2] A 4S battery is 14.8V, while a 6S is 22.2V.[cite: 2] More voltage means motors spin faster, but your ESC must be rated to handle it![cite: 2]"
+    },
+    {
+      "id": "l3",
+      "title": "Propeller Pitch & Size",
+      "body": "Larger props generate more lift efficiently but take longer to change speed.[cite: 2] Always make sure they fit your drone, because if you put 7-inch props on a 5-inch frame, they will hit each other![cite: 2]"
+    },
+    {
+      "id": "l4",
+      "title": "The Brains: FC",
+      "body": "The Flight Controller loops thousands of times a second, reading the gyroscope to keep the drone level.[cite: 2] Complex tasks like GPS rescue require faster processors like an F7 so the drone can think super fast![cite: 2]"
+    }
+  ]
+}

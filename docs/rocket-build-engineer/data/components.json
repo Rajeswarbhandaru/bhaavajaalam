@@ -1,0 +1,322 @@
+{
+  "components": [
+    {
+      "id": "nose_basic",
+      "type": "NoseCone",
+      "name": "Plastic Nose Cone",
+      "cost": 10,
+      "weight": 2,
+      "drag": 3,
+      "desc": "Lightweight cone that cuts through air."
+    },
+    {
+      "id": "nose_aero",
+      "type": "NoseCone",
+      "name": "Aerodynamic Fairing",
+      "cost": 35,
+      "weight": 4,
+      "drag": 1,
+      "desc": "Low-drag composite nose used on orbital rockets."
+    },
+    {
+      "id": "body_cardboard",
+      "type": "BodyTube",
+      "name": "Cardboard Airframe",
+      "cost": 8,
+      "weight": 5,
+      "strength": 2,
+      "desc": "Simple tube that holds the rocket together."
+    },
+    {
+      "id": "body_composite",
+      "type": "BodyTube",
+      "name": "Composite Airframe",
+      "cost": 40,
+      "weight": 8,
+      "strength": 6,
+      "desc": "Strong fiberglass body for bigger rockets."
+    },
+    {
+      "id": "fin_basic",
+      "type": "FinSet",
+      "name": "Balsa Fin Set",
+      "cost": 6,
+      "weight": 1,
+      "stability": 4,
+      "desc": "Keeps the rocket flying straight."
+    },
+    {
+      "id": "fin_pro",
+      "type": "FinSet",
+      "name": "Reinforced Fin Set",
+      "cost": 18,
+      "weight": 3,
+      "stability": 8,
+      "desc": "Sturdier fins for high-power flights."
+    },
+    {
+      "id": "motor_a8",
+      "type": "Motor",
+      "name": "A8 Solid Motor",
+      "cost": 5,
+      "weight": 2,
+      "thrust": 25,
+      "burn": 3,
+      "fuelType": "Solid",
+      "desc": "Small starter motor for first launches."
+    },
+    {
+      "id": "motor_d12",
+      "type": "Motor",
+      "name": "D12 Solid Motor",
+      "cost": 9,
+      "weight": 3,
+      "thrust": 45,
+      "burn": 2,
+      "fuelType": "Solid",
+      "desc": "Popular motor for classic model rockets."
+    },
+    {
+      "id": "motor_f_pro",
+      "type": "Motor",
+      "name": "F-Class Solid Motor",
+      "cost": 22,
+      "weight": 5,
+      "thrust": 95,
+      "burn": 2,
+      "fuelType": "Solid",
+      "desc": "High-power motor for advanced hobby rockets."
+    },
+    {
+      "id": "propellant_solid",
+      "type": "Propellant",
+      "name": "Solid Propellant Grain",
+      "cost": 4,
+      "weight": 2,
+      "fuelType": "Solid",
+      "desc": "Pre-packed solid fuel that burns in the motor casing."
+    },
+    {
+      "id": "engine_liquid_s1",
+      "type": "Stage1Engine",
+      "name": "Liquid Booster Engine",
+      "cost": 220,
+      "weight": 40,
+      "thrust": 1200,
+      "burn": 140,
+      "fuelType": "Liquid",
+      "desc": "Main engine that lifts the rocket off the pad."
+    },
+    {
+      "id": "engine_liquid_s2",
+      "type": "Stage2Engine",
+      "name": "Liquid Upper-Stage Engine",
+      "cost": 160,
+      "weight": 18,
+      "thrust": 320,
+      "burn": 300,
+      "fuelType": "Liquid",
+      "desc": "Restartable engine that finishes the trip to orbit."
+    },
+    {
+      "id": "fuel_rp1",
+      "type": "Stage1Fuel",
+      "name": "RP-1 Fuel Tank",
+      "cost": 60,
+      "weight": 30,
+      "fuelType": "Liquid",
+      "pairsWith": "LOX",
+      "desc": "Kerosene-based rocket fuel tank."
+    },
+    {
+      "id": "ox_lox",
+      "type": "Stage1Oxidizer",
+      "name": "Liquid Oxygen (LOX) Tank",
+      "cost": 50,
+      "weight": 34,
+      "fuelType": "Liquid",
+      "pairsWith": "RP-1",
+      "desc": "Oxidizer that lets fuel burn without air."
+    },
+    {
+      "id": "fuel_s2",
+      "type": "Stage2Fuel",
+      "name": "Upper-Stage Fuel Tank",
+      "cost": 45,
+      "weight": 14,
+      "fuelType": "Liquid",
+      "pairsWith": "LOX2",
+      "desc": "Smaller fuel tank for the second stage."
+    },
+    {
+      "id": "ox_s2",
+      "type": "Stage2Oxidizer",
+      "name": "Upper-Stage Oxidizer Tank",
+      "cost": 42,
+      "weight": 15,
+      "fuelType": "Liquid",
+      "pairsWith": "RP1-2",
+      "desc": "Oxidizer tank sized for the upper stage."
+    },
+    {
+      "id": "avionics_basic",
+      "type": "Avionics",
+      "name": "Basic Flight Computer",
+      "cost": 25,
+      "weight": 1,
+      "minVoltage": 3,
+      "desc": "Tracks altitude and triggers recovery."
+    },
+    {
+      "id": "avionics_pro",
+      "type": "Avionics",
+      "name": "Dual-Deploy Flight Computer",
+      "cost": 60,
+      "weight": 1,
+      "minVoltage": 6,
+      "desc": "Advanced computer for two-stage recovery events."
+    },
+    {
+      "id": "guidance_basic",
+      "type": "GuidanceSystem",
+      "name": "Basic Inertial Guidance",
+      "cost": 180,
+      "weight": 6,
+      "needsAvionics": "pro",
+      "desc": "Keeps an orbital rocket pointed the right way."
+    },
+    {
+      "id": "guidance_gps",
+      "type": "GuidanceSystem",
+      "name": "GPS-Assisted Guidance",
+      "cost": 260,
+      "weight": 7,
+      "needsAvionics": "pro",
+      "desc": "Uses satellites to steer very precisely."
+    },
+    {
+      "id": "battery_9v",
+      "type": "Battery",
+      "name": "9V Igniter Battery",
+      "cost": 4,
+      "weight": 1,
+      "voltage": 9,
+      "desc": "Powers the flight computer and igniter."
+    },
+    {
+      "id": "battery_lipo",
+      "type": "Battery",
+      "name": "LiPo Flight Battery",
+      "cost": 22,
+      "weight": 2,
+      "voltage": 11,
+      "desc": "Rechargeable battery for advanced avionics."
+    },
+    {
+      "id": "igniter_std",
+      "type": "Igniter",
+      "name": "Standard Igniter",
+      "cost": 2,
+      "weight": 0.2,
+      "desc": "Lights the motor at launch."
+    },
+    {
+      "id": "igniter_pro",
+      "type": "Igniter",
+      "name": "Redundant Dual Igniter",
+      "cost": 6,
+      "weight": 0.3,
+      "desc": "Two igniters in case one fails."
+    },
+    {
+      "id": "parachute_basic",
+      "type": "Recovery",
+      "name": "12-inch Parachute",
+      "cost": 7,
+      "weight": 1,
+      "maxWeight": 10,
+      "desc": "Slows the rocket for a safe landing."
+    },
+    {
+      "id": "parachute_pro",
+      "type": "Recovery",
+      "name": "24-inch Parachute",
+      "cost": 16,
+      "weight": 2,
+      "maxWeight": 30,
+      "desc": "Bigger canopy for heavier rockets."
+    },
+    {
+      "id": "streamer",
+      "type": "SecondaryRecovery",
+      "name": "Backup Streamer",
+      "cost": 5,
+      "weight": 0.4,
+      "desc": "A ribbon that adds extra drag if the main parachute fails."
+    },
+    {
+      "id": "telemetry",
+      "type": "Telemetry",
+      "name": "Radio Telemetry Pack",
+      "cost": 45,
+      "weight": 1.5,
+      "desc": "Sends live altitude and speed to the ground."
+    },
+    {
+      "id": "camera_pod",
+      "type": "CameraPod",
+      "name": "Onboard Camera Pod",
+      "cost": 30,
+      "weight": 1,
+      "desc": "Films the flight from the rocket's point of view."
+    },
+    {
+      "id": "payload_bay",
+      "type": "PayloadBay",
+      "name": "Payload Bay",
+      "cost": 20,
+      "weight": 2,
+      "desc": "Extra space to carry an experiment or small satellite."
+    },
+    {
+      "id": "rail_guide",
+      "type": "LaunchLug",
+      "name": "Launch Rail Guide",
+      "cost": 3,
+      "weight": 0.3,
+      "desc": "Keeps the rocket straight on the launch rail."
+    },
+    {
+      "id": "heat_shield",
+      "type": "HeatShield",
+      "name": "Ablative Heat Shield",
+      "cost": 90,
+      "weight": 10,
+      "desc": "Protects the rocket from re-entry heat."
+    },
+    {
+      "id": "rcs",
+      "type": "RCS",
+      "name": "Reaction Control Thrusters",
+      "cost": 110,
+      "weight": 6,
+      "desc": "Small thrusters used to rotate the rocket in space."
+    },
+    {
+      "id": "solar_panel",
+      "type": "SolarPanel",
+      "name": "Deployable Solar Panel",
+      "cost": 75,
+      "weight": 3,
+      "desc": "Generates power for a satellite payload."
+    },
+    {
+      "id": "tracking_beacon",
+      "type": "TrackingBeacon",
+      "name": "GPS Tracking Beacon",
+      "cost": 28,
+      "weight": 0.6,
+      "desc": "Helps recovery teams find the rocket after landing."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+[
+  {"id":"missing_required_part","title":"Missing Required System","severity":"high","mentor":"Which essential system is still missing from the vehicle?"},
+  {"id":"engine_overheating","title":"Engine Overheating","severity":"high","mentor":"Why is engine heat greater than cooling capacity?"},
+  {"id":"battery_weak","title":"Weak Battery","severity":"medium","mentor":"Which parts depend on electrical energy before the engine can run?"},
+  {"id":"brakes_undersized","title":"Brake Safety Risk","severity":"high","mentor":"How does vehicle mass change the braking requirement?"},
+  {"id":"budget_exceeded","title":"Budget Exceeded","severity":"medium","mentor":"Can you keep the vehicle functional while reducing cost?"}
+]

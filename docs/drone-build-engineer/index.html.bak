@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Drone Build Engineer — Bhāva Tech</title>
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="css/layout.css" />
+<link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<header id="topbar">
+  <div class="brand">
+    <span class="logo-dot"></span>
+    <span class="brand-name">Bhāva Tech</span>
+    <span class="brand-sub">Drone Build Engineer</span>
+  </div>
+  <div class="topbar-actions">
+    <button id="sound-toggle" class="icon-btn sound-btn" aria-label="Turn sound on" title="Sound: On">🔊</button>
+    <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" title="Toggle Light/Dark">🌗</button>
+    <button id="a11y-toggle" class="icon-btn" aria-label="Accessibility" title="Accessibility Options">♿</button>
+    <div id="xp-display" class="xp-pill" title="Experience Points">
+      <span id="xp-value">0 XP</span>
+      <span id="rank-value">Trainee</span>
+    </div>
+  </div>
+</header>
+
+<main id="app-root">
+  <section id="screen-home" class="screen active">
+    <div class="home-hero">
+      <h1>Solder. Tune. Fly.</h1>
+      <p>Build real drone platforms — from high-speed FPV racing quads to stabilized cinematic rigs.</p>
+    </div>
+    <div class="home-grid">
+      <div class="home-card" data-target="anatomy"><span class="home-icon">🔍</span><strong>Real Drone Anatomy</strong><small>See where parts really go</small></div>
+      <div class="home-card" data-target="build-racing"><span class="home-icon">🏁</span><strong>Build Racing Drone</strong><small>Agile FPV quadcopter</small></div>
+      <div class="home-card" data-target="build-cinematic"><span class="home-icon">🎥</span><strong>Build Cinematic Drone</strong><small>Stabilized camera rig</small></div>
+      <div class="home-card" data-target="learn"><span class="home-icon">📚</span><strong>Learn</strong><small>UAV lessons</small></div>
+      <div class="home-card" data-target="challenges"><span class="home-icon">🎯</span><strong>Missions</strong><small>Guided challenges</small></div>
+      <div class="home-card" data-target="glossary"><span class="home-icon">📖</span><strong>Glossary</strong><small>Key FPV terms</small></div>
+      <div class="home-card" data-target="achievements"><span class="home-icon">🏆</span><strong>Achievements</strong><small>Track badges</small></div>
+      <div class="home-card" data-target="progress"><span class="home-icon">📊</span><strong>Progress</strong><small>Pilot journey</small></div>
+    </div>
+    <div id="daily-grid" class="daily-wrap"></div>
+  </section>
+
+  <section id="screen-anatomy" class="screen">
+    <h1>Real Drone Anatomy</h1>
+    <p class="screen-sub">Learn where each part actually sits on a real drone frame.</p>
+    <div id="anatomy-container" class="anatomy-panel glass"></div>
+    <button class="btn" data-nav="home">🏠 Home</button>
+  </section>
+
+  <section id="screen-build" class="screen">
+    <div class="build-layout">
+      <aside class="palette-panel glass" id="palette-panel">
+        <h2>Component Palette</h2>
+        <div class="build-levels" id="build-levels" aria-label="Choose build level">
+          <p class="level-heading">Choose your build level</p>
+          <button class="build-level active" data-level="1"><span class="level-number">L1</span><span><strong>Essential Build</strong><small>Core parts only</small></span></button>
+          <button class="build-level" data-level="2"><span class="level-number">L2</span><span><strong>Feature Builder</strong><small>Add features</small></span></button>
+          <button class="build-level" data-level="3"><span class="level-number">L3</span><span><strong>Smart Engineer</strong><small>Zero compatibility issues</small></span></button>
+          <div class="level-progress" id="level-progress">L1 progress: 0 / 0 core parts</div>
+        </div>
+        <div class="palette-tabs" id="palette-tabs"></div>
+        <div class="palette-list" id="palette-list"></div>
+      </aside>
+      <div class="workspace-panel">
+        <div class="workspace-toolbar glass">
+          <span id="device-title">🏁 New Racing Drone</span>
+          <div class="toolbar-actions">
+            <button class="btn" id="btn-explode" title="Explode View">💥 Explode</button>
+            <button class="btn" id="btn-check-level">✓ Check Level</button>
+            <button class="btn btn-primary" id="btn-power">🚁 Arm Drone</button>
+            <button class="btn" id="btn-reset">↺ Reset</button>
+            <button class="btn" data-nav="home">🏠 Home</button>
+          </div>
+        </div>
+        <div class="board-area glass" id="board-area">
+          <div class="visual-drone-container" id="visual-drone-container">
+             <!-- The interactive SVG will be injected here -->
+          </div>
+          <div class="slot-side">
+            <svg id="wire-layer"></svg>
+            <div id="slot-container"></div>
+          </div>
+        </div>
+      </div>
+      <aside class="diagnostics-panel glass" id="diagnostics-panel">
+        <h2>Diagnostics</h2><div id="diagnostics-content"></div>
+      </aside>
+    </div>
+  </section>
+  <section id="screen-learn" class="screen"><h1>Learn</h1><div id="learn-grid" class="cards-grid"></div><button class="btn" data-nav="home">🏠 Home</button></section>
+  <section id="screen-challenges" class="screen"><h1>Missions</h1><div id="missions-grid" class="cards-grid"></div><button class="btn" data-nav="home">🏠 Home</button></section>
+  <section id="screen-achievements" class="screen"><h1>Achievements</h1><div id="achievements-grid" class="cards-grid"></div><button class="btn" data-nav="home">🏠 Home</button></section>
+  <section id="screen-glossary" class="screen"><h1>Glossary</h1><div id="glossary-grid" class="cards-grid"></div><button class="btn" data-nav="home">🏠 Home</button></section>
+  <section id="screen-progress" class="screen"><h1>Progress</h1><div id="progress-grid" class="cards-grid"></div><button class="btn" data-nav="home">🏠 Home</button></section>
+  <section id="screen-settings" class="screen">
+    <h1>Settings</h1>
+    <div class="settings-panel glass">
+      <label>Theme <select id="setting-theme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
+      <label><input type="checkbox" id="setting-colorblind" /> Colorblind mode</label>
+      <label><input type="checkbox" id="setting-largefont" /> Large font</label>
+      <label><input type="checkbox" id="setting-reducemotion" /> Reduce motion</label>
+    </div>
+    <button class="btn" data-nav="home">🏠 Home</button>
+  </section>
+</main>
+<div id="toast-container"></div>
+<div id="celebration-overlay" class="celebration-overlay"></div>
+<div id="modal-overlay" class="modal-overlay"><div id="modal-content" class="modal-content glass"></div></div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

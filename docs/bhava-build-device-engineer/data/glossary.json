@@ -1,0 +1,292 @@
+{
+  "terms": [
+    {
+      "term": "Voltage",
+      "definition": "Electrical potential difference that drives current through a circuit."
+    },
+    {
+      "term": "Current",
+      "definition": "The flow rate of electric charge, measured in amperes."
+    },
+    {
+      "term": "Resistance",
+      "definition": "Opposition to current flow, measured in ohms."
+    },
+    {
+      "term": "CPU",
+      "definition": "Central Processing Unit; executes instructions for the device."
+    },
+    {
+      "term": "RAM",
+      "definition": "Random Access Memory; temporary fast storage for active tasks."
+    },
+    {
+      "term": "Storage",
+      "definition": "Long-term memory (eMMC/NVMe) that keeps your files, apps, and photos even when powered off."
+    },
+    {
+      "term": "GPU",
+      "definition": "Graphics Processing Unit; renders images, video, and game graphics."
+    },
+    {
+      "term": "Firmware",
+      "definition": "Low-level software that controls hardware directly."
+    },
+    {
+      "term": "Bootloader",
+      "definition": "Program that loads the operating system when a device starts."
+    },
+    {
+      "term": "Socket",
+      "definition": "Physical/logical interface connecting a chip to the motherboard."
+    },
+    {
+      "term": "Thermal Throttling",
+      "definition": "Reducing performance to control excess heat."
+    },
+    {
+      "term": "Antenna",
+      "definition": "Component that sends/receives wireless signals."
+    },
+    {
+      "term": "Clock Speed",
+      "definition": "How many cycles per second a CPU core can perform, measured in GHz."
+    },
+    {
+      "term": "Core",
+      "definition": "An independent processing unit inside a CPU; more cores allow more tasks in parallel."
+    },
+    {
+      "term": "Cache",
+      "definition": "Very fast memory inside the CPU that stores frequently used data."
+    },
+    {
+      "term": "Battery Chemistry",
+      "definition": "The chemical composition (e.g. Li-ion, Li-Po) that determines a battery's capacity, safety, and lifespan."
+    },
+    {
+      "term": "mAh",
+      "definition": "Milliamp-hour; a unit measuring how much charge a battery can store."
+    },
+    {
+      "term": "Fast Charging",
+      "definition": "Technology that delivers higher wattage to charge a battery more quickly, at the cost of extra heat."
+    },
+    {
+      "term": "Refresh Rate",
+      "definition": "How many times per second a display redraws the image, measured in Hz. Higher feels smoother."
+    },
+    {
+      "term": "Resolution",
+      "definition": "The number of pixels on a display; higher resolution shows sharper detail."
+    },
+    {
+      "term": "AMOLED",
+      "definition": "A display technology using organic LEDs for deep blacks and vivid colors, with more flexibility than LCD."
+    },
+    {
+      "term": "LCD",
+      "definition": "Liquid Crystal Display; an older, more affordable, energy-efficient display technology."
+    },
+    {
+      "term": "Megapixel (MP)",
+      "definition": "A unit describing camera resolution; more megapixels can capture more image detail."
+    },
+    {
+      "term": "AI Chip",
+      "definition": "A specialized processor that speeds up tasks like image recognition, translation, and computational photography."
+    },
+    {
+      "term": "Sensor",
+      "definition": "A component that detects a physical property (motion, light, pressure) and converts it to data."
+    },
+    {
+      "term": "Accelerometer",
+      "definition": "A sensor that detects motion and acceleration, used for step counting and screen rotation."
+    },
+    {
+      "term": "Gyroscope",
+      "definition": "A sensor that detects rotation and orientation, used in gaming and camera stabilization."
+    },
+    {
+      "term": "Barometer",
+      "definition": "A sensor measuring air pressure, used to estimate altitude."
+    },
+    {
+      "term": "NFC",
+      "definition": "Near Field Communication; enables tap-to-pay and quick device pairing over very short range."
+    },
+    {
+      "term": "GPS",
+      "definition": "Global Positioning System; uses satellites to determine your device's precise location."
+    },
+    {
+      "term": "WiFi",
+      "definition": "A wireless technology for connecting to the internet over short-to-medium range."
+    },
+    {
+      "term": "Bluetooth",
+      "definition": "A short-range wireless technology used for connecting headphones, watches, and accessories."
+    },
+    {
+      "term": "Motherboard",
+      "definition": "The main circuit board that connects and coordinates every other component in a device."
+    },
+    {
+      "term": "Chipset",
+      "definition": "A group of chips on the motherboard that manages data flow between CPU, memory, and peripherals."
+    },
+    {
+      "term": "Power Management IC (PMIC)",
+      "definition": "A chip that regulates and distributes correct voltage levels to every component."
+    },
+    {
+      "term": "Charging IC",
+      "definition": "A chip that controls how fast and safely a battery charges."
+    },
+    {
+      "term": "Heat Dissipation",
+      "definition": "The process of removing excess heat from components to prevent damage or slowdown."
+    },
+    {
+      "term": "Vapor Chamber",
+      "definition": "A cooling technology that spreads heat across a wider surface using evaporating liquid."
+    },
+    {
+      "term": "Operating System (OS)",
+      "definition": "The core software that manages hardware and lets you run apps."
+    },
+    {
+      "term": "Driver",
+      "definition": "Software that allows the operating system to communicate with a specific piece of hardware."
+    },
+    {
+      "term": "Bandwidth",
+      "definition": "The maximum rate of data transfer across a connection, often measured in Mbps or Gbps."
+    },
+    {
+      "term": "Latency",
+      "definition": "The delay between an action and the system's response, important for gaming and calls."
+    },
+    {
+      "term": "Overclocking",
+      "definition": "Running a component faster than its default speed to boost performance, usually increasing heat."
+    },
+    {
+      "term": "Compatibility",
+      "definition": "Whether two components can work correctly together based on matching specifications."
+    },
+    {
+      "term": "Signal Strength",
+      "definition": "A measure of how well a device can send and receive wireless signals."
+    },
+    {
+      "term": "Digitizer",
+      "definition": "The layer under a touchscreen that detects finger touches and converts them to input signals."
+    },
+    {
+      "term": "IP Rating",
+      "definition": "A standard rating showing how resistant a device is to dust and water."
+    },
+    {
+      "term": "System-on-Chip (SoC)",
+      "definition": "A single chip that integrates CPU, GPU, and other controllers together for efficiency."
+    },
+    {
+      "term": "Foldable Display",
+      "definition": "A flexible screen that can bend or fold, used in foldable phone designs."
+    },
+    {
+      "term": "E-Ink Display",
+      "definition": "An ultra low-power display technology that only uses energy when the image changes, common in e-readers."
+    },
+    {
+      "term": "Solid-State Battery",
+      "definition": "A newer battery chemistry using solid electrolytes, offering higher capacity with less heat than Li-Po."
+    },
+    {
+      "term": "Periscope Camera",
+      "definition": "A camera design using an internal mirror system to achieve high zoom levels in a slim phone body."
+    },
+    {
+      "term": "Under-Display Camera",
+      "definition": "A front camera hidden beneath the screen itself, removing the need for a notch or hole-punch cutout."
+    },
+    {
+      "term": "UFS Storage",
+      "definition": "Universal Flash Storage; a fast storage standard commonly used in mid-range and flagship phones."
+    },
+    {
+      "term": "WiFi 7",
+      "definition": "The newest WiFi standard offering very high speed, lower latency, and better performance in crowded networks."
+    },
+    {
+      "term": "Bluetooth LE Audio",
+      "definition": "A modern Bluetooth audio standard offering better battery efficiency and support for multiple connected listeners."
+    },
+    {
+      "term": "Assisted GPS (A-GPS)",
+      "definition": "A GPS technique that uses network data to lock onto your location faster than GPS satellites alone."
+    },
+    {
+      "term": "Dolby Atmos",
+      "definition": "A surround sound audio technology that creates a immersive, 3D-like listening experience."
+    },
+    {
+      "term": "PMIC Rail",
+      "definition": "An individual regulated voltage output line from a Power Management IC, dedicated to a specific component."
+    },
+    {
+      "term": "Heart Rate Sensor",
+      "definition": "An optical sensor that measures pulse by detecting blood flow changes, common in fitness tracking."
+    },
+    {
+      "term": "UV Sensor",
+      "definition": "A sensor that measures ultraviolet light intensity, useful for sun exposure warnings."
+    },
+    {
+      "term": "ToF Sensor (Time-of-Flight)",
+      "definition": "A depth sensor that measures distance by timing how long light takes to bounce back, used for portrait blur and face unlock."
+    },
+    {
+      "term": "SIM Card",
+      "definition": "A small chip that identifies your phone number and connects you to a cellular network."
+    },
+    {
+      "term": "Dual-SIM",
+      "definition": "A phone feature allowing two SIM cards to be used at once, for separate numbers or networks."
+    },
+    {
+      "term": "eSIM",
+      "definition": "An embedded SIM built directly into the device, activated digitally without needing a physical card."
+    },
+    {
+      "term": "Vibration Motor",
+      "definition": "A small motor that creates physical buzzing feedback for notifications, typing, or gaming."
+    },
+    {
+      "term": "Haptic Feedback",
+      "definition": "Precise, tactile vibration feedback designed to feel crisp and intentional, rather than a generic buzz."
+    },
+    {
+      "term": "Driver Pack",
+      "definition": "A bundle of software drivers that lets the operating system properly communicate with installed hardware."
+    },
+    {
+      "term": "Action Button",
+      "definition": "A customizable physical button that can be programmed to trigger a chosen shortcut or app."
+    },
+    {
+      "term": "Multitasking",
+      "definition": "The ability of a device to run and switch between several apps at once without slowing down."
+    },
+    {
+      "term": "Zoom Lens",
+      "definition": "A camera lens capable of magnifying distant subjects, often measured in optical zoom (e.g. 5x, 10x)."
+    },
+    {
+      "term": "Screen-to-Body Ratio",
+      "definition": "The percentage of a phone's front surface occupied by the display, versus bezels and notches."
+    }
+  ]
+}

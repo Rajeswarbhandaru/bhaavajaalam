@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bhāva Tech | Motorcycle Build Engineer</title>
+<style>
+:root{--bg:#070b16;--panel:#111a30;--line:#30466f;--cyan:#5ad1ff;--green:#38ed9b;--gold:#ffdc62;--red:#ff647c;--text:#edf5ff;--muted:#b2c1dc}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 50% -20%,#233a68 0,#070b16 54%);color:var(--text);font:15px system-ui,Arial;min-height:100vh}
+header{height:65px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--line);background:#090f20eF;position:sticky;top:0;z-index:20}
+.brand{font-weight:800}.brand b{color:var(--cyan)}
+.xp-badge{background:#1a2744;padding:8px 15px;border-radius:20px;border:1px solid var(--gold);color:var(--gold);font-weight:bold;box-shadow:0 0 10px #ffdc6240;transition:0.3s}
+.xp-badge.levelup{transform:scale(1.1);background:var(--gold);color:#000}
+button{cursor:pointer;color:var(--text);border:1px solid var(--line);background:#17223b;border-radius:10px;padding:9px 12px;font-weight:700}
+button:hover:not(:disabled){border-color:var(--cyan)}
+button:disabled{opacity:0.5;cursor:not-allowed;border-color:var(--line)}
+.primary{background:linear-gradient(135deg,#29d990,#4ef1bf);color:#04151c;border:0}
+.screen{display:none;max-width:1400px;margin:auto;padding:22px}
+.screen.active{display:block}
+.hero{text-align:center;max-width:750px;margin:30px auto}
+.hero h1{font-size:clamp(32px,5vw,52px);margin:0;background:linear-gradient(90deg,#5ad1ff,#b285ff,#ff9d6e);color:transparent;background-clip:text}
+.hero p,.muted{color:var(--muted)}
+.homegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card,.panel{background:#111a30d9;border:1px solid var(--line);border-radius:18px;padding:17px}
+.card{text-align:center;cursor:pointer;min-height:145px}
+.card:hover{border-color:var(--cyan);transform:translateY(-3px)}
+.card i{display:block;font-style:normal;font-size:38px;margin-bottom:9px}
+.layout{display:grid;grid-template-columns:250px minmax(500px,1fr) 240px;gap:14px}
+.panel h2{font-size:18px;margin:0 0 12px}
+.levels button{width:100%;text-align:left;margin-bottom:7px}
+.levels .active{border-color:var(--cyan);background:#17384f}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.tab{font-size:11px;padding:6px}
+.tab.active{background:var(--cyan);color:#041019}
+.part{margin:7px 0;padding:10px;border:1px solid var(--line);border-radius:11px;background:#0b1326;cursor:pointer;touch-action:manipulation;position:relative}
+.part small{display:block;color:var(--muted);margin-top:3px}
+.part.selected{border:2px solid var(--gold);background:#3a2c14;box-shadow:0 0 17px #ffdc6670}
+.part.locked{opacity:0.6;filter:grayscale(1)}
+.part.locked::after{content:'🔒 Lvl 3';position:absolute;right:10px;top:10px;font-size:10px;color:var(--red)}
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:150px;overflow-y:auto;padding-right:5px;}
+.style-grid::-webkit-scrollbar{width:6px;}
+.style-grid::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px;}
+.style-grid button{font-size:10px;padding:7px;min-height:40px;}
+.style-grid .active{border-color:var(--gold)}
+.paints{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}
+.paint{height:24px;width:24px;padding:0;border-radius:50%;border:2px solid #fff5;position:relative}
+.paint.active{outline:3px solid var(--cyan)}
+.paint.locked{opacity:0.3;cursor:not-allowed}
+.paint.locked::after{content:'🔒';position:absolute;top:2px;left:4px;font-size:10px}
+.workhead{display:flex;justify-content:space-between;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.workhead button{font-size:11px;padding:7px}
+.guide{padding:10px 12px;background:#10304c;border:1px solid var(--cyan);border-radius:10px;color:#e9f8ff;margin-bottom:10px}
+.guide b{color:var(--gold)}
+.bikebox{height:540px;position:relative;overflow:hidden;border-radius:15px;background:linear-gradient(#18304f,#0b1223 55%,#222c36 56%);border:1px solid var(--line)}
+.bikebox:after{content:'';position:absolute;bottom:18%;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,#ffe383 0 34px,transparent 34px 64px);opacity:.6}
+.bike{position:absolute;width:96%;left:2%;top:15%;height:66%;z-index:2}
+.base{opacity:.32}
+.layer{opacity:0;transform:scale(.65);transform-origin:center;}
+.layer.on{animation: popPart 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;}
+@keyframes popPart { 0% { opacity: 0; transform: scale(0.5); } 60% { opacity: 1; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
+.slot{position:absolute;z-index:5;width:120px;padding:6px 7px;border:1px dashed var(--cyan);background:#09182de8;border-radius:9px;font-size:11px;cursor:pointer;box-shadow:0 3px 10px #0008}
+.slot small{font-size:9px;color:#bcd2ee;display:block}
+.slot.good{border-style:solid;border-color:var(--green);background:#123c31eF}
+.slot.target{border-color:var(--gold);background:#493b14;box-shadow:0 0 21px #ffdc66aa;animation:pulse .85s infinite}
+.slot.bad{border-color:var(--red);animation:shake .35s}
+.hint{position:absolute;top:9px;left:50%;transform:translateX(-50%);z-index:8;white-space:nowrap;max-width:85%;overflow:hidden;text-overflow:ellipsis;background:#071321df;border:1px solid #416c8c;border-radius:16px;padding:6px 11px;font-size:12px}
+@keyframes pulse{50%{transform:scale(1.05)}}
+@keyframes shake{25%{translate:-4px}75%{translate:4px}}
+.diag{color:var(--muted);line-height:1.7}
+.ok{color:var(--green)}
+.warn{color:var(--gold)}
+.modal{position:fixed;inset:0;background:#020611d9;z-index:40;display:none;place-items:center}
+.modal.show{display:grid}
+.sim{height:min(640px,90vh);width:min(830px,94vw);padding:15px;border:2px solid var(--cyan);border-radius:20px;background:#101a30}
+.sky{height:75%;position:relative;overflow:hidden;border-radius:14px;background:linear-gradient(#468cc8,#bde9ff 52%,#548f4e 53%,#273c25)}
+.remote{text-align:center;padding:20px}
+.scrolling-road { position: absolute; bottom: 0; left: 0; width: 200%; height: 20%; background: repeating-linear-gradient(90deg, #1f2429 0, #1f2429 60px, #ffe383 60px, #ffe383 120px); animation: scrollRoad 0.3s linear infinite; }
+.riding-bike { position: absolute; width: 75%; bottom: 8%; left: 12%; animation: bikeBounce 0.25s ease-in-out infinite alternate; filter: drop-shadow(0 15px 10px #0008); z-index: 10; }
+@keyframes scrollRoad { 0% { transform: translateX(-120px); } 100% { transform: translateX(0); } }
+@keyframes bikeBounce { 0% { transform: translateY(0); } 100% { transform: translateY(-6px); } }
+.celebration-text { position: absolute; top: 15%; left: 50%; transform: translateX(-50%); text-align: center; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.8); animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; white-space: nowrap; z-index: 20; }
+.celebration-text h2 { margin: 0; font-size: 36px; color: var(--gold); }
+.celebration-text p { font-size: 18px; margin-top: 8px; color: #e9f8ff; }
+@keyframes popIn { 0% { transform: translate(-50%, -20px) scale(0.8); opacity: 0;} 100% { transform: translate(-50%, 0) scale(1); opacity: 1;} }
+.anatomy-container { display: grid; grid-template-columns: minmax(500px, 1.4fr) 1fr; gap: 20px; }
+.labels-canvas { height: 580px; position: relative; border: 1px solid var(--line); border-radius: 18px; background: #101a2f; overflow: hidden; }
+.anatomy-list-box { background: #0c1424; border: 1px solid var(--line); border-radius: 18px; padding: 15px; display: flex; flex-direction: column; }
+.anatomy-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 8px; max-height: 440px; margin-top: 15px; border-top: 1px solid var(--line); padding-top: 15px;}
+.part-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #17223b; border: 1px solid transparent; border-radius: 8px; cursor: pointer; color: var(--text); font-size: 13px; transition: 0.2s;}
+.part-item:hover, .part-item.active { border-color: var(--cyan); background: #1d3557; }
+.part-item b { color: var(--gold); min-width: 20px; }
+.dot { position: absolute; width: 20px; height: 20px; border-radius: 50%; background: var(--cyan); color: #020b14; font-size: 10px; font-weight: bold; border: 2px solid #fff; cursor: pointer; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 0 6px #000a; transition: 0.2s; }
+.dot:hover, .dot.active { background: var(--gold); border-color: var(--cyan); transform: translate(-50%, -50%) scale(1.3); z-index: 15; }
+@media(max-width:1050px){.layout{grid-template-columns:1fr}.layout>aside.panel{display:none}.bikebox{height:500px}.homegrid{grid-template-columns:repeat(2,1fr)}.anatomy-container{grid-template-columns:1fr}}
+@media(max-width:600px){.screen{padding:10px}.homegrid{grid-template-columns:1fr}.bikebox{height:415px}.slot{width:90px;font-size:9px;padding:5px}.slot small{font-size:8px}.hint{font-size:10px}.bike{top:20%;height:60%}}
+</style>
+</head>
+<body>
+<header>
+    <span class="brand"><b>Bhāva Tech</b> · Motorcycle Build Engineer</span>
+    <span id="xpDisplay" class="xp-badge">0 XP · TRAINEE</span>
+</header>
+<main>
+<section id="home" class="screen active">
+    <div class="hero"><h1>Build. Understand. Ride.</h1><p>Build a real-looking motorcycle or scooter, learn its engineering, and take it for a road test.</p></div>
+    <div class="homegrid">
+        <div class="card" onclick="start('Sport')"><i>🏍️</i><b>Build Sport Motorcycle</b><small>Manual gears · chain drive · performance</small></div>
+        <div class="card" onclick="start('Scooter')"><i>🛵</i><b>Build Smart Scooter</b><small>Automatic CVT · city mobility</small></div>
+        <div class="card" onclick="openAnatomy('Sport')"><i>🔎</i><b>Real Bike Anatomy</b><small>50 components breakdown</small></div>
+        <div class="card" onclick="learn()"><i>🧪</i><b>Mechanic Lab</b><small>Gears, cooling, brakes and power</small></div>
+    </div>
+</section>
+
+<section id="build" class="screen">
+    <div class="layout">
+        <aside class="panel">
+            <h2>Parts Tray</h2>
+            <div class="levels">
+                <button class="active" onclick="setLevel(1,this)">L1 · Essential Build</button>
+                <button onclick="setLevel(2,this)">L2 · Feature Builder</button>
+                <button onclick="setLevel(3,this)">L3 · Smart Mechanic (200 XP)</button>
+            </div>
+            <h3>Choose model</h3><div id="models" class="style-grid"></div>
+            <h3>Paint colour <small id="paintLock" class="muted"></small></h3><div id="paints" class="paints"></div>
+            <div id="tabs" class="tabs"></div>
+            <div id="parts"></div>
+        </aside>
+        <section class="panel">
+            <div class="workhead"><b id="title"></b><span><button onclick="reset()">Reset</button><button onclick="check()">Check</button><button class="primary" onclick="roadTest()">Start Engine</button><button onclick="go('home')">Home</button></span></div>
+            <div class="guide" id="guide">Tap a part, then tap its glowing label directly on the bike.</div>
+            
+            <div class="bikebox" id="bikebox">
+                <!-- SVG 1: SPORTBIKE -->
+                <svg id="bike-Sport" class="bike" viewBox="0 0 600 390">
+                    <g class="base">
+                        <circle cx="150" cy="285" r="58" fill="#181d26" stroke="#0b1016" stroke-width="12"/>
+                        <circle cx="465" cy="285" r="58" fill="#181d26" stroke="#0b1016" stroke-width="12"/>
+                        <path d="M220 120 L320 220 L420 200 L450 280 L220 280 Z" fill="none" stroke="#2a384e" stroke-width="18" stroke-linejoin="round"/>
+                        <path d="M220 120 L150 285" stroke="#3a4b66" stroke-width="16" stroke-linecap="round"/>
+                        <path d="M420 200 L465 285" stroke="#3a4b66" stroke-width="14" stroke-linecap="round"/>
+                    </g>
+                    <g id="v-Sport-Engine" class="layer">
+                        <rect x="250" y="190" width="110" height="85" rx="10" fill="#4a5568" stroke="#a0aec0" stroke-width="3"/>
+                        <path d="M250 210 h110 M250 230 h110 M250 250 h110" stroke="#2d3748" stroke-width="4"/>
+                        <circle cx="300" cy="240" r="22" fill="#718096"/>
+                        <text x="305" y="245" text-anchor="middle" fill="white" font-size="14" font-weight="bold">ENG</text>
+                    </g>
+                    <g id="v-Sport-FuelSystem" class="layer"><path class="paintable" d="M220 120 Q300 70 360 130 L340 180 L230 180 Z" fill="#df4354"/></g>
+                    <g id="v-Sport-Battery" class="layer"><rect x="375" y="192" width="55" height="42" rx="5" fill="#202a41" stroke="#55d5ff" stroke-width="4"/></g>
+                    <g id="v-Sport-Transmission" class="layer"><circle cx="375" cy="242" r="30" fill="#394350" stroke="#ffb654" stroke-width="5"/></g>
+                    <g id="v-Sport-FinalDrive" class="layer"><path d="M386 260 Q425 280 465 285" stroke="#ffd25a" stroke-width="7" fill="none" stroke-dasharray="8 5"/></g>
+                    <g id="v-Sport-Wheels" class="layer">
+                        <circle cx="150" cy="285" r="45" fill="none" stroke="#63d9ff" stroke-width="7"/>
+                        <path d="M150 240 v90 M105 285 h90 M118 253 l64 64 M118 317 l64 -64" stroke="#63d9ff" stroke-width="3"/>
+                        <circle cx="465" cy="285" r="45" fill="none" stroke="#63d9ff" stroke-width="7"/>
+                        <path d="M465 240 v90 M420 285 h90 M433 253 l64 64 M433 317 l64 -64" stroke="#63d9ff" stroke-width="3"/>
+                    </g>
+                    <g id="v-Sport-Brakes" class="layer">
+                        <circle cx="150" cy="285" r="28" fill="#eef4ff" stroke="#cbd5e1" stroke-width="2"/>
+                        <rect x="125" y="275" width="15" height="20" fill="#ff647c" rx="3"/>
+                        <circle cx="465" cy="285" r="28" fill="#eef4ff" stroke="#cbd5e1" stroke-width="2"/>
+                    </g>
+                    <g id="v-Sport-Suspension" class="layer">
+                        <path d="M190 200 L140 285" stroke="#ffaf56" stroke-width="12" stroke-linecap="round"/>
+                        <path d="M410 200 L465 285" stroke="#ffaf56" stroke-width="12" stroke-linecap="round"/>
+                    </g>
+                    <g id="v-Sport-Cooling" class="layer"><rect x="235" y="170" width="30" height="80" rx="4" fill="#5bd7ff"/></g>
+                    <g id="v-Sport-Controls" class="layer"><path d="M225 125 L190 95 L170 95" stroke="#dce8fa" stroke-width="8" stroke-linecap="round"/></g>
+                    <g id="v-Sport-Lights" class="layer"><circle cx="165" cy="95" r="14" fill="#fff57a" filter="drop-shadow(0 0 10px #fff57a)"/></g>
+                    <g id="v-Sport-SmartDash" class="layer"><rect x="200" y="90" width="35" height="25" rx="4" fill="#59d9ff"/></g>
+                    <g id="v-Sport-Storage" class="layer"><path d="M370 145h80v52h-80z" fill="#8662d8"/></g>
+                    <g id="v-Sport-QuickShifter" class="layer"><circle cx="395" cy="245" r="10" fill="#39ed9b"/></g>
+                    <g id="v-Sport-CrashGuard" class="layer"><path d="M250 260 Q310 310 375 270" stroke="#ecf1f8" stroke-width="8" fill="none"/></g>
+                    <g id="v-Sport-Exhaust" class="layer"><path d="M280 275 Q320 330 480 300" fill="none" stroke="#e2e8f0" stroke-width="14" stroke-linecap="round"/></g>
+                    <g id="v-Sport-Seat" class="layer"><path d="M340 135 L440 145 L420 190 L330 180 Z" fill="#1a202c"/></g>
+                </svg>
+
+                <!-- SVG 2: SCOOTER -->
+                <svg id="bike-Scooter" class="bike" viewBox="0 0 600 390" style="display:none">
+                    <g class="base">
+                        <circle cx="160" cy="295" r="45" fill="#181d26" stroke="#0b1016" stroke-width="10"/>
+                        <circle cx="440" cy="295" r="45" fill="#181d26" stroke="#0b1016" stroke-width="10"/>
+                        <!-- Scooter Frame Underbone -->
+                        <path d="M220 130 L190 230 L220 295 L340 295 L400 230 L450 230" fill="none" stroke="#2a384e" stroke-width="18" stroke-linejoin="round"/>
+                        <path d="M220 130 L160 295" stroke="#3a4b66" stroke-width="14" stroke-linecap="round"/>
+                        <path d="M190 230 L210 170" stroke="#3a4b66" stroke-width="12"/>
+                    </g>
+                    
+                    <g id="v-Scooter-Engine" class="layer">
+                        <rect x="360" y="240" width="70" height="50" rx="8" fill="#4a5568" stroke="#a0aec0" stroke-width="3"/>
+                        <circle cx="395" cy="265" r="15" fill="#718096"/>
+                        <text x="395" y="270" text-anchor="middle" fill="white" font-size="12" font-weight="bold">ENG</text>
+                    </g>
+                    
+                    <g id="v-Scooter-FuelSystem" class="layer">
+                        <rect x="250" y="260" width="70" height="30" rx="5" class="paintable" fill="#df4354"/>
+                    </g>
+                    
+                    <g id="v-Scooter-Battery" class="layer">
+                        <rect x="310" y="210" width="40" height="30" rx="4" fill="#202a41" stroke="#55d5ff" stroke-width="3"/>
+                    </g>
+                    
+                    <g id="v-Scooter-Transmission" class="layer">
+                        <rect x="350" y="255" width="90" height="30" rx="15" fill="#394350" stroke="#ffb654" stroke-width="4"/>
+                    </g>
+                    
+                    <g id="v-Scooter-FinalDrive" class="layer">
+                        <circle cx="440" cy="295" r="18" fill="none" stroke="#ffd25a" stroke-width="5" stroke-dasharray="6 4"/>
+                    </g>
+                    
+                    <g id="v-Scooter-Wheels" class="layer">
+                        <circle cx="160" cy="295" r="35" fill="none" stroke="#63d9ff" stroke-width="6"/>
+                        <path d="M160 260 v70 M125 295 h70 M135 270 l50 50 M135 320 l50 -50" stroke="#63d9ff" stroke-width="2"/>
+                        <circle cx="440" cy="295" r="35" fill="none" stroke="#63d9ff" stroke-width="6"/>
+                        <path d="M440 260 v70 M405 295 h70 M415 270 l50 50 M415 320 l50 -50" stroke="#63d9ff" stroke-width="2"/>
+                    </g>
+                    
+                    <g id="v-Scooter-Brakes" class="layer">
+                        <circle cx="160" cy="295" r="22" fill="#eef4ff" stroke="#cbd5e1" stroke-width="2"/>
+                        <rect x="140" y="285" width="12" height="18" fill="#ff647c" rx="2"/>
+                        <circle cx="440" cy="295" r="22" fill="#eef4ff" stroke="#cbd5e1" stroke-width="2"/>
+                    </g>
+                    
+                    <g id="v-Scooter-Suspension" class="layer">
+                        <path d="M190 210 L150 295" stroke="#ffaf56" stroke-width="10" stroke-linecap="round"/>
+                        <path d="M400 220 L440 295" stroke="#ffaf56" stroke-width="10" stroke-linecap="round"/>
+                    </g>
+                    
+                    <g id="v-Scooter-Cooling" class="layer">
+                        <rect x="420" y="250" width="20" height="35" rx="3" fill="#5bd7ff"/>
+                    </g>
+                    
+                    <g id="v-Scooter-Controls" class="layer">
+                        <path d="M225 130 L195 105 L175 105" stroke="#dce8fa" stroke-width="7" stroke-linecap="round"/>
+                    </g>
+                    
+                    <g id="v-Scooter-Lights" class="layer">
+                        <circle cx="170" cy="115" r="12" fill="#fff57a" filter="drop-shadow(0 0 8px #fff57a)"/>
+                    </g>
+                    
+                    <g id="v-Scooter-SmartDash" class="layer">
+                        <rect x="200" y="100" width="25" height="18" rx="3" fill="#59d9ff"/>
+                    </g>
+                    
+                    <g id="v-Scooter-Storage" class="layer">
+                        <path d="M300 180 L390 180 L390 220 L300 220 Z" fill="#8662d8" rx="5"/>
+                    </g>
+                    
+                    <g id="v-Scooter-CrashGuard" class="layer">
+                        <path d="M210 230 Q250 315 360 305" stroke="#ecf1f8" stroke-width="6" fill="none"/>
+                    </g>
+                    
+                    <g id="v-Scooter-Exhaust" class="layer">
+                        <path d="M400 290 Q440 310 490 280" fill="none" stroke="#e2e8f0" stroke-width="12" stroke-linecap="round"/>
+                    </g>
+                    
+                    <g id="v-Scooter-Seat" class="layer">
+                        <path d="M280 160 L410 160 L410 180 L280 180 Z" fill="#1a202c" rx="8"/>
+                    </g>
+                </svg>
+                
+                <div id="hint" class="hint">Choose a component card</div>
+                <div id="slots"></div>
+            </div>
+        </section>
+        <aside class="panel">
+            <h2>Diagnostics</h2><div id="diag" class="diag"></div><hr><p class="muted">A real engineer checks that engine power, cooling, brakes and transmission work together.</p>
+        </aside>
+    </div>
+</section>
+
+<section id="anatomy" class="screen">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <button onclick="go('home')">Home</button>
+        <button class="primary" id="btnToggleAnatomy" onclick="toggleAnatomy()">Switch to Scooter Anatomy</button>
+    </div>
+    <h1 id="anatomy-title">Sportbike Anatomy: 50 Components</h1>
+    <div class="anatomy-container">
+        <div class="labels-canvas" id="labels-canvas">
+            
+            <!-- Anatomy Clone 1: Sport -->
+            <svg id="bike-Anatomy-Sport" class="bike" viewBox="0 0 600 390">
+                <circle cx="150" cy="285" r="58" fill="#181d26" stroke="#0b1016" stroke-width="12"/>
+                <circle cx="465" cy="285" r="58" fill="#181d26" stroke="#0b1016" stroke-width="12"/>
+                <path d="M220 120 L320 220 L420 200 L450 280 L220 280 Z" fill="none" stroke="#2a384e" stroke-width="18" stroke-linejoin="round"/>
+                <path d="M220 120 L150 285" stroke="#3a4b66" stroke-width="16" stroke-linecap="round"/>
+                <path d="M420 200 L465 285" stroke="#3a4b66" stroke-width="14" stroke-linecap="round"/>
+                <rect x="250" y="190" width="110" height="85" rx="10" fill="#4a5568" stroke="#a0aec0" stroke-width="3"/>
+                <path d="M250 210 h110 M250 230 h110 M250 250 h110" stroke="#2d3748" stroke-width="4"/>
+                <circle cx="300" cy="240" r="22" fill="#718096"/>
+                <path d="M220 120 Q300 70 360 130 L340 180 L230 180 Z" fill="#ef4444"/>
+                <circle cx="150" cy="285" r="45" fill="none" stroke="#63d9ff" stroke-width="7"/>
+                <path d="M150 240 v90 M105 285 h90 M118 253 l64 64 M118 317 l64 -64" stroke="#63d9ff" stroke-width="3"/>
+                <circle cx="465" cy="285" r="45" fill="none" stroke="#63d9ff" stroke-width="7"/>
+                <path d="M465 240 v90 M420 285 h90 M433 253 l64 64 M433 317 l64 -64" stroke="#63d9ff" stroke-width="3"/>
+                <circle cx="150" cy="285" r="28" fill="#eef4ff" stroke="#cbd5e1" stroke-width="2"/>
+                <rect x="125" y="275" width="15" height="20" fill="#ff647c" rx="3"/>
+                <circle cx="465" cy="285" r="28" fill="#eef4ff" stroke="#cbd5e1" stroke-width="2"/>
+                <path d="M190 200 L140 285" stroke="#ffaf56" stroke-width="12" stroke-linecap="round"/>
+                <path d="M410 200 L465 285" stroke="#ffaf56" stroke-width="12" stroke-linecap="round"/>
+                <path d="M225 125 L190 95 L170 95" stroke="#dce8fa" stroke-width="8" stroke-linecap="round"/>
+                <circle cx="165" cy="95" r="14" fill="#fff57a"/>
+                <path d="M280 275 Q320 330 480 300" fill="none" stroke="#e2e8f0" stroke-width="14" stroke-linecap="round"/>
+                <path d="M340 135 L440 145 L420 190 L330 180 Z" fill="#1a202c"/>
+            </svg>
+            
+            <!-- Anatomy Clone 2: Scooter -->
+            <svg id="bike-Anatomy-Scooter" class="bike" viewBox="0 0 600 390" style="display:none">
+                <circle cx="160" cy="295" r="45" fill="#181d26" stroke="#0b1016" stroke-width="10"/>
+                <circle cx="440" cy="295" r="45" fill="#181d26" stroke="#0b1016" stroke-width="10"/>
+                <path d="M220 130 L190 230 L220 295 L340 295 L400 230 L450 230" fill="none" stroke="#2a384e" stroke-width="18" stroke-linejoin="round"/>
+                <path d="M220 130 L160 295" stroke="#3a4b66" stroke-width="14" stroke-linecap="round"/>
+                <path d="M190 230 L210 170" stroke="#3a4b66" stroke-width="12"/>
+                <rect x="360" y="240" width="70" height="50" rx="8" fill="#4a5568" stroke="#a0aec0" stroke-width="3"/>
+                <rect x="250" y="260" width="70" height="30" rx="5" fill="#df4354"/>
+                <rect x="350" y="255" width="90" height="30" rx="15" fill="#394350" stroke="#ffb654" stroke-width="4"/>
+                <circle cx="160" cy="295" r="35" fill="none" stroke="#63d9ff" stroke-width="6"/>
+                <circle cx="440" cy="295" r="35" fill="none" stroke="#63d9ff" stroke-width="6"/>
+                <circle cx="160" cy="295" r="22" fill="#eef4ff" stroke="#cbd5e1" stroke-width="2"/>
+                <circle cx="440" cy="295" r="22" fill="#eef4ff" stroke="#cbd5e1" stroke-width="2"/>
+                <path d="M190 210 L150 295" stroke="#ffaf56" stroke-width="10" stroke-linecap="round"/>
+                <path d="M400 220 L440 295" stroke="#ffaf56" stroke-width="10" stroke-linecap="round"/>
+                <path d="M225 130 L195 105 L175 105" stroke="#dce8fa" stroke-width="7" stroke-linecap="round"/>
+                <circle cx="170" cy="115" r="12" fill="#fff57a"/>
+                <path d="M300 180 L390 180 L390 220 L300 220 Z" fill="#8662d8" rx="5"/>
+                <path d="M400 290 Q440 310 490 280" fill="none" stroke="#e2e8f0" stroke-width="12" stroke-linecap="round"/>
+                <path d="M280 160 L410 160 L410 180 L280 180 Z" fill="#1a202c" rx="8"/>
+            </svg>
+
+            <div id="dots-container"></div>
+        </div>
+        <div class="anatomy-list-box">
+            <h2 id="infoTitle" style="color:var(--cyan); margin-bottom:5px;">System Explorer</h2>
+            <p id="infoText" class="muted" style="margin:0; font-size:14px; min-height:40px;">Select a numbered point on the bike or scroll the list below.</p>
+            <div class="anatomy-list" id="anatomy-list"></div>
+        </div>
+    </div>
+</section>
+
+<section id="learn" class="screen">
+    <button onclick="go('home')">Home</button><h1>Mechanic Lab</h1>
+    <div class="homegrid">
+        <div class="card"><i>⚙️</i><b>Manual Gearbox</b><small>Clutch and gears let the rider choose torque or speed.</small></div>
+        <div class="card"><i>🔄</i><b>Automatic CVT</b><small>Scooter pulleys and a belt change ratio automatically.</small></div>
+        <div class="card"><i>🛑</i><b>Brake Safety</b><small>More speed needs better brakes and tyre grip.</small></div>
+        <div class="card"><i>❄️</i><b>Cooling</b><small>A radiator removes heat from powerful engines.</small></div>
+    </div>
+</section>
+</main>
+
+<div id="modal" class="modal">
+    <div class="sim">
+        <button style="float:right" onclick="closeSim()">X</button>
+        <h2>🎉 Road Test Simulator</h2>
+        <p class="muted">Your custom machine is out on the open road!</p>
+        <div id="simSky" class="sky"></div>
+        <div class="remote"><button class="primary" onclick="closeSim()">Return to Workshop</button></div>
+    </div>
+</div>
+
+<script>
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+function playSound(type) {
+    if (!audioCtx) audioCtx = new AudioContext();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    const now = audioCtx.currentTime;
+    
+    if (type === 'click') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.exponentialRampToValueAtTime(1500, now + 0.05);
+        gain.gain.setValueAtTime(0.8, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+        osc.start(now);
+        osc.stop(now + 0.1);
+    } else if (type === 'error') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(100, now);
+        osc.frequency.exponentialRampToValueAtTime(80, now + 0.2);
+        gain.gain.setValueAtTime(0.5, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        osc.start(now);
+        osc.stop(now + 0.2);
+    } else if (type === 'rev') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(100, now);
+        osc.frequency.linearRampToValueAtTime(250, now + 0.5);
+        osc.frequency.linearRampToValueAtTime(120, now + 1.2);
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.8, now + 0.2);
+        gain.gain.linearRampToValueAtTime(0.01, now + 1.2);
+        osc.start(now);
+        osc.stop(now + 1.2);
+    }
+}
+
+let globalXP = parseInt(localStorage.getItem('bhava_tech_xp')) || 0;
+
+function addXP(amount) {
+    globalXP += amount;
+    localStorage.setItem('bhava_tech_xp', globalXP);
+    updateXPDisplay();
+}
+
+function updateXPDisplay() {
+    const xpBadge = document.getElementById('xpDisplay');
+    let rank = 'TRAINEE';
+    if (globalXP > 200) rank = 'MECHANIC';
+    if (globalXP > 500) rank = 'MASTER BUILDER';
+    xpBadge.textContent = `${globalXP} XP · ${rank}`;
+    xpBadge.classList.add('levelup');
+    setTimeout(() => xpBadge.classList.remove('levelup'), 400);
+}
+updateXPDisplay();
+
+const models={
+    Sport:[
+        ['Mini Moto 150','🏍️',15],['Classic Cruiser 350','🏍️',20],['Street Spark 250','🏍️',28],['Retro Scrambler 400','🏍️',40],
+        ['Track Blaze 400','🏍️',46],['Naked Street 500','🏍️',47],['Adventure Tourer 650','🏍️',68],['Hyper-Naked 900','🏍️',119],
+        ['Supersport 600','🏍️',120],['Superbike 1000','🏍️',200]
+    ],
+    Scooter:[
+        ['Eco Urban 100','🛵',7],['Retro Classic 110','🛵',8],['City Glide 125','🛵',9],['Hyper Electric 7kW','🛵',9],
+        ['Pro Delivery 150','🛵',11],['Adventure Maxi 160','🛵',14],['Volt Zip Electric','🛵',14],['Sport Maxi 300','🛵',28],
+        ['Touring Scooter 400','🛵',35],['Aero Maxi 500','🛵',45]
+    ]
+};
+
+const colors=['#df4354','#2689ff','#ffe15a','#3ae49d','#9a66e9','#f5f6fa','#ff9033','#20222b'];
+const premiumColors = ['#9a66e9', '#f5f6fa', '#ff9033', '#20222b'];
+
+const parts=[
+    ['Frame','Aluminium Twin-Spar Frame','Sport'],['Frame','Step-Through Scooter Frame','Scooter'],['Frame','Carbon Fiber Race Frame','Sport'],
+    ['Engine','250cc Liquid-Cooled Engine','Sport'],['Engine','400cc Twin-Cylinder Engine','Sport'],['Engine','600cc Inline-Four Engine','Sport'],
+    ['Engine','125cc Air-Cooled Engine','Scooter'],['Engine','4kW Electric Hub Motor','Scooter'],
+    ['Battery','12V Starter Battery','both'],['Battery','Lithium-Ion Lightweight Battery','Sport'],
+    ['FuelSystem','12L Fuel Tank & Pump','both'],['FuelSystem','Motor Controller','Scooter'],
+    ['Transmission','6-Speed Manual Gearbox','Sport'],['Transmission','Racing Slipper Clutch','Sport'],['Transmission','Automatic CVT','Scooter'],
+    ['FinalDrive','Chain & Sprocket Drive','Sport'],['FinalDrive','Carbon Belt Drive','both'],['FinalDrive','CVT Final Drive','Scooter'],
+    ['Wheels','17-inch Sport Wheels','Sport'],['Wheels','Forged Racing Alloys','Sport'],['Wheels','12-inch City Wheels','Scooter'],
+    ['Brakes','Dual Disc Brakes with ABS','Sport'],['Brakes','Performance Brembo Calipers','Sport'],['Brakes','Combined City Brakes','Scooter'],
+    ['Suspension','Sport Fork & Mono-shock','Sport'],['Suspension','Ohlins Adjustable Suspension','Sport'],['Suspension','Comfort Fork & Twin Shocks','Scooter'],
+    ['Controls','Clutch, Gear Lever & Bars','Sport'],['Controls','Twist-and-Go Controls','Scooter'],
+    ['Cooling','Liquid Radiator & Fan','Sport'],['Cooling','High-Capacity Racing Radiator','Sport'],
+    ['Lights','LED Headlamp & Indicators','both'],['SmartDash','Bluetooth Dashboard','both'],['Storage','Under-Seat Storage Box','Scooter'],
+    ['QuickShifter','Quick Shifter','Sport'],['CrashGuard','Protective Crash Guard','both'],
+    ['Exhaust','Titanium Sport Exhaust','Sport'],['Exhaust','Carbon Fiber Slip-on Exhaust','Sport'],
+    ['Seat','Two-Tone Comfort Seat','both'],['Seat','Ergonomic Touring Seat','both']
+];
+
+let type='Sport',level=1,model=0,paintColor=colors[0],selected=null,installed={};
+let currentTab = 'Frame'; 
+
+const required=['Frame','Engine','Battery','FuelSystem','Transmission','FinalDrive','Wheels','Brakes','Suspension','Controls'];
+
+// 🌟 NEW: DUAL COORDINATE SYSTEM FOR THE 2 SVGS
+const posSport = {Frame:'10%,46%',Engine:'46%,48%',Battery:'71%,43%',FuelSystem:'46%,18%',Transmission:'64%,58%',FinalDrive:'78%,70%',Wheels:'4%,73%',Brakes:'80%,82%',Suspension:'21%,65%',Controls:'18%,13%',Cooling:'32%,40%',Lights:'13%,10%',SmartDash:'28%,8%',Storage:'74%,25%',QuickShifter:'62%,69%',CrashGuard:'38%,79%',Exhaust:'76%,54%',Seat:'63%,24%'};
+const posScooter = {Frame:'35%,55%',Engine:'62%,64%',Battery:'48%,40%',FuelSystem:'38%,65%',Transmission:'55%,66%',FinalDrive:'73%,75%',Wheels:'10%,75%',Brakes:'75%,82%',Suspension:'25%,60%',Controls:'20%,15%',Cooling:'73%,60%',Lights:'18%,22%',SmartDash:'25%,10%',Storage:'55%,45%',QuickShifter:'-100%,-100%',CrashGuard:'38%,79%',Exhaust:'72%,80%',Seat:'55%,32%'};
+
+function go(id){document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function start(t){type=t;level=1;model=0;installed={};selected=null;currentTab='Frame';go('build');render()}
+
+function setLevel(n,b){
+    if(n === 3 && globalXP < 200) {
+        playSound('error');
+        alert("Earn 200 XP to unlock the Level 3 Smart Mechanic features!");
+        return;
+    }
+    level=n;
+    document.querySelectorAll('.levels button').forEach(q=>q.classList.remove('active'));
+    b.classList.add('active');
+    render();
+}
+
+function available(){let a=parts.filter(p=>p[2]===type||p[2]==='both');if(level===1)a=a.filter(p=>required.includes(p[0]));return a}
+
+function render(){
+    let a=available(),groups=[...new Set(a.map(p=>p[0]))],m=models[type][model];
+    let currentPos = (type === 'Sport') ? posSport : posScooter;
+    
+    // Toggle active SVG display
+    document.getElementById('bike-Sport').style.display = type === 'Sport' ? 'block' : 'none';
+    document.getElementById('bike-Scooter').style.display = type === 'Scooter' ? 'block' : 'none';
+
+    if (selected) currentTab = selected[0];
+    if (!groups.includes(currentTab)) currentTab = groups[0];
+    let tab = currentTab;
+
+    document.getElementById('title').textContent=m[1]+' '+m[0]+' · '+m[2]+' hp';
+    document.getElementById('models').innerHTML=models[type].map((v,i)=>'<button class="'+(i===model?'active':'')+'" onclick="model='+i+';render()">'+v[1]+' '+v[0]+'</button>').join('');
+    
+    let canUnlockPaints = globalXP >= 100;
+    document.getElementById('paintLock').textContent = canUnlockPaints ? '' : '(Earn 100 XP to unlock special colors)';
+    document.getElementById('paints').innerHTML=colors.map(c=>{
+        let isPremium = premiumColors.includes(c);
+        let locked = isPremium && !canUnlockPaints;
+        return `<button class="paint ${c===paintColor?'active':''} ${locked?'locked':''}" style="background:${c}" onclick="${locked?'playSound(\'error\')':'paintColor=\''+c+'\'; playSound(\'click\'); render()'}"></button>`;
+    }).join('');
+    
+    document.getElementById('tabs').innerHTML=groups.map(g=>'<button class="tab '+(g===tab?'active':'')+'" onclick="currentTab=\''+g+'\'; selected=null; render()">'+g+'</button>').join('');
+    
+    let show=a.filter(p=>p[0]===tab);
+    document.getElementById('parts').innerHTML=show.map(p=>'<div class="part '+(p===selected?'selected':'')+'" onclick="choose('+parts.indexOf(p)+')"><b>🧩 '+p[1]+'</b><small>'+p[0]+' component</small></div>').join('');
+    
+    document.getElementById('slots').innerHTML=groups.map(k=>{
+        let coord = currentPos[k];
+        if(!coord) return '';
+        let q=coord.split(',');
+        return '<div class="slot '+(installed[k]?'good':selected?.[0]===k?'target':'')+'" style="left:'+q[0]+';top:'+q[1]+'" onclick="install(\''+k+'\')"><b>'+k+'</b><small>'+(installed[k]?installed[k][1]:selected?.[0]===k?'TAP TO INSTALL':'')+'</small></div>'
+    }).join('');
+    
+    document.querySelectorAll('.paintable').forEach(e=>e.setAttribute('fill',paintColor));
+    
+    // Clear old classes to prevent visual bugs when swapping models
+    document.querySelectorAll('.layer.on').forEach(e => e.classList.remove('on'));
+    
+    // Turn on newly installed parts in the correct SVG
+    Object.keys(installed).forEach(k=> {
+        let el = document.getElementById('v-' + type + '-' + k);
+        if(el) el.classList.add('on');
+    });
+    
+    document.getElementById('hint').textContent=selected?'Selected: '+selected[1]+' — tap '+selected[0]:'Choose a component card';
+    document.getElementById('guide').innerHTML=selected?'🧩 <b>'+selected[1]+'</b> selected. Now tap the glowing <b>'+selected[0]+'</b> label on the real bike.':'👆 <b>Easy build:</b> Tap a card, then tap its glowing label directly on the bike.';
+    diagnose()
+}
+
+function choose(i){
+    playSound('click'); 
+    selected=parts[i];
+    render()
+}
+
+function install(slot){
+    if(!selected){
+        currentTab = slot;
+        render();
+        document.getElementById('guide').innerHTML='Select a <b>'+slot+'</b> component from the tray to install here.';
+        return;
+    }
+    if(selected[0]!==slot){
+        playSound('error'); 
+        document.getElementById('guide').innerHTML='↪ This part belongs in the glowing <b>'+selected[0]+'</b> location.';
+        return;
+    }
+    
+    playSound('click'); 
+    installed[slot]=selected;
+    selected=null;
+    addXP(10); 
+    
+    let nextNeeded = required.find(k => !installed[k]);
+    if (nextNeeded) currentTab = nextNeeded;
+    render();
+}
+
+function issues(){
+    let q=[],e=installed.Engine?.[1]||'';
+    if(type==='Sport'&&(e.includes('250')||e.includes('400')||e.includes('600'))&&!installed.Cooling)q.push('Powerful engine needs a radiator');
+    if(type==='Sport'&&installed.Transmission&&!installed.Transmission[1].includes('Gearbox')&&!installed.Transmission[1].includes('Clutch'))q.push('Sport motorcycle needs manual gearbox');
+    if(type==='Scooter'&&installed.Transmission&&!installed.Transmission[1].includes('CVT'))q.push('Scooter needs automatic CVT');
+    return q
+}
+
+function diagnose(){
+    let n=required.filter(k=>installed[k]).length,q=issues();
+    document.getElementById('diag').innerHTML='<b class="ok">Assembly: '+n+' / '+required.length+'</b><br>'+((level===3)?(q.length?'<b class="warn">Fix: '+q.join('; ')+'</b>':'<b class="ok">Compatibility OK</b>'):'Level '+level+' workshop in progress')
+}
+
+function check(){
+    let m=required.filter(k=>!installed[k]);
+    alert(m.length?'Still needed: '+m.join(', '):level===3&&issues().length?'Fix: '+issues().join('; '):'Excellent! Road test ready.')
+}
+function reset(){installed={};selected=null;currentTab='Frame';render()}
+function learn(){go('learn')}
+
+function roadTest(){
+    let m=required.filter(k=>!installed[k]);
+    if(m.length) { playSound('error'); return alert('Complete essential build first.'); }
+    if(level===3&&issues().length) { playSound('error'); return alert('Fix compatibility before road test.'); }
+    
+    playSound('rev');
+    addXP(100);
+    
+    const simSky = document.getElementById('simSky');
+    simSky.innerHTML = '<div class="scrolling-road"></div>';
+    
+    // Grab the CORRECT active SVG
+    const activeBikeSVG = document.getElementById('bike-' + type);
+    const bikeClone = activeBikeSVG.cloneNode(true);
+    
+    bikeClone.classList.add('riding-bike');
+    bikeClone.style.display = 'block'; // Make sure the clone is visible
+    
+    const celebration = document.createElement('div');
+    celebration.className = 'celebration-text';
+    celebration.innerHTML = '<h2>🎉 Outstanding Build! 🎉</h2><p>+100 XP Earned!</p>';
+    simSky.appendChild(bikeClone);
+    simSky.appendChild(celebration);
+    modal.classList.add('show');
+}
+
+function closeSim(){
+    modal.classList.remove('show');
+    document.getElementById('simSky').innerHTML = '';
+}
+
+// 🌟 NEW: SEPARATE ANATOMY DATA FOR SPORT VS SCOOTER
+const anatomyDataSport = [
+    {id:1, n:'Front Tire', x:25, y:80, d:'Provides grip and handles front braking forces.'},
+    {id:2, n:'Front Rim', x:25, y:73, d:'The metal wheel structure holding the tire.'},
+    {id:3, n:'Front Axle', x:25, y:73, d:'The central shaft for the rotating front wheel.'},
+    {id:4, n:'Brake Rotor', x:25, y:65, d:'The disc that the brake pads squeeze against.'},
+    {id:5, n:'Brake Caliper', x:20, y:70, d:'Hydraulic clamp containing the brake pads.'},
+    {id:6, n:'Brake Pads', x:22, y:68, d:'Friction material that slows the rotor.'},
+    {id:7, n:'Front Forks', x:30, y:55, d:'Suspension tubes that absorb road bumps.'},
+    {id:8, n:'Front Fender', x:20, y:55, d:'Deflects road debris and water.'},
+    {id:9, n:'Headlight', x:28, y:28, d:'Illuminates the road ahead.'},
+    {id:10, n:'Turn Signals', x:32, y:30, d:'Indicates the rider direction.'},
+    {id:11, n:'Windscreen', x:35, y:18, d:'Deflects wind over the rider.'},
+    {id:12, n:'Handlebars', x:38, y:23, d:'Used for steering the motorcycle.'},
+    {id:13, n:'Throttle', x:37, y:21, d:'Twist grip to control engine speed.'},
+    {id:14, n:'Clutch Lever', x:40, y:21, d:'Disengages engine power for gear shifts.'},
+    {id:15, n:'Brake Lever', x:35, y:21, d:'Controls the front hydraulic brakes.'},
+    {id:16, n:'Mirrors', x:42, y:13, d:'Provides rearward visibility.'},
+    {id:17, n:'Dashboard', x:40, y:27, d:'Displays speed, RPM, and engine info.'},
+    {id:18, n:'Ignition Switch', x:42, y:30, d:'Key slot to power the electrical system.'},
+    {id:19, n:'Steering Stem', x:43, y:38, d:'Connects forks to the frame pivot.'},
+    {id:20, n:'Triple Clamps', x:40, y:40, d:'Brackets holding the fork tubes securely.'},
+    {id:21, n:'Fuel Tank', x:55, y:32, d:'Reservoir for the gasoline.'},
+    {id:22, n:'Gas Cap', x:53, y:27, d:'Sealed cover for refueling.'},
+    {id:23, n:'Main Frame', x:50, y:45, d:'The primary structural chassis.'},
+    {id:24, n:'Subframe', x:70, y:35, d:'Rear frame supporting the rider seat.'},
+    {id:25, n:'Rider Seat', x:60, y:35, d:'Ergonomic saddle for the pilot.'},
+    {id:26, n:'Pillion Seat', x:75, y:33, d:'Secondary seat for a passenger.'},
+    {id:27, n:'Battery', x:65, y:48, d:'Stores electrical energy for starting.'},
+    {id:28, n:'ECU', x:68, y:45, d:'The engine control computer brain.'},
+    {id:29, n:'Airbox', x:60, y:45, d:'Filters incoming air for combustion.'},
+    {id:30, n:'Engine Block', x:48, y:60, d:'Main housing for pistons and cylinders.'},
+    {id:31, n:'Cylinder Head', x:45, y:52, d:'Contains the valves and spark plugs.'},
+    {id:32, n:'Spark Plugs', x:43, y:48, d:'Ignites the compressed fuel-air mix.'},
+    {id:33, n:'Crankcase', x:50, y:68, d:'Bottom of engine housing the crankshaft.'},
+    {id:34, n:'Oil Pan', x:52, y:72, d:'Reservoir for engine lubricating oil.'},
+    {id:35, n:'Oil Filter', x:46, y:70, d:'Removes contaminants from the oil.'},
+    {id:36, n:'Radiator', x:40, y:55, d:'Cools the engine using liquid coolant.'},
+    {id:37, n:'Cooling Hoses', x:43, y:60, d:'Circulates coolant between engine and radiator.'},
+    {id:38, n:'Exhaust Header', x:45, y:75, d:'Extracts hot gases from the cylinders.'},
+    {id:39, n:'Catalytic Converter', x:55, y:80, d:'Reduces harmful emissions.'},
+    {id:40, n:'Muffler', x:80, y:75, d:'Silences the exhaust noise.'},
+    {id:41, n:'Gearbox', x:60, y:62, d:'Transmission containing the gear ratios.'},
+    {id:42, n:'Clutch Basket', x:58, y:64, d:'Houses the friction and steel plates.'},
+    {id:43, n:'Shift Lever', x:55, y:70, d:'Foot control to change gears.'},
+    {id:44, n:'Drive Sprocket', x:65, y:68, d:'Front gear turning the drive chain.'},
+    {id:45, n:'Drive Chain', x:72, y:68, d:'Transfers power to the rear wheel.'},
+    {id:46, n:'Rear Sprocket', x:77, y:73, d:'Rear gear connected to the wheel hub.'},
+    {id:47, n:'Swingarm', x:68, y:70, d:'Pivoting rear suspension arm.'},
+    {id:48, n:'Rear Shock', x:65, y:55, d:'Spring and damper for the rear wheel.'},
+    {id:49, n:'Rear Tire', x:77, y:80, d:'Transfers engine power to the road.'},
+    {id:50, n:'Rear Brake', x:73, y:75, d:'Stopping power for the rear wheel.'}
+];
+
+const anatomyDataScooter = [
+    {id:1, n:'Front Tire', x:27, y:80, d:'Thicker, smaller radius tire for city bumps.'},
+    {id:2, n:'12-inch Rim', x:27, y:75, d:'Smaller wheel for high urban maneuverability.'},
+    {id:3, n:'Front Axle', x:27, y:75, d:'The central shaft for the front wheel.'},
+    {id:4, n:'Brake Rotor', x:27, y:68, d:'The disc that the brake pads squeeze.'},
+    {id:5, n:'Brake Caliper', x:22, y:72, d:'Hydraulic clamp containing the brake pads.'},
+    {id:6, n:'Brake Pads', x:24, y:70, d:'Friction material that slows the rotor.'},
+    {id:7, n:'Telescopic Forks', x:32, y:60, d:'Suspension tubes that absorb road bumps.'},
+    {id:8, n:'Front Fender', x:22, y:60, d:'Deflects road debris and water.'},
+    {id:9, n:'Headlight', x:28, y:35, d:'Illuminates the road ahead.'},
+    {id:10, n:'Turn Signals', x:32, y:40, d:'Indicates the rider direction.'},
+    {id:11, n:'Wind Deflector', x:35, y:22, d:'Pushes wind over the rider.'},
+    {id:12, n:'Handlebars', x:38, y:28, d:'Covered in plastic trim for aerodynamics.'},
+    {id:13, n:'Throttle Grip', x:37, y:26, d:'Twist grip to control engine speed.'},
+    {id:14, n:'Rear Brake Lever', x:40, y:26, d:'Replaces the manual clutch on scooters.'},
+    {id:15, n:'Front Brake Lever', x:35, y:26, d:'Controls the front hydraulic brakes.'},
+    {id:16, n:'Mirrors', x:42, y:18, d:'Provides rearward visibility.'},
+    {id:17, n:'Digital Dash', x:40, y:30, d:'Displays speed, fuel, and trip info.'},
+    {id:18, n:'Ignition & Seat Lock', x:42, y:35, d:'Key slot to power on and unlock storage.'},
+    {id:19, n:'Steering Stem', x:43, y:45, d:'Connects forks to the frame pivot.'},
+    {id:20, n:'Front Apron', x:38, y:55, d:'Aerodynamic front bodywork panel.'},
+    {id:21, n:'Leg Shield', x:40, y:60, d:'Protects rider legs from wind and rain.'},
+    {id:22, n:'Floorboard', x:45, y:75, d:'Flat area for the rider to rest feet.'},
+    {id:23, n:'Underbone Frame', x:50, y:65, d:'Step-through tubular steel chassis.'},
+    {id:24, n:'Rear Frame Hoop', x:65, y:45, d:'Rear frame supporting the large seat.'},
+    {id:25, n:'Comfort Seat', x:58, y:40, d:'Wide, comfortable saddle.'},
+    {id:26, n:'Grab Rails', x:70, y:40, d:'Handles for a passenger to hold onto.'},
+    {id:27, n:'Under-Seat Storage', x:58, y:50, d:'Large "helmet box" storage trunk.'},
+    {id:28, n:'Fuel Tank', x:45, y:68, d:'Hidden under the floorboard for low gravity.'},
+    {id:29, n:'Battery', x:52, y:55, d:'Stores electrical energy for starting.'},
+    {id:30, n:'ECU / CDI', x:55, y:55, d:'The engine control computer brain.'},
+    {id:31, n:'Air Filter Box', x:60, y:55, d:'Filters incoming air for the rear engine.'},
+    {id:32, n:'Engine Block', x:65, y:65, d:'Horizontally mounted engine block.'},
+    {id:33, n:'Cylinder Head', x:62, y:62, d:'Contains the valves and spark plugs.'},
+    {id:34, n:'Spark Plug', x:60, y:60, d:'Ignites the compressed fuel-air mix.'},
+    {id:35, n:'Oil Sump', x:65, y:70, d:'Reservoir for engine lubricating oil.'},
+    {id:36, n:'Cooling Fan', x:68, y:65, d:'Forces air over the engine fins.'},
+    {id:37, n:'Engine Shroud', x:66, y:62, d:'Plastic cover directing cooling air.'},
+    {id:38, n:'Exhaust Header', x:68, y:72, d:'Extracts hot gases from the cylinders.'},
+    {id:39, n:'Catalytic Converter', x:75, y:75, d:'Reduces harmful emissions.'},
+    {id:40, n:'Silencer Muffler', x:80, y:72, d:'Thick exhaust box to reduce noise.'},
+    {id:41, n:'CVT Housing', x:60, y:68, d:'Outer metal case for the transmission.'},
+    {id:42, n:'Primary Variator', x:58, y:68, d:'Front pulley that changes size with RPM.'},
+    {id:43, n:'Kevlar V-Belt', x:63, y:68, d:'Rubber belt transferring power automatically.'},
+    {id:44, n:'Centrifugal Clutch', x:68, y:68, d:'Engages the rear wheel as speed rises.'},
+    {id:45, n:'Final Reduction Gear', x:70, y:68, d:'Gearing inside the rear wheel hub.'},
+    {id:46, n:'Rear Shock Absorber', x:65, y:55, d:'Single sided spring and damper.'},
+    {id:47, n:'Engine Swingarm', x:65, y:68, d:'The whole engine block pivots as suspension.'},
+    {id:48, n:'Rear Wheel Hub', x:73, y:75, d:'Mounting point for the rim and brakes.'},
+    {id:49, n:'Rear Tire', x:73, y:80, d:'Transfers CVT power to the road.'},
+    {id:50, n:'Rear Drum Brake', x:73, y:75, d:'Enclosed brake shoes for stopping power.'}
+];
+
+let anatomyType = 'Sport'; // Tracks which anatomy is open
+
+function openAnatomy(forcedType){
+    if(forcedType) anatomyType = forcedType;
+    go('anatomy');
+    refreshAnatomyView();
+}
+
+function toggleAnatomy() {
+    anatomyType = anatomyType === 'Sport' ? 'Scooter' : 'Sport';
+    refreshAnatomyView();
+}
+
+function refreshAnatomyView() {
+    document.getElementById('anatomy-title').textContent = anatomyType === 'Sport' ? 'Sportbike Anatomy: 50 Components' : 'Scooter Anatomy: 50 Components';
+    
+    let btn = document.getElementById('btnToggleAnatomy');
+    btn.textContent = anatomyType === 'Sport' ? 'Switch to Scooter Anatomy' : 'Switch to Sportbike Anatomy';
+    
+    document.getElementById('bike-Anatomy-Sport').style.display = anatomyType === 'Sport' ? 'block' : 'none';
+    document.getElementById('bike-Anatomy-Scooter').style.display = anatomyType === 'Scooter' ? 'block' : 'none';
+    
+    const container = document.getElementById('dots-container');
+    const list = document.getElementById('anatomy-list');
+    const data = anatomyType === 'Sport' ? anatomyDataSport : anatomyDataScooter;
+    
+    let dotsHTML = '';
+    let listHTML = '';
+    data.forEach(p => {
+        dotsHTML += `<div class="dot" id="dot-${p.id}" style="left:${p.x}%; top:${p.y}%" onclick="selectAnatomy(${p.id})">${p.id}</div>`;
+        listHTML += `<div class="part-item" id="list-${p.id}" onclick="selectAnatomy(${p.id})"><b>${p.id}.</b> ${p.n}</div>`;
+    });
+    
+    container.innerHTML = dotsHTML;
+    list.innerHTML = listHTML;
+    
+    document.getElementById('infoTitle').textContent = 'System Explorer';
+    document.getElementById('infoText').textContent = 'Select a numbered point on the bike or scroll the list below.';
+}
+
+function selectAnatomy(id){
+    document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+    document.querySelectorAll('.part-item').forEach(i => i.classList.remove('active'));
+    
+    document.getElementById('dot-'+id).classList.add('active');
+    const listItem = document.getElementById('list-'+id);
+    listItem.classList.add('active');
+    listItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    
+    const data = anatomyType === 'Sport' ? anatomyDataSport : anatomyDataScooter;
+    const part = data.find(p => p.id === id);
+    
+    document.getElementById('infoTitle').textContent = part.id + '. ' + part.n;
+    document.getElementById('infoText').textContent = part.d;
+}
+</script>
+<script src="js/bhava-bridge.js"></script>
+<script src="js/bhava-session.js"></script>
+<script src="js/bhava-game-nav.js"></script>
+<script src="js/bhava-tech-all.js"></script>
+
+</body>
+</html>

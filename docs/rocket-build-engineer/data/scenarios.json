@@ -1,0 +1,53 @@
+{
+  "missions": [
+    {
+      "id": "m1",
+      "title": "First Launch",
+      "description": "Build a basic sounding rocket that can safely reach the sky and land with a parachute.",
+      "budget": 120,
+      "requirements": {
+        "minStability": 4,
+        "recoveryNeeded": true
+      }
+    },
+    {
+      "id": "m2",
+      "title": "Camera Flight",
+      "description": "Add a camera pod so your rocket can film its own flight.",
+      "budget": 180,
+      "requirements": {
+        "cameraNeeded": true
+      }
+    },
+    {
+      "id": "m3",
+      "title": "Payload Mission",
+      "description": "Carry a small science payload safely to the sky and back.",
+      "budget": 220,
+      "requirements": {
+        "payloadNeeded": true,
+        "recoveryNeeded": true
+      }
+    },
+    {
+      "id": "m4",
+      "title": "Orbital Attempt",
+      "description": "Design a two-stage orbital rocket with guidance and enough thrust to reach orbit.",
+      "budget": 1400,
+      "requirements": {
+        "twoStageNeeded": true,
+        "guidanceNeeded": true
+      }
+    },
+    {
+      "id": "m5",
+      "title": "Satellite Delivery",
+      "description": "Build an orbital rocket that can power and deliver a small satellite with solar panels.",
+      "budget": 1700,
+      "requirements": {
+        "twoStageNeeded": true,
+        "solarNeeded": true
+      }
+    }
+  ]
+}

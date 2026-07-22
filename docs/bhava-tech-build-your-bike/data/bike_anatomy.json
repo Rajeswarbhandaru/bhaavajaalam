@@ -1,0 +1,223 @@
+{
+  "intro": {
+    "title": "Bike Anatomy",
+    "subtitle": "Every bicycle is a system of simple machines working together. Learn what each part does, and how few or how many parts a bike really needs.",
+    "minParts": [
+      {
+        "slot": "frame",
+        "why": "Holds every other part together and carries the rider's weight."
+      },
+      {
+        "slot": "fork",
+        "why": "Connects the front wheel to the frame and allows steering."
+      },
+      {
+        "slot": "front_wheel",
+        "why": "Rolls to reduce friction versus dragging on the ground."
+      },
+      {
+        "slot": "rear_wheel",
+        "why": "Rolls and receives pedaling power through the chain."
+      },
+      {
+        "slot": "crankset",
+        "why": "Converts leg push into rotational force (torque)."
+      },
+      {
+        "slot": "pedals",
+        "why": "The contact point where the rider's foot applies force."
+      },
+      {
+        "slot": "chain",
+        "why": "Transfers pedaling power from the crankset to the rear wheel."
+      },
+      {
+        "slot": "seat",
+        "why": "Supports the rider's body weight while pedaling."
+      }
+    ],
+    "maxFeatures": [
+      {
+        "slot": "gear_shifter",
+        "why": "Lets the rider change gear ratio for hills or speed."
+      },
+      {
+        "slot": "cassette",
+        "why": "A set of different-sized gears for varying effort/speed."
+      },
+      {
+        "slot": "rear_derailleur",
+        "why": "Physically moves the chain between cassette gears."
+      },
+      {
+        "slot": "brake_disc_front",
+        "why": "Provides strong, consistent stopping power in all weather."
+      },
+      {
+        "slot": "suspension_fork",
+        "why": "Absorbs bumps for comfort and control on rough terrain."
+      },
+      {
+        "slot": "lights",
+        "why": "Improves visibility and safety at night."
+      },
+      {
+        "slot": "motor",
+        "why": "Adds electric assistance for higher speed with less effort."
+      },
+      {
+        "slot": "battery",
+        "why": "Stores electrical energy to power the motor."
+      },
+      {
+        "slot": "smart_display",
+        "why": "Shows speed, battery, and ride data in real time."
+      },
+      {
+        "slot": "torque_sensor",
+        "why": "Detects how hard the rider is pedaling to adjust motor assist."
+      }
+    ]
+  },
+  "systems": [
+    {
+      "id": "frame_system",
+      "name": "Frame & Steering System",
+      "icon": "\ud83d\udeb2",
+      "parts": [
+        "frame",
+        "fork",
+        "headset",
+        "stem",
+        "handlebar"
+      ],
+      "explanation": "This system holds the bike together and lets the rider steer by turning the front wheel around the head tube axis."
+    },
+    {
+      "id": "wheel_system",
+      "name": "Wheel & Tyre System",
+      "icon": "\u2b55",
+      "parts": [
+        "wheel",
+        "tyre",
+        "tube",
+        "rim",
+        "spokes",
+        "hub",
+        "axle",
+        "bearings"
+      ],
+      "explanation": "Wheels convert rolling motion into forward travel. Spokes hold tension, bearings reduce friction so wheels spin freely."
+    },
+    {
+      "id": "drivetrain_system",
+      "name": "Drivetrain (Power) System",
+      "icon": "\u2699\ufe0f",
+      "parts": [
+        "pedals",
+        "crank_arms",
+        "bottom_bracket",
+        "chainring",
+        "chain",
+        "cassette",
+        "freewheel",
+        "freehub",
+        "derailleur",
+        "gear_shifter"
+      ],
+      "explanation": "This system takes the rider's leg power and multiplies or reduces it using gears before sending it to the rear wheel."
+    },
+    {
+      "id": "braking_system",
+      "name": "Braking System",
+      "icon": "\ud83d\uded1",
+      "parts": [
+        "brake_lever",
+        "brake_cable",
+        "disc_brake",
+        "rotor",
+        "caliper",
+        "brake_pads",
+        "rim_brake"
+      ],
+      "explanation": "Braking converts the bike's motion (kinetic energy) into heat through friction, slowing the bike safely."
+    },
+    {
+      "id": "suspension_system",
+      "name": "Suspension System",
+      "icon": "\ud83c\udf00",
+      "parts": [
+        "suspension_fork",
+        "rear_suspension",
+        "shock_absorber"
+      ],
+      "explanation": "Springs and dampers absorb bumps from the terrain, keeping wheels in contact with the ground for control and comfort."
+    },
+    {
+      "id": "comfort_system",
+      "name": "Comfort & Accessories",
+      "icon": "\ud83c\udf92",
+      "parts": [
+        "seat",
+        "seatpost",
+        "kickstand",
+        "mudguards",
+        "bottle_holder",
+        "bell",
+        "reflectors"
+      ],
+      "explanation": "These parts don't move the bike, but they make riding safer, more comfortable, and more convenient."
+    },
+    {
+      "id": "electric_system",
+      "name": "Electric Power System",
+      "icon": "\ud83d\udd0b",
+      "parts": [
+        "ebike_motor",
+        "battery",
+        "controller",
+        "display",
+        "torque_sensor",
+        "cadence_sensor"
+      ],
+      "explanation": "Sensors detect rider effort, the controller decides how much power to send, and the motor adds assistance from the battery."
+    }
+  ],
+  "levels": {
+    "1": {
+      "title": "Level 1 \u2014 Just Movable",
+      "description": "The absolute minimum parts needed so the bicycle can roll and be pedaled. Great for understanding the core mechanics.",
+      "focus": [
+        "frame",
+        "wheels",
+        "crankset",
+        "pedals",
+        "chain",
+        "seat"
+      ],
+      "goal": "Build a bike that moves \u2014 nothing fancy, just working mechanics."
+    },
+    "2": {
+      "title": "Level 2 \u2014 Maximum Needs & Features",
+      "description": "A fully equipped bicycle with gearing, braking systems, and comfort accessories like lights, mudguards, and bottle holders.",
+      "focus": [
+        "gears",
+        "brakes",
+        "comfort accessories",
+        "safety features"
+      ],
+      "goal": "Build a complete, real-world-ready bicycle with every standard feature."
+    },
+    "3": {
+      "title": "Level 3 \u2014 Advanced & Inventive",
+      "description": "Push beyond standard design. Add suspension, sensors, electric assistance, or entirely new invented features.",
+      "focus": [
+        "suspension",
+        "electric systems",
+        "smart sensors",
+        "custom inventions"
+      ],
+      "goal": "Design an adventurous, high-performance, or futuristic bicycle."
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "rules": [
+    {
+      "id": "fuelMatch",
+      "failure": "ignition_fail",
+      "message": "Propellant fuel type doesn't match the motor."
+    },
+    {
+      "id": "oxidizerPair",
+      "failure": "engine_stall",
+      "message": "Fuel tank and oxidizer tank aren't a matching pair."
+    },
+    {
+      "id": "avionicsPower",
+      "failure": "computer_crash",
+      "message": "Flight computer needs more voltage than the battery supplies."
+    },
+    {
+      "id": "guidanceNeedsAvionics",
+      "failure": "guidance_confused",
+      "message": "This guidance system needs the Dual-Deploy Flight Computer to work."
+    }
+  ],
+  "failureEffects": {
+    "ignition_fail": {
+      "hint": "Use propellant with the same fuel type as the motor."
+    },
+    "engine_stall": {
+      "hint": "Match the fuel tank with its correct oxidizer tank pair."
+    },
+    "computer_crash": {
+      "hint": "Upgrade to a battery with higher voltage, or use the Basic Flight Computer."
+    },
+    "guidance_confused": {
+      "hint": "Install the Dual-Deploy Flight Computer before adding this guidance system."
+    },
+    "thrust_low": {
+      "hint": "Add a stronger motor/engine or remove heavy parts to improve thrust-to-weight ratio."
+    },
+    "unstable_flight": {
+      "hint": "Add stronger fins or a lighter nose cone to improve stability."
+    },
+    "recovery_overweight": {
+      "hint": "Use a bigger parachute or reduce the rocket's total weight."
+    }
+  }
+}

@@ -1,0 +1,278 @@
+{
+  "Sounding": {
+    "label": "Sounding Rocket (single-stage hobby rocket)",
+    "silhouette": "sounding",
+    "parts": [
+      {
+        "type": "NoseCone",
+        "label": "Nose Cone",
+        "x": 50,
+        "y": 6,
+        "realLocation": "At the very top of the rocket. (Typical hobby sounding rocket; exact shapes vary by model.)",
+        "why": "Cuts through the air smoothly and often holds the recovery system."
+      },
+      {
+        "type": "Avionics",
+        "label": "Flight Computer",
+        "x": 50,
+        "y": 18,
+        "realLocation": "Just below the nose cone, in the recovery bay. (Typical layout; exact position varies by model.)",
+        "why": "Tracks altitude and fires the parachute at the right moment."
+      },
+      {
+        "type": "Battery",
+        "label": "Igniter Battery",
+        "x": 36,
+        "y": 18,
+        "realLocation": "Next to the flight computer in the electronics bay.",
+        "why": "Powers the flight computer and lights the motor igniter."
+      },
+      {
+        "type": "Recovery",
+        "label": "Parachute",
+        "x": 64,
+        "y": 24,
+        "realLocation": "Packed just below the nose cone, ready to eject upward.",
+        "why": "Slows the rocket down so it lands safely and can fly again."
+      },
+      {
+        "type": "SecondaryRecovery",
+        "label": "Backup Streamer",
+        "x": 50,
+        "y": 30,
+        "realLocation": "Packed alongside the parachute as a backup.",
+        "why": "Adds extra drag if the main parachute doesn't open."
+      },
+      {
+        "type": "PayloadBay",
+        "label": "Payload Bay",
+        "x": 50,
+        "y": 40,
+        "realLocation": "A hollow section in the middle of the body tube.",
+        "why": "Carries a camera, experiment, or tracking beacon."
+      },
+      {
+        "type": "BodyTube",
+        "label": "Body Tube (Airframe)",
+        "x": 50,
+        "y": 55,
+        "realLocation": "The long tube that makes up most of the rocket's length.",
+        "why": "Holds every part together and gives the rocket its shape."
+      },
+      {
+        "type": "LaunchLug",
+        "label": "Launch Rail Guide",
+        "x": 22,
+        "y": 58,
+        "realLocation": "Glued to the outside of the body tube.",
+        "why": "Slides along the launch rail to keep the rocket going straight at liftoff."
+      },
+      {
+        "type": "Motor",
+        "label": "Rocket Motor",
+        "x": 50,
+        "y": 80,
+        "realLocation": "Inside the motor mount near the bottom of the rocket.",
+        "why": "Burns propellant to create the thrust that lifts the rocket."
+      },
+      {
+        "type": "Propellant",
+        "label": "Solid Propellant",
+        "x": 50,
+        "y": 80,
+        "realLocation": "Packed inside the motor casing itself.",
+        "why": "The fuel that actually burns to produce thrust."
+      },
+      {
+        "type": "Igniter",
+        "label": "Motor Igniter",
+        "x": 50,
+        "y": 92,
+        "realLocation": "Inserted into the bottom of the motor.",
+        "why": "A small electric spark that lights the propellant at launch."
+      },
+      {
+        "type": "FinSet",
+        "label": "Fin Set",
+        "x": 75,
+        "y": 90,
+        "realLocation": "Attached to the outside at the very bottom of the body tube.",
+        "why": "Keeps the rocket flying straight, like feathers on a dart."
+      },
+      {
+        "type": "Telemetry",
+        "label": "Telemetry Transmitter",
+        "x": 64,
+        "y": 36,
+        "realLocation": "Mounted in the electronics bay near the flight computer, with a small antenna poking through the body tube. (Typical hobby rocket layout; exact position varies by model.)",
+        "why": "Sends live altitude, speed, and location data down to the ground team during flight."
+      },
+      {
+        "type": "CameraPod",
+        "label": "Camera Pod",
+        "x": 36,
+        "y": 42,
+        "realLocation": "Clipped to the side of the body tube, usually just below the electronics bay, with its lens facing outward. (Typical hobby rocket layout; exact position varies by model.)",
+        "why": "Films the flight so you can watch liftoff, staging, and the view from the sky afterward."
+      },
+      {
+        "type": "TrackingBeacon",
+        "label": "Tracking Beacon",
+        "x": 50,
+        "y": 48,
+        "realLocation": "Tucked inside the body tube near the recovery bay, wired to its own small battery. (Typical hobby rocket layout; exact position varies by model.)",
+        "why": "Sends out a radio signal so you can find your rocket after it lands, even in tall grass or trees."
+      }
+    ]
+  },
+  "Orbital": {
+    "label": "Two-Stage Orbital Rocket",
+    "silhouette": "orbital",
+    "parts": [
+      {
+        "type": "PayloadBay",
+        "label": "Payload Fairing / Bay",
+        "x": 50,
+        "y": 5,
+        "realLocation": "At the very top, protecting the payload during launch.",
+        "why": "Shields the satellite or cargo from air resistance and heat."
+      },
+      {
+        "type": "SolarPanel",
+        "label": "Solar Panel",
+        "x": 68,
+        "y": 9,
+        "realLocation": "Folded against the payload before launch, unfolds in space.",
+        "why": "Generates electrical power for the satellite payload."
+      },
+      {
+        "type": "NoseCone",
+        "label": "Nose Fairing",
+        "x": 50,
+        "y": 13,
+        "realLocation": "The pointed cover just below the payload bay.",
+        "why": "Cuts through the air with minimum drag during ascent."
+      },
+      {
+        "type": "GuidanceSystem",
+        "label": "Guidance System",
+        "x": 50,
+        "y": 22,
+        "realLocation": "In the interstage section, between the two stages.",
+        "why": "Keeps the rocket pointed on the correct path to orbit."
+      },
+      {
+        "type": "RCS",
+        "label": "Reaction Control Thrusters",
+        "x": 72,
+        "y": 25,
+        "realLocation": "Small nozzles around the upper stage.",
+        "why": "Tiny thrusters that rotate the rocket while in space."
+      },
+      {
+        "type": "Avionics",
+        "label": "Flight Computer",
+        "x": 32,
+        "y": 25,
+        "realLocation": "Mounted in the interstage electronics bay.",
+        "why": "Runs the whole flight and talks to the guidance system."
+      },
+      {
+        "type": "Battery",
+        "label": "Flight Battery",
+        "x": 32,
+        "y": 31,
+        "realLocation": "Next to the flight computer.",
+        "why": "Supplies power to guidance, avionics, and telemetry."
+      },
+      {
+        "type": "Telemetry",
+        "label": "Radio Telemetry",
+        "x": 72,
+        "y": 31,
+        "realLocation": "Mounted near the flight computer, with an antenna on the skin.",
+        "why": "Sends live speed and altitude data down to mission control."
+      },
+      {
+        "type": "Stage2Fuel",
+        "label": "Upper-Stage Fuel Tank",
+        "x": 40,
+        "y": 40,
+        "realLocation": "Inside the second stage, above its engine.",
+        "why": "Holds the fuel that the second stage burns."
+      },
+      {
+        "type": "Stage2Oxidizer",
+        "label": "Upper-Stage Oxidizer Tank",
+        "x": 60,
+        "y": 40,
+        "realLocation": "Inside the second stage, next to the fuel tank.",
+        "why": "Supplies oxygen so the upper-stage fuel can burn in space."
+      },
+      {
+        "type": "Stage2Engine",
+        "label": "Second-Stage Engine",
+        "x": 50,
+        "y": 50,
+        "realLocation": "At the bottom of the second stage.",
+        "why": "Restarts in space to finish the journey to orbit."
+      },
+      {
+        "type": "CameraPod",
+        "label": "Stage-Separation Camera",
+        "x": 78,
+        "y": 52,
+        "realLocation": "Mounted on the outside near the interstage.",
+        "why": "Films the exciting moment the two stages separate."
+      },
+      {
+        "type": "Stage1Fuel",
+        "label": "First-Stage Fuel Tank (RP-1)",
+        "x": 40,
+        "y": 66,
+        "realLocation": "The large tank making up most of the first stage.",
+        "why": "Holds the kerosene-based fuel for the booster engine."
+      },
+      {
+        "type": "Stage1Oxidizer",
+        "label": "First-Stage Oxidizer Tank (LOX)",
+        "x": 60,
+        "y": 66,
+        "realLocation": "The large tank next to the fuel tank in the first stage.",
+        "why": "Holds liquid oxygen so the booster can burn fuel."
+      },
+      {
+        "type": "HeatShield",
+        "label": "Heat Shield",
+        "x": 50,
+        "y": 85,
+        "realLocation": "Wrapped around the base of the booster.",
+        "why": "Protects the rocket from the intense heat of its own engine."
+      },
+      {
+        "type": "Stage1Engine",
+        "label": "First-Stage Booster Engine",
+        "x": 50,
+        "y": 94,
+        "realLocation": "At the very bottom of the rocket.",
+        "why": "The powerful main engine that lifts the whole rocket off the pad."
+      },
+      {
+        "type": "FinSet",
+        "label": "Grid Fins",
+        "x": 22,
+        "y": 88,
+        "realLocation": "Near the top of the first stage, folded flat during ascent.",
+        "why": "Help steer the booster back down for a safe landing."
+      },
+      {
+        "type": "TrackingBeacon",
+        "label": "Tracking Beacon",
+        "x": 50,
+        "y": 70,
+        "realLocation": "Mounted in the second-stage electronics bay, wired to the avionics battery. (Typical orbital rocket layout; exact position varies by model.)",
+        "why": "Sends a locating radio signal so ground teams can track the stage after separation or splashdown."
+      }
+    ]
+  }
+}

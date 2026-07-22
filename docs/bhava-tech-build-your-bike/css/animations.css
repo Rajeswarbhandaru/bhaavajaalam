@@ -1,0 +1,90 @@
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes spinRev{to{transform:rotate(-360deg);}}
+@keyframes sway{0%,100%{transform:rotate(-2deg);}50%{transform:rotate(2deg);}}
+@keyframes spark{0%{opacity:1;transform:scale(.4);}100%{opacity:0;transform:scale(1.6) translateY(-20px);}}
+@keyframes dust{0%{opacity:.6;}100%{opacity:0;transform:translateY(-30px) scale(1.8);}}
+@keyframes shimmerSun{0%{transform:translateX(-10%);}100%{transform:translateX(110%);}}
+@keyframes floatUpDown{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 rgba(79,209,197,0.0);}50%{box-shadow:0 0 24px rgba(79,209,197,0.55);}}
+@keyframes bounceIn{0%{opacity:0;transform:scale(.6) translateY(20px);}60%{opacity:1;transform:scale(1.05) translateY(-4px);}100%{transform:scale(1) translateY(0);}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-24px);}to{opacity:1;transform:translateX(0);}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(24px);}to{opacity:1;transform:translateX(0);}}
+@keyframes wobble{0%,100%{transform:rotate(0);}25%{transform:rotate(-3deg);}75%{transform:rotate(3deg);}}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+@keyframes gradientShift{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+@keyframes ripple{0%{transform:scale(0);opacity:.6;}100%{transform:scale(3);opacity:0;}}
+@keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1;}100%{transform:translateY(200px) rotate(360deg);opacity:0;}}
+@keyframes chainMove{to{stroke-dashoffset:-24;}}
+@keyframes windBlow{0%{transform:translateX(-20%);opacity:.15;}100%{transform:translateX(120%);opacity:0;}}
+@keyframes typeCursor{50%{opacity:0;}}
+
+.gear-rotating{animation:spin 2s linear infinite;}
+.gear-rotating-rev{animation:spinRev 2.4s linear infinite;}
+.chain-link{animation:spin 1.2s linear infinite;}
+.spoke-blur{animation:spin .6s linear infinite;}
+.float-anim{animation:floatUpDown 3s ease-in-out infinite;}
+.glow-pulse{animation:pulseGlow 2.2s ease-in-out infinite;}
+.bounce-in{animation:bounceIn .5s ease both;}
+.slide-in-left{animation:slideInLeft .4s ease both;}
+.slide-in-right{animation:slideInRight .4s ease both;}
+.wobble-anim{animation:wobble .5s ease;}
+.shake-anim{animation:shake .35s ease;}
+
+.workshop-bg{position:absolute;inset:0;background:linear-gradient(135deg,var(--bg-1),var(--bg-2),var(--bg-1));
+  background-size:200% 200%;animation:gradientShift 14s ease infinite;z-index:0;}
+.sunbeam{position:absolute;top:-20%;width:40%;height:160%;background:linear-gradient(90deg,rgba(255,220,150,0.15),transparent);
+  animation:shimmerSun 12s linear infinite;}
+.wind-streak{position:absolute;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);
+  animation:windBlow 3s linear infinite;}
+.particle-spark{position:absolute;width:6px;height:6px;border-radius:50%;background:#ffd166;animation:spark .5s ease-out forwards;pointer-events:none;}
+.particle-dust{position:absolute;width:10px;height:10px;border-radius:50%;background:rgba(180,160,130,.5);animation:dust .8s ease-out forwards;pointer-events:none;}
+.confetti-piece{position:absolute;width:8px;height:8px;animation:confetti 1.4s ease-in forwards;pointer-events:none;}
+.ripple-effect{position:absolute;border-radius:50%;border:2px solid var(--accent);animation:ripple .6s ease-out forwards;pointer-events:none;}
+.fade-in{animation:fadeIn .35s ease both;} @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+.drag-ghost{position:fixed;pointer-events:none;z-index:999;opacity:.9;transform:scale(1.05);
+  box-shadow:0 12px 30px rgba(0,0,0,0.5);border-radius:.8rem;}
+.dropzone-active{outline:3px dashed var(--accent);background:rgba(79,209,197,0.12);}
+.dropzone-hover{outline:3px solid var(--success);background:rgba(72,187,120,0.2);animation:pulseGlow 1s ease-in-out infinite;}
+.part-card.dragging{opacity:.3;}
+.slot-filled{border-color:var(--success) !important;background:rgba(72,187,120,0.12) !important;}
+.slot-error{animation:shake .35s ease;border-color:var(--danger) !important;}
+/* A completed build remains green: red is reserved only for a real mismatch. */
+.slot-filled.slot-error{animation:none;border-color:var(--success) !important;background:rgba(72,187,120,0.12) !important;}
+
+.level-card{transition:transform .25s, box-shadow .25s;cursor:pointer;}
+.level-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 16px 40px rgba(0,0,0,0.5);}
+.level-badge-1{background:linear-gradient(135deg,#48bb78,#38a169);}
+.level-badge-2{background:linear-gradient(135deg,#f6ad55,#dd6b20);}
+.level-badge-3{background:linear-gradient(135deg,#f56565,#c53030);}
+
+.anatomy-diagram-part{transition:filter .2s, transform .2s;cursor:pointer;}
+.anatomy-diagram-part:hover{filter:brightness(1.4);transform:scale(1.05);}
+.anatomy-highlight{stroke:var(--accent) !important;stroke-width:3 !important;filter:drop-shadow(0 0 6px var(--accent));}
+
+.typewriter-text{overflow:hidden;border-right:2px solid var(--accent);white-space:nowrap;}
+
+@keyframes bikeRideIn { from { opacity:0; transform:translateX(-60px) scale(.85); } to { opacity:1; transform:translateX(0) scale(1); } }
+@keyframes wheelSpin { to { transform:rotate(360deg); } }
+@keyframes bikeBob { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+@keyframes sparkleDance { 0%,100% { transform:scale(.7) rotate(0); opacity:.45; } 50% { transform:scale(1.35) rotate(30deg); opacity:1; } }
+.completed-bike-svg { width:min(100%,760px); height:auto; overflow:visible; animation:bikeRideIn .9s cubic-bezier(.2,.8,.2,1) both, bikeBob 2.2s 1s ease-in-out infinite; }
+.completed-bike-svg .wheel { transform-box:fill-box; transform-origin:center; animation:wheelSpin 2s linear infinite; }
+.completed-bike-svg .wheel circle:first-child { fill:rgba(79,209,197,.08); stroke:#d9efff; stroke-width:7; }
+.completed-bike-svg .spokes line { stroke:rgba(217,239,255,.55); stroke-width:2; }
+.completed-bike-svg .hub { fill:#f6ad55; }
+.completed-bike-svg .frame-animated path { fill:none; stroke:url(#bikePaint); stroke-width:12; stroke-linecap:round; stroke-linejoin:round; }
+.completed-bike-svg .seat-post,.completed-bike-svg .handlebar,.completed-bike-svg .crank,.completed-bike-svg .pedal { fill:none; stroke:#d6dde7; stroke-width:7; stroke-linecap:round; }
+.completed-bike-svg .seat { fill:#303846; stroke:#d6dde7; stroke-width:2; }
+.completed-bike-svg .chainring { fill:rgba(246,173,85,.18); stroke:#f6ad55; stroke-width:6; }
+.completed-bike-svg .chain-animated { fill:none; stroke:#f6ad55; stroke-width:5; stroke-dasharray:10 7; animation:chainMove .45s linear infinite; }
+.completed-bike-svg .ground-line { stroke:rgba(255,255,255,.25); stroke-width:3; stroke-linecap:round; }
+.bike-reveal { min-height:100%; padding:1.2rem; text-align:center; overflow:hidden; position:relative; background:radial-gradient(circle at 50% 42%,rgba(79,209,197,.17),transparent 55%); }
+.reveal-title { font-weight:800; font-size:clamp(1.3rem,2.3vw,2rem); color:var(--accent); animation:bounceIn .7s ease both; }
+.bike-reveal > p { color:var(--text-1); margin:.35rem 0 0; }
+.bike-stage { max-width:800px; margin:.4rem auto 0; position:relative; }
+.sparkle { position:absolute; font-size:1.7rem; animation:sparkleDance 1.3s ease-in-out infinite; }
+.sparkle.s1 { left:15%; top:23%; }.sparkle.s2 { right:16%; top:13%; animation-delay:.35s; }.sparkle.s3 { right:24%; bottom:12%; animation-delay:.7s; }
+.used-parts { display:flex; flex-wrap:wrap; justify-content:center; gap:.35rem; max-width:760px; margin:.5rem auto; }
+.used-parts span { font-size:.78rem; padding:.28rem .5rem; border-radius:1rem; background:rgba(79,209,197,.13); border:1px solid rgba(79,209,197,.35); }
+.confidence-message { color:var(--text-0) !important; font-weight:650; }

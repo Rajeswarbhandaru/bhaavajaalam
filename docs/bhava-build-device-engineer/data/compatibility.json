@@ -1,0 +1,155 @@
+{
+  "rules": [
+    {
+      "id": "cpuSocket",
+      "components": [
+        "CPU",
+        "Motherboard"
+      ],
+      "check": "socketMatch",
+      "failure": "boot_loop",
+      "message": "CPU socket does not match motherboard socket."
+    },
+    {
+      "id": "ramGen",
+      "components": [
+        "RAM",
+        "Motherboard"
+      ],
+      "check": "ramGenMatch",
+      "failure": "boot_loop",
+      "message": "RAM generation is unsupported by this motherboard."
+    },
+    {
+      "id": "storageInterface",
+      "components": [
+        "Storage",
+        "Motherboard"
+      ],
+      "check": "storageMatch",
+      "failure": "no_display",
+      "message": "Storage interface not supported by motherboard."
+    },
+    {
+      "id": "firmwareMatch",
+      "components": [
+        "Firmware",
+        "Motherboard"
+      ],
+      "check": "firmwareBoardMatch",
+      "failure": "blue_screen",
+      "message": "Firmware is not built for this motherboard."
+    },
+    {
+      "id": "osRam",
+      "components": [
+        "OS",
+        "RAM"
+      ],
+      "check": "osMinRam",
+      "failure": "slow_performance",
+      "message": "Insufficient RAM for this operating system."
+    },
+    {
+      "id": "powerBudget",
+      "components": [
+        "ALL"
+      ],
+      "check": "powerBalance",
+      "failure": "power_drain",
+      "message": "Total power draw exceeds battery + charging IC capacity."
+    },
+    {
+      "id": "heatBudget",
+      "components": [
+        "ALL"
+      ],
+      "check": "heatBalance",
+      "failure": "overheating",
+      "message": "Heat generated exceeds cooling capacity."
+    },
+    {
+      "id": "missingAntenna",
+      "components": [
+        "WiFi",
+        "GPS",
+        "Bluetooth"
+      ],
+      "check": "antennaPresent",
+      "failure": "wifi_missing",
+      "message": "Wireless module installed without matching antenna path."
+    },
+    {
+      "id": "batteryVoltage",
+      "components": [
+        "Battery",
+        "PowerIC"
+      ],
+      "check": "voltageMatch",
+      "failure": "battery_swelling",
+      "message": "Battery voltage mismatch with power management IC."
+    }
+  ],
+  "failureEffects": {
+    "boot_loop": {
+      "symptom": "Device restarts repeatedly during boot.",
+      "hint": "Check CPU socket and RAM generation compatibility."
+    },
+    "blue_screen": {
+      "symptom": "System crashes right after firmware load.",
+      "hint": "Verify firmware matches motherboard model."
+    },
+    "no_display": {
+      "symptom": "Screen stays black even though device powers on.",
+      "hint": "Check storage detection and display connector."
+    },
+    "overheating": {
+      "symptom": "Temperature rises rapidly and device throttles.",
+      "hint": "Add better cooling or reduce CPU/GPU load."
+    },
+    "slow_performance": {
+      "symptom": "Apps lag and OS feels sluggish.",
+      "hint": "Compare OS minimum RAM requirement with installed RAM."
+    },
+    "power_drain": {
+      "symptom": "Battery drains extremely fast.",
+      "hint": "Check total component power draw vs battery+charging capacity."
+    },
+    "wifi_missing": {
+      "symptom": "No wireless networks are found.",
+      "hint": "Check antenna and wireless module installation."
+    },
+    "battery_swelling": {
+      "symptom": "Battery appears to swell over time.",
+      "hint": "Verify battery voltage matches the power IC rating."
+    },
+    "no_charging": {
+      "symptom": "Device does not charge when plugged in.",
+      "hint": "Check charging IC wattage and battery compatibility."
+    },
+    "camera_error": {
+      "symptom": "Camera app fails to open.",
+      "hint": "Check camera connector and power supply."
+    },
+    "no_audio": {
+      "symptom": "No sound from speaker.",
+      "hint": "Check speaker wiring and power IC."
+    },
+    "signal_lost": {
+      "symptom": "Cellular signal keeps dropping.",
+      "hint": "Check antenna and modem connections."
+    },
+    "fingerprint_failed": {
+      "symptom": "Fingerprint sensor doesn't respond.",
+      "hint": "Check sensor wiring and firmware driver."
+    },
+    "random_restart": {
+      "symptom": "Device restarts randomly under load.",
+      "hint": "Check power stability and heat levels."
+    },
+    "touch_failure": {
+      "symptom": "Touchscreen doesn't register input.",
+      "hint": "Check display connector and digitizer wiring."
+    }
+  }
+}

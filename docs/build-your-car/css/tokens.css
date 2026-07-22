@@ -1,0 +1,48 @@
+:root, [data-theme="light"] {
+  --font-display: 'Orbitron','Inter',sans-serif;
+  --font-body: 'Inter',sans-serif;
+  --text-xs: .75rem;
+  --text-sm: .875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --radius-sm: .5rem;
+  --radius-md: .85rem;
+  --radius-lg: 1.2rem;
+  --radius-xl: 1.6rem;
+  --color-bg: #0a1220;
+  --color-surface: #101b2d;
+  --color-surface-2: #16243c;
+  --color-surface-3: #1d3152;
+  --color-border: rgba(158,190,255,.16);
+  --color-text: #e9f0ff;
+  --color-text-muted: #a7b8d6;
+  --color-primary: #61dafb;
+  --color-secondary: #8cffb7;
+  --color-warning: #ffbf69;
+  --color-danger: #ff6b8a;
+  --shadow-lg: 0 20px 60px rgba(0,0,0,.35);
+}
+[data-theme="light"] {
+  --color-bg: #eef4ff;
+  --color-surface: #ffffff;
+  --color-surface-2: #f5f8ff;
+  --color-surface-3: #e4ecfb;
+  --color-border: rgba(15,52,96,.12);
+  --color-text: #14213d;
+  --color-text-muted: #4d6387;
+  --color-primary: #0066cc;
+  --color-secondary: #178f57;
+  --color-warning: #c57a00;
+  --color-danger: #cf2050;
+  --shadow-lg: 0 20px 40px rgba(24,38,61,.12);
+}

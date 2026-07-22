@@ -1,0 +1,146 @@
+[
+  {
+    "id": "level1_minimum",
+    "level": 1,
+    "title": "What does a car need to move?",
+    "intro": "A car needs a body, power, energy, turning, rolling, and stopping parts to work safely.",
+    "minimumParts": [
+      "chassis_city_a",
+      "engine_i4_basic",
+      "battery_12v_basic",
+      "fuel_tank_40l",
+      "wheel_15_standard",
+      "brake_set_city",
+      "steering_rack_basic",
+      "radiator_small"
+    ],
+    "steps": [
+      {
+        "key": "body",
+        "title": "Start with the body",
+        "icon": "🧱",
+        "explanation": "The chassis is the strong base that holds the car together.",
+        "partIds": ["chassis_city_a"]
+      },
+      {
+        "key": "energy",
+        "title": "Wake the car up",
+        "icon": "🔋",
+        "explanation": "The battery helps the car start and powers basic electrical systems.",
+        "partIds": ["battery_12v_basic", "battery_12v_plus", "battery_12v_touring", "battery_dual_pack"]
+      },
+      {
+        "key": "power",
+        "title": "Make power",
+        "icon": "⚙️",
+        "explanation": "The engine uses energy and creates the power that can move the car.",
+        "partIds": ["engine_i4_basic", "turbocharger"]
+      },
+      {
+        "key": "fuel",
+        "title": "Carry energy",
+        "icon": "⛽",
+        "explanation": "The fuel tank stores fuel so the engine can keep running.",
+        "partIds": ["fuel_tank_40l", "extra_fuel_cell"]
+      },
+      {
+        "key": "cooling",
+        "title": "Keep it cool",
+        "icon": "❄️",
+        "explanation": "The radiator helps stop the engine from overheating.",
+        "partIds": ["radiator_small", "performance_radiator"]
+      },
+      {
+        "key": "rolling",
+        "title": "Roll forward",
+        "icon": "🛞",
+        "explanation": "Wheels let the car roll and carry its weight.",
+        "partIds": ["wheel_15_standard", "alloy_wheels", "offroad_tires"]
+      },
+      {
+        "key": "turning",
+        "title": "Turn safely",
+        "icon": "🛞",
+        "explanation": "Steering helps the driver point the car in the right direction.",
+        "partIds": ["steering_rack_basic"]
+      },
+      {
+        "key": "stopping",
+        "title": "Stop safely",
+        "icon": "🛑",
+        "explanation": "Brakes slow the car down and stop it safely.",
+        "partIds": ["brake_set_city", "sport_brakes", "abs_module"]
+      }
+    ],
+    "checks": [
+      "Can the car start?",
+      "Can the car move?",
+      "Can the car turn?",
+      "Can the car stop safely?"
+    ]
+  },
+  {
+    "id": "level2_features",
+    "level": 2,
+    "title": "How do features improve the car?",
+    "intro": "After the car can move, we can add comfort, safety, and smarter driving tools.",
+    "featureGroups": [
+      {
+        "title": "Comfort",
+        "icon": "🧊",
+        "partIds": ["air_conditioning_basic", "dual_climate_ac", "infotainment_basic", "sunroof"],
+        "explanation": "Comfort parts make the ride nicer for people inside the car."
+      },
+      {
+        "title": "Safety",
+        "icon": "🛡️",
+        "partIds": ["seatbelt_basic", "airbag_system", "child_lock_system", "abs_module"],
+        "explanation": "Safety parts help protect passengers and make the car easier to control."
+      },
+      {
+        "title": "Smart help",
+        "icon": "📷",
+        "partIds": ["parking_sensors", "rear_camera", "gps_navigation", "voice_assistant"],
+        "explanation": "Assist parts help the driver see, park, and navigate better."
+      },
+      {
+        "title": "Better drive",
+        "icon": "⚡",
+        "partIds": ["alloy_wheels", "tire_upgrade", "sport_brakes", "long_range_battery"],
+        "explanation": "Performance support parts can help the car drive smoother and more confidently."
+      }
+    ]
+  },
+  {
+    "id": "level3_adventure",
+    "level": 3,
+    "title": "What helps a car go farther and faster?",
+    "intro": "Adventure cars need more grip, more carrying ability, and stronger systems for long trips.",
+    "featureGroups": [
+      {
+        "title": "Adventure grip",
+        "icon": "🏕️",
+        "partIds": ["offroad_tires", "offroad_suspension", "bull_bar"],
+        "explanation": "Adventure parts help the car handle rough roads and bumps."
+      },
+      {
+        "title": "Carry more",
+        "icon": "🎒",
+        "partIds": ["roof_rack", "cargo_box", "roof_tent", "spare_tire"],
+        "explanation": "Carrying parts help the car bring extra gear on long trips."
+      },
+      {
+        "title": "See more",
+        "icon": "💡",
+        "partIds": ["roof_lights", "camp_lights", "trail_camera"],
+        "explanation": "Lighting and trail tools help when the road is dark or tricky."
+      },
+      {
+        "title": "Go stronger",
+        "icon": "🚀",
+        "partIds": ["turbocharger", "sport_exhaust", "performance_radiator", "extra_fuel_cell"],
+        "explanation": "Strong performance parts help the car go harder for longer."
+      }
+    ]
+  }
+]

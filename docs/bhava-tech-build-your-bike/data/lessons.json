@@ -1,0 +1,274 @@
+{
+  "topics": [
+    {
+      "id": "history",
+      "title": "History of the Bicycle",
+      "category": "history"
+    },
+    {
+      "id": "evolution_transport",
+      "title": "Evolution of Transport",
+      "category": "history"
+    },
+    {
+      "id": "types_of_bikes",
+      "title": "Types of Bikes",
+      "category": "overview"
+    },
+    {
+      "id": "frame",
+      "title": "Frame",
+      "category": "structure"
+    },
+    {
+      "id": "fork",
+      "title": "Fork",
+      "category": "structure"
+    },
+    {
+      "id": "handlebar",
+      "title": "Handlebar",
+      "category": "steering"
+    },
+    {
+      "id": "stem",
+      "title": "Stem",
+      "category": "steering"
+    },
+    {
+      "id": "headset",
+      "title": "Headset",
+      "category": "steering"
+    },
+    {
+      "id": "wheel",
+      "title": "Wheel",
+      "category": "wheels"
+    },
+    {
+      "id": "tyre",
+      "title": "Tyre",
+      "category": "wheels"
+    },
+    {
+      "id": "tube",
+      "title": "Tube",
+      "category": "wheels"
+    },
+    {
+      "id": "tubeless",
+      "title": "Tubeless Tyres",
+      "category": "wheels"
+    },
+    {
+      "id": "rim",
+      "title": "Rim",
+      "category": "wheels"
+    },
+    {
+      "id": "spokes",
+      "title": "Spokes",
+      "category": "wheels"
+    },
+    {
+      "id": "hub",
+      "title": "Hub",
+      "category": "wheels"
+    },
+    {
+      "id": "axle",
+      "title": "Axle",
+      "category": "wheels"
+    },
+    {
+      "id": "bearings",
+      "title": "Bearings",
+      "category": "wheels"
+    },
+    {
+      "id": "pedals",
+      "title": "Pedals",
+      "category": "drivetrain"
+    },
+    {
+      "id": "crank_arms",
+      "title": "Crank Arms",
+      "category": "drivetrain"
+    },
+    {
+      "id": "bottom_bracket",
+      "title": "Bottom Bracket",
+      "category": "drivetrain"
+    },
+    {
+      "id": "chainring",
+      "title": "Chainring",
+      "category": "drivetrain"
+    },
+    {
+      "id": "chain",
+      "title": "Chain",
+      "category": "drivetrain"
+    },
+    {
+      "id": "cassette",
+      "title": "Cassette",
+      "category": "drivetrain"
+    },
+    {
+      "id": "freewheel",
+      "title": "Freewheel",
+      "category": "drivetrain"
+    },
+    {
+      "id": "freehub",
+      "title": "Freehub",
+      "category": "drivetrain"
+    },
+    {
+      "id": "derailleur",
+      "title": "Derailleur",
+      "category": "drivetrain"
+    },
+    {
+      "id": "gear_shifter",
+      "title": "Gear Shifter",
+      "category": "drivetrain"
+    },
+    {
+      "id": "brake_lever",
+      "title": "Brake Lever",
+      "category": "brakes"
+    },
+    {
+      "id": "brake_cable",
+      "title": "Brake Cable",
+      "category": "brakes"
+    },
+    {
+      "id": "disc_brake",
+      "title": "Disc Brake",
+      "category": "brakes"
+    },
+    {
+      "id": "rotor",
+      "title": "Rotor",
+      "category": "brakes"
+    },
+    {
+      "id": "caliper",
+      "title": "Caliper",
+      "category": "brakes"
+    },
+    {
+      "id": "brake_pads",
+      "title": "Brake Pads",
+      "category": "brakes"
+    },
+    {
+      "id": "rim_brake",
+      "title": "Rim Brake",
+      "category": "brakes"
+    },
+    {
+      "id": "hydraulic_brakes",
+      "title": "Hydraulic Brakes",
+      "category": "brakes"
+    },
+    {
+      "id": "mechanical_brakes",
+      "title": "Mechanical Brakes",
+      "category": "brakes"
+    },
+    {
+      "id": "suspension_fork",
+      "title": "Suspension Fork",
+      "category": "suspension"
+    },
+    {
+      "id": "rear_suspension",
+      "title": "Rear Suspension",
+      "category": "suspension"
+    },
+    {
+      "id": "shock_absorber",
+      "title": "Shock Absorber",
+      "category": "suspension"
+    },
+    {
+      "id": "seat",
+      "title": "Seat",
+      "category": "comfort"
+    },
+    {
+      "id": "seatpost",
+      "title": "Seatpost",
+      "category": "comfort"
+    },
+    {
+      "id": "kickstand",
+      "title": "Kickstand",
+      "category": "accessories"
+    },
+    {
+      "id": "mudguards",
+      "title": "Mudguards",
+      "category": "accessories"
+    },
+    {
+      "id": "bottle_holder",
+      "title": "Bottle Holder",
+      "category": "accessories"
+    },
+    {
+      "id": "lights",
+      "title": "Lights",
+      "category": "accessories"
+    },
+    {
+      "id": "bell",
+      "title": "Bell",
+      "category": "accessories"
+    },
+    {
+      "id": "reflectors",
+      "title": "Reflectors",
+      "category": "accessories"
+    },
+    {
+      "id": "dynamo",
+      "title": "Dynamo",
+      "category": "accessories"
+    },
+    {
+      "id": "ebike_motor",
+      "title": "Electric Bike Motor",
+      "category": "electric"
+    },
+    {
+      "id": "battery",
+      "title": "Battery",
+      "category": "electric"
+    },
+    {
+      "id": "controller",
+      "title": "Controller",
+      "category": "electric"
+    },
+    {
+      "id": "display",
+      "title": "Display",
+      "category": "electric"
+    },
+    {
+      "id": "torque_sensor",
+      "title": "Torque Sensor",
+      "category": "electric"
+    },
+    {
+      "id": "cadence_sensor",
+      "title": "Cadence Sensor",
+      "category": "electric"
+    }
+  ]
+}

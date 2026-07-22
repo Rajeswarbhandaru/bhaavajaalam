@@ -1,0 +1,44 @@
+{
+  "concepts": [
+    {
+      "id": "gear_ratio",
+      "formula": "gearRatio = chainringTeeth / cassetteTeeth",
+      "effect": "Higher ratio = more speed, more force needed. Lower ratio = easier climbing."
+    },
+    {
+      "id": "mechanical_advantage",
+      "formula": "MA = crankArmLength / wheelRadius",
+      "effect": "Longer crank arms increase torque at the pedal."
+    },
+    {
+      "id": "friction_rolling",
+      "formula": "F_r = Crr * N",
+      "effect": "Wider, softer tyres increase rolling resistance but improve grip."
+    },
+    {
+      "id": "braking_distance",
+      "formula": "d = v^2 / (2 * mu * g)",
+      "effect": "Higher friction coefficient (mu) from better brakes/tyres shortens stopping distance."
+    },
+    {
+      "id": "gyroscopic_effect",
+      "formula": "L = I * omega",
+      "effect": "Faster spinning wheels resist tipping, aiding balance."
+    },
+    {
+      "id": "center_of_gravity",
+      "formula": "stability ~ 1/height_of_CG",
+      "effect": "Lower center of gravity improves stability especially cornering."
+    },
+    {
+      "id": "power_output",
+      "formula": "P = Torque * AngularVelocity",
+      "effect": "Cyclist power output drives speed against resistive forces."
+    },
+    {
+      "id": "energy_conservation",
+      "formula": "KE + PE = constant (minus losses)",
+      "effect": "Climbing converts kinetic energy to potential energy; descending reverses it."
+    }
+  ]
+}

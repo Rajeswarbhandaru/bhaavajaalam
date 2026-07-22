@@ -1,0 +1,86 @@
+[
+  {
+    "id": "family_car_01",
+    "title": "Level 1: Make It Move",
+    "description": "Build the minimum working car. It should start, move, turn, stay cool, and stop safely.",
+    "budget": 5200,
+    "level": 1,
+    "recommendedFeatures": 8,
+    "requiredParts": [
+      "chassis_city_a",
+      "engine_i4_basic",
+      "battery_12v_basic",
+      "fuel_tank_40l",
+      "wheel_15_standard",
+      "brake_set_city",
+      "steering_rack_basic",
+      "radiator_small"
+    ],
+    "targets": {
+      "minBattery": 45,
+      "maxHeatDelta": 0,
+      "minBrakeForce": 58
+    }
+  },
+  {
+    "id": "family_plus_02",
+    "title": "Level 2: Add Features",
+    "description": "Now improve the car with comfort, safety, and helpful smart features while keeping it drivable.",
+    "budget": 7800,
+    "level": 2,
+    "recommendedFeatures": 16,
+    "requiredParts": [
+      "chassis_city_a",
+      "engine_i4_basic",
+      "battery_12v_basic",
+      "fuel_tank_40l",
+      "wheel_15_standard",
+      "brake_set_city",
+      "steering_rack_basic",
+      "radiator_small",
+      "seatbelt_basic",
+      "air_conditioning_basic",
+      "parking_sensors",
+      "rear_camera",
+      "airbag_system",
+      "abs_module"
+    ],
+    "targets": {
+      "minBattery": 60,
+      "maxHeatDelta": -1,
+      "minBrakeForce": 72
+    }
+  },
+  {
+    "id": "adventure_03",
+    "title": "Level 3: Fast and Adventurous",
+    "description": "Build a stronger long-run car with better speed, grip, adventure tools, and extra carrying ability.",
+    "budget": 11000,
+    "level": 3,
+    "recommendedFeatures": 24,
+    "requiredParts": [
+      "chassis_city_a",
+      "engine_i4_basic",
+      "battery_12v_touring",
+      "fuel_tank_40l",
+      "wheel_15_standard",
+      "brake_set_city",
+      "steering_rack_basic",
+      "radiator_small",
+      "offroad_suspension",
+      "offroad_tires",
+      "roof_rack",
+      "cargo_box",
+      "roof_lights",
+      "trail_camera",
+      "performance_radiator",
+      "sport_brakes",
+      "extra_fuel_cell"
+    ],
+    "targets": {
+      "minBattery": 75,
+      "maxHeatDelta": -3,
+      "minBrakeForce": 88
+    }
+  }
+]

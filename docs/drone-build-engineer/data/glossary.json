@@ -1,0 +1,204 @@
+{
+  "terms": [
+    {
+      "term": "ESC",
+      "definition": "Stands for Electronic Speed Controller. It translates digital signals into motor power, acting like a gas pedal for your drone![cite: 1]"
+    },
+    {
+      "term": "FC",
+      "definition": "Stands for Flight Controller. This is the computer brain of the drone that helps it balance and fly smoothly.[cite: 1]"
+    },
+    {
+      "term": "LiPo",
+      "definition": "Stands for Lithium Polymer battery. It has a high discharge rate chemistry used in drones to give them huge bursts of energy![cite: 1]"
+    },
+    {
+      "term": "KV",
+      "definition": "Stands for RPM per Volt, which tells you how fast the motor spins. Lower KV is used for higher voltages (6S) or larger props.[cite: 1]"
+    },
+    {
+      "term": "VTX",
+      "definition": "Stands for Video Transmitter. It sends the camera feed to the pilot's goggles so you can see where you are flying.[cite: 1]"
+    },
+    {
+      "term": "FPV",
+      "definition": "Stands for First Person View. This means flying using goggles that show the drone's perspective, like you are a tiny pilot sitting inside![cite: 1]"
+    },
+    {
+      "term": "Frame",
+      "definition": "The tough skeleton of the drone that holds all of your cool electronic parts together safely."
+    },
+    {
+      "term": "Motors",
+      "definition": "The strong muscles of the drone! They spin super fast to lift your drone into the sky."
+    },
+    {
+      "term": "Propellers",
+      "definition": "The spinning plastic blades that push the air down so your drone can fly up."
+    },
+    {
+      "term": "Battery",
+      "definition": "The fuel tank! It holds all the electricity the drone needs to wake up and zoom around."
+    },
+    {
+      "term": "Receiver",
+      "definition": "The ears of the drone. It listens carefully to the secret commands from your remote control."
+    },
+    {
+      "term": "VideoDownlink",
+      "definition": "A special invisible bridge that beams live video from your flying drone straight to your screen."
+    },
+    {
+      "term": "ActionCam",
+      "definition": "A tough little camera you strap to the top to record awesome, high-quality videos of your adventures."
+    },
+    {
+      "term": "GimbalCamera",
+      "definition": "A camera on a robotic arm that keeps your video super smooth, even when the drone is doing crazy flips!"
+    },
+    {
+      "term": "LEDStrip",
+      "definition": "Bright, colorful flashing lights that make your drone look awesome and help you see it at night."
+    },
+    {
+      "term": "GPS",
+      "definition": "A space-satellite tool that helps the drone know exactly where it is in the world so it never gets lost."
+    },
+    {
+      "term": "ObstacleAvoidance",
+      "definition": "Special robot eyes that help the drone see walls and trees so it doesn't bump into them."
+    },
+    {
+      "term": "Transmitter",
+      "definition": "The remote control you hold in your hands to tell the drone where to go."
+    },
+    {
+      "term": "Antenna",
+      "definition": "The little metal stick on the drone and the remote that helps them talk to each other over long distances."
+    },
+    {
+      "term": "Payload",
+      "definition": "Any extra weight the drone carries, like a camera, a sensor, or even a small package."
+    },
+    {
+      "term": "Thrust",
+      "definition": "The strong pushing power created by the spinning propellers that makes the drone lift off the ground."
+    },
+    {
+      "term": "Pitch",
+      "definition": "Tilting the drone forward to fly straight ahead, or tilting it backward to fly in reverse."
+    },
+    {
+      "term": "Roll",
+      "definition": "Tilting the drone sideways so it can slide left or right through the air."
+    },
+    {
+      "term": "Yaw",
+      "definition": "Spinning the drone left or right like a spinning top, without tilting it."
+    },
+    {
+      "term": "Throttle",
+      "definition": "The control stick that gives the motors more juice so the drone can fly faster and higher."
+    },
+    {
+      "term": "Hovering",
+      "definition": "When the drone floats perfectly still in one spot in the air, like a hummingbird."
+    },
+    {
+      "term": "Calibration",
+      "definition": "A special setup step where you teach the drone what is perfectly flat and level."
+    },
+    {
+      "term": "Telemetry",
+      "definition": "Secret radio messages the drone sends back to you to tell you how much battery is left and how fast it is going."
+    },
+    {
+      "term": "Carbon Fiber",
+      "definition": "A super strong and super light material used to build the drone's frame so it won't break easily in a crash."
+    },
+    {
+      "term": "PDB",
+      "definition": "Stands for Power Distribution Board. It is like a water pipe system, but it shares electrical juice from the battery to all the parts."
+    },
+    {
+      "term": "Bind",
+      "definition": "The process of introducing your remote control to your drone so they become best friends and talk only to each other."
+    },
+    {
+      "term": "Goggles",
+      "definition": "Special video glasses you wear to see exactly what the drone's camera sees."
+    },
+    {
+      "term": "Standoffs",
+      "definition": "Little metal or plastic pillars that space out the drone's computer boards so they don't touch and short circuit."
+    },
+    {
+      "term": "OSD",
+      "definition": "Stands for On-Screen Display. These are the helpful words and numbers that pop up on your video screen while flying."
+    },
+    {
+      "term": "Firmware",
+      "definition": "The secret software code that lives inside the drone's brain and tells it how to behave."
+    },
+    {
+      "term": "Gyroscope",
+      "definition": "A tiny sensor inside the brain that helps the drone feel if it is tilting, so it can correct itself and stay flat."
+    },
+    {
+      "term": "Accelerometer",
+      "definition": "Another tiny sensor that feels when the drone is moving really fast or falling."
+    },
+    {
+      "term": "Failsafe",
+      "definition": "An emergency backup plan! If the drone loses connection with your remote, the failsafe tells it to land safely."
+    },
+    {
+      "term": "Brushless Motor",
+      "definition": "A special, super-fast motor with no rubbing parts inside, making it powerful and long-lasting."
+    },
+    {
+      "term": "Stator",
+      "definition": "The inside part of the motor that stays completely still and uses magnets to push the spinning part."
+    },
+    {
+      "term": "Rotor",
+      "definition": "The outside bell part of the motor that spins around really fast to turn the propeller."
+    },
+    {
+      "term": "Simulator",
+      "definition": "A fun video game you can play on your computer to practice flying without crashing your real drone!"
+    },
+    {
+      "term": "LOS",
+      "definition": "Stands for Line of Sight. This means you are flying the drone by looking right at it in the sky, instead of using goggles."
+    },
+    {
+      "term": "Connectors",
+      "definition": "The metal and plastic plugs that snap wires together easily."
+    },
+    {
+      "term": "Solder",
+      "definition": "Melted metal used like super-glue to stick electrical wires safely to the computer boards."
+    },
+    {
+      "term": "Propeller Pitch",
+      "definition": "How scooped or twisted the propeller blades are. More scoop means it grabs more air!"
+    },
+    {
+      "term": "CW",
+      "definition": "Stands for Clockwise. It means a propeller or motor spins to the right, just like the hands on a clock."
+    },
+    {
+      "term": "CCW",
+      "definition": "Stands for Counter-Clockwise. It means a propeller or motor spins backwards to the left."
+    },
+    {
+      "term": "Quadcopter",
+      "definition": "A flying machine with exactly four motors and four propellers. The most popular type of drone!"
+    },
+    {
+      "term": "Hexacopter",
+      "definition": "A mega drone with six motors and six propellers instead of four, giving it extra lifting power!"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "profiles": [
+    {
+      "id": "budget_basic",
+      "name": "Budget Champion",
+      "tagline": "Like an entry-level phone found in most Indian households \u2014 simple, reliable, affordable.",
+      "priceRange": [
+        0,
+        160
+      ],
+      "icon": "\ud83d\udcf1",
+      "idealFor": "Grandparents, first-time users, basic calling and messaging",
+      "realExamples": "Similar to entry-level phones like Redmi A-series, Samsung M0x, or Nokia budget phones."
+    },
+    {
+      "id": "everyday_midrange",
+      "name": "Everyday All-Rounder",
+      "tagline": "A balanced phone for school, social apps, and casual gaming \u2014 the most common phone type.",
+      "priceRange": [
+        161,
+        320
+      ],
+      "icon": "\ud83d\udcf2",
+      "idealFor": "Students, everyday multitaskers, light gaming and photography",
+      "realExamples": "Similar to popular mid-range phones like Redmi Note series, Samsung Galaxy M series, or Realme Number series."
+    },
+    {
+      "id": "gaming_beast",
+      "name": "Gaming Beast",
+      "tagline": "High refresh rate display, powerful CPU, and strong cooling \u2014 built for competitive mobile gaming.",
+      "priceRange": [
+        280,
+        500
+      ],
+      "icon": "\ud83c\udfae",
+      "idealFor": "Gamers who need smooth frame rates and no overheating during long sessions",
+      "realExamples": "Similar to gaming phones like Poco X series, iQOO Z/Neo series, or ROG Phone lineups."
+    },
+    {
+      "id": "camera_pro",
+      "name": "Camera Pro",
+      "tagline": "High-megapixel main and selfie cameras with AI processing \u2014 built for photography lovers.",
+      "priceRange": [
+        300,
+        550
+      ],
+      "icon": "\ud83d\udcf7",
+      "idealFor": "Content creators, photography enthusiasts, social media users",
+      "realExamples": "Similar to camera-focused phones like Google Pixel series, Vivo V series, or OPPO Reno series."
+    },
+    {
+      "id": "flagship_ultra",
+      "name": "Flagship Ultra",
+      "tagline": "Top-tier CPU, huge battery, best display and camera \u2014 no compromises.",
+      "priceRange": [
+        500,
+        900
+      ],
+      "icon": "\ud83d\ude80",
+      "idealFor": "Power users who want the absolute best experience in every category",
+      "realExamples": "Similar to flagship phones like Samsung Galaxy S/Ultra series, iPhone Pro series, or OnePlus flagship series."
+    },
+    {
+      "id": "explorer_rugged",
+      "name": "Outdoor Explorer",
+      "tagline": "Large battery, barometer, and GPS \u2014 designed to survive trips into nature.",
+      "priceRange": [
+        250,
+        450
+      ],
+      "icon": "\ud83c\udfd4\ufe0f",
+      "idealFor": "Hikers, travelers, and outdoor adventurers who need reliability off-grid",
+      "realExamples": "Similar to rugged phones like Doogee, Ulefone Armor series, or Cat Phones."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "achievements": [
+    {
+      "id": "first_launch",
+      "name": "First Launch",
+      "description": "Successfully launched your first rocket.",
+      "icon": "\ud83d\ude80"
+    },
+    {
+      "id": "stable_flyer",
+      "name": "Stable Flyer",
+      "description": "Built a rocket with zero stability issues.",
+      "icon": "\ud83c\udfaf"
+    },
+    {
+      "id": "orbit_ready",
+      "name": "Orbit Ready",
+      "description": "Completed a compatible two-stage orbital rocket.",
+      "icon": "\ud83d\udef0\ufe0f"
+    },
+    {
+      "id": "safe_recovery",
+      "name": "Safe Recovery",
+      "description": "Landed a rocket safely with a matching parachute.",
+      "icon": "\ud83e\ude82"
+    },
+    {
+      "id": "feature_master",
+      "name": "Feature Master",
+      "description": "Installed every available rocket feature.",
+      "icon": "\u2b50"
+    }
+  ]
+}

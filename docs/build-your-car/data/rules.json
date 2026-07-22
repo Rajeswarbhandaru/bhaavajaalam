@@ -1,0 +1,7 @@
+[
+  {"id":"rule_required_parts","type":"required_parts"},
+  {"id":"rule_cooling_margin","type":"cooling_margin"},
+  {"id":"rule_battery_health","type":"battery_health"},
+  {"id":"rule_brake_force","type":"brake_force"},
+  {"id":"rule_budget","type":"budget"}
+]

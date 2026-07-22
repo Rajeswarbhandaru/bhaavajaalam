@@ -1,0 +1,15 @@
+
+body{position:relative;min-height:100vh;padding-top:64px;}
+#topbar{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 20px;z-index:100;}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-name{font-weight:700;font-size:1.1rem;}
+.brand-sub{font-size:.8rem;opacity:.7;}
+.logo-dot{width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#5ad1ff,#8b6cff);box-shadow:0 0 10px #8b6cff;}
+.topbar-actions{display:flex;align-items:center;gap:10px;}
+
+.screen{display:none;padding:24px;max-width:1400px;margin:0 auto;}
+.screen.active{display:block;}
+
+.colorblind-mode{filter:saturate(0.6);}
+.reduce-motion *{animation:none !important;transition:none !important;}

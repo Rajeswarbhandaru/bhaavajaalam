@@ -1,0 +1,74 @@
+
+export class AnatomyExplorer {
+  constructor(container, anatomyData) {
+    this.container = container;
+    this.anatomyData = anatomyData;
+    this.activeDevice = "Racing";
+    this.activePartIndex = null;
+  }
+
+  render(deviceType = this.activeDevice) {
+    this.activeDevice = deviceType;
+    const profile = this.anatomyData[deviceType];
+    this.container.innerHTML = `
+      <div class="anatomy-toolbar">
+        <button class="btn ${deviceType === "Racing" ? "btn-primary" : ""}" data-device="Racing">🏁 Racing</button>
+        <button class="btn ${deviceType === "Cinematic" ? "btn-primary" : ""}" data-device="Cinematic">🎥 Cinematic</button>
+        <span class="anatomy-hint">Tap a glowing marker. These are typical drone layouts; builds vary.</span>
+      </div>
+      <section class="anatomy-minimum" aria-label="Essential parts explanation">
+        <div class="minimum-icon">${deviceType === "Racing" ? "🏁" : "🎥"}</div>
+        <div>
+          <p class="minimum-eyebrow">LEVEL 1 · ESSENTIAL BUILD</p>
+          <h3>What is the minimum needed to build a ${deviceType === "Racing" ? "racing drone" : "cinematic drone"}?</h3>
+          <p>${deviceType === "Racing"
+            ? "A basic racing drone needs a frame, flight controller (FC), electronic speed controller (ESC), motors, propellers, battery, and receiver. VTX, Action Cams, and LEDs add FPV and recording features later."
+            : "A cinematic drone needs a frame, FC, ESC, motors, propellers, battery, receiver, video downlink, and a gimbal camera. GPS and obstacle avoidance add safety and smart features later."}</p>
+        </div>
+      </section>
+      <div class="anatomy-stage ${profile.silhouette}-stage ${deviceType === "Cinematic" ? "cinematic-stage" : ""}">
+        <div class="anatomy-silhouette ${profile.silhouette}">
+          <img class="anatomy-illustration" src="assets/anatomy/${profile.silhouette}-exploded.svg" alt="${profile.label} illustration" draggable="false" />
+          ${profile.parts.map((p, i) => `
+            <button class="anatomy-hotspot" style="left:${p.x}%;top:${p.y}%;"
+              data-index="${i}" title="${p.label}">
+              <span class="hotspot-pulse"></span><span class="hotspot-label">${p.label}</span>
+            </button>
+          `).join("")}
+        </div>
+        <div class="anatomy-detail" id="anatomy-detail">
+          <p class="placeholder-text">Select a glowing point on the drone to see what part lives there.</p>
+        </div>
+      </div>
+      <div class="anatomy-legend">
+        <h3>All parts in this ${deviceType.toLowerCase()} drone</h3>
+        <div class="anatomy-legend-grid">
+          ${profile.parts.map((p, i) => `<button class="legend-chip" data-index="${i}">${p.label}</button>`).join("")}
+        </div>
+      </div>
+    `;
+    this.#bindEvents(profile);
+  }
+
+  #bindEvents(profile) {
+    this.container.querySelectorAll("[data-device]").forEach((btn) => {
+      btn.addEventListener("click", () => this.render(btn.dataset.device));
+    });
+    const showPart = (index) => {
+      this.activePartIndex = index;
+      const part = profile.parts[index];
+      this.container.querySelectorAll(".anatomy-hotspot").forEach((h) =>
+        h.classList.toggle("active", Number(h.dataset.index) === index)
+      );
+      document.getElementById("anatomy-detail").innerHTML = `
+        <h3>${part.label}</h3>
+        <p><strong>Where it really is:</strong> ${part.realLocation}</p>
+        <p><strong>What it does:</strong> ${part.why}</p>
+        <span class="badge">Matches "${part.type}" in Build Mode</span>
+      `;
+    };
+    this.container.querySelectorAll(".anatomy-hotspot, .legend-chip").forEach((el) => {
+      el.addEventListener("click", () => showPart(Number(el.dataset.index)));
+    });
+  }
+}

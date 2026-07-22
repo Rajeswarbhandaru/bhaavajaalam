@@ -1,0 +1,52 @@
+{
+  "profiles": [
+    {
+      "name": "Estes Alpha (Beginner Model Rocket)",
+      "priceRange": [
+        0,
+        60
+      ],
+      "desc": "A tiny hobby rocket perfect for a first launch, reaching a few hundred feet."
+    },
+    {
+      "name": "Mid-Power Sounding Rocket",
+      "priceRange": [
+        61,
+        150
+      ],
+      "desc": "Similar to hobbyist high-power rockets that can carry a small camera or sensor payload."
+    },
+    {
+      "name": "Advanced Sounding Rocket",
+      "priceRange": [
+        151,
+        400
+      ],
+      "desc": "Comparable to research sounding rockets used to study the upper atmosphere."
+    },
+    {
+      "name": "Small Orbital Test Rocket",
+      "priceRange": [
+        401,
+        1200
+      ],
+      "desc": "Similar to early-stage orbital rocket prototypes built by student and startup teams."
+    },
+    {
+      "name": "Two-Stage Orbital Rocket",
+      "priceRange": [
+        1201,
+        2500
+      ],
+      "desc": "Comparable to a small real orbital launch vehicle capable of reaching space."
+    },
+    {
+      "name": "Satellite-Class Orbital Rocket",
+      "priceRange": [
+        2501,
+        999999
+      ],
+      "desc": "A well-equipped orbital rocket capable of carrying and powering a small satellite."
+    }
+  ]
+}

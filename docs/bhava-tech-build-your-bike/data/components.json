@@ -1,0 +1,280 @@
+{
+  "frame": [
+    {
+      "id": "frame_steel",
+      "name": "Steel Frame",
+      "material": "steel",
+      "weightKg": 2.8,
+      "strength": 8,
+      "cost": 40,
+      "corrosionResist": 3,
+      "comfort": 7,
+      "durability": 9
+    },
+    {
+      "id": "frame_aluminium",
+      "name": "Aluminium Frame",
+      "material": "aluminium",
+      "weightKg": 1.8,
+      "strength": 6,
+      "cost": 60,
+      "corrosionResist": 8,
+      "comfort": 5,
+      "durability": 7
+    },
+    {
+      "id": "frame_titanium",
+      "name": "Titanium Frame",
+      "material": "titanium",
+      "weightKg": 1.5,
+      "strength": 8,
+      "cost": 300,
+      "corrosionResist": 10,
+      "comfort": 8,
+      "durability": 10
+    },
+    {
+      "id": "frame_carbon",
+      "name": "Carbon Fiber Frame",
+      "material": "carbon",
+      "weightKg": 1.1,
+      "strength": 7,
+      "cost": 400,
+      "corrosionResist": 10,
+      "comfort": 9,
+      "durability": 6
+    },
+    {
+      "id": "frame_bamboo",
+      "name": "Bamboo Frame",
+      "material": "bamboo",
+      "weightKg": 2.0,
+      "strength": 5,
+      "cost": 80,
+      "corrosionResist": 6,
+      "comfort": 9,
+      "durability": 5
+    }
+  ],
+  "wheel": [
+    {
+      "id": "wheel_20",
+      "name": "20 inch Wheel",
+      "sizeInches": 20,
+      "axleType": "bolt-on",
+      "hubWidthMm": 100
+    },
+    {
+      "id": "wheel_24",
+      "name": "24 inch Wheel",
+      "sizeInches": 24,
+      "axleType": "quick-release",
+      "hubWidthMm": 100
+    },
+    {
+      "id": "wheel_26",
+      "name": "26 inch Wheel",
+      "sizeInches": 26,
+      "axleType": "quick-release",
+      "hubWidthMm": 135
+    },
+    {
+      "id": "wheel_275",
+      "name": "27.5 inch Wheel",
+      "sizeInches": 27.5,
+      "axleType": "thru-axle",
+      "hubWidthMm": 142
+    },
+    {
+      "id": "wheel_29",
+      "name": "29 inch Wheel",
+      "sizeInches": 29,
+      "axleType": "thru-axle",
+      "hubWidthMm": 142
+    },
+    {
+      "id": "wheel_700c",
+      "name": "700C Wheel",
+      "sizeInches": 29,
+      "axleType": "quick-release",
+      "hubWidthMm": 130
+    }
+  ],
+  "gear_system": [
+    {
+      "id": "single_speed",
+      "name": "Single Speed",
+      "speeds": 1,
+      "efficiency": 9,
+      "maintenance": 9,
+      "hillClimb": 2,
+      "topSpeed": 5
+    },
+    {
+      "id": "hub_3",
+      "name": "3-Speed Internal Hub",
+      "speeds": 3,
+      "efficiency": 7,
+      "maintenance": 8,
+      "hillClimb": 5,
+      "topSpeed": 5
+    },
+    {
+      "id": "derailleur_7",
+      "name": "7-Speed Derailleur",
+      "speeds": 7,
+      "efficiency": 7,
+      "maintenance": 6,
+      "hillClimb": 6,
+      "topSpeed": 6
+    },
+    {
+      "id": "derailleur_10",
+      "name": "10-Speed Derailleur",
+      "speeds": 10,
+      "efficiency": 8,
+      "maintenance": 5,
+      "hillClimb": 7,
+      "topSpeed": 7
+    },
+    {
+      "id": "derailleur_12",
+      "name": "12-Speed Derailleur",
+      "speeds": 12,
+      "efficiency": 8,
+      "maintenance": 5,
+      "hillClimb": 8,
+      "topSpeed": 8
+    },
+    {
+      "id": "derailleur_14",
+      "name": "14-Speed Internal Hub",
+      "speeds": 14,
+      "efficiency": 6,
+      "maintenance": 9,
+      "hillClimb": 9,
+      "topSpeed": 8
+    }
+  ],
+  "brake": [
+    {
+      "id": "rim_brake",
+      "name": "Rim Brake",
+      "stoppingDistanceM": 6.5,
+      "wetPerformance": 4,
+      "cost": 15,
+      "maintenance": 7,
+      "fade": 6
+    },
+    {
+      "id": "mech_disc",
+      "name": "Mechanical Disc Brake",
+      "stoppingDistanceM": 5.0,
+      "wetPerformance": 7,
+      "cost": 30,
+      "maintenance": 6,
+      "fade": 4
+    },
+    {
+      "id": "hydraulic_disc",
+      "name": "Hydraulic Disc Brake",
+      "stoppingDistanceM": 4.0,
+      "wetPerformance": 9,
+      "cost": 60,
+      "maintenance": 5,
+      "fade": 2
+    },
+    {
+      "id": "drum_brake",
+      "name": "Drum Brake",
+      "stoppingDistanceM": 6.0,
+      "wetPerformance": 8,
+      "cost": 25,
+      "maintenance": 9,
+      "fade": 3
+    },
+    {
+      "id": "coaster_brake",
+      "name": "Coaster Brake",
+      "stoppingDistanceM": 7.0,
+      "wetPerformance": 6,
+      "cost": 10,
+      "maintenance": 9,
+      "fade": 5
+    }
+  ],
+  "suspension": [
+    {
+      "id": "rigid",
+      "name": "Rigid",
+      "travelMm": 0,
+      "comfort": 2,
+      "energyLoss": 0,
+      "weightKg": 0.3
+    },
+    {
+      "id": "hardtail_80",
+      "name": "Hardtail 80mm",
+      "travelMm": 80,
+      "comfort": 6,
+      "energyLoss": 2,
+      "weightKg": 1.4
+    },
+    {
+      "id": "full_100",
+      "name": "Full Suspension 100mm",
+      "travelMm": 100,
+      "comfort": 8,
+      "energyLoss": 4,
+      "weightKg": 2.6
+    },
+    {
+      "id": "full_140",
+      "name": "Full Suspension 140mm",
+      "travelMm": 140,
+      "comfort": 9,
+      "energyLoss": 5,
+      "weightKg": 3.1
+    },
+    {
+      "id": "full_160",
+      "name": "Full Suspension 160mm",
+      "travelMm": 160,
+      "comfort": 10,
+      "energyLoss": 6,
+      "weightKg": 3.6
+    }
+  ],
+  "motor": [
+    {
+      "id": "motor_250w",
+      "name": "250W Hub Motor",
+      "wattage": 250,
+      "voltage": 36,
+      "torqueNm": 40
+    },
+    {
+      "id": "motor_500w",
+      "name": "500W Mid-Drive Motor",
+      "wattage": 500,
+      "voltage": 48,
+      "torqueNm": 80
+    }
+  ],
+  "battery": [
+    {
+      "id": "battery_36v10ah",
+      "name": "36V 10Ah Battery",
+      "voltage": 36,
+      "capacityAh": 10,
+      "rangeKm": 40
+    },
+    {
+      "id": "battery_48v15ah",
+      "name": "48V 15Ah Battery",
+      "voltage": 48,
+      "capacityAh": 15,
+      "rangeKm": 70
+    }
+  ]
+}

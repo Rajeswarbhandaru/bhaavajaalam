@@ -1,0 +1,34 @@
+{
+  "lessons": [
+    {
+      "id": "l1",
+      "title": "Why Rockets Need Fins",
+      "body": "Fins keep a rocket flying straight by pushing against the air, just like feathers on a dart. Without enough fin area, a rocket can tumble instead of flying up."
+    },
+    {
+      "id": "l2",
+      "title": "Thrust vs Weight",
+      "body": "A rocket only lifts off if its engines push harder (thrust) than gravity pulls down (weight). Engineers call this the thrust-to-weight ratio."
+    },
+    {
+      "id": "l3",
+      "title": "Fuel and Oxidizer",
+      "body": "Fire needs oxygen. In space there's no air, so rockets carry their own oxidizer (like liquid oxygen) to burn fuel."
+    },
+    {
+      "id": "l4",
+      "title": "Two-Stage Rockets",
+      "body": "Orbital rockets often use two stages. The big first stage lifts off the ground, then falls away so a lighter second stage can finish the trip to orbit."
+    },
+    {
+      "id": "l5",
+      "title": "Recovery Systems",
+      "body": "Parachutes slow a rocket down so it lands safely and can be reused, just like Estes model rockets and SpaceX boosters."
+    },
+    {
+      "id": "l6",
+      "title": "Guidance Systems",
+      "body": "Guidance computers use sensors (and sometimes GPS) to keep a rocket pointed the right way during flight."
+    }
+  ]
+}

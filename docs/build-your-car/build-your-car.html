@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bhāva Tech — Build Your Car</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/tokens.css"/>
+  <link rel="stylesheet" href="./css/base.css"/>
+  <link rel="stylesheet" href="./css/layout.css"/>
+  <link rel="stylesheet" href="./css/game.css"/>
+  <link rel="stylesheet" href="./css/learning.css"/>
+</head>
+<body>
+  <a class="skip-link" href="#app">Skip to content</a>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <svg viewBox="0 0 120 32" aria-label="Bhava Tech logo" class="brand-mark">
+          <path d="M8 24 L20 8 L32 24" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M42 24 L54 8 L66 24" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>
+          <path d="M79 9 h13 a7 7 0 0 1 0 14 h-13 z" stroke="currentColor" stroke-width="3" fill="none"/>
+          <circle cx="106" cy="16" r="7" stroke="currentColor" stroke-width="3" fill="none"/>
+        </svg>
+        <div>
+          <p class="eyebrow">Bhāva Tech Engineering Studio</p>
+          <h1>Build Your Car</h1>
+        </div>
+      </div>
+
+ <nav class="hero-nav topbar-actions" id="heroNav">
+  <button class="theme-toggle" data-theme-toggle aria-label="Switch theme">◐</button>
+  <a href="./car-anatomy.html" class="nav-pill nav-link">Car Anatomy</a>
+  <button class="nav-pill active" data-nav-target="assemblyPanel">Learn Car</button>
+  <button class="nav-pill" data-nav-target="garagePanel">Build Car</button>
+  <button class="nav-pill" data-nav-target="testTrackPanel">Run Test</button>
+<!--  <button class="nav-pill" data-nav-target="diagnosticsPanel">Fix Problems</button>-->
+  <button class="nav-pill" data-nav-target="exploreFooter">More Games</button>
+</nav>
+    </header>
+
+    <main id="app" class="main-grid">
+      <section class="hero card glass">
+        <div class="hero-copy">
+          <p class="eyebrow accent">Version 0.4 — Level Up</p>
+          <h2>Assemble, test, diagnose, repair.</h2>
+          <p class="hero-text">A modular browser-game foundation for students to understand how car systems depend on one another through building, testing, and engineering trade-offs.</p>
+          <div class="hero-actions">
+            <button class="primary-btn" id="missionStartBtn">Start Mission</button>
+            <button class="ghost-btn" id="simulateBtn">Run Test</button>
+          </div>
+        </div>
+
+        <div class="hero-machine" aria-hidden="true">
+          <div class="machine-frame"></div>
+          <div class="machine-wheel wheel-left"></div>
+          <div class="machine-wheel wheel-right"></div>
+          <div class="signal signal-power"></div>
+          <div class="signal signal-cooling"></div>
+        </div>
+      </section>
+<section class="journey-panel card glass" id="journeyPanel">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Mission Path</p>
+      <h3>Learn → Build → Test → Improve</h3>
+    </div>
+    <span class="small-note">Follow the steps in order</span>
+  </div>
+
+  <div class="journey-steps">
+    <button class="journey-step active" data-nav-target="learningPanel">
+      <span>1</span>
+      <div>
+        <strong>Learn</strong>
+        <p>Understand what a car needs to work.</p>
+      </div>
+    </button>
+
+    <button class="journey-step" data-nav-target="garagePanel">
+      <span>2</span>
+      <div>
+        <strong>Build</strong>
+        <p>Install the required and useful parts.</p>
+      </div>
+    </button>
+
+    <button class="journey-step" data-nav-target="testTrackPanel">
+      <span>3</span>
+      <div>
+        <strong>Test</strong>
+        <p>Run the car and watch how it behaves.</p>
+      </div>
+    </button>
+
+    <button class="journey-step" data-nav-target="diagnosticsPanel">
+      <span>4</span>
+      <div>
+        <strong>Improve</strong>
+        <p>Find faults and repair weak systems.</p>
+      </div>
+    </button>
+  </div>
+</section>
+
+      <section class="mission-panel card">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Mission</p>
+            <h3 id="missionTitle">Family Car</h3>
+          </div>
+          <span class="status-pill" id="missionStatus">Planning</span>
+        </div>
+
+        <div class="progress-badges">
+          <span class="status-pill" id="levelBadge">Level 1</span>
+          <span class="status-pill" id="featureBadge">9+ features</span>
+        </div>
+
+        <div id="missionButtons" class="mission-buttons"></div>
+        <p id="missionDescription">Build a safe city car that starts reliably, stays cool, and fits within budget.</p>
+        <div class="stats-grid" id="missionStats"></div>
+      </section>
+       
+      <section class="car-replica-panel card" id="assemblyPanel">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Assembly View</p>
+            <h3>Your Car</h3>
+          </div>
+          <span class="small-note">Parts appear as you install</span>
+        </div>
+
+        <div class="car-replica-stage">
+          <div class="car-shadow"></div>
+
+          <svg class="car-replica-svg" viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg">
+            <g id="layerChassis" class="car-part visible">
+              <path d="M108 178 Q125 138 175 136 L452 136 Q492 138 520 176 L532 198 Q535 206 528 206 L112 206 Q104 206 104 197 Z" fill="rgba(93,177,255,0.09)" stroke="rgba(97,218,251,0.78)" stroke-width="3"/>
+              <path d="M166 148 Q240 108 352 114 Q435 118 500 150" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="4"/>
+              <ellipse cx="235" cy="178" rx="126" ry="74" fill="rgba(97,218,251,0.06)" opacity=".6"/>
+            </g>
+
+            <g id="layerEngine" class="car-part">
+              <rect x="394" y="142" width="84" height="38" rx="12" fill="rgba(255,107,138,0.28)" stroke="rgba(255,107,138,0.95)" stroke-width="2"/>
+              <circle cx="420" cy="161" r="4" fill="rgba(255,255,255,0.8)"/>
+              <circle cx="448" cy="161" r="4" fill="rgba(255,255,255,0.8)"/>
+              <text x="436" y="165" fill="rgba(255,183,197,0.95)" font-size="9" text-anchor="middle" font-family="Inter">ENGINE</text>
+            </g>
+
+            <g id="layerGearbox" class="car-part">
+              <rect x="334" y="156" width="58" height="22" rx="7" fill="rgba(140,255,183,0.24)" stroke="rgba(140,255,183,0.8)" stroke-width="2"/>
+              <text x="363" y="170" fill="rgba(183,255,214,0.96)" font-size="8" text-anchor="middle" font-family="Inter">GEAR</text>
+            </g>
+
+            <g id="layerBattery" class="car-part">
+              <rect x="158" y="150" width="44" height="26" rx="6" fill="rgba(255,191,105,0.22)" stroke="rgba(255,191,105,0.82)" stroke-width="2"/>
+              <path d="M168 154 h6 v4 h-6 z" fill="rgba(255,255,255,.8)"/>
+              <path d="M176 154 h6 v4 h-6 z" fill="rgba(255,255,255,.8)"/>
+            </g>
+
+            <g id="layerRadiator" class="car-part">
+              <rect x="486" y="150" width="34" height="34" rx="8" fill="rgba(97,218,251,0.20)" stroke="rgba(97,218,251,0.76)" stroke-width="2"/>
+              <path d="M492 156 h22 M492 162 h22 M492 168 h22" stroke="rgba(183,244,255,0.7)" stroke-width="1.5"/>
+            </g>
+
+            <g id="layerFuelTank" class="car-part">
+              <rect x="244" y="168" width="82" height="22" rx="9" fill="rgba(200,160,255,0.18)" stroke="rgba(200,160,255,0.78)" stroke-width="2"/>
+              <text x="285" y="182" fill="rgba(226,206,255,0.9)" font-size="8" text-anchor="middle" font-family="Inter">FUEL</text>
+            </g>
+
+            <g id="layerWheels" class="car-part">
+              <circle cx="164" cy="206" r="31" fill="rgba(255,255,255,0.04)" stroke="rgba(233,240,255,0.92)" stroke-width="5"/>
+              <circle cx="164" cy="206" r="17" fill="none" stroke="rgba(97,218,251,0.42)" stroke-width="3"/>
+              <circle cx="478" cy="206" r="31" fill="rgba(255,255,255,0.04)" stroke="rgba(233,240,255,0.92)" stroke-width="5"/>
+              <circle cx="478" cy="206" r="17" fill="none" stroke="rgba(97,218,251,0.42)" stroke-width="3"/>
+            </g>
+
+            <g id="layerBrakes" class="car-part">
+              <circle cx="164" cy="206" r="24" fill="none" stroke="rgba(255,107,138,0.5)" stroke-width="2" stroke-dasharray="3,3"/>
+              <circle cx="478" cy="206" r="24" fill="none" stroke="rgba(255,107,138,0.5)" stroke-width="2" stroke-dasharray="3,3"/>
+            </g>
+
+            <g id="layerSteering" class="car-part">
+              <path d="M150 155 L172 134 L178 148" fill="none" stroke="rgba(255,191,105,0.78)" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="170" cy="135" r="7" fill="none" stroke="rgba(255,191,105,0.9)" stroke-width="2"/>
+            </g>
+
+            <g id="layerSuspension" class="car-part">
+              <path d="M164 184 L164 198" stroke="rgba(200,160,255,0.72)" stroke-width="2" stroke-dasharray="2,2"/>
+              <path d="M478 184 L478 198" stroke="rgba(200,160,255,0.72)" stroke-width="2" stroke-dasharray="2,2"/>
+              <path d="M154 198 L174 198" stroke="rgba(200,160,255,0.72)" stroke-width="2"/>
+              <path d="M468 198 L488 198" stroke="rgba(200,160,255,0.72)" stroke-width="2"/>
+            </g>
+
+            <g id="layerHeadlights" class="car-part">
+              <ellipse cx="521" cy="164" rx="9" ry="5" fill="rgba(255,255,200,0.36)" stroke="rgba(255,255,200,0.76)" stroke-width="1.4"/>
+              <path d="M530 164 L567 159 L567 169 L530 164 Z" fill="rgba(255,255,200,0.12)"/>
+            </g>
+          </svg>
+
+          <div class="part-labels">
+            <div id="labelEngine" class="part-label" style="left:66%;top:48%;">Engine</div>
+            <div id="labelBattery" class="part-label" style="left:20%;top:50%;">Battery</div>
+            <div id="labelRadiator" class="part-label" style="left:78%;top:49%;">Radiator</div>
+            <div id="labelWheels" class="part-label" style="left:48%;top:80%;">Wheels</div>
+            <div id="labelBrakes" class="part-label" style="left:48%;top:73%;">Brakes</div>
+            <div id="labelFuelTank" class="part-label" style="left:43%;top:63%;">Fuel Tank</div>
+            <div id="labelSteering" class="part-label" style="left:22%;top:43%;">Steering</div>
+            <div id="labelSuspension" class="part-label" style="left:49%;top:69%;">Suspension</div>
+            <div id="labelHeadlights" class="part-label" style="left:82%;top:52%;">Headlights</div>
+          </div>
+        </div>
+      </section>
+      
+      <section class="learning-panel-wrap" id="learningPanel"></section>
+      <section class="level-switcher card">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Choose Level</p>
+      <h3>Learning Journey</h3>
+    </div>
+    <span class="small-note">Click a level to learn and build</span>
+  </div>
+
+  <div class="level-switcher-buttons" id="levelSwitcherButtons">
+    <button class="mission-pill active" data-level-switch="1">Level 1</button>
+    <button class="mission-pill" data-level-switch="2">Level 2</button>
+    <button class="mission-pill" data-level-switch="3">Level 3</button>
+  </div>
+</section>
+
+      <section class="garage-panel card" id="garagePanel">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Build Garage</p>
+            <h3>Essential Systems</h3>
+          </div>
+          <span class="small-note">Install all required parts</span>
+        </div>
+        <div id="partsGrid" class="parts-grid"></div>
+      </section>
+
+      <section class="vehicle-panel card">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Vehicle State</p>
+            <h3>Engineering Dashboard</h3>
+          </div>
+          <span class="small-note" id="buildReadiness">0 / 9 installed</span>
+        </div>
+
+        <div class="dash-meters">
+          <div class="meter">
+            <label>Budget Use</label>
+            <div class="bar"><span id="budgetBar"></span></div>
+            <strong id="budgetText"></strong>
+          </div>
+          <div class="meter">
+            <label>Cooling Margin</label>
+            <div class="bar"><span id="coolingBar"></span></div>
+            <strong id="coolingText"></strong>
+          </div>
+          <div class="meter">
+            <label>Battery Health</label>
+            <div class="bar"><span id="batteryBar"></span></div>
+            <strong id="batteryText"></strong>
+          </div>
+          <div class="meter">
+            <label>Brake Safety</label>
+            <div class="bar"><span id="brakeBar"></span></div>
+            <strong id="brakeText"></strong>
+          </div>
+        </div>
+
+        <div class="telemetry" id="telemetryPanel"></div>
+      </section>
+
+      <section class="track-panel card glass" id="testTrackPanel">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Test Track</p>
+            <h3>Live Run</h3>
+          </div>
+          <button class="primary-btn" id="startTestBtn">Start Test</button>
+        </div>
+
+        <div class="track-stage">
+          <div class="track-sky" id="trackSky"></div>
+          <div class="track-boundary" id="trackBoundary"></div>
+
+          <div class="track-road" id="trackRoad">
+            <div class="track-ground" id="trackGround"></div>
+          </div>
+
+          <div class="track-car level-1" id="trackCar">
+            <div class="car-body">
+              <div class="car-window"></div>
+              <div class="car-window rear"></div>
+              <div class="car-door"></div>
+              <div class="seat-icon seat-left"></div>
+              <div class="seat-icon seat-right"></div>
+              <div class="ac-glow"></div>
+              <div class="dash-sparkle"></div>
+              <div class="car-smile"></div>
+              <div class="car-light head"></div>
+              <div class="car-light tail"></div>
+            </div>
+            <div class="car-wheel wheel-front"></div>
+            <div class="car-wheel wheel-rear"></div>
+            <div class="car-exhaust" id="carExhaust"></div>
+          </div>
+
+          <div class="track-overlay">
+            <div class="gauge-row">
+              <div class="gauge" id="gSpeed">
+                <label>Speed</label>
+                <div class="gauge-fill"><span></span></div>
+                <strong>0</strong>
+              </div>
+              <div class="gauge" id="gTemp">
+                <label>Temp</label>
+                <div class="gauge-fill"><span></span></div>
+                <strong>0°C</strong>
+              </div>
+              <div class="gauge" id="gBatt">
+                <label>Battery</label>
+                <div class="gauge-fill"><span></span></div>
+                <strong>0%</strong>
+              </div>
+              <div class="gauge" id="gBrake">
+                <label>Brake</label>
+                <div class="gauge-fill"><span></span></div>
+                <strong>0%</strong>
+              </div>
+            </div>
+            <div class="track-note" id="trackNote">Press Start Test to begin.</div>
+          </div>
+        </div>
+      </section>
+
+ <!--     <section class="diagnostics-panel card glass" id="diagnosticsPanel">
+        <div class="section-head">
+          <div>
+           <p class="eyebrow">Car Doctor</p>
+<h3>What is wrong?</h3>
+<button class="ghost-btn" id="diagnoseBtn">Scan My Car</button>
+          </div>
+          <button class="ghost-btn" id="diagnoseBtn">Run Scan</button>
+        </div>
+
+        <div class="diagnostics-grid">
+          <div>
+           <h4>What should I try next?</h4>
+
+            <ul id="faultList" class="fault-list"></ul>
+          </div>
+          <div>
+            <h4>Mentor Prompt</h4>
+            <p id="mentorPrompt" class="mentor-card">Choose a mission to begin. The mentor will guide by questions, not answers.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div> -->
+<footer class="explore-footer card glass" id="exploreFooter">
+  <footer class="explore-footer card glass">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Explore More</p>
+      <h3>Build More Machines</h3>
+    </div>
+    <p class="footer-note">Try other Bhava Tech engineering games</p>
+  </div>
+
+  <div class="explore-grid">
+    <a class="explore-card" href="./drone-build-engineer/">
+      <span class="explore-icon">🛸</span>
+      <div>
+        <strong>Build a Drone</strong>
+        <p>Learn lift, balance, and flight parts.</p>
+      </div>
+    </a>
+
+    <a class="explore-card" href="./bhava-tech-build-your-bike/">
+      <span class="explore-icon">🚲</span>
+      <div>
+        <strong>Build a Bike</strong>
+        <p>Discover pedals, balance, and safe riding.</p>
+      </div>
+    </a>
+
+    <a class="explore-card" href="./motorcycle-one-workshop.html">
+      <span class="explore-icon">🏍️</span>
+      <div>
+        <strong>Build a Motorbike</strong>
+        <p>Explore power, control, and speed systems.</p>
+      </div>
+    </a>
+
+    <a class="explore-card" href="./bhava-build-device-engineer/">
+      <span class="explore-icon">📱</span>
+      <div>
+        <strong>Build Devices</strong>
+        <p>Open up phones, laptops, and smart hardware.</p>
+      </div>
+    </a>
+
+    <a class="explore-card" href="./secret-of-silicon-game/">
+      <span class="explore-icon">💻</span>
+      <div>
+        <strong>Secret of Silicon</strong>
+        <p>Understand chips, logic, and computer thinking.</p>
+      </div>
+    </a>
+
+    <a class="explore-card" href="./rocket-build-engineer/">
+      <span class="explore-icon">🚀</span>
+      <div>
+        <strong>Build a Rocket</strong>
+        <p>Learn thrust, fuel, and space missions.</p>
+      </div>
+    </a>
+  </div>
+</footer>
+
+  <script type="module" src="./js/main.js"></script>
+  
+  <script src="bhava-tech-all.js"></script>
+<script src="bhava-bridge.js"></script>
+<script src="bhava-session.js"></script>
+<script src="bhava-game-nav.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,254 @@
+{
+  "lessons": [
+    {
+      "id": "l1",
+      "title": "Thrust-to-Weight Ratio",
+      "body": "A drone needs thrust greater than its weight to fly.[cite: 2] Cinematic drones aim for 2:1 for smooth flight, but racing drones aim for 5:1 or higher for instant punch-outs![cite: 2]"
+    },
+    {
+      "id": "l2",
+      "title": "Battery Voltage (Cells)",
+      "body": "LiPo batteries are made of 'Cells' (S).[cite: 2] A 4S battery is 14.8V, while a 6S is 22.2V.[cite: 2] More voltage means motors spin faster, but your ESC must be rated to handle it![cite: 2]"
+    },
+    {
+      "id": "l3",
+      "title": "Propeller Pitch & Size",
+      "body": "Larger props generate more lift efficiently but take longer to change speed.[cite: 2] If you put 7-inch props on a 5-inch frame, they will hit each other![cite: 2]"
+    },
+    {
+      "id": "l4",
+      "title": "The Brains: FC",
+      "body": "The Flight Controller loops thousands of times a second, reading the gyroscope to keep the drone level.[cite: 2] Complex tasks like GPS rescue require faster processors like an F7.[cite: 2]"
+    },
+    {
+      "id": "l5",
+      "title": "What is a Quadcopter?",
+      "body": "A quadcopter is a special flying robot with exactly four motors. Two motors spin one way, and two spin the other way to keep it perfectly balanced!"
+    },
+    {
+      "id": "l6",
+      "title": "Safety First!",
+      "body": "Spinning propellers are like fast lawnmower blades. Always take the propellers off when plugging your drone into the computer so you don't accidentally get a boo-boo!"
+    },
+    {
+      "id": "l7",
+      "title": "The Transmitter",
+      "body": "This is your remote control! It has two joysticks that let you tell the drone to go up, down, left, right, and even do cool flips in the air."
+    },
+    {
+      "id": "l8",
+      "title": "How Drones Turn (Yaw)",
+      "body": "To spin left or right like a top, the drone slows down two motors and speeds up the other two. It's a neat physics trick!"
+    },
+    {
+      "id": "l9",
+      "title": "Moving Forward (Pitch)",
+      "body": "To fly forward, the back motors spin faster to lift the tail up. The drone points its nose down and zooms straight ahead!"
+    },
+    {
+      "id": "l10",
+      "title": "Moving Sideways (Roll)",
+      "body": "Want to slide to the left? The right motors will spin faster, tilting the drone to the left so it slides through the air sideways."
+    },
+    {
+      "id": "l11",
+      "title": "Hovering in the Sky",
+      "body": "When a drone hovers, the lifting push from the propellers perfectly matches the gravity pulling it down. It floats in place like magic!"
+    },
+    {
+      "id": "l12",
+      "title": "The FPV Camera",
+      "body": "This tiny camera sits at the front of the drone. It acts like the drone's eyeballs, looking forward to see where it's going."
+    },
+    {
+      "id": "l13",
+      "title": "FPV Goggles",
+      "body": "When you put on FPV goggles, the drone sends video straight to screens in front of your eyes. It feels like you are sitting right inside the drone!"
+    },
+    {
+      "id": "l14",
+      "title": "The VTX (Video Transmitter)",
+      "body": "The VTX is like a super-fast mailman. It grabs the video from the camera and beams it invisibly through the air to your goggles."
+    },
+    {
+      "id": "l15",
+      "title": "Radio Waves",
+      "body": "Drones talk to your remote using invisible radio waves. Think of them like invisible strings connecting your remote control to the drone in the sky."
+    },
+    {
+      "id": "l16",
+      "title": "Antennas",
+      "body": "Antennas are the drone's ears. They need to stick out so they can clearly hear the invisible radio waves sent by your remote control."
+    },
+    {
+      "id": "l17",
+      "title": "The Drone Frame",
+      "body": "Most drone frames are made of Carbon Fiber. It looks like cool black cloth baked into a hard plastic. It is super light but stronger than steel!"
+    },
+    {
+      "id": "l18",
+      "title": "Drone Arms",
+      "body": "The arms are the longest parts of the frame that stick out. The strong motors are screwed onto the very ends of the arms."
+    },
+    {
+      "id": "l19",
+      "title": "Power Distribution Board",
+      "body": "A PDB is like a city's water pipe system. It takes the big electricity from the battery and shares it out to all the different computer parts."
+    },
+    {
+      "id": "l20",
+      "title": "Soldering Wires",
+      "body": "To connect the wires on a drone, we use a hot tool to melt special metal called solder. It cools down fast and glues the wires safely together!"
+    },
+    {
+      "id": "l21",
+      "title": "Brushless Motors",
+      "body": "Drone motors are called 'brushless' because they use super strong magnets to push and pull each other, meaning they can spin incredibly fast without wearing out."
+    },
+    {
+      "id": "l22",
+      "title": "Stator and Rotor",
+      "body": "The inside of the motor that stays still is the stator. The outside bell that spins around and holds the propeller is called the rotor."
+    },
+    {
+      "id": "l23",
+      "title": "Clockwise vs. Counter-Clockwise",
+      "body": "Props are designed to scoop air in one direction. Two must spin clockwise (like a clock's hands) and two must spin counter-clockwise (backwards!)."
+    },
+    {
+      "id": "l24",
+      "title": "Propeller Nuts",
+      "body": "Because the motors spin thousands of times a minute, we use special twisty nuts to lock the propellers down tight so they don't fly off in the sky!"
+    },
+    {
+      "id": "l25",
+      "title": "Taking Care of Batteries",
+      "body": "LiPo batteries are like a grumpy pet. If you drain all their energy until they are completely empty, they will get damaged and won't hold a charge anymore!"
+    },
+    {
+      "id": "l26",
+      "title": "Charging Safely",
+      "body": "Always use a special smart charger for drone batteries, and keep an eye on them while they charge. Never leave them charging alone!"
+    },
+    {
+      "id": "l27",
+      "title": "Battery Capacity (mAh)",
+      "body": "Capacity is measured in mAh, which is how big the drone's gas tank is. A 1500mAh battery lets you fly longer than a 1000mAh battery."
+    },
+    {
+      "id": "l28",
+      "title": "C-Rating",
+      "body": "The C-Rating tells you how fast the battery can pour out its energy. Racing drones need high C-Ratings to get lots of energy all at once!"
+    },
+    {
+      "id": "l29",
+      "title": "ESC Protocols (DSHOT)",
+      "body": "The brain of the drone talks to the motor controllers using a super-fast digital language called DSHOT. It’s like a secret code of ones and zeros."
+    },
+    {
+      "id": "l30",
+      "title": "Angle Mode (Training Wheels)",
+      "body": "In Angle Mode, the drone's computer won't let it flip over. If you let go of the sticks, the drone will automatically flatten out and balance itself!"
+    },
+    {
+      "id": "l31",
+      "title": "Acro Mode (Pro Mode!)",
+      "body": "Acro means Acrobatics! In this mode, the drone does exactly what you tell it to do. If you tell it to do a backflip, it will keep flipping until you tell it to stop!"
+    },
+    {
+      "id": "l32",
+      "title": "Turtle Mode",
+      "body": "If you crash upside down in the grass, Turtle Mode lets you spin just two motors backward to flip the drone right-side up, just like a turtle flipping over!"
+    },
+    {
+      "id": "l33",
+      "title": "OSD (On-Screen Display)",
+      "body": "The OSD paints cool numbers over your video feed. It tells you your battery level and how long you've been flying, just like a video game screen."
+    },
+    {
+      "id": "l34",
+      "title": "GPS Satellites",
+      "body": "If your drone has a GPS, it talks to satellites in outer space to figure out its exact location on Earth. Pretty futuristic!"
+    },
+    {
+      "id": "l35",
+      "title": "Return to Home (RTH)",
+      "body": "If your drone ever loses signal or you get lost, a drone with GPS can use its autopilot brain to fly all the way back to where you took off and land safely."
+    },
+    {
+      "id": "l36",
+      "title": "LED Lights",
+      "body": "Adding bright LED strips makes your drone look like a flying spaceship! It also helps your friends see you when you are flying together."
+    },
+    {
+      "id": "l37",
+      "title": "The Finder Buzzer",
+      "body": "A buzzer is a super loud beeper you can attach. If you crash in tall grass and can't find your drone, you can make it beep loud so you can hear it!"
+    },
+    {
+      "id": "l38",
+      "title": "Action Cameras",
+      "body": "While the FPV camera is for you to see, a tough Action Camera strapped to the top records beautiful HD video of your flight for you to show your family later!"
+    },
+    {
+      "id": "l39",
+      "title": "ND Filters",
+      "body": "An ND Filter is like a pair of cool sunglasses for your drone's camera. It makes colors look better on very sunny days."
+    },
+    {
+      "id": "l40",
+      "title": "Soft Mounting",
+      "body": "Motors shake a lot! We use little rubber squishies called 'soft mounts' under the computer brain so the shaking doesn't give the drone a headache."
+    },
+    {
+      "id": "l41",
+      "title": "PID Tuning",
+      "body": "PID Tuning is like teaching your drone good manners. You change numbers in the computer so it learns to fly perfectly smooth instead of wobbling."
+    },
+    {
+      "id": "l42",
+      "title": "Rates",
+      "body": "Rates control how sensitive the remote is. Low rates mean the drone turns slowly. High rates mean it spins like a tornado when you move the sticks!"
+    },
+    {
+      "id": "l43",
+      "title": "Flight Simulators",
+      "body": "Before flying a real drone, you can plug your remote into your computer and practice in a video game! If you crash, it costs zero dollars to fix!"
+    },
+    {
+      "id": "l44",
+      "title": "Pre-Flight Check",
+      "body": "Just like a real airplane pilot, you should wiggle the propellers and check all the screws to make sure everything is tight before you fly."
+    },
+    {
+      "id": "l45",
+      "title": "Having a Spotter",
+      "body": "When you have goggles on, you can't see the real world! A 'spotter' is a friend who stands next to you and watches out for birds or people."
+    },
+    {
+      "id": "l46",
+      "title": "Flying in the Wind",
+      "body": "Drones are strong, but flying on super windy days can be tricky! The wind will try to push the drone away, so the motors have to work extra hard."
+    },
+    {
+      "id": "l47",
+      "title": "Line of Sight (LOS)",
+      "body": "LOS flying is when you take off your goggles and just watch the drone with your own eyes while you fly it. It is great practice for beginners!"
+    },
+    {
+      "id": "l48",
+      "title": "Freestyle Flying",
+      "body": "Freestyle is like skateboarding or dancing in the sky. Pilots swoop through trees, do flips over buildings, and create beautiful, smooth videos."
+    },
+    {
+      "id": "l49",
+      "title": "Drone Racing",
+      "body": "Drone racing is a super-fast sport! Pilots race on a track filled with gates and flags, trying to cross the finish line first without crashing."
+    },
+    {
+      "id": "l50",
+      "title": "Crashing is Learning",
+      "body": "Everyone who flies a drone crashes sometimes! It's perfectly okay. Fixing broken propellers or arms is half the fun of being a drone builder!"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "environments": [
+    {
+      "id": "rain",
+      "name": "Rain",
+      "effects": {
+        "brakeGripMultiplier": 0.6,
+        "visibility": 0.7
+      }
+    },
+    {
+      "id": "mud",
+      "name": "Mud",
+      "effects": {
+        "rollingResistanceMultiplier": 1.8,
+        "gripMultiplier": 0.5
+      }
+    },
+    {
+      "id": "snow",
+      "name": "Snow",
+      "effects": {
+        "gripMultiplier": 0.4,
+        "brakeGripMultiplier": 0.5
+      }
+    },
+    {
+      "id": "sand",
+      "name": "Sand",
+      "effects": {
+        "rollingResistanceMultiplier": 2.2,
+        "gripMultiplier": 0.6
+      }
+    },
+    {
+      "id": "rocky_trail",
+      "name": "Rocky Trail",
+      "effects": {
+        "suspensionDemand": 1.5,
+        "punctureRiskMultiplier": 1.6
+      }
+    }
+  ],
+  "terrains": [
+    {
+      "id": "urban",
+      "name": "Urban Roads",
+      "slopeVariance": "low"
+    },
+    {
+      "id": "trail",
+      "name": "Mountain Trail",
+      "slopeVariance": "high"
+    },
+    {
+      "id": "road",
+      "name": "Paved Road",
+      "slopeVariance": "low"
+    },
+    {
+      "id": "mixed",
+      "name": "Mixed Terrain",
+      "slopeVariance": "medium"
+    }
+  ]
+}

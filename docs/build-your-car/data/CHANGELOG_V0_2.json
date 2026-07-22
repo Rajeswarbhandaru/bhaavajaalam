@@ -1,0 +1,14 @@
+{
+  "added_missions": 3,
+  "total_missions": 4,
+  "focus": [
+    "UI polish",
+    "more missions",
+    "better simulation",
+    "test track visuals",
+    "sound effects",
+    "car replica",
+    "anatomy page"
+  ],
+  "next_step": "Add richer physics, weather, and more diagnostics"
+}

@@ -1,0 +1,82 @@
+
+export class UIManager {
+  constructor(bus) { this.bus = bus; this.currentScreen = "home"; }
+
+  navigate(target) {
+    document.querySelectorAll(".screen").forEach((s) => s.classList.remove("active"));
+    const screenTarget = target.startsWith("build-") ? "build" : target;
+    const el = document.getElementById(`screen-${screenTarget}`);
+    if (el) el.classList.add("active");
+    this.currentScreen = target;
+    document.querySelectorAll(".nav-link").forEach((l) => l.classList.toggle("active", l.dataset.target === target));
+    this.bus.emit("nav:changed", { target });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  toast(message, type = "info", duration = 3200) {
+    const container = document.getElementById("toast-container");
+    if (!container) return;
+    const el = document.createElement("div");
+    el.className = `toast toast-${type}`;
+    el.textContent = message;
+    container.appendChild(el);
+    setTimeout(() => el.remove(), duration);
+  }
+
+  openModal(innerHTML) {
+    const overlay = document.getElementById("modal-overlay");
+    const content = document.getElementById("modal-content");
+    content.innerHTML = innerHTML;
+    overlay.classList.add("active");
+  }
+  closeModal() { document.getElementById("modal-overlay").classList.remove("active"); }
+
+  renderPaletteTabs(container, types, activeType, onSelect) {
+    container.innerHTML = types.map((t) =>
+      `<button class="palette-tab ${t === activeType ? "active" : ""}" data-type="${t}">${t}</button>`
+    ).join("");
+    container.querySelectorAll(".palette-tab").forEach((btn) => {
+      btn.addEventListener("click", () => onSelect(btn.dataset.type));
+    });
+  }
+
+  renderPaletteItem(comp) {
+    const el = document.createElement("div");
+    el.className = "palette-item";
+    el.dataset.id = comp.id;
+    const statLine = [
+      comp.thrust ? `${comp.thrust}N thrust` : null,
+      comp.weight ? `${comp.weight}kg` : null,
+      comp.stability ? `Stability ${comp.stability}` : null,
+      comp.voltage ? `${comp.voltage}V` : null
+    ].filter(Boolean).join(" · ");
+    el.innerHTML = `
+      <span class="palette-type">${comp.type}</span>
+      <strong>${comp.name}</strong>
+      <small>₹${comp.cost} · ${statLine || comp.desc || ""}</small>`;
+    return el;
+  }
+
+  renderSlot(slotDef) {
+    const el = document.createElement("div");
+    el.className = `slot ${slotDef.required ? "required" : "optional"}`;
+    el.dataset.slot = slotDef.slot;
+    el.innerHTML = `<span class="slot-label">${slotDef.slot}</span><span class="slot-placeholder">Drop here</span>`;
+    return el;
+  }
+
+  fillSlot(slotEl, comp) {
+    slotEl.classList.add("filled");
+    slotEl.classList.remove("error");
+    const statLine = [
+      comp.thrust ? `${comp.thrust}N` : null,
+      comp.weight ? `${comp.weight}kg` : null,
+      comp.stability ? `Stab ${comp.stability}` : null
+    ].filter(Boolean).join(" · ");
+    slotEl.innerHTML = `
+      <span class="slot-label">${slotEl.dataset.slot.toUpperCase()}</span>
+      <strong>${comp.name}</strong>
+      <small>₹${comp.cost} · ${statLine}</small>
+      <button class="slot-remove" title="Remove">✕</button>`;
+  }
+}

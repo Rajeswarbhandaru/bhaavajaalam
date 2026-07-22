@@ -1,0 +1,52 @@
+{
+  "terms": [
+    {
+      "term": "Thrust",
+      "definition": "The force that pushes a rocket upward, created by burning fuel and pushing exhaust gas downward."
+    },
+    {
+      "term": "Oxidizer",
+      "definition": "A substance that lets fuel burn even without air, needed because there's no oxygen in space."
+    },
+    {
+      "term": "Stage",
+      "definition": "A separate section of a rocket with its own engine and fuel, which falls away once used."
+    },
+    {
+      "term": "Payload",
+      "definition": "The cargo a rocket carries, like a satellite, science experiment, or camera."
+    },
+    {
+      "term": "Avionics",
+      "definition": "The electronics that control and monitor a rocket during flight."
+    },
+    {
+      "term": "Guidance System",
+      "definition": "The system that steers a rocket to keep it on the right path."
+    },
+    {
+      "term": "Apogee",
+      "definition": "The highest point a rocket reaches during its flight."
+    },
+    {
+      "term": "Recovery System",
+      "definition": "Parachutes or streamers that slow a rocket down so it lands safely."
+    },
+    {
+      "term": "Fin",
+      "definition": "A flat surface near the bottom of a rocket that keeps it flying straight."
+    },
+    {
+      "term": "Nose Cone",
+      "definition": "The pointed top part of a rocket that cuts through the air."
+    },
+    {
+      "term": "Ignition",
+      "definition": "The moment a rocket motor or engine is lit and starts producing thrust."
+    },
+    {
+      "term": "Launch Rail",
+      "definition": "A straight guide rail that helps a rocket go straight during the first moments of flight."
+    }
+  ]
+}

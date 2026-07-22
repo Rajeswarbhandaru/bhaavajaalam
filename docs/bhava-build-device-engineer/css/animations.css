@@ -1,0 +1,28 @@
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.screen.active{animation:fadeIn .35s ease;}
+
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 6px rgba(110,231,255,.3);}50%{box-shadow:0 0 18px rgba(110,231,255,.65);}}
+.slot.filled{animation:pulseGlow 2.4s ease-in-out infinite;}
+
+@keyframes wireFlow{to{stroke-dashoffset:-40;}}
+.wire-path{stroke-dasharray:6 6;animation:wireFlow 1s linear infinite;}
+
+@keyframes spinSlow{to{transform:rotate(360deg);}}
+.spin-slow{animation:spinSlow 6s linear infinite;}
+
+@keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-4px);}40%{transform:translateX(4px);}
+  60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
+.slot.error{animation:shake .4s ease;}
+
+@keyframes particleRise{from{opacity:.9;transform:translateY(0) scale(1);}to{opacity:0;transform:translateY(-60px) scale(.4);}}
+.particle{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--accent-1);
+  animation:particleRise 1.4s ease-out forwards;pointer-events:none;}
+
+@keyframes toastIn{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}
+.toast{animation:toastIn .3s ease;}
+
+@keyframes bootFlash{0%,100%{opacity:1;}50%{opacity:.3;}}
+.booting{animation:bootFlash .6s ease-in-out infinite;}
+
+.reduce-motion *{animation-duration:.001s !important;transition-duration:.001s !important;}

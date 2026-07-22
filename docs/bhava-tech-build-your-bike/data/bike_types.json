@@ -1,0 +1,571 @@
+{
+  "single_speed": {
+    "name": "Single Speed Bicycle",
+    "levels": {
+      "1": {
+        "label": "Level 1 \u2014 Just Movable",
+        "description": "Minimum parts needed to make the bike roll and move.",
+        "requiredSlots": [
+          "frame",
+          "fork",
+          "front_wheel",
+          "rear_wheel",
+          "crankset",
+          "pedals",
+          "chain",
+          "seat"
+        ],
+        "optionalSlots": []
+      },
+      "2": {
+        "label": "Level 2 \u2014 Fully Featured",
+        "description": "All standard parts and comfort/safety features.",
+        "requiredSlots": [
+          "frame",
+          "fork",
+          "headset",
+          "stem",
+          "handlebar",
+          "grips",
+          "front_wheel",
+          "rear_wheel",
+          "crankset",
+          "bottom_bracket",
+          "pedals",
+          "chainring",
+          "chain",
+          "seatpost",
+          "seat",
+          "brake_lever_front",
+          "brake_lever_rear",
+          "brake_front",
+          "brake_rear"
+        ],
+        "optionalSlots": [
+          "kickstand",
+          "mudguards",
+          "bottle_cage",
+          "bell",
+          "reflectors",
+          "lights"
+        ]
+      },
+      "3": {
+        "label": "Level 3 \u2014 Advanced & Inventive",
+        "description": "Add advanced or experimental features for extra performance.",
+        "requiredSlots": [
+          "frame",
+          "fork",
+          "headset",
+          "stem",
+          "handlebar",
+          "grips",
+          "front_wheel",
+          "rear_wheel",
+          "crankset",
+          "bottom_bracket",
+          "pedals",
+          "chainring",
+          "chain",
+          "seatpost",
+          "seat",
+          "brake_lever_front",
+          "brake_lever_rear",
+          "brake_front",
+          "brake_rear"
+        ],
+        "optionalSlots": [
+          "kickstand",
+          "mudguards",
+          "bottle_cage",
+          "bell",
+          "reflectors",
+          "lights",
+          "dynamo",
+          "carrier",
+          "smart_display",
+          "solar_panel"
+        ]
+      }
+    },
+    "defaultGearSystem": "single_speed",
+    "difficulty": 1
+  },
+  "geared": {
+    "name": "Geared Bicycle",
+    "levels": {
+      "1": {
+        "label": "Level 1 \u2014 Just Movable",
+        "description": "Minimum parts for a movable bicycle with basic gearing.",
+        "requiredSlots": [
+          "frame",
+          "fork",
+          "front_wheel",
+          "rear_wheel",
+          "crankset",
+          "pedals",
+          "chainring",
+          "chain",
+          "cassette",
+          "seat"
+        ],
+        "optionalSlots": []
+      },
+      "2": {
+        "label": "Level 2 \u2014 Fully Featured",
+        "description": "Complete geared bicycle with shifting and braking systems.",
+        "requiredSlots": [
+          "frame",
+          "fork",
+          "headset",
+          "stem",
+          "handlebar",
+          "grips",
+          "front_wheel",
+          "rear_wheel",
+          "crankset",
+          "bottom_bracket",
+          "pedals",
+          "chainring",
+          "chain",
+          "cassette",
+          "rear_derailleur",
+          "gear_shifter",
+          "gear_cable",
+          "seatpost",
+          "seat",
+          "brake_lever_front",
+          "brake_lever_rear",
+          "brake_front",
+          "brake_rear"
+        ],
+        "optionalSlots": [
+          "kickstand",
+          "mudguards",
+          "bottle_cage",
+          "bell",
+          "reflectors",
+          "lights"
+        ]
+      },
+      "3": {
+        "label": "Level 3 \u2014 Advanced & Inventive",
+        "description": "Add front derailleur, sensors, or experimental gear tech.",
+        "requiredSlots": [
+          "frame",
+          "fork",
+          "headset",
+          "stem",
+          "handlebar",
+          "grips",
+          "front_wheel",
+          "rear_wheel",
+          "crankset",
+          "bottom_bracket",
+          "pedals",
+          "chainring",
+          "chain",
+          "cassette",
+          "rear_derailleur",
+          "front_derailleur",
+          "gear_shifter",
+          "gear_cable",
+          "seatpost",
+          "seat",
+          "brake_lever_front",
+          "brake_lever_rear",
+          "brake_front",
+          "brake_rear"
+        ],
+        "optionalSlots": [
+          "kickstand",
+          "mudguards",
+          "bottle_cage",
+          "bell",
+          "reflectors",
+          "lights",
+          "cadence_sensor",
+          "smart_display",
+          "carrier"
+        ]
+      }
+    },
+    "defaultGearSystem": "external_derailleur",
+    "difficulty": 2
+  },
+  "mountain": {
+    "name": "Mountain Bike",
+    "levels": {
+      "1": {
+        "label": "Level 1 \u2014 Just Movable",
+        "description": "Basic off-road capable bike, minimum parts.",
+        "requiredSlots": [
+          "frame",
+          "fork_suspension",
+          "front_wheel",
+          "rear_wheel",
+          "tyre_wide",
+          "crankset",
+          "pedals",
+          "chainring",
+          "chain",
+          "cassette",
+          "seat"
+        ],
+        "optionalSlots": []
+      },
+      "2": {
+        "label": "Level 2 \u2014 Fully Featured",
+        "description": "Full trail-ready bike with disc brakes and suspension.",
+        "requiredSlots": [
+          "frame",
+          "fork_suspension",
+          "headset",
+          "stem",
+          "handlebar",
+          "grips",
+          "front_wheel",
+          "rear_wheel",
+          "tyre_wide",
+          "crankset",
+          "bottom_bracket",
+          "pedals",
+          "chainring",
+          "chain",
+          "cassette",
+          "rear_derailleur",
+          "front_derailleur",
+          "gear_shifter",
+          "gear_cable",
+          "seatpost",
+          "seat",
+          "brake_lever_front",
+          "brake_lever_rear",
+          "brake_disc_front",
+          "brake_disc_rear"
+        ],
+        "optionalSlots": [
+          "mudguards",
+          "bottle_cage",
+          "lights",
+          "carrier"
+        ]
+      },
+      "3": {
+        "label": "Level 3 \u2014 Advanced & Inventive",
+        "description": "Full suspension, dropper post, advanced trail tech.",
+        "requiredSlots": [
+          "frame",
+          "fork_suspension",
+          "headset",
+          "stem",
+          "handlebar",
+          "grips",
+          "front_wheel",
+          "rear_wheel",
+          "tyre_wide",
+          "crankset",
+          "bottom_bracket",
+          "pedals",
+          "chainring",
+          "chain",
+          "cassette",
+          "rear_derailleur",
+          "front_derailleur",
+          "gear_shifter",
+          "gear_cable",
+          "seatpost",
+          "seat",
+          "brake_lever_front",
+          "brake_lever_rear",
+          "brake_disc_front",
+          "brake_disc_rear",
+          "rear_suspension"
+        ],
+        "optionalSlots": [
+          "dropper_post",
+          "carrier",
+          "gopro_mount",
+          "smart_display",
+          "gps_tracker"
+        ]
+      }
+    },
+    "defaultGearSystem": "external_derailleur",
+    "difficulty": 3
+  },
+  "road": {
+    "name": "Road Bike",
+    "levels": {
+      "1": {
+        "label": "Level 1 \u2014 Just Movable",
+        "description": "Lightweight minimum-parts road bike.",
+        "requiredSlots": [
+          "frame_carbon_ok",
+          "fork_rigid",
+          "front_wheel_700c",
+          "rear_wheel_700c",
+          "crankset",
+          "pedals",
+          "chainring",
+          "chain",
+          "cassette",
+          "seat"
+        ],
+        "optionalSlots": []
+      },
+      "2": {
+        "label": "Level 2 \u2014 Fully Featured",
+        "description": "Complete road bike with drop bars and gearing.",
+        "requiredSlots": [
+          "frame_carbon_ok",
+          "fork_rigid",
+          "headset",
+          "stem",
+          "handlebar_drop",
+          "grips_tape",
+          "front_wheel_700c",
+          "rear_wheel_700c",
+          "crankset",
+          "bottom_bracket",
+          "pedals",
+          "chainring",
+          "chain",
+          "cassette",
+          "rear_derailleur",
+          "front_derailleur",
+          "gear_shifter",
+          "gear_cable",
+          "seatpost",
+          "seat",
+          "brake_lever_front",
+          "brake_lever_rear",
+          "brake_rim_or_disc"
+        ],
+        "optionalSlots": [
+          "bottle_cage",
+          "lights"
+        ]
+      },
+      "3": {
+        "label": "Level 3 \u2014 Advanced & Inventive",
+        "description": "Aero components, power meters, race-level tech.",
+        "requiredSlots": [
+          "frame_carbon_ok",
+          "fork_rigid",
+          "headset",
+          "stem",
+          "handlebar_drop",
+          "grips_tape",
+          "front_wheel_700c",
+          "rear_wheel_700c",
+          "crankset",
+          "bottom_bracket",
+          "pedals",
+          "chainring",
+          "chain",
+          "cassette",
+          "rear_derailleur",
+          "front_derailleur",
+          "gear_shifter",
+          "gear_cable",
+          "seatpost",
+          "seat",
+          "brake_lever_front",
+          "brake_lever_rear",
+          "brake_rim_or_disc"
+        ],
+        "optionalSlots": [
+          "power_meter",
+          "aero_wheels",
+          "smart_display",
+          "cadence_sensor"
+        ]
+      }
+    },
+    "defaultGearSystem": "external_derailleur",
+    "difficulty": 3
+  },
+  "bmx": {
+    "name": "BMX",
+    "levels": {
+      "1": {
+        "label": "Level 1 \u2014 Just Movable",
+        "description": "Minimum sturdy BMX for basic riding.",
+        "requiredSlots": [
+          "frame_bmx",
+          "fork_rigid",
+          "front_wheel_20",
+          "rear_wheel_20",
+          "crankset",
+          "pedals",
+          "chainring",
+          "chain",
+          "seat"
+        ],
+        "optionalSlots": []
+      },
+      "2": {
+        "label": "Level 2 \u2014 Fully Featured",
+        "description": "Complete BMX with brakes and stunt-ready parts.",
+        "requiredSlots": [
+          "frame_bmx",
+          "fork_rigid",
+          "headset",
+          "stem",
+          "handlebar_bmx",
+          "grips",
+          "front_wheel_20",
+          "rear_wheel_20",
+          "crankset",
+          "bottom_bracket",
+          "pedals",
+          "chainring",
+          "chain",
+          "seatpost",
+          "seat",
+          "brake_rear_optional"
+        ],
+        "optionalSlots": [
+          "pegs",
+          "gyro_cable"
+        ]
+      },
+      "3": {
+        "label": "Level 3 \u2014 Advanced & Inventive",
+        "description": "Freestyle-tuned BMX with trick features.",
+        "requiredSlots": [
+          "frame_bmx",
+          "fork_rigid",
+          "headset",
+          "stem",
+          "handlebar_bmx",
+          "grips",
+          "front_wheel_20",
+          "rear_wheel_20",
+          "crankset",
+          "bottom_bracket",
+          "pedals",
+          "chainring",
+          "chain",
+          "seatpost",
+          "seat",
+          "brake_rear_optional"
+        ],
+        "optionalSlots": [
+          "pegs",
+          "gyro_cable",
+          "stunt_frame_guard",
+          "light_kit"
+        ]
+      }
+    },
+    "defaultGearSystem": "single_speed",
+    "difficulty": 2
+  },
+  "electric": {
+    "name": "Electric Bike",
+    "levels": {
+      "1": {
+        "label": "Level 1 \u2014 Just Movable",
+        "description": "Minimum electric-assist bike that can move.",
+        "requiredSlots": [
+          "frame_reinforced",
+          "fork",
+          "front_wheel",
+          "rear_wheel_motor_compatible",
+          "crankset",
+          "pedals",
+          "chainring",
+          "chain",
+          "seat",
+          "motor",
+          "battery",
+          "controller"
+        ],
+        "optionalSlots": []
+      },
+      "2": {
+        "label": "Level 2 \u2014 Fully Featured",
+        "description": "Full e-bike with gearing, brakes, display.",
+        "requiredSlots": [
+          "frame_reinforced",
+          "fork",
+          "headset",
+          "stem",
+          "handlebar",
+          "grips",
+          "front_wheel",
+          "rear_wheel_motor_compatible",
+          "crankset",
+          "bottom_bracket",
+          "pedals",
+          "chainring",
+          "chain",
+          "cassette",
+          "rear_derailleur",
+          "gear_shifter",
+          "gear_cable",
+          "seatpost",
+          "seat",
+          "brake_lever_front",
+          "brake_lever_rear",
+          "brake_disc_front",
+          "brake_disc_rear",
+          "motor",
+          "battery",
+          "controller",
+          "display"
+        ],
+        "optionalSlots": [
+          "lights",
+          "carrier",
+          "mudguards"
+        ]
+      },
+      "3": {
+        "label": "Level 3 \u2014 Advanced & Inventive",
+        "description": "Smart sensors, long-range battery, app-connected tech.",
+        "requiredSlots": [
+          "frame_reinforced",
+          "fork",
+          "headset",
+          "stem",
+          "handlebar",
+          "grips",
+          "front_wheel",
+          "rear_wheel_motor_compatible",
+          "crankset",
+          "bottom_bracket",
+          "pedals",
+          "chainring",
+          "chain",
+          "cassette",
+          "rear_derailleur",
+          "gear_shifter",
+          "gear_cable",
+          "seatpost",
+          "seat",
+          "brake_lever_front",
+          "brake_lever_rear",
+          "brake_disc_front",
+          "brake_disc_rear",
+          "motor",
+          "battery",
+          "controller",
+          "display",
+          "torque_sensor"
+        ],
+        "optionalSlots": [
+          "cadence_sensor",
+          "gps_tracker",
+          "smart_display",
+          "solar_panel",
+          "regen_braking"
+        ]
+      }
+    },
+    "defaultGearSystem": "external_derailleur",
+    "difficulty": 4
+  }
+}

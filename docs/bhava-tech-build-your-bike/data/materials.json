@@ -1,0 +1,74 @@
+{
+  "materials": [
+    {
+      "id": "steel",
+      "name": "Steel",
+      "density": 7.85,
+      "tensileStrengthMPa": 400,
+      "cost": "low",
+      "corrosion": "high risk",
+      "flex": "low",
+      "recyclable": true
+    },
+    {
+      "id": "aluminium",
+      "name": "Aluminium",
+      "density": 2.7,
+      "tensileStrengthMPa": 310,
+      "cost": "medium",
+      "corrosion": "low risk",
+      "flex": "medium",
+      "recyclable": true
+    },
+    {
+      "id": "titanium",
+      "name": "Titanium",
+      "density": 4.51,
+      "tensileStrengthMPa": 900,
+      "cost": "very high",
+      "corrosion": "very low risk",
+      "flex": "medium-high",
+      "recyclable": true
+    },
+    {
+      "id": "carbon",
+      "name": "Carbon Fiber Composite",
+      "density": 1.6,
+      "tensileStrengthMPa": 600,
+      "cost": "very high",
+      "corrosion": "none",
+      "flex": "very stiff (directional)",
+      "recyclable": false
+    },
+    {
+      "id": "bamboo",
+      "name": "Bamboo",
+      "density": 0.6,
+      "tensileStrengthMPa": 150,
+      "cost": "low",
+      "corrosion": "moderate (needs treatment)",
+      "flex": "high",
+      "recyclable": true
+    },
+    {
+      "id": "rubber",
+      "name": "Rubber",
+      "density": 1.1,
+      "tensileStrengthMPa": 15,
+      "cost": "low",
+      "corrosion": "n/a",
+      "flex": "very high",
+      "recyclable": true
+    },
+    {
+      "id": "kevlar",
+      "name": "Kevlar",
+      "density": 1.44,
+      "tensileStrengthMPa": 3600,
+      "cost": "high",
+      "corrosion": "none",
+      "flex": "low elongation",
+      "recyclable": false
+    }
+  ]
+}

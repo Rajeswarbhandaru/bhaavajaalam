@@ -1,0 +1,311 @@
+{
+  "Mobile": {
+    "label": "Real Phone Anatomy",
+    "silhouette": "phone",
+    "parts": [
+      {
+        "type": "Display",
+        "label": "Display / Screen",
+        "x": 50,
+        "y": 38,
+        "z": 40,
+        "realLocation": "Front, covering almost the entire face of the phone. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "It's the glass touchscreen you look at and tap every time you use the phone."
+      },
+      {
+        "type": "FrontCamera",
+        "label": "Front (Selfie) Camera",
+        "x": 50,
+        "y": 6,
+        "z": 45,
+        "realLocation": "Top edge of the front, usually a tiny hole or notch in the screen. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "Points towards you for selfies and video calls."
+      },
+      {
+        "type": "Speaker",
+        "label": "Earpiece / Speaker",
+        "x": 50,
+        "y": 3,
+        "z": 45,
+        "realLocation": "Top edge, next to the front camera. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "The small speaker you hold to your ear during calls; bigger speakers also hide near the bottom edge."
+      },
+      {
+        "type": "Sensor",
+        "label": "Sensors (Proximity/Light)",
+        "x": 34,
+        "y": 7,
+        "z": 45,
+        "realLocation": "Hidden near the top edge, behind the screen glass. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "Detects when the phone is near your ear (turns screen off) or how bright the room is."
+      },
+      {
+        "type": "Motherboard",
+        "label": "Motherboard",
+        "x": 50,
+        "y": 20,
+        "z": 0,
+        "realLocation": "Right in the center, sandwiched between the screen and the back cover. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "The main circuit board that every other part plugs into \u2014 like the spine of the whole phone."
+      },
+      {
+        "type": "CPU",
+        "label": "CPU / Chipset",
+        "x": 48,
+        "y": 20,
+        "z": 5,
+        "realLocation": "A small square chip soldered directly onto the motherboard. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "The 'brain' that does all the thinking \u2014 running apps, games, and calculations."
+      },
+      {
+        "type": "RAM",
+        "label": "RAM Chip",
+        "x": 59,
+        "y": 20,
+        "z": 5,
+        "realLocation": "Stacked right next to or on top of the CPU chip. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "Temporary fast memory the CPU uses while apps are open."
+      },
+      {
+        "type": "Storage",
+        "label": "Storage Chip",
+        "x": 63,
+        "y": 27,
+        "z": 5,
+        "realLocation": "Another small chip next to the CPU on the motherboard. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "Keeps your photos, apps and files saved even when the phone is off."
+      },
+      {
+        "type": "Battery",
+        "label": "Battery",
+        "x": 50,
+        "y": 58,
+        "z": -10,
+        "realLocation": "A large flat pack taking up much of the lower-back half of the phone. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "Stores the electrical energy that powers everything else."
+      },
+      {
+        "type": "Camera",
+        "label": "Main (Rear) Camera",
+        "x": 25,
+        "y": 14,
+        "z": -15,
+        "realLocation": "Top-left corner of the back panel, often in a raised camera bump. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "Takes the photos and videos you see on the back of the phone."
+      },
+      {
+        "type": "ChargingIC",
+        "label": "Charging Port & IC",
+        "x": 50,
+        "y": 93,
+        "z": 10,
+        "realLocation": "Bottom edge of the phone, where you plug in the charging cable. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "Controls how electricity flows from the cable into the battery safely."
+      },
+      {
+        "type": "Speaker2",
+        "label": "Loudspeaker",
+        "x": 72,
+        "y": 93,
+        "z": 10,
+        "realLocation": "Bottom edge, next to the charging port \u2014 tiny grille holes. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "The main speaker for music, videos, and ringtones."
+      },
+      {
+        "type": "SIM",
+        "label": "SIM Card Tray",
+        "x": 7,
+        "y": 42,
+        "z": 10,
+        "realLocation": "On the side edge of the phone \u2014 a thin tray you eject with a pin. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "Holds the tiny chip that connects you to your mobile network."
+      },
+      {
+        "type": "Buttons",
+        "label": "Volume & Power Buttons",
+        "x": 96,
+        "y": 42,
+        "z": 10,
+        "realLocation": "Right side edge of the phone. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "Physical buttons to turn the screen on/off and adjust volume."
+      },
+      {
+        "type": "VibrationMotor",
+        "label": "Vibration Motor",
+        "x": 31,
+        "y": 77,
+        "z": -5,
+        "realLocation": "A tiny cylinder tucked beside the battery. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "Buzzes the phone for silent notifications and haptic feedback."
+      },
+      {
+        "type": "WiFi",
+        "label": "WiFi / Antenna",
+        "x": 82,
+        "y": 10,
+        "z": -5,
+        "realLocation": "Thin metal strips visible on the frame edges, often top and bottom. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "Sends and receives WiFi and mobile signals through the metal frame."
+      },
+      {
+        "type": "GPS",
+        "label": "GPS Module",
+        "x": 76,
+        "y": 23,
+        "z": 0,
+        "realLocation": "Small chip on the motherboard, wired to the antenna lines. (Typical modern smartphone layout; exact positions vary by model.)",
+        "why": "Talks to satellites to figure out your exact location for maps."
+      }
+    ]
+  },
+  "Laptop": {
+    "label": "Real Laptop Anatomy",
+    "silhouette": "laptop",
+    "parts": [
+      {
+        "type": "Display",
+        "label": "Display / Screen",
+        "x": 50,
+        "y": 16,
+        "z": 30,
+        "realLocation": "The entire lid \u2014 the part that flips open. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Shows everything you're working on or watching."
+      },
+      {
+        "type": "FrontCamera",
+        "label": "Webcam",
+        "x": 50,
+        "y": 5,
+        "z": 35,
+        "realLocation": "Top edge of the screen bezel, centered. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Used for video calls and photos."
+      },
+      {
+        "type": "Motherboard",
+        "label": "Motherboard",
+        "x": 68,
+        "y": 58,
+        "z": 0,
+        "realLocation": "Fills most of the base, underneath the keyboard. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "The main board connecting every part of the laptop together."
+      },
+      {
+        "type": "CPU",
+        "label": "CPU",
+        "x": 67,
+        "y": 56,
+        "z": 5,
+        "realLocation": "Center of the motherboard, usually under a cooling fan/heatsink. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Processes everything you do on the laptop."
+      },
+      {
+        "type": "Cooling",
+        "label": "Cooling Fan & Heatsink",
+        "x": 79,
+        "y": 57,
+        "z": 10,
+        "realLocation": "Directly on top of the CPU, with vents on the side of the laptop. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Pulls heat away from the CPU so it doesn't overheat."
+      },
+      {
+        "type": "RAM",
+        "label": "RAM Sticks",
+        "x": 59,
+        "y": 60,
+        "z": 5,
+        "realLocation": "Thin slots next to the CPU, sometimes accessible from the bottom panel. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Fast temporary memory for running programs."
+      },
+      {
+        "type": "Storage",
+        "label": "SSD / Storage",
+        "x": 61,
+        "y": 70,
+        "z": 5,
+        "realLocation": "A small flat stick plugged into the motherboard, near the battery. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Stores your files, apps and operating system permanently."
+      },
+      {
+        "type": "Battery",
+        "label": "Battery Pack",
+        "x": 30,
+        "y": 77,
+        "z": -5,
+        "realLocation": "A wide flat pack near the front edge, under the palm rest. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Powers the laptop when it isn't plugged in."
+      },
+      {
+        "type": "Buttons",
+        "label": "Keyboard & Trackpad",
+        "x": 42,
+        "y": 89,
+        "z": 15,
+        "realLocation": "The entire base you type and click on. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Your main way of typing and controlling the laptop."
+      },
+      {
+        "type": "Speaker",
+        "label": "Speakers",
+        "x": 11,
+        "y": 70,
+        "z": 10,
+        "realLocation": "Grille slots on either side of the keyboard, or underneath. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Produces the sound you hear."
+      },
+      {
+        "type": "ChargingIC",
+        "label": "Charging Port",
+        "x": 97,
+        "y": 64,
+        "z": 10,
+        "realLocation": "Side edge of the laptop base. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Where you plug in the power adapter to charge the battery."
+      },
+      {
+        "type": "WiFi",
+        "label": "WiFi Antenna",
+        "x": 19,
+        "y": 16,
+        "z": 25,
+        "realLocation": "Thin wires running along the top edge of the screen lid. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "The screen hinge area is often used for WiFi antennas since it's away from metal interference."
+      },
+      {
+        "type": "GPU",
+        "label": "Graphics Processor (GPU)",
+        "x": 76,
+        "y": 58,
+        "z": 2,
+        "realLocation": "On the motherboard beside the CPU, normally under the same heat-pipe assembly. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Creates images, video, and 3D graphics. Some laptops use integrated graphics instead."
+      },
+      {
+        "type": "Keyboard",
+        "label": "Keyboard & Trackpad Ribbon",
+        "x": 48,
+        "y": 88,
+        "z": 10,
+        "realLocation": "Flat ribbon cables run from the keyboard and trackpad through the upper base to motherboard connectors. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Carries your typing and trackpad signals to the motherboard."
+      },
+      {
+        "type": "Ports",
+        "label": "USB / HDMI Port Board",
+        "x": 96,
+        "y": 68,
+        "z": 8,
+        "realLocation": "Along the left and right edges of the laptop base. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Connects chargers, USB devices, headphones, external screens, and other accessories."
+      },
+      {
+        "type": "HingeCable",
+        "label": "Display Hinge Cable",
+        "x": 50,
+        "y": 38,
+        "z": 15,
+        "realLocation": "Runs through a hinge from the base to the screen lid. (Typical modern laptop layout; exact positions vary by model.)",
+        "why": "Sends video, webcam, and Wi-Fi antenna signals between the base and lid."
+      }
+    ]
+  }
+}

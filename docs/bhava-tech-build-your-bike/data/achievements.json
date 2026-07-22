@@ -1,0 +1,53 @@
+{
+  "achievements": [
+    {
+      "id": "first_build",
+      "title": "First Build",
+      "description": "Complete your first bicycle build.",
+      "xp": 10
+    },
+    {
+      "id": "master_mechanic",
+      "title": "Master Mechanic",
+      "description": "Successfully repair 20 failures.",
+      "xp": 50
+    },
+    {
+      "id": "gear_guru",
+      "title": "Gear Guru",
+      "description": "Build a bike with every gear system available.",
+      "xp": 40
+    },
+    {
+      "id": "eco_engineer",
+      "title": "Eco Engineer",
+      "description": "Build a bike using bamboo frame and recyclable parts.",
+      "xp": 30
+    },
+    {
+      "id": "speed_demon",
+      "title": "Speed Demon",
+      "description": "Achieve top speed score above 90 in Physics Lab.",
+      "xp": 40
+    },
+    {
+      "id": "inventor",
+      "title": "Inventor",
+      "description": "Submit an original design in Invent Mode.",
+      "xp": 60
+    },
+    {
+      "id": "perfect_compatibility",
+      "title": "Perfect Fit",
+      "description": "Complete a build with zero compatibility errors.",
+      "xp": 25
+    }
+  ],
+  "ranks": [
+    "Apprentice",
+    "Engineer",
+    "Designer",
+    "Master Mechanic",
+    "Inventor"
+  ]
+}

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bhāva Tech — Car Anatomy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/tokens.css"/>
+  <link rel="stylesheet" href="./css/base.css"/>
+  <link rel="stylesheet" href="./css/layout.css"/>
+  <link rel="stylesheet" href="./css/anatomy.css"/>
+</head>
+<body>
+  <a class="skip-link" href="#app">Skip to content</a>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <svg viewBox="0 0 120 32" aria-label="Bhava Tech logo" class="brand-mark">
+          <path d="M8 24 L20 8 L32 24" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M42 24 L54 8 L66 24" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>
+          <path d="M79 9 h13 a7 7 0 0 1 0 14 h-13 z" stroke="currentColor" stroke-width="3" fill="none"/>
+          <circle cx="106" cy="16" r="7" stroke="currentColor" stroke-width="3" fill="none"/>
+        </svg>
+        <div>
+          <p class="eyebrow">Bhāva Tech Engineering Studio</p>
+          <h1>Car Anatomy</h1>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch theme">◐</button>
+        <a href="./build-your-car.html" class="primary-btn">Back to Build</a>
+      </div>
+    </header>
+
+  
+  <!-- ✨ KID-FRIENDLY UI ENHANCEMENTS ✨ -->
+  <style>
+    /* Base Styles */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #121218;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    .app-shell { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .glass { background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 20px; margin-bottom: 20px; }
+    .hero-copy h2 { text-align: center; }
+    
+    /* CRITICAL FIX: Hide all panels by default, only show the active one */
+    .tab-content { position: relative; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Bouncy and Magcial Animations */
+    @keyframes bounce-fun {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-6px) scale(1.05); }
+    }
+    @keyframes slide-in-magic {
+      0% { opacity: 0; transform: translateX(-40px) rotate(-2deg); }
+      100% { opacity: 1; transform: translateX(0) rotate(0); }
+    }
+    @keyframes gradient-glow {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    /* Supercar Mode Shake & Glow Animation */
+    @keyframes supercar-vibrate {
+      0% { transform: translate(0, 0); }
+      20% { transform: translate(-2px, 2px); filter: drop-shadow(0 0 20px #ff0000); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); filter: drop-shadow(0 0 30px #ff8c00); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0, 0); filter: drop-shadow(0 0 20px #ff0000); }
+    }
+    .supercar-mode-active {
+      animation: supercar-vibrate 0.3s infinite;
+    }
+
+    /* Animated Colorful Hero Text */
+    .hero-copy h2 {
+      background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffff, #ff00cc);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradient-glow 5s linear infinite;
+      font-size: 3.2rem;
+      text-transform: uppercase;
+    }
+
+    /* Tab Layout for 60+ buttons */
+    .tab-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      padding: 15px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 15px;
+    }
+
+    /* Playful Tab Buttons */
+    .tab-btn {
+      font-size: 0.95rem;
+      border-radius: 20px;
+      padding: 8px 12px;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      border: 2px solid transparent;
+      background: rgba(255,255,255,0.05);
+      color: #ccc;
+      cursor: pointer;
+    }
+    .tab-btn:hover {
+      transform: scale(1.1) rotate(-3deg);
+      border-color: #61dafb;
+      box-shadow: 0 5px 15px rgba(97,218,251,0.4);
+      color: #fff;
+    }
+    .tab-btn.active {
+      animation: bounce-fun 2s infinite;
+      background: linear-gradient(45deg, #ff6b6b, #ffcc00);
+      color: #000;
+      font-weight: 800;
+      border: 2px solid #fff;
+      box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+    }
+    .tab-btn.supercar-tab {
+      background: linear-gradient(45deg, #ff0000, #ff8c00);
+      color: white;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    /* Magic Info Cards */
+    .info-card {
+      background: rgba(20, 20, 30, 0.85);
+      border: 3px dashed #ffcc00;
+      border-radius: 20px;
+      padding: 25px;
+      animation: slide-in-magic 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      box-shadow: inset 0 0 20px rgba(255,255,255,0.05), 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .info-card h4 {
+      color: #ffcc00;
+      font-size: 2.2rem;
+      text-shadow: 3px 3px 0 #ff6b6b;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      font-family: 'Orbitron', sans-serif;
+    }
+    .info-card p, .info-card ul {
+      font-size: 1.15rem;
+      line-height: 1.6;
+    }
+    .info-card li {
+      margin-bottom: 12px;
+      background: rgba(255,255,255,0.08);
+      padding: 12px;
+      border-radius: 12px;
+      border-left: 5px solid #61dafb;
+      transition: transform 0.2s;
+    }
+    .info-card li:hover {
+      transform: translateX(10px);
+      background: rgba(255,255,255,0.15);
+    }
+    .info-card li strong { color: #ffcc00; }
+
+    /* Fun Interactive Diagram Parts */
+    .anatomy-part {
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" style="font-size: 28px"><text y="24">👆</text></svg>'), pointer;
+      transition: all 0.3s;
+      transform-origin: center;
+    }
+    .anatomy-part:hover,
+    .anatomy-part.active-part {
+      filter: drop-shadow(0 0 15px rgba(255,255,255,0.8)) brightness(1.5);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <h1>Bhāva Tech — Car Anatomy</h1>
+      </div>
+    </header>
+
+    <main id="app">
+      <section class="hero card glass">
+        <div class="hero-copy">
+          <h2>How a car works! 🚗✨</h2>
+          <p class="hero-text" style="text-align: center; font-size: 1.2rem;">Explore every super-cool system! Click a part to see its secret purpose.</p>
+        </div>
+      </section>
+
+      <section class="anatomy-explorer card glass">
+        <div class="anatomy-stage" style="text-align: center;">
+          <svg class="anatomy-svg" viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
+            
+            <!-- Original SVG Parts -->
+            <g class="anatomy-part" data-part="supercar" data-tab="tab-supercar">
+              <path d="M110 160 L90 120 L140 120 Z" fill="rgba(255,0,0,0.3)" stroke="rgba(255,0,0,0.8)" stroke-width="2"/>
+              <text x="115" y="110" fill="rgba(255,0,0,0.9)" font-size="9" text-anchor="middle" font-weight="bold">AERO WING</text>
+            </g>
+            <g class="anatomy-part" data-part="exhaust" data-tab="tab-exhaust">
+              <path d="M420 205 L150 205 L120 205 L110 215" fill="none" stroke="rgba(150,150,150,0.6)" stroke-width="6" stroke-linecap="round"/>
+              <text x="280" y="215" fill="rgba(200,200,200,0.9)" font-size="8" text-anchor="middle">EXHAUST</text>
+            </g>
+            <g class="anatomy-part" data-part="ecu" data-tab="tab-ecu">
+              <rect x="360" y="145" width="24" height="18" rx="3" fill="rgba(0,255,255,0.2)" stroke="rgba(0,255,255,0.8)" stroke-width="2"/>
+              <text x="372" y="140" fill="rgba(0,255,255,0.9)" font-size="8" text-anchor="middle">ECU (BRAIN)</text>
+            </g>
+            <g class="anatomy-part" data-part="chassis" data-tab="tab-chassis">
+              <path d="M120 200 L140 160 L500 160 L530 200 L530 220 L120 220 Z" fill="none" stroke="rgba(97,218,251,0.6)" stroke-width="2.5"/>
+              <text x="325" y="150" fill="rgba(97,218,251,0.9)" font-size="11" text-anchor="middle">CHASSIS</text>
+            </g>
+            <g class="anatomy-part" data-part="engine" data-tab="tab-engine">
+              <rect x="420" y="165" width="70" height="32" rx="6" fill="rgba(255,107,138,0.25)" stroke="rgba(255,107,138,0.8)" stroke-width="2"/>
+              <text x="455" y="184" fill="rgba(255,107,138,0.9)" font-size="9" text-anchor="middle">ENGINE</text>
+            </g>
+            <g class="anatomy-part" data-part="battery" data-tab="tab-battery">
+              <rect x="160" y="170" width="40" height="24" rx="4" fill="rgba(255,191,105,0.2)" stroke="rgba(255,191,105,0.7)" stroke-width="2"/>
+              <text x="180" y="185" fill="rgba(255,191,105,0.9)" font-size="8" text-anchor="middle">BATTERY</text>
+            </g>
+            <g class="anatomy-part" data-part="radiator" data-tab="tab-radiator">
+              <rect x="530" y="168" width="30" height="34" rx="4" fill="rgba(97,218,251,0.2)" stroke="rgba(97,218,251,0.7)" stroke-width="2"/>
+              <text x="545" y="188" fill="rgba(97,218,251,0.9)" font-size="8" text-anchor="middle">RADIATOR</text>
+            </g>
+            <g class="anatomy-part" data-part="fuel" data-tab="tab-fuel">
+              <rect x="260" y="188" width="70" height="24" rx="4" fill="rgba(200,160,255,0.2)" stroke="rgba(200,160,255,0.7)" stroke-width="2"/>
+              <text x="295" y="203" fill="rgba(200,160,255,0.9)" font-size="8" text-anchor="middle">FUEL</text>
+            </g>
+            <g class="anatomy-part" data-part="wheels" data-tab="tab-wheels">
+              <circle cx="160" cy="225" r="28" fill="none" stroke="rgba(233,240,255,0.8)" stroke-width="4"/>
+              <circle cx="480" cy="225" r="28" fill="none" stroke="rgba(233,240,255,0.8)" stroke-width="4"/>
+              <text x="320" y="270" fill="rgba(233,240,255,0.9)" font-size="10" text-anchor="middle">WHEELS</text>
+            </g>
+            <g class="anatomy-part" data-part="brakes" data-tab="tab-brakes">
+              <circle cx="160" cy="225" r="22" fill="none" stroke="rgba(255,107,138,0.5)" stroke-width="2" stroke-dasharray="3,3"/>
+              <circle cx="480" cy="225" r="22" fill="none" stroke="rgba(255,107,138,0.5)" stroke-width="2" stroke-dasharray="3,3"/>
+            </g>
+            <g class="anatomy-part" data-part="steering" data-tab="tab-steering">
+              <path d="M150 175 L170 155 L170 175" fill="none" stroke="rgba(255,191,105,0.6)" stroke-width="2"/>
+              <circle cx="170" cy="155" r="6" fill="none" stroke="rgba(255,191,105,0.7)" stroke-width="2"/>
+            </g>
+            <g class="anatomy-part" data-part="headlights" data-tab="tab-headlights">
+              <ellipse cx="535" cy="185" rx="8" ry="5" fill="rgba(255,255,200,0.3)" stroke="rgba(255,255,200,0.6)" stroke-width="1.5"/>
+              <text x="560" y="175" fill="rgba(255,255,200,0.9)" font-size="9" text-anchor="middle">LIGHTS</text>
+            </g>
+            <g class="anatomy-part" data-part="gearbox" data-tab="tab-gearbox">
+              <rect x="385" y="185" width="30" height="15" rx="2" fill="rgba(140,255,183,0.2)" stroke="rgba(140,255,183,0.7)" stroke-width="2"/>
+            </g>
+
+            <!-- ✨ NEW SVG Parts Added to Diagram ✨ -->
+            <g class="anatomy-part" data-part="windshield" data-tab="tab-windshield">
+              <path d="M420 160 L380 120 L280 120 L300 160 Z" fill="rgba(173,216,230,0.2)" stroke="rgba(173,216,230,0.8)" stroke-width="2"/>
+              <text x="350" y="110" fill="rgba(173,216,230,0.9)" font-size="8" text-anchor="middle">WINDSHIELD</text>
+            </g>
+            <g class="anatomy-part" data-part="doors" data-tab="tab-doors">
+              <path d="M300 160 L280 120 L200 120 L160 160 L160 200 L300 200 Z" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="2,2"/>
+              <text x="240" y="170" fill="rgba(255,255,255,0.8)" font-size="8" text-anchor="middle">DOORS</text>
+            </g>
+            <g class="anatomy-part" data-part="seats" data-tab="tab-seats">
+              <path d="M260 155 L260 135 L275 135 L275 155 Z" fill="rgba(200,100,100,0.4)" stroke="rgba(200,100,100,0.8)"/>
+              <path d="M255 155 L280 155 L280 165 L255 165 Z" fill="rgba(200,100,100,0.4)" stroke="rgba(200,100,100,0.8)"/>
+            </g>
+            <g class="anatomy-part" data-part="trunk" data-tab="tab-trunk">
+              <path d="M120 160 L160 160 L140 120 Z" fill="none" stroke="rgba(150,255,150,0.5)" stroke-width="2"/>
+              <text x="145" y="150" fill="rgba(150,255,150,0.9)" font-size="8" text-anchor="middle">TRUNK</text>
+            </g>
+            <g class="anatomy-part" data-part="antenna" data-tab="tab-antenna">
+              <path d="M190 120 L180 90" fill="none" stroke="rgba(200,200,200,0.9)" stroke-width="2"/>
+              <circle cx="180" cy="90" r="2" fill="red"/>
+            </g>
+          </svg>
+        </div>
+      </section>
+
+      <section class="anatomy-detail card glass">
+        <div class="section-head" style="text-align: center; margin-bottom: 20px;">
+          <h3 id="detailTitle" style="font-size: 2rem; color: #61dafb;">Select a system 🔍</h3>
+        </div>
+        
+        <div class="anatomy-tabs">
+          <!-- ALL 60+ BUTTONS -->
+          <div class="tab-row">
+            <button class="tab-btn active" data-tab="tab-intro">👋 Welcome</button>
+            <button class="tab-btn supercar-tab" data-tab="tab-supercar">🚀 Supercar Mode!</button>
+            <!-- Original 12 -->
+            <button class="tab-btn" data-tab="tab-engine">🏎️ Engine</button>
+            <button class="tab-btn" data-tab="tab-battery">🔋 Battery</button>
+            <button class="tab-btn" data-tab="tab-radiator">❄️ Radiator</button>
+            <button class="tab-btn" data-tab="tab-brakes">🛑 Brakes</button>
+            <button class="tab-btn" data-tab="tab-wheels">🛞 Wheels</button>
+            <button class="tab-btn" data-tab="tab-steering">🕹️ Steering</button>
+            <button class="tab-btn" data-tab="tab-fuel">⛽ Fuel</button>
+            <button class="tab-btn" data-tab="tab-gearbox">⚙️ Gearbox</button>
+            <button class="tab-btn" data-tab="tab-headlights">💡 Lights</button>
+            <button class="tab-btn" data-tab="tab-chassis">🦴 Chassis</button>
+            <button class="tab-btn" data-tab="tab-ecu">🧠 ECU Brain</button>
+            <button class="tab-btn" data-tab="tab-exhaust">💨 Exhaust</button>
+            <!-- NEW 50 PARTS -->
+            <button class="tab-btn" data-tab="tab-windshield">🪟 Windshield</button>
+            <button class="tab-btn" data-tab="tab-wipers">🌧️ Wipers</button>
+            <button class="tab-btn" data-tab="tab-mirrors">🪞 Mirrors</button>
+            <button class="tab-btn" data-tab="tab-seats">💺 Seats</button>
+            <button class="tab-btn" data-tab="tab-seatbelts">🎗️ Seatbelts</button>
+            <button class="tab-btn" data-tab="tab-horn">📢 Horn</button>
+            <button class="tab-btn" data-tab="tab-speedometer">⏱️ Speedometer</button>
+            <button class="tab-btn" data-tab="tab-airbags">🎈 Airbags</button>
+            <button class="tab-btn" data-tab="tab-ac">🧊 A/C</button>
+            <button class="tab-btn" data-tab="tab-starter">⚡ Starter</button>
+            <button class="tab-btn" data-tab="tab-sparkplugs">✨ Spark Plugs</button>
+            <button class="tab-btn" data-tab="tab-airfilter">🌬️ Air Filter</button>
+            <button class="tab-btn" data-tab="tab-oilfilter">🛢️ Oil Filter</button>
+            <button class="tab-btn" data-tab="tab-muffler">🤫 Muffler</button>
+            <button class="tab-btn" data-tab="tab-shocks">🪀 Shocks</button>
+            <button class="tab-btn" data-tab="tab-axles">🔗 Axles</button>
+            <button class="tab-btn" data-tab="tab-driveshaft">🥖 Driveshaft</button>
+            <button class="tab-btn" data-tab="tab-clutch">🥏 Clutch</button>
+            <button class="tab-btn" data-tab="tab-brakepads">🧱 Brake Pads</button>
+            <button class="tab-btn" data-tab="tab-calipers">🗜️ Calipers</button>
+            <button class="tab-btn" data-tab="tab-fuelpump">🥤 Fuel Pump</button>
+            <button class="tab-btn" data-tab="tab-injectors">💉 Injectors</button>
+            <button class="tab-btn" data-tab="tab-hood">🧢 Hood</button>
+            <button class="tab-btn" data-tab="tab-trunk">📦 Trunk</button>
+            <button class="tab-btn" data-tab="tab-doors">🚪 Doors</button>
+            <button class="tab-btn" data-tab="tab-windows">🖼️ Windows</button>
+            <button class="tab-btn" data-tab="tab-sunroof">☀️ Sunroof</button>
+            <button class="tab-btn" data-tab="tab-antenna">📡 Antenna</button>
+            <button class="tab-btn" data-tab="tab-radio">🎵 Radio</button>
+            <button class="tab-btn" data-tab="tab-speakers">🔊 Speakers</button>
+            <button class="tab-btn" data-tab="tab-glovebox">🧤 Glovebox</button>
+            <button class="tab-btn" data-tab="tab-cupholders">☕ Cup Holders</button>
+            <button class="tab-btn" data-tab="tab-taillights">🔴 Taillights</button>
+            <button class="tab-btn" data-tab="tab-blinkers">↔️ Blinkers</button>
+            <button class="tab-btn" data-tab="tab-timingbelt">🕰️ Timing Belt</button>
+            <button class="tab-btn" data-tab="tab-alternator">🔄 Alternator</button>
+            <button class="tab-btn" data-tab="tab-oilpan">🍳 Oil Pan</button>
+            <button class="tab-btn" data-tab="tab-thermostat">🌡️ Thermostat</button>
+            <button class="tab-btn" data-tab="tab-waterpump">💦 Water Pump</button>
+            <button class="tab-btn" data-tab="tab-catalytic">🧪 Catalytic Converter</button>
+            <button class="tab-btn" data-tab="tab-pedals">🦶 Pedals</button>
+            <button class="tab-btn" data-tab="tab-gascap">🪛 Gas Cap</button>
+            <button class="tab-btn" data-tab="tab-floormats">🧽 Floor Mats</button>
+            <button class="tab-btn" data-tab="tab-licenseplate">🪪 License Plate</button>
+            <button class="tab-btn" data-tab="tab-frame">🏗️ Frame</button>
+            <button class="tab-btn" data-tab="tab-fuses">🔌 Fuses</button>
+            <button class="tab-btn" data-tab="tab-batterycables">🐍 Battery Cables</button>
+            <button class="tab-btn" data-tab="tab-doorhandles">🤝 Door Handles</button>
+            <button class="tab-btn" data-tab="tab-rearview">👀 Rearview Mirror</button>
+            <button class="tab-btn" data-tab="tab-defroster">🔥 Defroster</button>
+          </div>
+
+          <div class="tab-content">
+            <!-- ORIGINAL PANELS (Abbreviated for structure) -->
+            <div id="tab-intro" class="tab-panel active">
+              <div class="info-card">
+                <h4>👋 Welcome to Car Anatomy!</h4>
+                <p>Ready to see what makes a car zoom? We now have OVER 60 parts to explore!</p>
+              </div>
+            </div>
+            <div id="tab-engine" class="tab-panel"><div class="info-card"><h4>🏎️ The Engine (The Heart)</h4><p>The beating heart of the car!</p></div></div>
+            <div id="tab-battery" class="tab-panel"><div class="info-card"><h4>🔋 Battery</h4><p>Holds the electrical juice.</p></div></div>
+            <div id="tab-radiator" class="tab-panel"><div class="info-card"><h4>❄️ Radiator</h4><p>Keeps the engine cool like an ice pack.</p></div></div>
+            <div id="tab-brakes" class="tab-panel"><div class="info-card"><h4>🛑 Brakes</h4><p>Stops the heavy car safely.</p></div></div>
+            <div id="tab-wheels" class="tab-panel"><div class="info-card"><h4>🛞 Wheels</h4><p>The shoes of the car!</p></div></div>
+            <div id="tab-steering" class="tab-panel"><div class="info-card"><h4>🕹️ Steering</h4><p>Tells the front tires where to point.</p></div></div>
+            <div id="tab-fuel" class="tab-panel"><div class="info-card"><h4>⛽ Fuel System</h4><p>The car's lunchbox!</p></div></div>
+            <div id="tab-gearbox" class="tab-panel"><div class="info-card"><h4>⚙️ Gearbox</h4><p>The muscles of the car.</p></div></div>
+            <div id="tab-headlights" class="tab-panel"><div class="info-card"><h4>💡 Headlights</h4><p>The car's eyes at night!</p></div></div>
+            <div id="tab-chassis" class="tab-panel"><div class="info-card"><h4>🦴 Chassis</h4><p>The metal skeleton.</p></div></div>
+            <div id="tab-ecu" class="tab-panel"><div class="info-card"><h4>🧠 ECU</h4><p>The giant robot brain.</p></div></div>
+            <div id="tab-exhaust" class="tab-panel"><div class="info-card"><h4>💨 Exhaust</h4><p>The chimney for engine smoke.</p></div></div>
+            <div id="tab-supercar" class="tab-panel"><div class="info-card"><h4>🚀 SUPERCAR MODE ACTIVATED!</h4><p>Superhero upgrades for extreme speed!</p></div></div>
+
+            <!-- NEW 50 PANELS -->
+            <div id="tab-windshield" class="tab-panel"><div class="info-card"><h4>🪟 Windshield</h4><p>The giant front window that protects your face from bugs and wind while letting you see the road!</p></div></div>
+            <div id="tab-wipers" class="tab-panel"><div class="info-card"><h4>🌧️ Windshield Wipers</h4><p>Like squeegees for the car, they wipe away rain and snow so the driver can see perfectly.</p></div></div>
+            <div id="tab-mirrors" class="tab-panel"><div class="info-card"><h4>🪞 Side Mirrors</h4><p>Special mirrors on the doors that act like eyes in the back of the driver's head!</p></div></div>
+            <div id="tab-seats" class="tab-panel"><div class="info-card"><h4>💺 Seats</h4><p>The comfy chairs inside the car, sometimes they even have secret heaters inside them!</p></div></div>
+            <div id="tab-seatbelts" class="tab-panel"><div class="info-card"><h4>🎗️ Seatbelts</h4><p>The most important safety hug! They lock tight during a sudden stop to keep you safe in your seat.</p></div></div>
+            <div id="tab-horn" class="tab-panel"><div class="info-card"><h4>📢 Horn</h4><p>BEEP BEEP! The loud button on the steering wheel used to say "Watch out!" to other cars.</p></div></div>
+            <div id="tab-speedometer" class="tab-panel"><div class="info-card"><h4>⏱️ Speedometer</h4><p>The dial on the dashboard that tells the driver exactly how fast they are zooming.</p></div></div>
+            <div id="tab-airbags" class="tab-panel"><div class="info-card"><h4>🎈 Airbags</h4><p>Hidden balloons that explode outwards in a crash to act as soft pillows for your head.</p></div></div>
+            <div id="tab-ac" class="tab-panel"><div class="info-card"><h4>🧊 Air Conditioning</h4><p>The magical ice machine that blows freezing cold air on hot summer days.</p></div></div>
+            <div id="tab-starter" class="tab-panel"><div class="info-card"><h4>⚡ Starter Motor</h4><p>A tiny, super-strong electric motor that spins the big engine to wake it up when you turn the key.</p></div></div>
+            <div id="tab-sparkplugs" class="tab-panel"><div class="info-card"><h4>✨ Spark Plugs</h4><p>Tiny zappers that create mini lightning bolts inside the engine to ignite the fuel!</p></div></div>
+            <div id="tab-airfilter" class="tab-panel"><div class="info-card"><h4>🌬️ Air Filter</h4><p>The engine's face mask! It catches dirt and leaves so the engine only breathes clean air.</p></div></div>
+            <div id="tab-oilfilter" class="tab-panel"><div class="info-card"><h4>🛢️ Oil Filter</h4><p>A little cup that cleans the engine's oil, catching tiny bits of metal to keep things smooth.</p></div></div>
+            <div id="tab-muffler" class="tab-panel"><div class="info-card"><h4>🤫 Muffler</h4><p>A metal tube filled with magic sound-absorbing walls to make the engine's loud ROAR very quiet.</p></div></div>
+            <div id="tab-shocks" class="tab-panel"><div class="info-card"><h4>🪀 Shock Absorbers</h4><p>Giant metal tubes that stop the car from bouncing like a trampoline after hitting a bump.</p></div></div>
+            <div id="tab-axles" class="tab-panel"><div class="info-card"><h4>🔗 Axles</h4><p>The strong metal bars that connect the left wheels to the right wheels.</p></div></div>
+            <div id="tab-driveshaft" class="tab-panel"><div class="info-card"><h4>🥖 Driveshaft</h4><p>A long spinning tube that carries power from the engine all the way to the back wheels.</p></div></div>
+            <div id="tab-clutch" class="tab-panel"><div class="info-card"><h4>🥏 Clutch</h4><p>Two sticky plates that connect the engine to the wheels, allowing you to change gears smoothly.</p></div></div>
+            <div id="tab-brakepads" class="tab-panel"><div class="info-card"><h4>🧱 Brake Pads</h4><p>Thick blocks of friction material that squeeze the wheels to stop the car.</p></div></div>
+            <div id="tab-calipers" class="tab-panel"><div class="info-card"><h4>🗜️ Brake Calipers</h4><p>The strong robotic hands that hold the brake pads and squeeze them when you step on the pedal.</p></div></div>
+            <div id="tab-fuelpump" class="tab-panel"><div class="info-card"><h4>🥤 Fuel Pump</h4><p>A little electric straw that sucks gasoline from the tank and pushes it to the engine.</p></div></div>
+            <div id="tab-injectors" class="tab-panel"><div class="info-card"><h4>💉 Fuel Injectors</h4><p>Tiny spray nozzles that squirt exactly the right amount of fuel mist into the engine.</p></div></div>
+            <div id="tab-hood" class="tab-panel"><div class="info-card"><h4>🧢 Hood</h4><p>The big metal lid at the front of the car that protects the engine from rain and thieves!</p></div></div>
+            <div id="tab-trunk" class="tab-panel"><div class="info-card"><h4>📦 Trunk</h4><p>The giant storage box at the back of the car for groceries, luggage, and sports gear.</p></div></div>
+            <div id="tab-doors" class="tab-panel"><div class="info-card"><h4>🚪 Doors</h4><p>The heavy metal gates that let you get in and out, filled with safety bars inside!</p></div></div>
+            <div id="tab-windows" class="tab-panel"><div class="info-card"><h4>🖼️ Windows</h4><p>Tough safety glass on the sides that roll up and down to let fresh air in.</p></div></div>
+            <div id="tab-sunroof" class="tab-panel"><div class="info-card"><h4>☀️ Sunroof</h4><p>A secret window on the ceiling of the car to let sunshine and moonlight in!</p></div></div>
+            <div id="tab-antenna" class="tab-panel"><div class="info-card"><h4>📡 Antenna</h4><p>The metal wand or shark-fin on the roof that reaches into the sky to catch invisible music waves.</p></div></div>
+            <div id="tab-radio" class="tab-panel"><div class="info-card"><h4>🎵 Radio (Infotainment)</h4><p>The glowing screen in the dashboard that plays music, shows maps, and connects to phones!</p></div></div>
+            <div id="tab-speakers" class="tab-panel"><div class="info-card"><h4>🔊 Speakers</h4><p>Magnets hidden in the doors that vibrate the air to make loud, awesome music!</p></div></div>
+            <div id="tab-glovebox" class="tab-panel"><div class="info-card"><h4>🧤 Glovebox</h4><p>A little secret treasure chest in front of the passenger seat for maps and snacks.</p></div></div>
+            <div id="tab-cupholders" class="tab-panel"><div class="info-card"><h4>☕ Cup Holders</h4><p>The most important part! Holds your juice boxes and milkshakes so they don't spill everywhere.</p></div></div>
+            <div id="tab-taillights" class="tab-panel"><div class="info-card"><h4>🔴 Taillights</h4><p>Bright red lights at the back that tell people behind you when you are stepping on the brakes.</p></div></div>
+            <div id="tab-blinkers" class="tab-panel"><div class="info-card"><h4>↔️ Blinkers</h4><p>Flashing yellow lights that politely tell other cars you are about to turn left or right.</p></div></div>
+            <div id="tab-timingbelt" class="tab-panel"><div class="info-card"><h4>🕰️ Timing Belt</h4><p>A strong rubber band that keeps all the moving parts inside the engine perfectly in sync!</p></div></div>
+            <div id="tab-alternator" class="tab-panel"><div class="info-card"><h4>🔄 Alternator</h4><p>The car's personal power plant! It spins with the engine to make new electricity for the battery.</p></div></div>
+            <div id="tab-oilpan" class="tab-panel"><div class="info-card"><h4>🍳 Oil Pan</h4><p>A metal bowl at the very bottom of the engine where all the slippery oil pools up.</p></div></div>
+            <div id="tab-thermostat" class="tab-panel"><div class="info-card"><h4>🌡️ Thermostat</h4><p>A tiny temperature guard that opens a door to let cooling water in when the engine gets too hot.</p></div></div>
+            <div id="tab-waterpump" class="tab-panel"><div class="info-card"><h4>💦 Water Pump</h4><p>A spinning fan that pushes cooling liquid all around the hot engine.</p></div></div>
+            <div id="tab-catalytic" class="tab-panel"><div class="info-card"><h4>🧪 Catalytic Converter</h4><p>A super-hot science lab hidden in the exhaust pipe that magically cleans dirty engine smoke!</p></div></div>
+            <div id="tab-pedals" class="tab-panel"><div class="info-card"><h4>🦶 Pedals</h4><p>The floor buttons for the driver's feet! One makes you GO, and one makes you STOP.</p></div></div>
+            <div id="tab-gascap" class="tab-panel"><div class="info-card"><h4>🪛 Gas Cap</h4><p>The little screw-on lid that keeps your fuel from splashing out of the tank.</p></div></div>
+            <div id="tab-floormats" class="tab-panel"><div class="info-card"><h4>🧽 Floor Mats</h4><p>The washable rugs on the floor that protect the car from muddy shoes!</p></div></div>
+            <div id="tab-licenseplate" class="tab-panel"><div class="info-card"><h4>🪪 License Plate</h4><p>The car's very own nametag so the police and cameras know exactly who it belongs to.</p></div></div>
+            <div id="tab-frame" class="tab-panel"><div class="info-card"><h4>🏗️ Frame</h4><p>The super heavy steel bottom that everything in the car gets bolted onto.</p></div></div>
+            <div id="tab-fuses" class="tab-panel"><div class="info-card"><h4>🔌 Fuses</h4><p>Tiny plastic guards that sacrifice themselves (by popping) to stop electricity from causing a fire.</p></div></div>
+            <div id="tab-batterycables" class="tab-panel"><div class="info-card"><h4>🐍 Battery Cables</h4><p>Thick electrical snakes that carry huge amounts of power from the battery to the engine.</p></div></div>
+            <div id="tab-doorhandles" class="tab-panel"><div class="info-card"><h4>🤝 Door Handles</h4><p>The levers you pull on the outside to unlatch the heavy metal doors.</p></div></div>
+            <div id="tab-rearview" class="tab-panel"><div class="info-card"><h4>👀 Rearview Mirror</h4><p>The mirror stuck to the windshield so the driver can see what's happening behind them!</p></div></div>
+            <div id="tab-defroster" class="tab-panel"><div class="info-card"><h4>🔥 Defroster</h4><p>Special little heater lines in the glass that melt away ice and fog so you can see.</p></div></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Grab all interactive elements
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const svgParts = document.querySelectorAll('.anatomy-part');
+    const svgStage = document.querySelector('.anatomy-svg');
+
+    function activateSystemUI(tabId) {
+      // 1. Reset everything first
+      tabButtons.forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      svgParts.forEach(p => p.classList.remove('active-part'));
+      svgStage.classList.remove('supercar-mode-active');
+
+      // 2. Activate the correct button and panel
+      const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+      
+      const activePanel = document.getElementById(tabId);
+      if (activePanel) {
+        activePanel.classList.add('active');
+        const infoCard = activePanel.querySelector('.info-card');
+        if (infoCard) {
+          infoCard.style.animation = 'none';
+          setTimeout(() => infoCard.style.animation = '', 10);
+        }
+      }
+
+      // 3. Highlight the correct part in the SVG diagram (if it exists in SVG)
+      const activePart = document.querySelector(`.anatomy-part[data-tab="${tabId}"]`);
+      if (activePart) {
+        activePart.classList.add('active-part');
+      }
+
+      // 4. Trigger Supercar animation if selected
+      if (tabId === 'tab-supercar') {
+        svgStage.classList.add('supercar-mode-active');
+      }
+
+      // 5. Update the Detail Title text for ALL parts
+      const titles = {
+        'tab-intro': '👋 Welcome!',
+        'tab-supercar': '🚀 SUPERCAR UPGRADES!',
+        'tab-engine': '🏎️ The Engine',
+        'tab-battery': '🔋 Battery Power',
+        'tab-radiator': '❄️ Radiator Cooling',
+        'tab-brakes': '🛑 Mighty Brakes',
+        'tab-wheels': '🛞 Sticky Wheels',
+        'tab-steering': '🕹️ Steering Control',
+        'tab-fuel': '⛽ Fuel System',
+        'tab-gearbox': '⚙️ Metal Gearbox',
+        'tab-headlights': '💡 Bright Lights',
+        'tab-chassis': '🦴 Strong Chassis',
+        'tab-ecu': '🧠 ECU Brain',
+        'tab-exhaust': '💨 Exhaust Pipes',
+        'tab-windshield': '🪟 Front Windshield',
+        'tab-wipers': '🌧️ Windshield Wipers',
+        'tab-mirrors': '🪞 Side Mirrors',
+        'tab-seats': '💺 Comfy Seats',
+        'tab-seatbelts': '🎗️ Safety Seatbelts',
+        'tab-horn': '📢 Honking Horn',
+        'tab-speedometer': '⏱️ Speedometer',
+        'tab-airbags': '🎈 Safety Airbags',
+        'tab-ac': '🧊 Air Conditioning',
+        'tab-starter': '⚡ Starter Motor',
+        'tab-sparkplugs': '✨ Spark Plugs',
+        'tab-airfilter': '🌬️ Air Filter',
+        'tab-oilfilter': '🛢️ Oil Filter',
+        'tab-muffler': '🤫 Quiet Muffler',
+        'tab-shocks': '🪀 Shock Absorbers',
+        'tab-axles': '🔗 Wheel Axles',
+        'tab-driveshaft': '🥖 Driveshaft',
+        'tab-clutch': '🥏 The Clutch',
+        'tab-brakepads': '🧱 Brake Pads',
+        'tab-calipers': '🗜️ Brake Calipers',
+        'tab-fuelpump': '🥤 Fuel Pump',
+        'tab-injectors': '💉 Fuel Injectors',
+        'tab-hood': '🧢 Engine Hood',
+        'tab-trunk': '📦 Storage Trunk',
+        'tab-doors': '🚪 Car Doors',
+        'tab-windows': '🖼️ Car Windows',
+        'tab-sunroof': '☀️ Glass Sunroof',
+        'tab-antenna': '📡 Radio Antenna',
+        'tab-radio': '🎵 Infotainment',
+        'tab-speakers': '🔊 Music Speakers',
+        'tab-glovebox': '🧤 Glovebox',
+        'tab-cupholders': '☕ Cup Holders',
+        'tab-taillights': '🔴 Red Taillights',
+        'tab-blinkers': '↔️ Turn Blinkers',
+        'tab-timingbelt': '🕰️ Timing Belt',
+        'tab-alternator': '🔄 Alternator',
+        'tab-oilpan': '🍳 Oil Pan',
+        'tab-thermostat': '🌡️ Thermostat',
+        'tab-waterpump': '💦 Water Pump',
+        'tab-catalytic': '🧪 Catalytic Converter',
+        'tab-pedals': '🦶 Foot Pedals',
+        'tab-gascap': '🪛 Gas Cap',
+        'tab-floormats': '🧽 Floor Mats',
+        'tab-licenseplate': '🪪 License Plate',
+        'tab-frame': '🏗️ Base Frame',
+        'tab-fuses': '🔌 Electrical Fuses',
+        'tab-batterycables': '🐍 Battery Cables',
+        'tab-doorhandles': '🤝 Door Handles',
+        'tab-rearview': '👀 Rearview Mirror',
+        'tab-defroster': '🔥 Window Defroster'
+      };
+      
+      const titleEl = document.getElementById('detailTitle');
+      if (titleEl) {
+          titleEl.textContent = titles[tabId] || 'System Details 🔍';
+      }
+    }
+
+    // Attach click events
+    tabButtons.forEach(btn => btn.addEventListener('click', () => activateSystemUI(btn.dataset.tab)));
+    svgParts.forEach(part => part.addEventListener('click', () => activateSystemUI(part.dataset.tab)));
+  </script>
+</body>
+</html>

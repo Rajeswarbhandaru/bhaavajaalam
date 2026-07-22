@@ -1,0 +1,76 @@
+{
+  "achievements": [
+    {
+      "id": "first_boot",
+      "title": "First Boot",
+      "description": "Successfully power on your first device.",
+      "xp": 50
+    },
+    {
+      "id": "master_builder",
+      "title": "Master Builder",
+      "description": "Build 10 fully working devices.",
+      "xp": 200
+    },
+    {
+      "id": "repair_expert",
+      "title": "Repair Expert",
+      "description": "Fix 5 failed devices using diagnostics.",
+      "xp": 150
+    },
+    {
+      "id": "heat_manager",
+      "title": "Heat Manager",
+      "description": "Build a device with zero overheating warnings.",
+      "xp": 100
+    },
+    {
+      "id": "battery_genius",
+      "title": "Battery Genius",
+      "description": "Achieve 10+ hours simulated battery life.",
+      "xp": 100
+    },
+    {
+      "id": "camera_specialist",
+      "title": "Camera Specialist",
+      "description": "Build a device with max camera score.",
+      "xp": 100
+    },
+    {
+      "id": "power_optimizer",
+      "title": "Power Optimizer",
+      "description": "Balance power draw within 5% of budget.",
+      "xp": 120
+    },
+    {
+      "id": "cost_saver",
+      "title": "Cost Saver",
+      "description": "Complete a mission 20% under budget.",
+      "xp": 100
+    },
+    {
+      "id": "innovation_award",
+      "title": "Innovation Award",
+      "description": "Complete an Invent Mode device.",
+      "xp": 150
+    },
+    {
+      "id": "engineer_level",
+      "title": "Engineer Level",
+      "description": "Reach Engineer rank.",
+      "xp": 0
+    },
+    {
+      "id": "scientist_level",
+      "title": "Scientist Level",
+      "description": "Reach Scientist rank.",
+      "xp": 0
+    },
+    {
+      "id": "inventor_level",
+      "title": "Inventor Level",
+      "description": "Reach Inventor rank.",
+      "xp": 0
+    }
+  ]
+}

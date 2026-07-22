@@ -1,0 +1,36 @@
+{
+  "terms": [
+    {
+      "term": "Cadence",
+      "definition": "The rate at which a cyclist pedals, measured in revolutions per minute (RPM)."
+    },
+    {
+      "term": "Torque",
+      "definition": "A rotational force applied to the pedals/crank that turns the drivetrain."
+    },
+    {
+      "term": "Gear Ratio",
+      "definition": "The ratio between chainring teeth and cassette teeth, determining pedaling effort vs speed."
+    },
+    {
+      "term": "Rolling Resistance",
+      "definition": "Force resisting wheel motion caused by tyre deformation against the road surface."
+    },
+    {
+      "term": "Gyroscopic Effect",
+      "definition": "The tendency of a spinning wheel to resist changes to its axis of rotation, aiding balance."
+    },
+    {
+      "term": "Center of Gravity",
+      "definition": "The point where an object's weight is evenly distributed, affecting stability."
+    },
+    {
+      "term": "Mechanical Advantage",
+      "definition": "The factor by which a mechanism multiplies input force, e.g. longer crank arms."
+    },
+    {
+      "term": "Compatibility Standard",
+      "definition": "A defined specification (e.g. bottom bracket type) that ensures two parts fit together correctly."
+    }
+  ]
+}

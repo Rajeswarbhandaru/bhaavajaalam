@@ -1,0 +1,61 @@
+{
+  "missions": [
+    {
+      "id": "grandmother",
+      "title": "Grandmother's Easy Phone",
+      "budget": 150,
+      "requirements": {
+        "largeButtons": true,
+        "minBattery": 4000,
+        "maxCost": 150,
+        "gamingNeeded": false
+      },
+      "description": "Build an easy-to-use phone with large icons, long battery life, and low cost."
+    },
+    {
+      "id": "teen_gamer",
+      "title": "Teen Gamer Phone",
+      "budget": 400,
+      "requirements": {
+        "minClock": 3.0,
+        "minRefresh": 120,
+        "coolingNeeded": true,
+        "minBattery": 5000
+      },
+      "description": "Build a gaming phone with a fast CPU, 120Hz display, strong cooling, and large battery."
+    },
+    {
+      "id": "scientist",
+      "title": "Scientist's Research Phone",
+      "budget": 600,
+      "requirements": {
+        "maxPerformance": true,
+        "sensorCount": 4,
+        "gpsNeeded": true
+      },
+      "description": "Build the highest performance phone with many sensors and excellent GPS."
+    },
+    {
+      "id": "photographer",
+      "title": "Photographer's Phone",
+      "budget": 450,
+      "requirements": {
+        "minCameraMp": 100,
+        "aiChipNeeded": true,
+        "fastStorageNeeded": true
+      },
+      "description": "Build a phone optimized for photography with AI processing and fast storage."
+    },
+    {
+      "id": "explorer",
+      "title": "Outdoor Explorer Phone",
+      "budget": 350,
+      "requirements": {
+        "waterResistance": true,
+        "barometerNeeded": true,
+        "minBattery": 5000
+      },
+      "description": "Build a rugged phone with water resistance, barometer, and large battery."
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+
+body{position:relative;min-height:100vh;padding-top:64px;}
+#topbar{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:100;}
+.screen{display:none;padding:24px;max-width:1400px;margin:0 auto;}
+.screen.active{display:block;}
+.colorblind-mode{filter:saturate(0.6);}

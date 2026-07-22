@@ -1,0 +1,157 @@
+{
+  "customers": [
+    {
+      "id": "school_student",
+      "name": "School Student",
+      "budget": 150,
+      "needs": [
+        "safe",
+        "comfortable",
+        "lightweight"
+      ],
+      "terrain": "urban",
+      "weather": "clear",
+      "timeLimitMin": 20
+    },
+    {
+      "id": "office_worker",
+      "name": "Office Worker",
+      "budget": 300,
+      "needs": [
+        "fast",
+        "reliable",
+        "low_maintenance"
+      ],
+      "terrain": "urban",
+      "weather": "rain",
+      "timeLimitMin": 20
+    },
+    {
+      "id": "mountain_rider",
+      "name": "Mountain Rider",
+      "budget": 800,
+      "needs": [
+        "strong_frame",
+        "suspension",
+        "disc_brakes",
+        "wide_tyres"
+      ],
+      "terrain": "trail",
+      "weather": "mud",
+      "timeLimitMin": 30
+    },
+    {
+      "id": "delivery_rider",
+      "name": "Delivery Rider",
+      "budget": 350,
+      "needs": [
+        "large_carrier",
+        "comfort",
+        "durability"
+      ],
+      "terrain": "urban",
+      "weather": "any",
+      "timeLimitMin": 20
+    },
+    {
+      "id": "tourist",
+      "name": "Tourist",
+      "budget": 400,
+      "needs": [
+        "comfort",
+        "bottle_holders",
+        "carrier",
+        "repairability"
+      ],
+      "terrain": "mixed",
+      "weather": "clear",
+      "timeLimitMin": 25
+    },
+    {
+      "id": "professional_racer",
+      "name": "Professional Racer",
+      "budget": 3000,
+      "needs": [
+        "carbon_frame",
+        "aerodynamics",
+        "light_weight"
+      ],
+      "terrain": "road",
+      "weather": "clear",
+      "timeLimitMin": 30
+    },
+    {
+      "id": "teenager",
+      "name": "Teenager",
+      "budget": 250,
+      "needs": [
+        "stylish",
+        "affordable",
+        "multi_gear"
+      ],
+      "terrain": "urban",
+      "weather": "clear",
+      "timeLimitMin": 20
+    },
+    {
+      "id": "senior_citizen",
+      "name": "Senior Citizen",
+      "budget": 300,
+      "needs": [
+        "step_through_frame",
+        "comfort",
+        "stable",
+        "easy_braking"
+      ],
+      "terrain": "urban",
+      "weather": "clear",
+      "timeLimitMin": 20
+    },
+    {
+      "id": "adventure_explorer",
+      "name": "Adventure Explorer",
+      "budget": 900,
+      "needs": [
+        "bikepacking",
+        "large_storage",
+        "reliable_components"
+      ],
+      "terrain": "trail",
+      "weather": "any",
+      "timeLimitMin": 30
+    },
+    {
+      "id": "electric_commuter",
+      "name": "Electric Commuter",
+      "budget": 1200,
+      "needs": [
+        "long_range",
+        "fast_charging",
+        "powerful_motor"
+      ],
+      "terrain": "urban",
+      "weather": "rain",
+      "timeLimitMin": 25
+    }
+  ],
+  "daily": [
+    {
+      "id": "daily_fix_flat",
+      "title": "Fix a Flat Tyre",
+      "type": "repair",
+      "xp": 20
+    },
+    {
+      "id": "daily_true_wheel",
+      "title": "True a Wobbly Wheel",
+      "type": "repair",
+      "xp": 25
+    },
+    {
+      "id": "daily_build_budget",
+      "title": "Build a Bike Under $200",
+      "type": "build",
+      "xp": 30
+    }
+  ]
+}

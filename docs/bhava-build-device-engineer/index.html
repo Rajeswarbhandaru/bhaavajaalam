@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhāva Tech - Learn Building Devices </title>
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+<header id="topbar">
+  <div class="brand">
+    <span class="logo-dot"></span>
+    <span class="brand-name">Bhāva Tech</span>
+    <span class="brand-sub">Learn Building Devices </span>
+  </div>
+  <div class="topbar-actions">
+    <button id="sound-toggle" class="icon-btn sound-btn" aria-label="Turn sound on" title="Sound: On">🔊</button>
+    <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" title="Toggle Light/Dark">🌗</button>
+    <button id="a11y-toggle" class="icon-btn" aria-label="Accessibility" title="Accessibility Options">♿</button>
+    <div id="xp-display" class="xp-pill" title="Experience Points">
+      <span id="xp-value">0 XP</span>
+      <span id="rank-value">Trainee</span>
+    </div>
+  </div>
+</header>
+
+<main id="app-root">
+
+  <section id="screen-home" class="screen active">
+    <div class="home-hero">
+      <h1>Build. Test. Debug. Understand.</h1>
+      <p>Design real smartphones and laptops from the inside out — and learn exactly how they work.</p>
+    </div>
+    <nav class="home-grid" id="home-grid">
+      <button class="home-card" data-nav="anatomy"><span class="hc-icon">🔍</span><span>Real Device Anatomy</span></button>
+      <button class="home-card" data-nav="build-mobile"><span class="hc-icon">📱</span><span>Build Mobile</span></button>
+      <button class="home-card" data-nav="build-laptop"><span class="hc-icon">💻</span><span>Build Laptop</span></button>
+      <button class="home-card" data-nav="how-it-works"><span class="hc-icon">⚡</span><span>How Devices Work</span></button>
+      <button class="home-card" data-nav="laboratory"><span class="hc-icon">🔬</span><span>Laboratory</span></button>
+      <button class="home-card" data-nav="challenges"><span class="hc-icon">🎯</span><span>Challenges</span></button>
+      <button class="home-card" data-nav="achievements"><span class="hc-icon">🏆</span><span>Achievements</span></button>
+      <button class="home-card" data-nav="settings"><span class="hc-icon">⚙️</span><span>Settings</span></button>
+      <button class="home-card" data-nav="progress"><span class="hc-icon">📈</span><span>Progress</span></button>
+      <button class="home-card" data-nav="glossary"><span class="hc-icon">📖</span><span>Glossary</span></button>
+      <button class="home-card" data-nav="daily"><span class="hc-icon">🗓️</span><span>Daily Missions</span></button>
+      <button class="home-card" data-nav="continue"><span class="hc-icon">▶️</span><span>Continue</span></button>
+    </nav>
+  </section>
+
+  <section id="screen-anatomy" class="screen">
+    <h2 class="screen-title">Real Device Anatomy</h2>
+    <p class="screen-subtitle">Learn where each part actually sits inside a real phone or laptop before you start building.</p>
+    <div class="anatomy-container glass" id="anatomy-container"></div>
+    <button class="btn back-btn" data-nav="home">🏠 Home</button>
+  </section>
+
+  <section id="screen-build" class="screen">
+    <div class="build-layout">
+      <aside class="palette-panel glass" id="palette-panel">
+        <h2>Component Palette</h2>
+        <div class="build-levels" id="build-levels" aria-label="Choose build level">
+          <p class="level-heading">Choose your build level</p>
+          <button class="build-level active" data-level="1">
+            <span class="level-number">L1</span><span><strong>Essential Build</strong><small>Build with core parts only</small></span>
+          </button>
+          <button class="build-level" data-level="2">
+            <span class="level-number">L2</span><span><strong>Feature Builder</strong><small>Add every available feature</small></span>
+          </button>
+          <button class="build-level" data-level="3">
+            <span class="level-number">L3</span><span><strong>Smart Engineer</strong><small>Build with zero compatibility issues</small></span>
+          </button>
+          <div class="level-progress" id="level-progress">L1 progress: 0 / 0 core parts</div>
+        </div>
+        <div class="palette-tabs" id="palette-tabs"></div>
+        <div class="palette-list" id="palette-list"></div>
+      </aside>
+
+      <div class="workspace-panel">
+        <div class="workspace-toolbar glass">
+          <span id="device-title">New Mobile Build</span>
+          <div class="toolbar-actions">
+            <button class="btn" id="btn-mission" title="View Mission">🎯 Mission</button>
+            <button class="btn" id="btn-explode" title="Explode View">💥 Explode</button>
+            <button class="btn" id="btn-check-level" title="Check current level">✓ Check Level</button>
+            <button class="btn btn-primary" id="btn-power" title="Power On">🔌 Power On</button>
+            <button class="btn" id="btn-reset" title="Reset Build">↺ Reset</button>
+            <button class="btn" id="btn-back-home" title="Back">🏠 Home</button>
+          </div>
+        </div>
+        <div class="board-area glass" id="board-area">
+          <svg id="wire-layer"></svg>
+          <div id="slot-container"></div>
+        </div>
+        <div class="stat-strip" id="stat-strip"></div>
+      </div>
+
+      <aside class="diagnostics-panel glass" id="diagnostics-panel">
+        <h2>Diagnostics</h2>
+        <div id="diagnostics-content"></div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="screen-learn" class="screen">
+    <div class="learn-layout">
+      <aside class="learn-list glass" id="learn-list"></aside>
+      <div class="learn-content glass" id="learn-content">
+        <p class="placeholder-text">Select a topic to begin exploring.</p>
+      </div>
+    </div>
+    <button class="btn back-btn" data-nav="home">🏠 Home</button>
+  </section>
+
+  <section id="screen-lab" class="screen">
+    <div class="lab-layout">
+      <aside class="lab-list glass" id="lab-list"></aside>
+      <div class="lab-content glass" id="lab-content">
+        <p class="placeholder-text">Select a component to experiment.</p>
+      </div>
+    </div>
+    <button class="btn back-btn" data-nav="home">🏠 Home</button>
+  </section>
+
+  <section id="screen-challenges" class="screen">
+    <h2 class="screen-title">Customer Missions</h2>
+    <div class="mission-grid" id="mission-grid"></div>
+    <button class="btn back-btn" data-nav="home">🏠 Home</button>
+  </section>
+
+  <section id="screen-achievements" class="screen">
+    <h2 class="screen-title">Achievements</h2>
+    <div class="achievement-grid" id="achievement-grid"></div>
+    <button class="btn back-btn" data-nav="home">🏠 Home</button>
+  </section>
+
+  <section id="screen-settings" class="screen">
+    <h2 class="screen-title">Settings</h2>
+    <div class="settings-panel glass">
+      <label class="setting-row"><span>Theme</span>
+        <select id="setting-theme"><option value="dark">Dark</option><option value="light">Light</option></select>
+      </label>
+      <label class="setting-row"><span>Colorblind-friendly mode</span>
+        <input type="checkbox" id="setting-colorblind">
+      </label>
+      <label class="setting-row"><span>Large fonts</span>
+        <input type="checkbox" id="setting-largefont">
+      </label>
+      <label class="setting-row"><span>Reduce motion</span>
+        <input type="checkbox" id="setting-reducemotion">
+      </label>
+      <button class="btn" id="btn-clear-progress">Clear All Progress</button>
+    </div>
+    <button class="btn back-btn" data-nav="home">🏠 Home</button>
+  </section>
+
+  <section id="screen-progress" class="screen">
+    <h2 class="screen-title">Your Progress</h2>
+    <div class="progress-grid" id="progress-grid"></div>
+    <button class="btn back-btn" data-nav="home">🏠 Home</button>
+  </section>
+
+  <section id="screen-glossary" class="screen">
+    <h2 class="screen-title">Glossary</h2>
+    <input type="text" id="glossary-search" placeholder="Search terms..." class="text-input">
+    <div class="glossary-grid" id="glossary-grid"></div>
+    <button class="btn back-btn" data-nav="home">🏠 Home</button>
+  </section>
+
+  <section id="screen-daily" class="screen">
+    <h2 class="screen-title">Daily Missions</h2>
+    <div class="daily-grid" id="daily-grid"></div>
+    <button class="btn back-btn" data-nav="home">🏠 Home</button>
+  </section>
+
+</main>
+
+<div id="modal-overlay" class="modal-overlay">
+  <div class="modal glass" id="modal-box"></div>
+</div>
+
+<div id="toast-container"></div>
+
+<div id="celebration-overlay" class="celebration-overlay" aria-live="polite"></div>
+
+<div id="ai-mentor" class="ai-mentor">
+  <button id="ai-mentor-toggle" class="ai-mentor-btn" title="AI Mentor">🧠</button>
+  <div id="ai-mentor-panel" class="ai-mentor-panel glass">
+    <h3>AI Mentor</h3>
+    <div id="ai-mentor-messages"></div>
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+<script src="bhava-tech-all.js"></script>
+<script src="bhava-bridge.js"></script>
+<script src="bhava-session.js"></script>
+<script src="bhava-game-nav.js"></script>
+</body>
+</html>

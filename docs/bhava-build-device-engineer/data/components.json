@@ -1,0 +1,1519 @@
+{
+  "components": [
+    {
+      "id": "mbA",
+      "name": "CoreBoard X1",
+      "type": "Motherboard",
+      "chipset": "X1",
+      "power": 5,
+      "heat": 5,
+      "cost": 40,
+      "sockets": {
+        "cpu": "socketA",
+        "ram": "ramGenA",
+        "storage": "nvmeA"
+      },
+      "description": "Entry level motherboard for budget phones."
+    },
+    {
+      "id": "mbB",
+      "name": "CoreBoard Pro",
+      "type": "Motherboard",
+      "chipset": "Pro7",
+      "power": 6,
+      "heat": 6,
+      "cost": 90,
+      "sockets": {
+        "cpu": "socketB",
+        "ram": "ramGenB",
+        "storage": "nvmeB"
+      },
+      "description": "High-end motherboard supporting fast components."
+    },
+    {
+      "id": "mbC",
+      "name": "CoreBoard Ultra",
+      "type": "Motherboard",
+      "chipset": "UltraX",
+      "power": 7,
+      "heat": 7,
+      "cost": 150,
+      "sockets": {
+        "cpu": "socketC",
+        "ram": "ramGenB",
+        "storage": "nvmeB"
+      },
+      "description": "Flagship motherboard with maximum expansion."
+    },
+    {
+      "id": "cpu001",
+      "name": "Snapdragon Basic",
+      "type": "CPU",
+      "socket": "socketA",
+      "cores": 4,
+      "clock": 1.8,
+      "power": 12,
+      "heat": 20,
+      "cost": 50,
+      "compatible": [
+        "mbA"
+      ],
+      "description": "Efficient quad-core CPU for daily tasks."
+    },
+    {
+      "id": "cpu002",
+      "name": "Snapdragon Elite",
+      "type": "CPU",
+      "socket": "socketB",
+      "cores": 8,
+      "clock": 3.2,
+      "power": 28,
+      "heat": 45,
+      "cost": 180,
+      "compatible": [
+        "mbB"
+      ],
+      "description": "High performance octa-core flagship CPU."
+    },
+    {
+      "id": "cpu003",
+      "name": "HeliosCore Titan",
+      "type": "CPU",
+      "socket": "socketC",
+      "cores": 10,
+      "clock": 3.6,
+      "power": 34,
+      "heat": 52,
+      "cost": 260,
+      "compatible": [
+        "mbC"
+      ],
+      "description": "Top-tier CPU for gaming and AI workloads."
+    },
+    {
+      "id": "cpu004",
+      "name": "EcoChip Lite",
+      "type": "CPU",
+      "socket": "socketA",
+      "cores": 2,
+      "clock": 1.4,
+      "power": 8,
+      "heat": 14,
+      "cost": 30,
+      "compatible": [
+        "mbA"
+      ],
+      "description": "Ultra low-power CPU for simple phones."
+    },
+    {
+      "id": "ram001",
+      "name": "RAM 4GB LPDDR4",
+      "type": "RAM",
+      "generation": "ramGenA",
+      "size": 4,
+      "power": 3,
+      "heat": 4,
+      "cost": 20,
+      "compatible": [
+        "mbA"
+      ],
+      "description": "Basic memory module."
+    },
+    {
+      "id": "ram002",
+      "name": "RAM 12GB LPDDR5",
+      "type": "RAM",
+      "generation": "ramGenB",
+      "size": 12,
+      "power": 6,
+      "heat": 8,
+      "cost": 70,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Fast, high-capacity memory."
+    },
+    {
+      "id": "ram003",
+      "name": "RAM 16GB LPDDR5X",
+      "type": "RAM",
+      "generation": "ramGenB",
+      "size": 16,
+      "power": 7,
+      "heat": 9,
+      "cost": 95,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Flagship-grade memory for multitasking."
+    },
+    {
+      "id": "ram004",
+      "name": "RAM 2GB LPDDR3",
+      "type": "RAM",
+      "generation": "ramGenA",
+      "size": 2,
+      "power": 2,
+      "heat": 3,
+      "cost": 12,
+      "compatible": [
+        "mbA"
+      ],
+      "description": "Minimal memory for very basic phones."
+    },
+    {
+      "id": "stg001",
+      "name": "eMMC 64GB",
+      "type": "Storage",
+      "interface": "nvmeA",
+      "size": 64,
+      "speed": 150,
+      "power": 2,
+      "heat": 3,
+      "cost": 15,
+      "compatible": [
+        "mbA"
+      ],
+      "description": "Slower, affordable storage."
+    },
+    {
+      "id": "stg002",
+      "name": "NVMe SSD 256GB",
+      "type": "Storage",
+      "interface": "nvmeB",
+      "size": 256,
+      "speed": 1500,
+      "power": 4,
+      "heat": 5,
+      "cost": 60,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Fast solid state storage."
+    },
+    {
+      "id": "stg003",
+      "name": "NVMe SSD 512GB",
+      "type": "Storage",
+      "interface": "nvmeB",
+      "size": 512,
+      "speed": 2200,
+      "power": 5,
+      "heat": 6,
+      "cost": 95,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "High-capacity, very fast storage for photos and games."
+    },
+    {
+      "id": "stg004",
+      "name": "eMMC 32GB",
+      "type": "Storage",
+      "interface": "nvmeA",
+      "size": 32,
+      "speed": 100,
+      "power": 1,
+      "heat": 2,
+      "cost": 8,
+      "compatible": [
+        "mbA"
+      ],
+      "description": "Very basic storage, fills up quickly."
+    },
+    {
+      "id": "bat001",
+      "name": "Li-ion 3000mAh",
+      "type": "Battery",
+      "chemistry": "Li-ion",
+      "voltage": 3.7,
+      "capacity": 3000,
+      "chargeSpeed": 10,
+      "power": 0,
+      "heat": 5,
+      "cost": 25,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Standard safe battery."
+    },
+    {
+      "id": "bat002",
+      "name": "Li-Po 5000mAh Fast",
+      "type": "Battery",
+      "chemistry": "Li-Po",
+      "voltage": 3.8,
+      "capacity": 5000,
+      "chargeSpeed": 33,
+      "power": 0,
+      "heat": 8,
+      "cost": 45,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "High-capacity fast-charging battery, runs a bit hotter."
+    },
+    {
+      "id": "bat003",
+      "name": "Li-Po 6000mAh MegaCell",
+      "type": "Battery",
+      "chemistry": "Li-Po",
+      "voltage": 3.85,
+      "capacity": 6000,
+      "chargeSpeed": 45,
+      "power": 0,
+      "heat": 10,
+      "cost": 60,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Massive battery for explorers and heavy users."
+    },
+    {
+      "id": "bat004",
+      "name": "Li-ion 2000mAh Compact",
+      "type": "Battery",
+      "chemistry": "Li-ion",
+      "voltage": 3.6,
+      "capacity": 2000,
+      "chargeSpeed": 8,
+      "power": 0,
+      "heat": 4,
+      "cost": 15,
+      "compatible": [
+        "mbA"
+      ],
+      "description": "Small, light battery for compact/budget phones."
+    },
+    {
+      "id": "disp001",
+      "name": "LCD HD 60Hz",
+      "type": "Display",
+      "tech": "LCD",
+      "refresh": 60,
+      "resolution": "HD",
+      "power": 8,
+      "heat": 6,
+      "cost": 30,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Affordable, low battery drain display."
+    },
+    {
+      "id": "disp002",
+      "name": "AMOLED FHD 120Hz",
+      "type": "Display",
+      "tech": "AMOLED",
+      "refresh": 120,
+      "resolution": "FHD+",
+      "power": 16,
+      "heat": 10,
+      "cost": 85,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Vivid colors, high refresh rate, more power hungry."
+    },
+    {
+      "id": "disp003",
+      "name": "AMOLED QHD 144Hz",
+      "type": "Display",
+      "tech": "AMOLED",
+      "refresh": 144,
+      "resolution": "QHD",
+      "power": 20,
+      "heat": 13,
+      "cost": 120,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Ultra-smooth gaming display with sharp resolution."
+    },
+    {
+      "id": "disp004",
+      "name": "LCD Basic 60Hz Small",
+      "type": "Display",
+      "tech": "LCD",
+      "refresh": 60,
+      "resolution": "qHD",
+      "power": 5,
+      "heat": 4,
+      "cost": 18,
+      "compatible": [
+        "mbA"
+      ],
+      "description": "Small, simple display for entry phones."
+    },
+    {
+      "id": "cam001",
+      "name": "Camera 12MP",
+      "type": "Camera",
+      "mp": 12,
+      "aiChip": false,
+      "power": 4,
+      "heat": 3,
+      "cost": 25,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Reliable everyday camera."
+    },
+    {
+      "id": "cam002",
+      "name": "Camera 108MP AI",
+      "type": "Camera",
+      "mp": 108,
+      "aiChip": true,
+      "power": 9,
+      "heat": 6,
+      "cost": 95,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "High resolution camera with AI processing."
+    },
+    {
+      "id": "cam003",
+      "name": "Camera 200MP Pro AI",
+      "type": "Camera",
+      "mp": 200,
+      "aiChip": true,
+      "power": 12,
+      "heat": 8,
+      "cost": 150,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Flagship camera for detailed photography."
+    },
+    {
+      "id": "cam004",
+      "name": "Camera 8MP Basic",
+      "type": "Camera",
+      "mp": 8,
+      "aiChip": false,
+      "power": 2,
+      "heat": 2,
+      "cost": 12,
+      "compatible": [
+        "mbA"
+      ],
+      "description": "Budget camera for simple photos."
+    },
+    {
+      "id": "fcam001",
+      "name": "Front Camera 8MP",
+      "type": "FrontCamera",
+      "mp": 8,
+      "aiChip": false,
+      "power": 2,
+      "heat": 1,
+      "cost": 10,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Standard selfie camera."
+    },
+    {
+      "id": "fcam002",
+      "name": "Front Camera 32MP AI",
+      "type": "FrontCamera",
+      "mp": 32,
+      "aiChip": true,
+      "power": 4,
+      "heat": 2,
+      "cost": 35,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "High resolution selfie camera with AI beautify."
+    },
+    {
+      "id": "cool001",
+      "name": "Passive Heat Spreader",
+      "type": "Cooling",
+      "capacity": 15,
+      "power": 0,
+      "heat": -15,
+      "cost": 10,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Basic passive cooling."
+    },
+    {
+      "id": "cool002",
+      "name": "Vapor Chamber Cooling",
+      "type": "Cooling",
+      "capacity": 40,
+      "power": 1,
+      "heat": -40,
+      "cost": 35,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Advanced active-style cooling for sustained performance."
+    },
+    {
+      "id": "cool003",
+      "name": "Liquid Cooling Loop",
+      "type": "Cooling",
+      "capacity": 60,
+      "power": 2,
+      "heat": -60,
+      "cost": 55,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Extreme cooling for gaming laptops and flagship phones."
+    },
+    {
+      "id": "wifi001",
+      "name": "WiFi 5 Module",
+      "type": "WiFi",
+      "standard": "802.11ac",
+      "power": 2,
+      "heat": 2,
+      "cost": 8,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Standard wireless module."
+    },
+    {
+      "id": "wifi002",
+      "name": "WiFi 6E Module",
+      "type": "WiFi",
+      "standard": "802.11ax",
+      "power": 3,
+      "heat": 2,
+      "cost": 18,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Faster, more efficient wireless module."
+    },
+    {
+      "id": "bt001",
+      "name": "Bluetooth 5.0",
+      "type": "Bluetooth",
+      "power": 1,
+      "heat": 1,
+      "cost": 5,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Short range wireless."
+    },
+    {
+      "id": "bt002",
+      "name": "Bluetooth 5.3 LE",
+      "type": "Bluetooth",
+      "power": 1,
+      "heat": 1,
+      "cost": 8,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Low-energy Bluetooth for wearables and audio."
+    },
+    {
+      "id": "gps001",
+      "name": "GPS Module",
+      "type": "GPS",
+      "power": 2,
+      "heat": 1,
+      "cost": 8,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Location tracking module."
+    },
+    {
+      "id": "gps002",
+      "name": "GPS + GLONASS + Galileo",
+      "type": "GPS",
+      "power": 3,
+      "heat": 1,
+      "cost": 20,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Multi-constellation GPS for precise outdoor navigation."
+    },
+    {
+      "id": "sen001",
+      "name": "Accelerometer",
+      "type": "Sensor",
+      "sensorType": "accelerometer",
+      "power": 0.5,
+      "heat": 0,
+      "cost": 3,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Detects motion and orientation."
+    },
+    {
+      "id": "sen002",
+      "name": "Gyroscope",
+      "type": "Sensor",
+      "sensorType": "gyroscope",
+      "power": 0.5,
+      "heat": 0,
+      "cost": 4,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Detects rotation."
+    },
+    {
+      "id": "sen003",
+      "name": "Fingerprint Sensor",
+      "type": "Sensor",
+      "sensorType": "fingerprint",
+      "power": 0.5,
+      "heat": 0,
+      "cost": 6,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Biometric security."
+    },
+    {
+      "id": "sen004",
+      "name": "Barometer",
+      "type": "Sensor",
+      "sensorType": "barometer",
+      "power": 0.3,
+      "heat": 0,
+      "cost": 4,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Measures air pressure/altitude."
+    },
+    {
+      "id": "sen005",
+      "name": "Compass (Magnetometer)",
+      "type": "Sensor",
+      "sensorType": "compass",
+      "power": 0.3,
+      "heat": 0,
+      "cost": 3,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Detects magnetic north for navigation apps."
+    },
+    {
+      "id": "sen006",
+      "name": "Hall Sensor",
+      "type": "Sensor",
+      "sensorType": "hall",
+      "power": 0.2,
+      "heat": 0,
+      "cost": 2,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Detects magnetic covers (flip case auto-lock)."
+    },
+    {
+      "id": "sen007",
+      "name": "Ambient Light Sensor",
+      "type": "Sensor",
+      "sensorType": "ambientlight",
+      "power": 0.2,
+      "heat": 0,
+      "cost": 3,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Automatically adjusts screen brightness."
+    },
+    {
+      "id": "sen008",
+      "name": "Proximity Sensor",
+      "type": "Sensor",
+      "sensorType": "proximity",
+      "power": 0.2,
+      "heat": 0,
+      "cost": 3,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Turns off screen near your ear during calls."
+    },
+    {
+      "id": "sen009",
+      "name": "NFC Module",
+      "type": "Sensor",
+      "sensorType": "nfc",
+      "power": 0.5,
+      "heat": 0,
+      "cost": 9,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Enables tap-to-pay and quick pairing."
+    },
+    {
+      "id": "chg001",
+      "name": "Charging IC 10W",
+      "type": "ChargingIC",
+      "wattage": 10,
+      "power": 0,
+      "heat": 3,
+      "cost": 6,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Standard charging controller."
+    },
+    {
+      "id": "chg002",
+      "name": "Charging IC 33W Fast",
+      "type": "ChargingIC",
+      "wattage": 33,
+      "power": 0,
+      "heat": 6,
+      "cost": 15,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Fast charging controller, more heat."
+    },
+    {
+      "id": "chg003",
+      "name": "Charging IC 65W SuperFast",
+      "type": "ChargingIC",
+      "wattage": 65,
+      "power": 0,
+      "heat": 9,
+      "cost": 25,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Very fast charging for large batteries."
+    },
+    {
+      "id": "pmic001",
+      "name": "Power Management IC",
+      "type": "PowerIC",
+      "power": 1,
+      "heat": 2,
+      "cost": 8,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Regulates voltage across board."
+    },
+    {
+      "id": "spk001",
+      "name": "Mono Speaker",
+      "type": "Speaker",
+      "power": 1,
+      "heat": 1,
+      "cost": 5,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Basic audio output."
+    },
+    {
+      "id": "spk002",
+      "name": "Stereo Speakers",
+      "type": "Speaker",
+      "power": 2,
+      "heat": 1,
+      "cost": 15,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Dual speakers for richer sound."
+    },
+    {
+      "id": "mic001",
+      "name": "Microphone",
+      "type": "Microphone",
+      "power": 0.5,
+      "heat": 0,
+      "cost": 3,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC"
+      ],
+      "description": "Voice input."
+    },
+    {
+      "id": "mic002",
+      "name": "Dual Noise-Cancelling Mic",
+      "type": "Microphone",
+      "power": 0.8,
+      "heat": 0,
+      "cost": 10,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Clearer calls in noisy environments."
+    },
+    {
+      "id": "os001",
+      "name": "LiteOS 1.0",
+      "type": "OS",
+      "minRam": 4,
+      "power": 2,
+      "heat": 1,
+      "cost": 0,
+      "compatible": [
+        "mbA"
+      ],
+      "description": "Lightweight OS for budget devices."
+    },
+    {
+      "id": "os002",
+      "name": "FlowOS 5.0",
+      "type": "OS",
+      "minRam": 8,
+      "power": 4,
+      "heat": 2,
+      "cost": 0,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Feature rich OS requiring more RAM."
+    },
+    {
+      "id": "os003",
+      "name": "FlowOS Ultra 6.0",
+      "type": "OS",
+      "minRam": 12,
+      "power": 5,
+      "heat": 3,
+      "cost": 0,
+      "compatible": [
+        "mbC"
+      ],
+      "description": "Latest OS with advanced AI features, needs plenty of RAM."
+    },
+    {
+      "id": "fw001",
+      "name": "Firmware v2.1",
+      "type": "Firmware",
+      "boardType": "mbA",
+      "power": 0,
+      "heat": 0,
+      "cost": 0,
+      "compatible": [
+        "mbA"
+      ],
+      "description": "Firmware matched to CoreBoard X1."
+    },
+    {
+      "id": "fw002",
+      "name": "Firmware v5.0",
+      "type": "Firmware",
+      "boardType": "mbB",
+      "power": 0,
+      "heat": 0,
+      "cost": 0,
+      "compatible": [
+        "mbB"
+      ],
+      "description": "Firmware matched to CoreBoard Pro."
+    },
+    {
+      "id": "fw003",
+      "name": "Firmware v7.2",
+      "type": "Firmware",
+      "boardType": "mbC",
+      "power": 0,
+      "heat": 0,
+      "cost": 0,
+      "compatible": [
+        "mbC"
+      ],
+      "description": "Firmware matched to CoreBoard Ultra."
+    },
+    {
+      "id": "mbD",
+      "name": "CoreBoard Mini",
+      "type": "Motherboard",
+      "chipset": "MiniZ",
+      "power": 4,
+      "heat": 4,
+      "cost": 25,
+      "sockets": {
+        "cpu": "socketA",
+        "ram": "ramGenA",
+        "storage": "nvmeA"
+      },
+      "description": "Compact motherboard for small, simple phones."
+    },
+    {
+      "id": "mbE",
+      "name": "CoreBoard Flex",
+      "type": "Motherboard",
+      "chipset": "FlexQ",
+      "power": 6,
+      "heat": 6,
+      "cost": 110,
+      "sockets": {
+        "cpu": "socketB",
+        "ram": "ramGenB",
+        "storage": "nvmeB"
+      },
+      "description": "Flexible motherboard designed for foldable devices."
+    },
+    {
+      "id": "cpu005",
+      "name": "HeliosCore Compact",
+      "type": "CPU",
+      "socket": "socketB",
+      "cores": 6,
+      "clock": 2.4,
+      "power": 18,
+      "heat": 30,
+      "cost": 110,
+      "compatible": [
+        "mbB"
+      ],
+      "description": "Balanced hexa-core CPU for smooth multitasking."
+    },
+    {
+      "id": "cpu006",
+      "name": "NanoChip Ultra-Low Power",
+      "type": "CPU",
+      "socket": "socketA",
+      "cores": 2,
+      "clock": 1.0,
+      "power": 5,
+      "heat": 8,
+      "cost": 20,
+      "compatible": [
+        "mbA",
+        "mbD"
+      ],
+      "description": "Extremely efficient CPU for tiny battery devices."
+    },
+    {
+      "id": "ram005",
+      "name": "RAM 6GB LPDDR4X",
+      "type": "RAM",
+      "generation": "ramGenA",
+      "size": 6,
+      "power": 4,
+      "heat": 5,
+      "cost": 32,
+      "compatible": [
+        "mbA",
+        "mbD"
+      ],
+      "description": "Mid-range memory for smoother everyday multitasking."
+    },
+    {
+      "id": "ram006",
+      "name": "RAM 24GB LPDDR5X",
+      "type": "RAM",
+      "generation": "ramGenB",
+      "size": 24,
+      "power": 9,
+      "heat": 11,
+      "cost": 140,
+      "compatible": [
+        "mbB",
+        "mbC",
+        "mbE"
+      ],
+      "description": "Extreme memory for heavy multitaskers and AI workloads."
+    },
+    {
+      "id": "stg005",
+      "name": "UFS 128GB",
+      "type": "Storage",
+      "interface": "nvmeA",
+      "size": 128,
+      "speed": 600,
+      "power": 3,
+      "heat": 4,
+      "cost": 35,
+      "compatible": [
+        "mbA",
+        "mbD"
+      ],
+      "description": "Mid-tier fast storage, good balance of price and speed."
+    },
+    {
+      "id": "stg006",
+      "name": "NVMe SSD 1TB",
+      "type": "Storage",
+      "interface": "nvmeB",
+      "size": 1024,
+      "speed": 3000,
+      "power": 6,
+      "heat": 7,
+      "cost": 160,
+      "compatible": [
+        "mbB",
+        "mbC",
+        "mbE"
+      ],
+      "description": "Massive, ultra-fast storage for pro users and gamers."
+    },
+    {
+      "id": "bat005",
+      "name": "Li-Po 4000mAh Balanced",
+      "type": "Battery",
+      "chemistry": "Li-Po",
+      "voltage": 3.8,
+      "capacity": 4000,
+      "chargeSpeed": 25,
+      "power": 0,
+      "heat": 6,
+      "cost": 35,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbD"
+      ],
+      "description": "Good middle-ground battery for everyday phones."
+    },
+    {
+      "id": "bat006",
+      "name": "Solid-State 7000mAh",
+      "type": "Battery",
+      "chemistry": "Solid-State",
+      "voltage": 3.9,
+      "capacity": 7000,
+      "chargeSpeed": 50,
+      "power": 0,
+      "heat": 6,
+      "cost": 80,
+      "compatible": [
+        "mbB",
+        "mbC",
+        "mbE"
+      ],
+      "description": "Next-gen battery chemistry \u2014 high capacity with lower heat than Li-Po."
+    },
+    {
+      "id": "disp005",
+      "name": "Foldable AMOLED 90Hz",
+      "type": "Display",
+      "tech": "Foldable AMOLED",
+      "refresh": 90,
+      "resolution": "FHD+",
+      "power": 18,
+      "heat": 11,
+      "cost": 140,
+      "compatible": [
+        "mbE"
+      ],
+      "description": "Bendable display used in foldable phone designs."
+    },
+    {
+      "id": "disp006",
+      "name": "E-Ink Display 1Hz",
+      "type": "Display",
+      "tech": "E-Ink",
+      "refresh": 1,
+      "resolution": "HD",
+      "power": 1,
+      "heat": 0,
+      "cost": 40,
+      "compatible": [
+        "mbA",
+        "mbD"
+      ],
+      "description": "Ultra low-power display, great for battery life but no smooth video."
+    },
+    {
+      "id": "cam005",
+      "name": "Camera 48MP Balanced",
+      "type": "Camera",
+      "mp": 48,
+      "aiChip": true,
+      "power": 6,
+      "heat": 4,
+      "cost": 55,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC",
+        "mbD",
+        "mbE"
+      ],
+      "description": "Good mid-range camera with light AI processing."
+    },
+    {
+      "id": "cam006",
+      "name": "Periscope Zoom Camera 50MP",
+      "type": "Camera",
+      "mp": 50,
+      "aiChip": true,
+      "power": 10,
+      "heat": 7,
+      "cost": 130,
+      "compatible": [
+        "mbB",
+        "mbC",
+        "mbE"
+      ],
+      "description": "Telephoto camera for long-distance zoom shots."
+    },
+    {
+      "id": "fcam003",
+      "name": "Under-Display Front Camera 16MP",
+      "type": "FrontCamera",
+      "mp": 16,
+      "aiChip": true,
+      "power": 3,
+      "heat": 2,
+      "cost": 45,
+      "compatible": [
+        "mbC",
+        "mbE"
+      ],
+      "description": "Hidden selfie camera beneath the screen for a bezel-less look."
+    },
+    {
+      "id": "cool004",
+      "name": "Graphite Sheet Cooling",
+      "type": "Cooling",
+      "capacity": 10,
+      "power": 0,
+      "heat": -10,
+      "cost": 5,
+      "compatible": [
+        "mbA",
+        "mbD"
+      ],
+      "description": "Very thin, low-cost cooling sheet for basic thermal spreading."
+    },
+    {
+      "id": "wifi003",
+      "name": "WiFi 7 Module",
+      "type": "WiFi",
+      "standard": "802.11be",
+      "power": 3,
+      "heat": 2,
+      "cost": 28,
+      "compatible": [
+        "mbB",
+        "mbC",
+        "mbE"
+      ],
+      "description": "Latest generation WiFi with very high speed and low latency."
+    },
+    {
+      "id": "bt003",
+      "name": "Bluetooth LE Audio",
+      "type": "Bluetooth",
+      "power": 1,
+      "heat": 0,
+      "cost": 10,
+      "compatible": [
+        "mbB",
+        "mbC",
+        "mbE"
+      ],
+      "description": "Newer Bluetooth audio standard with better efficiency and multi-device support."
+    },
+    {
+      "id": "gps003",
+      "name": "Assisted GPS (A-GPS)",
+      "type": "GPS",
+      "power": 1.5,
+      "heat": 1,
+      "cost": 6,
+      "compatible": [
+        "mbA",
+        "mbD"
+      ],
+      "description": "Uses network data to get a location fix faster, ideal for budget phones."
+    },
+    {
+      "id": "spk003",
+      "name": "Dolby Atmos Quad Speakers",
+      "type": "Speaker",
+      "power": 3,
+      "heat": 2,
+      "cost": 30,
+      "compatible": [
+        "mbC",
+        "mbE"
+      ],
+      "description": "Premium 4-speaker setup with cinematic surround sound."
+    },
+    {
+      "id": "mic003",
+      "name": "Single Basic Mic",
+      "type": "Microphone",
+      "power": 0.3,
+      "heat": 0,
+      "cost": 2,
+      "compatible": [
+        "mbA",
+        "mbD"
+      ],
+      "description": "Very basic single microphone for budget phones."
+    },
+    {
+      "id": "pmic002",
+      "name": "Advanced Multi-Rail PMIC",
+      "type": "PowerIC",
+      "power": 1.5,
+      "heat": 2,
+      "cost": 16,
+      "compatible": [
+        "mbB",
+        "mbC",
+        "mbE"
+      ],
+      "description": "Manages multiple voltage rails precisely for flagship-level efficiency."
+    },
+    {
+      "id": "pmic003",
+      "name": "Basic Single-Rail PMIC",
+      "type": "PowerIC",
+      "power": 0.8,
+      "heat": 1,
+      "cost": 5,
+      "compatible": [
+        "mbA",
+        "mbD"
+      ],
+      "description": "Simple power regulation suited to entry-level boards."
+    },
+    {
+      "id": "sen010",
+      "name": "Heart Rate Sensor",
+      "type": "Sensor",
+      "sensorType": "heartrate",
+      "power": 0.6,
+      "heat": 0,
+      "cost": 8,
+      "compatible": [
+        "mbB",
+        "mbC",
+        "mbE"
+      ],
+      "description": "Optical sensor for fitness and health tracking apps."
+    },
+    {
+      "id": "sen011",
+      "name": "UV Sensor",
+      "type": "Sensor",
+      "sensorType": "uv",
+      "power": 0.3,
+      "heat": 0,
+      "cost": 5,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Measures ultraviolet light exposure outdoors."
+    },
+    {
+      "id": "sen012",
+      "name": "Depth Sensor (ToF)",
+      "type": "Sensor",
+      "sensorType": "depth",
+      "power": 1,
+      "heat": 1,
+      "cost": 18,
+      "compatible": [
+        "mbC",
+        "mbE"
+      ],
+      "description": "Measures distance for portrait photo blur and face unlock."
+    },
+    {
+      "id": "btn001",
+      "name": "Standard Button Set",
+      "type": "Buttons",
+      "power": 0,
+      "heat": 0,
+      "cost": 3,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC",
+        "mbD",
+        "mbE"
+      ],
+      "description": "Volume and power buttons for standard physical control."
+    },
+    {
+      "id": "btn002",
+      "name": "Large Accessible Buttons",
+      "type": "Buttons",
+      "power": 0,
+      "heat": 0,
+      "cost": 5,
+      "compatible": [
+        "mbA",
+        "mbD"
+      ],
+      "description": "Bigger, easier-to-press buttons ideal for elderly or accessibility-focused phones."
+    },
+    {
+      "id": "btn003",
+      "name": "Programmable Action Button",
+      "type": "Buttons",
+      "power": 0.1,
+      "heat": 0,
+      "cost": 9,
+      "compatible": [
+        "mbB",
+        "mbC",
+        "mbE"
+      ],
+      "description": "Customizable extra button for quick shortcuts (camera, assistant, etc.)."
+    },
+    {
+      "id": "sim001",
+      "name": "Single Nano-SIM Slot",
+      "type": "SIM",
+      "power": 0.2,
+      "heat": 0,
+      "cost": 3,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC",
+        "mbD",
+        "mbE"
+      ],
+      "description": "Holds one physical SIM card for cellular network access."
+    },
+    {
+      "id": "sim002",
+      "name": "Dual-SIM Slot",
+      "type": "SIM",
+      "power": 0.3,
+      "heat": 0,
+      "cost": 5,
+      "compatible": [
+        "mbB",
+        "mbC",
+        "mbE"
+      ],
+      "description": "Supports two SIM cards at once, useful for separating work/personal numbers."
+    },
+    {
+      "id": "sim003",
+      "name": "eSIM Module",
+      "type": "SIM",
+      "power": 0.2,
+      "heat": 0,
+      "cost": 10,
+      "compatible": [
+        "mbC",
+        "mbE"
+      ],
+      "description": "Digital SIM built into the device \u2014 no physical card needed, activated remotely."
+    },
+    {
+      "id": "vib001",
+      "name": "Basic ERM Vibration Motor",
+      "type": "VibrationMotor",
+      "power": 0.5,
+      "heat": 0.5,
+      "cost": 3,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbD"
+      ],
+      "description": "Simple spinning motor for basic buzz-style notifications."
+    },
+    {
+      "id": "vib002",
+      "name": "Linear Haptic Motor",
+      "type": "VibrationMotor",
+      "power": 0.6,
+      "heat": 0.5,
+      "cost": 10,
+      "compatible": [
+        "mbB",
+        "mbC",
+        "mbE"
+      ],
+      "description": "Precise, crisp haptic feedback used in flagship phones for typing and gaming."
+    },
+    {
+      "id": "drv001",
+      "name": "Basic Hardware Driver Pack",
+      "type": "Drivers",
+      "power": 0,
+      "heat": 0,
+      "cost": 0,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC",
+        "mbD",
+        "mbE"
+      ],
+      "description": "Minimal driver set letting the OS talk to essential hardware."
+    },
+    {
+      "id": "drv002",
+      "name": "Full Sensor & Camera Driver Pack",
+      "type": "Drivers",
+      "power": 0,
+      "heat": 0,
+      "cost": 6,
+      "compatible": [
+        "mbB",
+        "mbC",
+        "mbE"
+      ],
+      "description": "Complete driver pack unlocking all sensors, camera features, and fast charging support."
+    },
+    {
+      "id": "gpu001",
+      "name": "Integrated Graphics",
+      "type": "GPU",
+      "vram": 0,
+      "power": 3,
+      "heat": 5,
+      "cost": 0,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC",
+        "mbD",
+        "mbE"
+      ],
+      "description": "Basic graphics built into the CPU, fine for everyday tasks."
+    },
+    {
+      "id": "gpu002",
+      "name": "Discrete GPU 4GB",
+      "type": "GPU",
+      "vram": 4,
+      "power": 25,
+      "heat": 30,
+      "cost": 90,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Dedicated graphics card for gaming and video editing."
+    },
+    {
+      "id": "gpu003",
+      "name": "Discrete GPU 8GB Pro",
+      "type": "GPU",
+      "vram": 8,
+      "power": 45,
+      "heat": 55,
+      "cost": 180,
+      "compatible": [
+        "mbC"
+      ],
+      "description": "High-end graphics card for serious gaming and 3D rendering."
+    },
+    {
+      "id": "kbd001",
+      "name": "Standard Keyboard & Trackpad",
+      "type": "Keyboard",
+      "backlit": false,
+      "power": 1,
+      "heat": 1,
+      "cost": 10,
+      "compatible": [
+        "mbA",
+        "mbB",
+        "mbC",
+        "mbD",
+        "mbE"
+      ],
+      "description": "Basic typing input with a touch trackpad below it."
+    },
+    {
+      "id": "kbd002",
+      "name": "RGB Backlit Mechanical Keyboard",
+      "type": "Keyboard",
+      "backlit": true,
+      "power": 3,
+      "heat": 2,
+      "cost": 35,
+      "compatible": [
+        "mbB",
+        "mbC"
+      ],
+      "description": "Glowing, clicky keyboard popular with gamers and typists."
+    }
+  ]
+}

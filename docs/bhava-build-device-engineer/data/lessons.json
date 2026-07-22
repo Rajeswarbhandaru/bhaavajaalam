@@ -1,0 +1,124 @@
+{
+  "lessons": [
+    {
+      "id": "electricity",
+      "title": "What is Electricity?",
+      "category": "Fundamentals",
+      "content": "Electricity is the flow of electric charge, usually carried by electrons moving through a conductor.",
+      "animation": "electron_flow",
+      "prediction": "What happens if the circuit has a gap?",
+      "quiz": [
+        {
+          "q": "Electric current is measured in?",
+          "options": [
+            "Volts",
+            "Amps",
+            "Ohms",
+            "Watts"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "battery",
+      "title": "How Does a Battery Work?",
+      "category": "Fundamentals",
+      "content": "A battery stores chemical energy and converts it into electrical energy through a redox reaction between two electrodes.",
+      "animation": "battery_reaction",
+      "prediction": "What happens if you connect the battery backwards?",
+      "quiz": [
+        {
+          "q": "A battery converts chemical energy into?",
+          "options": [
+            "Light",
+            "Sound",
+            "Electrical energy",
+            "Heat only"
+          ],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "id": "voltage",
+      "title": "What is Voltage?",
+      "category": "Fundamentals",
+      "content": "Voltage is the electrical potential difference that pushes current through a circuit, like pressure in a pipe.",
+      "animation": "voltage_pipe",
+      "prediction": "What happens if voltage is too high for a component?",
+      "quiz": [
+        {
+          "q": "Voltage is similar to what in a water pipe analogy?",
+          "options": [
+            "Flow rate",
+            "Pipe width",
+            "Water pressure",
+            "Pipe length"
+          ],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "id": "cpu",
+      "title": "How CPUs Work",
+      "category": "Core Components",
+      "content": "The CPU executes instructions using cores, clock cycles, and cache memory to process data quickly.",
+      "animation": "cpu_pipeline",
+      "prediction": "What happens if you add more cores but not enough cooling?",
+      "quiz": [
+        {
+          "q": "Higher clock speed generally means?",
+          "options": [
+            "Less heat",
+            "More heat and power",
+            "Lower cost only",
+            "No effect"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "ram",
+      "title": "How RAM Works",
+      "category": "Core Components",
+      "content": "RAM temporarily stores active data so the CPU can access it instantly, unlike slower long-term storage.",
+      "animation": "ram_access",
+      "prediction": "What happens if RAM is too small for the OS?",
+      "quiz": [
+        {
+          "q": "RAM is a form of?",
+          "options": [
+            "Permanent storage",
+            "Temporary fast memory",
+            "Display driver",
+            "Power source"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "battery_lab_topic",
+      "title": "Charging and Heat",
+      "category": "Core Components",
+      "content": "Faster charging pushes more current into the battery, which increases heat generation.",
+      "animation": "charging_heat",
+      "prediction": "What happens if you fast-charge a battery with poor cooling?",
+      "quiz": [
+        {
+          "q": "Fast charging typically increases?",
+          "options": [
+            "Battery life only",
+            "Heat generation",
+            "Screen brightness",
+            "Nothing"
+          ],
+          "answer": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "rules": [
+    {
+      "id": "wheel_axle_match",
+      "description": "Front and rear wheel axle type must match frame dropout type",
+      "check": "wheel.axleType === frame.dropoutType"
+    },
+    {
+      "id": "hub_width_match",
+      "description": "Wheel hub width must match frame/fork spacing",
+      "check": "wheel.hubWidthMm === frame.rearSpacingMm"
+    },
+    {
+      "id": "brake_mount_match",
+      "description": "Brake caliper mount standard must match frame/fork mount",
+      "check": "brake.mountType === frame.brakeMountType"
+    },
+    {
+      "id": "rotor_size_match",
+      "description": "Disc rotor diameter must match caliper adapter size",
+      "check": "rotor.diameterMm === caliper.supportedRotorMm"
+    },
+    {
+      "id": "bottom_bracket_match",
+      "description": "Bottom bracket standard must match frame BB shell",
+      "check": "bottomBracket.standard === frame.bbStandard"
+    },
+    {
+      "id": "headtube_match",
+      "description": "Headset standard must match frame head tube diameter",
+      "check": "headset.standard === frame.headTubeStandard"
+    },
+    {
+      "id": "fork_travel_frame",
+      "description": "Suspension fork travel must not exceed frame max travel rating",
+      "check": "fork.travelMm <= frame.maxForkTravelMm"
+    },
+    {
+      "id": "cassette_speed_shifter",
+      "description": "Cassette speed count must match shifter/derailleur speed count",
+      "check": "cassette.speeds === shifter.speeds"
+    },
+    {
+      "id": "chain_width_cassette",
+      "description": "Chain width must match cassette speed spacing",
+      "check": "chain.speedRating === cassette.speeds"
+    },
+    {
+      "id": "cable_type_lever",
+      "description": "Brake cable type (mechanical/hydraulic) must match lever and caliper type",
+      "check": "lever.cableType === caliper.cableType"
+    },
+    {
+      "id": "battery_voltage_controller",
+      "description": "Battery voltage must match controller supported voltage",
+      "check": "battery.voltage === controller.voltage"
+    },
+    {
+      "id": "motor_wattage_controller",
+      "description": "Motor wattage must not exceed controller max wattage",
+      "check": "motor.wattage <= controller.maxWattage"
+    },
+    {
+      "id": "controller_sensor_support",
+      "description": "Controller must support the sensor type installed",
+      "check": "controller.supportedSensors.includes(sensor.type)"
+    },
+    {
+      "id": "seatpost_diameter",
+      "description": "Seatpost diameter must match frame seat tube inner diameter",
+      "check": "seatpost.diameterMm === frame.seatTubeDiameterMm"
+    }
+  ]
+}
